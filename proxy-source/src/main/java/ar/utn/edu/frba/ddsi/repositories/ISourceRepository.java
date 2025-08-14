@@ -8,5 +8,7 @@ public interface ISourceRepository {
 
   List<Source> findAll();
 
+  List<Source> findNonMetaMapa();
+
   Source findById(Long id);
 }

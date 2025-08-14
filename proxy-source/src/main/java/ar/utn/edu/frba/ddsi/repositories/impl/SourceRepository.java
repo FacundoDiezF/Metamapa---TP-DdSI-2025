@@ -1,5 +1,6 @@
 package ar.utn.edu.frba.ddsi.repositories.impl;
 
+import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.repositories.ISourceRepository;
 import java.util.ArrayList;
@@ -29,6 +30,13 @@ public class SourceRepository implements ISourceRepository {
   @Override
   public List<Source> findAll() {
     return new ArrayList<>(sources.values());
+  }
+
+  @Override
+  public List<Source> findNonMetaMapa() {
+    return sources.values().stream()
+        .filter(source -> source.getType() != Origin.METAMAPA)
+        .toList();
   }
 
   @Override
