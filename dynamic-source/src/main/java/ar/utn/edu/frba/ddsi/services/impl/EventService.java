@@ -72,7 +72,7 @@ public class EventService implements IEventService {
     Event eventSaved = eventRepository.save(event);
 
     if (eventSaved.isAccepted()) {
-      publisher.notifyUpdatedEvents(eventSaved);
+      publisher.notifyUpdatedEvent(eventSaved);
     }
 
     return EventOutputDTO.from(eventSaved);

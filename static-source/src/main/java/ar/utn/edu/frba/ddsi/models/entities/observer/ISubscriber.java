@@ -5,7 +5,7 @@ import ar.utn.edu.frba.ddsi.models.dtos.output.SourceOutputDTO;
 import java.util.List;
 
 public interface ISubscriber {
-  void notifyEvents(List<EventOutputDTO> events);
+  void notifyNewEvents(List<EventOutputDTO> events);
 
   void notifySource(SourceOutputDTO source);
 }

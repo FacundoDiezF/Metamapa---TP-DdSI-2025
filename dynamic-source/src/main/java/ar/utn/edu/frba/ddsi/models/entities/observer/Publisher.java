@@ -29,7 +29,7 @@ public class Publisher {
     }
   }
 
-  public void notifyUpdatedEvents(Event event) {
+  public void notifyUpdatedEvent(Event event) {
     for (ISubscriber subscriber : subscribers) {
       subscriber.notifyUpdatedEvent(event);
     }
