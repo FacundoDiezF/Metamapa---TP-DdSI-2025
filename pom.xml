@@ -23,7 +23,7 @@
     </developers>
     <modules>
         <module>static-source</module>
-        <module>agregation-service</module>
+        <module>aggregation-service</module>
         <module>proxy-source</module>
         <module>dynamic-source</module>
 
