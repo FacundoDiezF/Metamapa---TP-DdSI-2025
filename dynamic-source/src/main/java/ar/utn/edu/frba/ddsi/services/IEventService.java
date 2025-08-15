@@ -2,11 +2,15 @@ package ar.utn.edu.frba.ddsi.services;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
+import ar.utn.edu.frba.ddsi.models.entities.event.Event;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IEventService {
-  List<EventOutputDTO> getEvents(LocalDateTime lastUpdate);
+  List<EventOutputDTO> getAllEvents(LocalDateTime lastUpdate);
+
+  List<Event> getEvents(LocalDateTime lastUpdate);
 
   EventOutputDTO save(EventDTO dto);
 

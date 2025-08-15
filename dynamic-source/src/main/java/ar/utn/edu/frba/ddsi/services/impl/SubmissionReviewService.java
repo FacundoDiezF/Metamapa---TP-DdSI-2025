@@ -3,7 +3,6 @@ package ar.utn.edu.frba.ddsi.services.impl;
 import ar.utn.edu.frba.ddsi.exceptions.InvalidStateChangeException;
 import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.SubmissionEvaluationDTO;
-import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.SubmissionEvaluationOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
@@ -11,8 +10,6 @@ import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionRequest;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
 import ar.utn.edu.frba.ddsi.services.ISubmissionReviewService;
-
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,8 +46,7 @@ public class SubmissionReviewService implements ISubmissionReviewService {
     Event eventSaved = eventRepository.save(submission.getEvent());
 
     if (eventSaved.isAccepted()) {
-      List<EventOutputDTO> events = List.of(EventOutputDTO.from(eventSaved));
-      publisher.notifyNewEvents(events);
+      publisher.notifyNewEvent(eventSaved);
     }
     return SubmissionEvaluationOutputDTO.from(eventSaved, submissionRequest.getState());
   }

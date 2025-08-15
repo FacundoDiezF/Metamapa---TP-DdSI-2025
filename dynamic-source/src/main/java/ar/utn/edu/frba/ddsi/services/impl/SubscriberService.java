@@ -36,6 +36,6 @@ public class SubscriberService implements ISubscriberService {
     sourceService.getSources().forEach(subscriber::notifySource);
 
     // Notificarle TODOS los eventos actuales SOLO al nuevo subscriber
-    subscriber.notifyEvents(eventService.getEvents(null));
+    subscriber.notifyNewEvent(eventService.getEvents(null));
   }
 }

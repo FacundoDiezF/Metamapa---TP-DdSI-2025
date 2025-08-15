@@ -25,7 +25,7 @@ public class EventController {
 
   @GetMapping
   public List<EventOutputDTO> getEvents(@RequestParam(required = false) LocalDateTime lastUpdate) {
-    return eventService.getEvents(lastUpdate);
+    return eventService.getAllEvents(lastUpdate);
   }
 
   @PostMapping
