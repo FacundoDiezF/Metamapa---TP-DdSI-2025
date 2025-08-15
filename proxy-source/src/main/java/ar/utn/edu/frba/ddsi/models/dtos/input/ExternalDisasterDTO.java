@@ -14,7 +14,9 @@ public class ExternalDisasterDTO {
   private Double longitud;
   @JsonProperty("fecha_hecho")
   private ZonedDateTime eventDate;
+  @JsonProperty("created_at")
+  private ZonedDateTime createdAt;
   @JsonProperty("updated_at")
-  private ZonedDateTime updateDate;
+  private ZonedDateTime updatedAt;
 
 }

@@ -6,7 +6,9 @@ import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import java.util.List;
 
 public interface ISubscriber {
-  void notifyEvents(List<EventOutputDTO> events);
+  void notifyNewEvents(List<EventOutputDTO> events);
+
+  void notifyUpdatedEvents(List<EventOutputDTO> events);
 
   void notifySource(Source source);
 }
