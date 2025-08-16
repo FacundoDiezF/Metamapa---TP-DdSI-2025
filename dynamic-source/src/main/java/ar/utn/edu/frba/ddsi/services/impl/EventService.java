@@ -5,32 +5,43 @@ import ar.utn.edu.frba.ddsi.exceptions.UnauthorizedException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
+import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
 import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionRequest;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class EventService implements IEventService {
 
-  @Autowired
   IEventRepository eventRepository;
 
-  @Autowired
   ISubmissionRepository submissionRepository;
 
+  Publisher publisher;
+
+  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, Publisher publisher) {
+    this.eventRepository = eventRepository;
+    this.submissionRepository = submissionRepository;
+    this.publisher = publisher;
+  }
+
   @Override
-  public List<EventOutputDTO> getEvents(LocalDateTime lastUpdate) {
+  public List<EventOutputDTO> getAllEvents(LocalDateTime lastUpdate) {
 
+    return getEvents(lastUpdate).stream().map(EventOutputDTO::from).toList();
+  }
+
+  @Override
+  public List<Event> getEvents(LocalDateTime lastUpdate) {
     if (lastUpdate != null) {
-      return eventRepository.findAfterDate(lastUpdate).stream().map(EventOutputDTO::from).toList();
+      return eventRepository.findAfterDate(lastUpdate); //Incluye dentro findByAccepted()
     }
-
-    return eventRepository.findByAccepted().stream().map(EventOutputDTO::from).toList();
+    return eventRepository.findByAccepted();
   }
 
   @Override
@@ -57,8 +68,13 @@ public class EventService implements IEventService {
     if (event.getUploadDate().plusDays(7).isBefore(LocalDateTime.now()))
       throw new IllegalStateException("Event editing window has expired. Modifications are no longer allowed");
 
-    event.updateWith(dto);
+    event.update(dto);
     Event eventSaved = eventRepository.save(event);
+
+    if (eventSaved.isAccepted()) {
+      publisher.notifyUpdatedEvent(eventSaved);
+    }
+
     return EventOutputDTO.from(eventSaved);
   }
 

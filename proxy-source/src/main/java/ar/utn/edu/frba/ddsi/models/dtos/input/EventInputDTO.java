@@ -16,7 +16,7 @@ public class EventInputDTO {
   Double latitude;
   Double longitude;
   LocalDateTime eventDate;
-  LocalDateTime uploadDate;
+  LocalDateTime updateDate;
   Set<String> tags;
 }
 

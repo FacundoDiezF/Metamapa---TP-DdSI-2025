@@ -13,9 +13,7 @@ public interface IEventService {
       LocalDateTime untilEventDate,
       LocalDateTime fromEventDate);
 
-  void create(EventInputDTO dto);
-
   void createAll(List<EventInputDTO> dtos);
 
-  void update(Long id, EventInputDTO dto);
+  void updateAll(List<EventInputDTO> dtos);
 }

@@ -40,7 +40,18 @@ public class EventService implements IEventService {
   }
 
   @Override
-  public void create(EventInputDTO dto) {
+  public void createAll(List<EventInputDTO> dtos) {
+    // TODO: Validar que la peticion venga de un modulo-fuente registrado (SEGURIDAD)
+    dtos.forEach(this::create);
+  }
+
+  @Override
+  public void updateAll(List<EventInputDTO> dtos) {
+    // TODO: Validar que la peticion venga de un modulo-fuente registrado (SEGURIDAD)
+    dtos.forEach(this::update);
+  }
+
+  private void create(EventInputDTO dto) {
 
     // Get event source
     Source source = sourceRepository.findByExternalIds(dto.getSourceClientId(), dto.getSourceId());
@@ -71,35 +82,19 @@ public class EventService implements IEventService {
     eventRepository.save(event);
   }
 
-  @Override
-  public void update(Long eventId, EventInputDTO dto) {
+  private void update(EventInputDTO dto) {
 
-    Event existingEvent = eventRepository.findById(eventId);
-    if (existingEvent == null)
-      throw new NotFoundException("Event not found with ID: " + eventId);
+    Event event = eventRepository.findByExternalIds(dto.getSourceClientId(), dto.getSourceId(), dto.getId());
+    if (event == null)
+      throw new NotFoundException("Event not found for SourceClientId: " + dto.getSourceClientId() + ", sourceId: " + dto.getSourceId() + " and eventId: " + dto.getId());
 
-    Category category = Category // TODO: Deberiamos tener un repo y tomarla en base al "nombre"
+    Category category = Category // TODO: Deberíamos tener un repo y tomarla en base al "nombre"
         .builder()
         .name(dto.getCategory())
         .build();
 
-    existingEvent.update(dto, category);
+    event.update(dto, category);
 
-    eventRepository.save(existingEvent);
-  }
-
-  @Override
-  public void createAll(List<EventInputDTO> dtos) {
-    // TODO: Validar que la peticion venga de un modulo-fuente registrado (SEGURIDAD)
-
-    for (EventInputDTO dto : dtos) {
-      //Validate if the event already exists in the repository
-      Event event = eventRepository.findByExternalIds(dto.getSourceClientId(), dto.getSourceId(), dto.getId());
-      if (event == null) {
-        this.create(dto);
-      } else {
-        this.update(event.getId(), dto);
-      }
-    }
+    eventRepository.save(event);
   }
 }

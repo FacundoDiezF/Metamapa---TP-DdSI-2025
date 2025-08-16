@@ -7,7 +7,6 @@ import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import ar.utn.edu.frba.ddsi.services.ISourceService;
 import ar.utn.edu.frba.ddsi.services.ISubscriberService;
-import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,6 +37,6 @@ public class SubscriberService implements ISubscriberService {
     sourceService.findAllSources().forEach(subscriber::notifySource);
 
     // Notificarle TODOS los eventos actuales SOLO al nuevo subscriber
-    subscriber.notifyEvents(eventService.getEvents(null));
+    subscriber.notifyNewEvents(eventService.getEvents(null));
   }
 }

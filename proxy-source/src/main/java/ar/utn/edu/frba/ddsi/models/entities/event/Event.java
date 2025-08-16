@@ -31,6 +31,7 @@ public class Event { //! Posiblemente haya que repensar esta entidad junto con E
   //-- Fechas
   private final LocalDateTime eventDate;
   private final LocalDateTime updateDate;
+  private final LocalDateTime uploadDate;
 
   public Event(Long id,
                String title,
@@ -40,6 +41,7 @@ public class Event { //! Posiblemente haya que repensar esta entidad junto con E
                Double longitude,
                LocalDateTime eventDate,
                LocalDateTime updateDate,
+                LocalDateTime createDate,
                Origin origin) {
     this.id = id;
     this.title = title;
@@ -48,7 +50,9 @@ public class Event { //! Posiblemente haya que repensar esta entidad junto con E
     this.latitude = latitude;
     this.longitude = longitude;
     this.eventDate = eventDate;
-    this.updateDate = updateDate; //TODO Debería ser esto o created_at de la API?
+    this.updateDate = updateDate;
+    this.uploadDate = createDate;
+
     this.origin = origin;
   }
 
@@ -63,7 +67,8 @@ public class Event { //! Posiblemente haya que repensar esta entidad junto con E
         externalDisaster.getLongitud(),
         //TODO Sacar .toLocalDateTime() y manejar correctamente (por zona horaria)
         externalDisaster.getEventDate().toLocalDateTime(),
-        externalDisaster.getUpdateDate().toLocalDateTime(),
+        externalDisaster.getUpdatedAt().toLocalDateTime(),
+        externalDisaster.getCreatedAt().toLocalDateTime(),
         Origin.PROXY);
   }
 
