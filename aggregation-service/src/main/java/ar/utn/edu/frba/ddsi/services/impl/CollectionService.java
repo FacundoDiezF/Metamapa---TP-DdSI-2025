@@ -49,6 +49,7 @@ public class CollectionService implements ICollectionService {
         .description(collectionDto.getDescription())
         .sources(collectionSources)
         .collectionCriteria(collectionCriteria)
+        .consensusType(collectionDto.getConsensusType())
         .build();
 
     //Refresh collection to populate events
