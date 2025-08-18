@@ -55,6 +55,12 @@ public class Event {
     if (dto.getEventDate() != null) this.eventDate = dto.getEventDate();
   }
 
+  public boolean meetsAlgorithmConsensus(ConsensusType consensusType) {
+    if (consensusType == null) return true;
+
+    return passedConsensus.contains(consensusType);
+  }
+
   public void markAsDeleted() {
     this.deleted = true;
     // Update state in the origin source

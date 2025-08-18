@@ -1,6 +1,7 @@
 package ar.utn.edu.frba.ddsi.models.entities.collections;
 
 import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.CollectionCriteria;
+import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ public class Collection {
 
   @NonNull private final List<Source> sources;
   @NonNull private final CollectionCriteria collectionCriteria;
+  private final ConsensusType consensusType;
 
   @Builder.Default
   private final Set<Event> events = new HashSet<>();
