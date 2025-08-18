@@ -15,14 +15,14 @@ public class MultipleMentionsConsensus implements IConsensusAlgorithm {
 
   @Override
   public boolean check(Event event, List<Source> sources) {
-    return itsInTwoSources(event, sources) && sameTitleDifferentAttributes(event, sources);
+    return itsInTwoSources(event, sources) && !sameTitleDifferentAttributes(event, sources);
   }
 
   private boolean itsInTwoSources(Event event, List<Source> sources) {
 
     long SourcesWithTheEvent = sources
-        .stream()
-        .filter(s -> s.getEvents().stream().anyMatch(e -> e.isEquivalent(event)))
+        .parallelStream()
+        .filter(s -> s.getEvents().parallelStream().anyMatch(e -> e.isEquivalent(event)))
         .count();
 
     return SourcesWithTheEvent >= 2;
