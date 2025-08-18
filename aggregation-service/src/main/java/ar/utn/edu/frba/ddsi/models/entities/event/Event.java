@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,6 +61,16 @@ public class Event {
 
     return passedConsensus.contains(consensusType);
   }
+
+public boolean isEquivalent(Event other) {
+  if (other == null) return false;
+  return Objects.equals(this.title, other.title)
+      && Objects.equals(this.description, other.description)
+      //&& Objects.equals(this.category, other.category) //TODO: Cuando tengamos el repo lo descomentamos
+      && Objects.equals(this.latitude, other.latitude)
+      && Objects.equals(this.longitude, other.longitude)
+      && Objects.equals(this.eventDate, other.eventDate);
+}
 
   public void markAsDeleted() {
     this.deleted = true;

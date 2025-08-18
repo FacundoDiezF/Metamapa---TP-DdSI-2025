@@ -1,5 +1,8 @@
 package ar.utn.edu.frba.ddsi.models.entities.consensus;
 
+import ar.utn.edu.frba.ddsi.models.entities.consensus.impl.AbsoluteConsensus;
+import ar.utn.edu.frba.ddsi.models.entities.consensus.impl.MultipleMentionsConsensus;
+import ar.utn.edu.frba.ddsi.models.entities.consensus.impl.SimpleMajorityConsensus;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
@@ -23,9 +26,9 @@ public class ConsensusManager {
     this.sourceRepository = sourceRepository;
 
     this.consensusAlgorithms = List.of(
-//        new MultipleMentionsConsensus(),
-//        new SimpleMajorityConsensus(),
-//        new AbsoluteConsensus()
+        new MultipleMentionsConsensus(),
+        new SimpleMajorityConsensus(),
+        new AbsoluteConsensus()
     );
   }
 
