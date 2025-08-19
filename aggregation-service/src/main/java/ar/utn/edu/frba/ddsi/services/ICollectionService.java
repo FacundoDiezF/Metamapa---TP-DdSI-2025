@@ -1,8 +1,11 @@
 package ar.utn.edu.frba.ddsi.services;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionCreationDTO;
+import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.collection.CollectionOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
+import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,4 +25,12 @@ public interface ICollectionService {
   );
 
   void refreshCollections(LocalDateTime lastUpdate);
+
+  void updateCollection(String handler, CollectionUpdateDTO dto);
+
+  void deleteCollection(String handler);
+
+  CollectionOutputDTO getCollectionByHandler(String handler);
+
+  void updateConsensus(String handler, ConsensusType consensusType);
 }

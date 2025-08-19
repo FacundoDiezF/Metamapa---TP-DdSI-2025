@@ -24,6 +24,9 @@ public class CollectionRepository implements ICollectionRepository {
   }
 
   @Override
+  public void delete(String handler){ collections.remove(handler); }
+
+  @Override
   public List<Collection> findAll() {
     return collections.values().stream().toList();
   }
@@ -32,4 +35,6 @@ public class CollectionRepository implements ICollectionRepository {
   public Collection findByHandler(String handler) {
     return collections.get(handler);
   }
+
+
 }
