@@ -12,6 +12,7 @@ public interface ICollectionService {
   List<CollectionOutputDTO> getCollections();
 
   List<EventOutputDTO> getEventsFromCollection(
+      boolean curedNavigation,
       String handler,
       String category,
       LocalDateTime untilUploadDate,

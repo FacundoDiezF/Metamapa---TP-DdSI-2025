@@ -49,6 +49,7 @@ public class CollectionService implements ICollectionService {
         .description(collectionDto.getDescription())
         .sources(collectionSources)
         .collectionCriteria(collectionCriteria)
+        .consensusType(collectionDto.getConsensusType())
         .build();
 
     //Refresh collection to populate events
@@ -64,6 +65,7 @@ public class CollectionService implements ICollectionService {
 
   @Override
   public List<EventOutputDTO> getEventsFromCollection(
+      boolean curedNavigation,
       String handler,
       String category,
       LocalDateTime untilUploadDate,
@@ -75,8 +77,9 @@ public class CollectionService implements ICollectionService {
     Collection collection = collectionRepository.findByHandler(handler);
     if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
-    // Filter events
+
     List<Event> finalEvents = collection.getEvents().stream()
+        .filter(e -> (!curedNavigation || e.meetsAlgorithmConsensus(collection.getConsensusType())))
         .filter(e -> (category == null || e.getCategory().equals(new Category(category))))
         .filter(e -> (untilUploadDate == null || e.getUploadDate().isBefore(untilUploadDate)))
         .filter(e -> (fromUploadDate == null || e.getUploadDate().isAfter(fromUploadDate)))
