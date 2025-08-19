@@ -138,5 +138,30 @@ public class CollectionService implements ICollectionService {
     collection.setConsensusType(consensusType);
     collectionRepository.save(collection);
   }
+
+  @Override
+  public void removeSource(String handler, Long sourceId){
+  //TODO: validate that user can do this petition.
+    Collection collection = collectionRepository.findByHandler(handler);
+    if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
+
+    collection.remove(sourceId);
+
+    collectionRepository.save(collection);
+  }
+
+  @Override
+  public void addSource(String handler, Long sourceId){
+    //TODO: validate that user can do this petition.
+    Collection collection = collectionRepository.findByHandler(handler);
+    if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
+
+    Source source = sourceRepository.findById(sourceId);
+    if (source == null) throw new NotFoundException("Source not found - Handler: " + handler);
+
+    collection.add(source);
+
+    collectionRepository.save(collection);
+  }
 }
 

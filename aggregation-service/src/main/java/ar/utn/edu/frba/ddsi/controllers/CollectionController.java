@@ -80,13 +80,13 @@ public class CollectionController {
     collectionService.updateConsensus(handler, consensusType);
   }
 
-//  @PostMapping("/{handler}/sources")
-//  public void addSource(@PathVariable String handler, @RequestBody Long sourceId) {
-//    collectionService.addSource(handler, sourceId);
-//  }
-//
-//  @DeleteMapping("/{handler}/sources/{sourceId}")
-//  public void removeSource(@PathVariable String handler, @PathVariable Long sourceId) {
-//    collectionService.removeSource(handler, sourceId);
-//  }
+  @PostMapping("/{handler}/sources")
+  public void addSource(@PathVariable String handler, @RequestBody Long sourceId) {
+    collectionService.addSource(handler, sourceId);
+  }
+
+  @DeleteMapping("/{handler}/sources/{sourceId}")
+  public void removeSource(@PathVariable String handler, @PathVariable Long sourceId) {
+    collectionService.removeSource(handler, sourceId);
+  }
 }

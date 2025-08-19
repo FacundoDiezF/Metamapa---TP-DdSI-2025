@@ -33,4 +33,8 @@ public interface ICollectionService {
   CollectionOutputDTO getCollectionByHandler(String handler);
 
   void updateConsensus(String handler, ConsensusType consensusType);
+
+    void removeSource(String handler, Long sourceId);
+
+    void addSource(String handler, Long sourceId);
 }

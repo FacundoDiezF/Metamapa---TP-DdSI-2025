@@ -78,4 +78,12 @@ public class Collection {
     if (dto.getTitle() != null) this.title = dto.getTitle();
     if (dto.getDescription() != null) this.description = dto.getTitle();
   }
+
+  public void remove(Long sourceId){
+    sources.removeIf(source -> source.getId().equals(sourceId));
+  }
+
+  public void add(Source source){
+      sources.add(source);
+  }
 }
