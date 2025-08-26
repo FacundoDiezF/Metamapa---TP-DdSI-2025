@@ -1,7 +1,7 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.models.entities.source.SourceFactory;
-import ar.utn.edu.frba.ddsi.repositories.ISourceRepository;
+import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 

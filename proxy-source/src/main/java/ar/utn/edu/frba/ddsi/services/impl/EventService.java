@@ -2,7 +2,7 @@ package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
-import ar.utn.edu.frba.ddsi.repositories.ISourceRepository;
+import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
