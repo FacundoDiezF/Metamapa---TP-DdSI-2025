@@ -1,8 +1,8 @@
-package ar.utn.edu.frba.ddsi.repositories.impl;
+package ar.utn.edu.frba.ddsi.models.repositories.impl;
 
 import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
-import ar.utn.edu.frba.ddsi.repositories.ISourceRepository;
+import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

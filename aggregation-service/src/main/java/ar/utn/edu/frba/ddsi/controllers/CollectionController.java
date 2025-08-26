@@ -1,14 +1,20 @@
 package ar.utn.edu.frba.ddsi.controllers;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionCreationDTO;
+import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.collection.CollectionOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
+import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.services.impl.CollectionService;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,9 +54,33 @@ public class CollectionController {
         untilUploadDate, fromUploadDate, untilEventDate, fromEventDate);
   }
 
-  //! Para testear con el postman
-  @PostMapping("/refresh")
-  public void refreshCollections(LocalDateTime lastUpdate) {
-    collectionService.refreshCollections(lastUpdate);
+  @PutMapping("/{handler}")
+  public void updateCollection(@PathVariable String handler, @RequestBody CollectionUpdateDTO dto) {
+    collectionService.updateCollection(handler, dto);
+  }
+
+  @DeleteMapping("/{handler}")
+  public void deleteCollection(@PathVariable String handler) {
+    collectionService.deleteCollection(handler);
+  }
+
+  @GetMapping("/{handler}")
+  public CollectionOutputDTO getCollectionByHandler(@PathVariable String handler) {
+    return collectionService.getCollectionByHandler(handler);
+  }
+
+  @PatchMapping("/{handler}/consensus")
+  public void updateConsensus(@PathVariable String handler, @RequestBody ConsensusType consensusType) {
+    collectionService.updateConsensus(handler, consensusType);
+  }
+
+  @PostMapping("/{handler}/sources/{sourceId}")
+  public void addSource(@PathVariable String handler, @PathVariable Long sourceId) {
+    collectionService.addSource(handler, sourceId);
+  }
+
+  @DeleteMapping("/{handler}/sources/{sourceId}")
+  public void removeSource(@PathVariable String handler, @PathVariable Long sourceId) {
+    collectionService.removeSource(handler, sourceId);
   }
 }

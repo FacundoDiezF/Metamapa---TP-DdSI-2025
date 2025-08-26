@@ -15,7 +15,8 @@ public class SimpleMajorityConsensus implements IConsensusAlgorithm {
 
   @Override
   public boolean check(Event event, List<Source> sources){
-    long halfOfTheSources = sources.size()/2;
+
+    long halfOfTheSources = (long) Math.ceil(sources.size() / 2.0);
 
     long SourcesWithTheEvent = sources
         .parallelStream()

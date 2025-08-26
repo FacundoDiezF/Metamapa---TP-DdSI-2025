@@ -2,18 +2,23 @@ package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionCreationDTO;
+import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.collection.CollectionOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.collections.Collection;
 import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.CollectionCriteria;
+import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.ICollectionRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ICollectionService;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +39,9 @@ public class CollectionService implements ICollectionService {
   public void create(CollectionCreationDTO collectionDto) {
 
     // Get sources from the repository by IDs
-    List<Source> collectionSources = collectionDto.getSourceIds().stream()
+    List<Source> collectionSources = new ArrayList<>(collectionDto.getSourceIds().stream()
         .map(sourceRepository::findById)
-        .toList();
+        .toList());
 
     //TODO: validar que todas las fuentes solicitadas existan, tirar error en caso contrario
 
@@ -96,6 +101,73 @@ public class CollectionService implements ICollectionService {
       collection.refresh(lastUpdate);
       collectionRepository.save(collection);
     }
+  }
+
+  @Override
+  public void updateCollection(String handler, CollectionUpdateDTO dto) {
+    //TODO: validate that user can do this petition.
+    Collection collection = collectionRepository.findByHandler(handler);
+    if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
+
+    collection.update(dto);
+
+    collectionRepository.save(collection);
+  }
+
+  @Override
+  public void deleteCollection(String handler) {
+    //TODO: validate that user can do this petition.
+    if (collectionRepository.findByHandler(handler) == null)
+      throw new NotFoundException("Collection not found - Handler: " + handler);
+
+    collectionRepository.delete(handler);
+  }
+
+  @Override
+  public CollectionOutputDTO getCollectionByHandler(String handler) {
+    Collection collection = collectionRepository.findByHandler(handler);
+    if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
+
+    return CollectionOutputDTO.from(collection);
+  }
+
+  @Override
+  public void updateConsensus(String handler, ConsensusType consensusType) {
+    //TODO: validate that user can do this petition.
+    Collection collection = collectionRepository.findByHandler(handler);
+    if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
+    collection.setConsensusType(consensusType);
+    collectionRepository.save(collection);
+  }
+
+  @Override
+  public void removeSource(String handler, Long sourceId){
+  //TODO: validate that user can do this petition.
+    Collection collection = collectionRepository.findByHandler(handler);
+    if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
+
+    Source source = sourceRepository.findById(sourceId);
+    if (source == null) throw new NotFoundException("Source not found - Handler: " + handler);
+
+    collection.remove(source);
+
+    collectionRepository.save(collection);
+  }
+
+  @Override
+  public void addSource(String handler, Long sourceId){
+    //TODO: validate that user can do this petition.
+    Collection collection = collectionRepository.findByHandler(handler);
+    if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
+
+    Source source = sourceRepository.findById(sourceId);
+    if (source == null) throw new NotFoundException("Source not found - Handler: " + handler);
+
+    collection.add(source);
+
+    collection.refresh(null);
+
+    collectionRepository.save(collection);
   }
 }
 

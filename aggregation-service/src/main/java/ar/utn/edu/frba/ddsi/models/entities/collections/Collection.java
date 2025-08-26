@@ -1,5 +1,6 @@
 package ar.utn.edu.frba.ddsi.models.entities.collections;
 
+import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
 import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.CollectionCriteria;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
@@ -25,12 +26,17 @@ public class Collection {
   @Setter
   private String handler;
 
-  private final String title;
-  private final String description;
+  @Setter
+  private String title;
+
+  @Setter
+  private String description;
 
   @NonNull private final List<Source> sources;
   @NonNull private final CollectionCriteria collectionCriteria;
-  private final ConsensusType consensusType;
+
+  @Setter
+  private ConsensusType consensusType;
 
   @Builder.Default
   private final Set<Event> events = new HashSet<>();
@@ -66,5 +72,20 @@ public class Collection {
         .flatMap(s -> s.fetchEvents().stream())
         .filter(this.collectionCriteria::isSatisfiedBy)
         .collect(Collectors.toSet());
+  }
+
+  public void update(CollectionUpdateDTO dto) {
+    if (dto.getTitle() != null) this.title = dto.getTitle();
+    if (dto.getDescription() != null) this.description = dto.getDescription();
+  }
+
+  public void remove(Source source){
+    sources.remove(source);
+    events.removeIf(e -> e.getSource().equals(source));
+  }
+
+  public void add(Source source){
+      sources.add(source);
+
   }
 }
