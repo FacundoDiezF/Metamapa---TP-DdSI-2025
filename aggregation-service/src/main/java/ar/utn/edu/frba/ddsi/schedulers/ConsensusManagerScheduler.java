@@ -16,7 +16,7 @@ public class ConsensusManagerScheduler {
   }
 
   @Scheduled(cron = "${reevaluate.consensus.cron}")
-  public void refreshCollections() {
+  public void reevaluateEventsConsensus() {
 
     consensusManager.runEvaluation();
   }
