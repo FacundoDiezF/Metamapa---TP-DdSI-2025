@@ -16,6 +16,7 @@ import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ICollectionService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,9 @@ public class CollectionService implements ICollectionService {
   public void create(CollectionCreationDTO collectionDto) {
 
     // Get sources from the repository by IDs
-    List<Source> collectionSources = collectionDto.getSourceIds().stream()
+    List<Source> collectionSources = new ArrayList<>(collectionDto.getSourceIds().stream()
         .map(sourceRepository::findById)
-        .toList();
+        .toList());
 
     //TODO: validar que todas las fuentes solicitadas existan, tirar error en caso contrario
 
@@ -145,7 +146,10 @@ public class CollectionService implements ICollectionService {
     Collection collection = collectionRepository.findByHandler(handler);
     if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
-    collection.remove(sourceId);
+    Source source = sourceRepository.findById(sourceId);
+    if (source == null) throw new NotFoundException("Source not found - Handler: " + handler);
+
+    collection.remove(source);
 
     collectionRepository.save(collection);
   }
@@ -160,6 +164,8 @@ public class CollectionService implements ICollectionService {
     if (source == null) throw new NotFoundException("Source not found - Handler: " + handler);
 
     collection.add(source);
+
+    collection.refresh(null);
 
     collectionRepository.save(collection);
   }

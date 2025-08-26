@@ -54,12 +54,6 @@ public class CollectionController {
         untilUploadDate, fromUploadDate, untilEventDate, fromEventDate);
   }
 
-  //! Para testear con el postman
-  @PostMapping("/refresh")
-  public void refreshCollections(LocalDateTime lastUpdate) {
-    collectionService.refreshCollections(lastUpdate);
-  }
-
   @PutMapping("/{handler}")
   public void updateCollection(@PathVariable String handler, @RequestBody CollectionUpdateDTO dto) {
     collectionService.updateCollection(handler, dto);
@@ -80,8 +74,8 @@ public class CollectionController {
     collectionService.updateConsensus(handler, consensusType);
   }
 
-  @PostMapping("/{handler}/sources")
-  public void addSource(@PathVariable String handler, @RequestBody Long sourceId) {
+  @PostMapping("/{handler}/sources/{sourceId}")
+  public void addSource(@PathVariable String handler, @PathVariable Long sourceId) {
     collectionService.addSource(handler, sourceId);
   }
 

@@ -76,14 +76,16 @@ public class Collection {
 
   public void update(CollectionUpdateDTO dto) {
     if (dto.getTitle() != null) this.title = dto.getTitle();
-    if (dto.getDescription() != null) this.description = dto.getTitle();
+    if (dto.getDescription() != null) this.description = dto.getDescription();
   }
 
-  public void remove(Long sourceId){
-    sources.removeIf(source -> source.getId().equals(sourceId));
+  public void remove(Source source){
+    sources.remove(source);
+    events.removeIf(e -> e.getSource().equals(source));
   }
 
   public void add(Source source){
       sources.add(source);
+
   }
 }
