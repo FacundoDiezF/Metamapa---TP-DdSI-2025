@@ -31,8 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
-
-
-
-
 /.github/
+
+### .gitignore ###
+### .gitignore
+
+### application.properties ###
+###**/application.properties
