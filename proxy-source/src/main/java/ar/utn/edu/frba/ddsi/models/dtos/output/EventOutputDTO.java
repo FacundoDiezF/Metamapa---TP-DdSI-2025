@@ -19,6 +19,7 @@ public class EventOutputDTO {
   Double latitude;
   Double longitude;
   LocalDateTime eventDate;
+  LocalDateTime updateDate;
   LocalDateTime uploadDate;
 
   public static EventOutputDTO from(EventInputDTO dto) {
@@ -32,7 +33,8 @@ public class EventOutputDTO {
     eventOutputDTO.setLatitude(dto.getLatitude());
     eventOutputDTO.setLongitude(dto.getLongitude());
     eventOutputDTO.setEventDate(dto.getEventDate());
-    eventOutputDTO.setUploadDate(dto.getUploadDate());
+    eventOutputDTO.setUpdateDate(dto.getUpdateDate());
+    eventOutputDTO.setUploadDate(dto.getUpdateDate()); //! Cuando exista, va a recibir uploadDate
     return eventOutputDTO;
   }
 
@@ -47,7 +49,8 @@ public class EventOutputDTO {
     dto.setLatitude(event.getLatitude());
     dto.setLongitude(event.getLongitude());
     dto.setEventDate(event.getEventDate());
-    dto.setUploadDate(event.getUpdateDate());
+    dto.setUpdateDate(event.getUpdateDate());
+    dto.setUploadDate(event.getUploadDate());
     return dto;
   }
 

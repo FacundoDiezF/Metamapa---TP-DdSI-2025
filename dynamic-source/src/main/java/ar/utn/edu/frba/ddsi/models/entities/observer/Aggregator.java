@@ -4,6 +4,8 @@ import ar.utn.edu.frba.ddsi.models.dtos.input.SubscriberInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.SourceOutputDTO;
 import java.util.List;
+
+import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class Aggregator implements ISubscriber {
@@ -23,13 +25,27 @@ public class Aggregator implements ISubscriber {
     return new Aggregator(dto.getCallbackUrl(), dto.getSourceClientId());
   }
 
-  public void notifyEvents(List<EventOutputDTO> events) {
-
-    events.forEach(event -> event.setSourceClientId(sourceClientId));
+  public void notifyNewEvent(List<Event> event) {
+    // Convertir cada evento a EventOutputDTO y establecer el sourceClientId
+    List<EventOutputDTO> outputEvents = event.stream()
+        .map(EventOutputDTO::from)
+        .peek(e -> e.setSourceClientId(sourceClientId))
+        .toList();
 
     clientCallBack.post()
         .uri("/events")
-        .bodyValue(events)
+        .bodyValue(outputEvents)
+        .retrieve()
+        .bodyToMono(Void.class)//? Hay respuesta
+        .block();
+  }
+
+  public void notifyUpdatedEvent(Event event) {
+    EventOutputDTO outputEvent = EventOutputDTO.from(event);
+    outputEvent.setSourceClientId(sourceClientId);
+    clientCallBack.put()
+        .uri("/events")
+        .bodyValue(List.of(outputEvent)) // El agregador espera una lista
         .retrieve()
         .bodyToMono(Void.class)//? Hay respuesta
         .block();

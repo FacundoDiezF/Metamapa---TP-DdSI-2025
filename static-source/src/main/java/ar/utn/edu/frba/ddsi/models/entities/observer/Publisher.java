@@ -25,7 +25,7 @@ public class Publisher {
 
   public void notifyNewEvents(List<EventOutputDTO> events) {
     for (ISubscriber subscriber : subscribers) {
-      subscriber.notifyEvents(events);
+      subscriber.notifyNewEvents(events);
     }
   }
 

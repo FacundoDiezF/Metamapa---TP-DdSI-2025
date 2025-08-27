@@ -2,8 +2,7 @@ package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
-import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
-import ar.utn.edu.frba.ddsi.repositories.ISourceRepository;
+import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,7 +32,14 @@ public class EventService implements IEventService {
   public void notifyEvents(LocalDateTime lastUpdate) {
     List<EventOutputDTO> events = this.getEvents(lastUpdate);
 
-    publisher.notifyNewEvents(events);
+    for(EventOutputDTO event : events) {
+      if(event.getUpdateDate().isEqual(event.getUploadDate())) { //TODO: Verificar si esta validación debería ser realizada dentro de la entidad Event (event.isNew())
+        publisher.notifyNewEvents(events);
+      } else {
+        publisher.notifyUpdatedEvents(List.of(event));
+      }
+    }
+
   }
 
 }

@@ -23,7 +23,7 @@ public class Aggregator implements ISubscriber {
     return new Aggregator(dto.getCallbackUrl(), dto.getSourceClientId());
   }
 
-  public void notifyEvents(List<EventOutputDTO> events) {
+  public void notifyNewEvents(List<EventOutputDTO> events) {
     events.forEach(event -> event.setSourceClientId(sourceClientId));
 
     clientCallBack.post()

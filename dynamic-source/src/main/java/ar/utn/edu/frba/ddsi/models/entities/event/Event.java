@@ -75,7 +75,7 @@ public class Event {
     this.deleted = false;
   }
 
-  public void updateWith(EventDTO dto) {
+  public void update(EventDTO dto) {
     this.title = dto.getTitle();
     this.description = dto.getDescription();
     this.category = new Category(dto.getCategory()); //TODO: Manejar Categorias

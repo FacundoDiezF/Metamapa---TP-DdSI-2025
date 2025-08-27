@@ -1,0 +1,80 @@
+package ar.utn.edu.frba.ddsi.models.entities.event;
+
+import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
+import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.Tag;
+import ar.utn.edu.frba.ddsi.models.entities.source.Source;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
+@Builder
+public class Event {
+
+  @Setter
+  private Long id;
+
+  //-- Source
+  @NonNull
+  private final Source source;
+  private final Long inSourceEventId;
+
+  //-- Event Info
+  private  String title;
+  private  String description;
+  private  Category category;
+  private  Double latitude;
+  private  Double longitude;
+  private  LocalDateTime eventDate;
+
+  //-- Funcionales
+  private final LocalDateTime uploadDate;
+  @Builder.Default public Set<Tag> tags = new HashSet<>();
+  @Builder.Default private boolean deleted = false;
+  @Builder.Default @Setter private List<ConsensusType> passedConsensus = new ArrayList<>();
+
+
+  public void update(EventInputDTO dto, Category category) {
+    if (dto.getTitle() != null) this.title = dto.getTitle();
+    if (dto.getDescription() != null) this.description = dto.getDescription();
+    if (category != null) this.category = category;
+    if (dto.getLatitude() != null) this.latitude = dto.getLatitude();
+    if (dto.getLongitude() != null) this.longitude = dto.getLongitude();
+    if (dto.getEventDate() != null) this.eventDate = dto.getEventDate();
+  }
+
+  public boolean meetsAlgorithmConsensus(ConsensusType consensusType) {
+    if (consensusType == null) return true;
+
+    return passedConsensus.contains(consensusType);
+  }
+
+public boolean isEquivalent(Event other) {
+  if (other == null) return false;
+  return Objects.equals(this.title, other.title)
+      && Objects.equals(this.description, other.description)
+      //&& Objects.equals(this.category, other.category) //TODO: Cuando tengamos el repo lo descomentamos
+      && Objects.equals(this.latitude, other.latitude)
+      && Objects.equals(this.longitude, other.longitude)
+      && Objects.equals(this.eventDate, other.eventDate);
+}
+
+  public void markAsDeleted() {
+    this.deleted = true;
+    // Update state in the origin source
+    source.notifyEventDeleted(this);
+  }
+}
