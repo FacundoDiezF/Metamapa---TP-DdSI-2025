@@ -41,7 +41,7 @@ public class DeletionRequestService implements IDeletionRequestService {
     DeletionRequest deletionRequest = DeletionRequest.from(drDTO, drEvent);
 
     // Get a List of the DRs for the same event.
-    List<DeletionRequest> eventDeletionRequests = deletionRequestRepository.getByEventId(drDTO.getEventId());
+    List<DeletionRequest> eventDeletionRequests = deletionRequestRepository.findByEvent_Id(drDTO.getEventId());
 
     // Check spam.
     if (spamDetector.isSpam(eventDeletionRequests, deletionRequest.getArgument()) && !eventDeletionRequests.isEmpty()) {
