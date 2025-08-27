@@ -4,9 +4,9 @@ collection.refresh.cron=0 0 * * * *
 #CornJob for reevaluate consensus
 reevaluate.consensus.cron=0 0 3 * * *
 # Agregation service port
-server.port=8080
+server.port=
 # Agregation service URL
-aggregation-service.url=http://localhost:8080
+aggregation-service.url=http:
 
 # Database configuration
 spring.datasource.url=
