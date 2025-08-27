@@ -23,7 +23,7 @@ public class EventService implements IEventService {
   ISourceRepository sourceRepository;
 
   @Autowired
-  public EventService(IEventRepository eventRepository, SourceRepository sourceRepository) {
+  public EventService(IEventRepository eventRepository, ISourceRepository sourceRepository) {
     this.eventRepository = eventRepository;
     this.sourceRepository = sourceRepository;
   }
