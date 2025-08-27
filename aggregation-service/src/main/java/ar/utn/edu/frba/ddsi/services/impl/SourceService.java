@@ -36,7 +36,7 @@ public class SourceService implements ISourceService {
 
     Source source = Source.builder()
         .sourceClient(sourceClient)
-        .inClientId(dto.getInClientId())
+        .originSourceId(dto.getInClientId())
         .type(dto.getType())
         .build();
 

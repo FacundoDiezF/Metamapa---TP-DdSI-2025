@@ -19,6 +19,7 @@ public class SourceClient implements ISourceClientAdapter {
   @Setter
   private Long id;
   private final String url;
+
   private final WebClient webClient;
 
   public SourceClient(String url) {
@@ -51,7 +52,7 @@ public class SourceClient implements ISourceClientAdapter {
   public List<EventInputDTO> fetchEventsBySource(Source source) {
     List<EventInputDTO> eventsDTOs =
         webClient.get()
-            .uri("/sources/" + source.getInClientId() + "/events")
+            .uri("/sources/" + source.getOriginSourceId() + "/events")
             .retrieve()
             .bodyToFlux(EventInputDTO.class)
             .collectList()
@@ -66,7 +67,7 @@ public class SourceClient implements ISourceClientAdapter {
   public void deleteEvent(Event event) {
     try {
       webClient.delete()
-          .uri("/events/" + event.getInSourceEventId())
+          .uri("/events/" + event.getOriginEventId())
           .retrieve()
           .bodyToMono(Void.class)
           .block();

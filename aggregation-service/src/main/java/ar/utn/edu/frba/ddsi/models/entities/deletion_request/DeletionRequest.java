@@ -2,25 +2,56 @@ package ar.utn.edu.frba.ddsi.models.entities.deletion_request;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.deletion_request.DeletionRequestCreationDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Entity
+@NoArgsConstructor(force = true)
+@Table(name = "deletion_requests")
 public class DeletionRequest {
 
-  @Setter
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  //-- Event to delete
+  @ManyToOne
+  @JoinColumn(name = "event_id", nullable = false)
   private final Event event;
 
-  private final String argument;
+  //-- Pre Evaluation info
   @Setter
+  @Enumerated(EnumType.STRING)
+  @Column(name = "state", nullable = false)
   private DeletionRequestState state;
 
+  @Column(name = "argument", nullable = false, columnDefinition = "TEXT")
+  private final String argument;
+
+  @Column(name = "upload_date", nullable = false)
   private final LocalDateTime uploadDate;
+
+  @Column(name = "applicant_name", nullable = false)
+  private final String applicantName; //TODO: Esto deberia ser un usuario
+
+  //-- Post Evaluation info
+  @Column(name = "evaluation_date")
   private LocalDateTime evaluationDate;
 
-  private final String applicantName; //TODO: Esto deberia ser un usuario
+  @Column(name = "evaluator_name")
   private String evaluatorName; //TODO: Esto deberia ser un usuario
 
   public static DeletionRequest from(DeletionRequestCreationDTO dto, Event event) {

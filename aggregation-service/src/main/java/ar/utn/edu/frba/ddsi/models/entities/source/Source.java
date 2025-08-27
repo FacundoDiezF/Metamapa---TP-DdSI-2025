@@ -2,6 +2,16 @@ package ar.utn.edu.frba.ddsi.models.entities.source;
 
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +26,29 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
+@Entity
+@Table(name = "sources")
 public class Source {
   @Setter
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   //-- Source Client
   @NonNull
+  @Transient// TODO: Persistir bien esto, no se como MIERDA se hace!!
   private final ISourceClientAdapter sourceClient;
-  private final Long inClientId;
+
+  @Column(name = "origin_source_id", nullable = false)
+  private final Long originSourceId;// Source ID in the original source module
 
   //-- Data
+  @Enumerated(EnumType.STRING)
+  @Column(name = "type", nullable = false)
   private final Origin type;
 
   @Builder.Default
+  @OneToMany(mappedBy = "source")
   private final List<Event> events = new ArrayList<>();
 
   public List<Event> getEvents(LocalDateTime lastUpdate) {
@@ -69,7 +89,7 @@ public class Source {
               .eventDate(dto.getEventDate())
               .uploadDate(dto.getUploadDate())
               .source(this)
-              .inSourceEventId(dto.getId())
+              .originEventId(dto.getId())
               .build();
         }).toList();
   }

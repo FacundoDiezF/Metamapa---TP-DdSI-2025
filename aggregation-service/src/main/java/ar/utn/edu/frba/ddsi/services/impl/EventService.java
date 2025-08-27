@@ -65,7 +65,7 @@ public class EventService implements IEventService {
 
     //Create event
     Event event = Event.builder()
-        .inSourceEventId(dto.getId())
+        .originEventId(dto.getId())
         .title(dto.getTitle())
         .description(dto.getDescription())
         .category(category)
@@ -74,7 +74,7 @@ public class EventService implements IEventService {
         .eventDate(dto.getEventDate())
         .uploadDate(dto.getUploadDate())
         .source(source)
-        .inSourceEventId(dto.getId())
+        .originEventId(dto.getId())
         .build();
 
     source.addEvent(event);

@@ -38,7 +38,7 @@ public class SourceRepository implements ISourceRepository {
   @Override
   public Source findByExternalIds(Long sourceClientId, Long sourceId) {
     return this.findAll().stream()
-        .filter(s -> s.getSourceClient().getId().equals(sourceClientId) && s.getInClientId().equals(sourceId))
+        .filter(s -> s.getSourceClient().getId().equals(sourceClientId) && s.getOriginSourceId().equals(sourceId))
         .findFirst()
         .orElse(null);
   }
