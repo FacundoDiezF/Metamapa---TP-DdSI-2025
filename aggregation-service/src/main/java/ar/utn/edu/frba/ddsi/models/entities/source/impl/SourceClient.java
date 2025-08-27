@@ -8,30 +8,59 @@ import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.source.ISourceClientAdapter;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.reactive.function.client.WebClient;
 
 
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
+@Entity
+@Table(name = "source_clients")
 public class SourceClient implements ISourceClientAdapter {
 
   @Setter
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private final String url;
 
-  private final WebClient webClient;
+  @Column(name = "url", nullable = false)
+  private String url;
 
-  public SourceClient(String url) {
-    this.url = url;
-    this.webClient = WebClient.builder().baseUrl(url).build();
+  @Transient
+  private WebClient webClient;
+
+  @PostLoad
+  private void initWebClient() {
+    if (this.url != null && this.webClient == null) {
+      this.webClient = WebClient.builder().baseUrl(this.url).build();
+    }
   }
 
   public static SourceClient from(SourceClientInputDTO dto) {
     if (dto == null || dto.getUrl() == null || dto.getUrl().isEmpty()) {
       throw new IllegalArgumentException("SourceClient URL cannot be null or empty");
     }
-    return new SourceClient(dto.getUrl());
+    SourceClient client = SourceClient.builder()
+        .url(dto.getUrl())
+        .build();
+
+    client.initWebClient();
+
+    return client;
   }
 
   @Override

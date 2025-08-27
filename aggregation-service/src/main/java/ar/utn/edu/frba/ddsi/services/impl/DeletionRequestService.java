@@ -58,9 +58,8 @@ public class DeletionRequestService implements IDeletionRequestService {
 
     //TODO: validate that user can do this petition.
 
-    DeletionRequest deletionRequest = deletionRequestRepository.getById(evaluation.getDeletionRequestId());
-    if (deletionRequest == null)
-      throw new NotFoundException("Deletion request not found - ID: " + evaluation.getDeletionRequestId());
+    DeletionRequest deletionRequest = deletionRequestRepository.findById(evaluation.getDeletionRequestId())
+        .orElseThrow(() -> new NotFoundException("Deletion request not found - ID: " + evaluation.getDeletionRequestId()));
 
     deletionRequest.evaluate(evaluation.isAccepted(), evaluation.getEvaluatorName());
 
