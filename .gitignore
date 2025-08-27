@@ -34,7 +34,7 @@ build/
 /.github/
 
 ### .gitignore ###
-### .gitignore
+.gitignore
 
 ### application.properties ###
-###**/application.properties
+**/application.properties
