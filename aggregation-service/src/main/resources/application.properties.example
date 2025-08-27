@@ -6,7 +6,7 @@ reevaluate.consensus.cron=0 0 3 * * *
 # Agregation service port
 server.port=
 # Agregation service URL
-aggregation-service.url=http:
+aggregation-service.url=
 
 # Database configuration
 spring.datasource.url=
@@ -15,8 +15,9 @@ spring.datasource.password=
 spring.datasource.driver-class-name=
 
 # Hibernate configuration
+# Possible values: validate | update | create | create-drop | none
 spring.jpa.hibernate.ddl-auto=
-#none:
+
 spring.jpa.show-sql=
 spring.jpa.properties.hibernate.format_sql=
 spring.jpa.properties.hibernate.dialect=
