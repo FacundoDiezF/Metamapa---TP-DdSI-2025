@@ -1,0 +1,63 @@
+/* ===== NavBar unificada (Index + Collections) ===== */
+.navbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  height: var(--header-h,72px);
+  padding: 0 24px;
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  align-items:center;
+  gap:24px;
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.brand{ display:flex; align-items:center; gap:16px; }
+.brand-mark{
+  width:32px; height:32px; border-radius:999px; display:grid; place-items:center;
+  border:2px dashed var(--ui-blue,#3B82F6); position:relative;
+}
+.brand-mark .dot{
+  width:8px; height:8px; background:var(--ui-blue,#3B82F6);
+  border-radius:999px; display:block;
+}
+.brand-name{ font-weight:600; font-size:24px; color:#000; }
+
+.auth-actions{ display:flex; align-items:center; gap:12px; }
+.account-btn{
+  height:40px; min-width:128px; padding:8px 12px;
+  border-radius:9999px; border:1px solid transparent;
+  background:var(--ui-blue,#3B82F6); color:#fff; font-weight:600; cursor:pointer;
+}
+.account-btn.logged{
+  background:#e0f2ff; color:#1d4ed8; border-color:#93c5fd;
+}
+.btn-outline{
+  height:40px; min-width:128px; padding:8px 12px;
+  border-radius:9999px;
+  background:#fff; color:#111827;
+  border:1px solid #a7a7a7; cursor:pointer;
+}
+
+/* Subnav */
+.subnav{
+  position: sticky;
+  top: var(--header-h,72px);
+  z-index: 90;
+  height: var(--subnav-h,44px);
+  display: flex; align-items:flex-end; gap:28px;
+  padding: 0 24px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+.subnav a{
+  position:relative; display:inline-block;
+  padding:8px 0 10px; text-decoration:none;
+  color:#111827; font-weight:600;
+}
+.subnav a.active{ color:var(--ui-blue,#3B82F6); }
+.subnav a.active::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px;
+  height:3px; background:var(--ui-blue,#3B82F6); border-radius:2px;
+}
