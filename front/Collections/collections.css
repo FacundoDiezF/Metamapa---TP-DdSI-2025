@@ -121,7 +121,7 @@ body{
   .card-actions .btn-outline{ width:100%; }
 }
 
-/* --- MODO CURADO (debe ir al FINAL del archivo) --- */
+/* --- MODO CURADO --- */
 .collections-page:not(:has(#no-curado:target)) .card-actions .btn.btn-outline{
   border-color: var(--ui-blue);
   color: var(--ui-blue);

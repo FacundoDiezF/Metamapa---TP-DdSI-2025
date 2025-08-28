@@ -55,7 +55,7 @@ body{
   background:#fff; color:#111827; border:1px solid #a7a7a7; cursor:pointer;
 }
 
-/* Línea inferior bajo navbar (como tu subnav) */
+/* Línea inferior bajo navbar */
 .subnav{
   position: sticky;
   top: var(--header-h);          /* queda pegada debajo del header */
@@ -126,7 +126,7 @@ body{ height:100vh; overflow:hidden; }
   width:100%; padding:.4rem; border:1px solid #ccc; border-radius:6px; font-size:.9rem;
 }
 
-/* Pills simuladas (parte inferior de la sidebar en el mock) */
+/* Pills simuladas */
 .date-pill{
   display:grid; grid-template-columns:1fr 1fr; border:1px solid #cbd5e1; border-radius:999px; overflow:hidden;
 }
@@ -198,7 +198,7 @@ body{ height:100vh; overflow:hidden; }
 .explorar{ width:100%; padding:.7rem; border:none; border-radius:8px; background:var(--ui-blue); color:#fff; font-weight:700; cursor:pointer; }
 .explorar:hover{ filter:brightness(.95); }
 
-/* ===== Modal (mismo que ya tenías) ===== */
+/* ===== Modal ===== */
 .modal-overlay[hidden]{ display:none; }
 .modal-overlay{
   position:fixed; inset:0; display:grid; place-items:center;
