@@ -9,89 +9,83 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  
   <!-- CSS de esta página -->
+  <link rel="stylesheet" href="../shared/tokens.css" />
+  <link rel="stylesheet" href="../shared/nav.css" />
   <link rel="stylesheet" href="collections.css" />
+  <link rel="stylesheet" href="../shared/icons.css" />
+
+
 </head>
 <body>
   <!-- Header -->
-  <header class="navbar">
-    <div class="brand">
-      <span class="brand-dot"></span>
-      <span class="brand-name">MetaMapa</span>
-    </div>
+<header class="navbar" id="navbar">
+  <div class="brand">
+    <div class="brand-mark"><span class="dot"></span></div>
+    <span class="brand-name">MetaMapa</span>
+  </div>
 
-    <div class="header-actions">
-      <button class="btn btn-primary">Registrarse</button>
-      <button class="btn btn-ghost">Iniciar Sesión</button>
-    </div>
-  </header>
+  <div class="auth-actions">
+    <button id="accountBtn" class="account-btn" type="button" data-state="guest">Registrarse</button>
+    <button id="loginBtn" class="btn-outline" type="button">Iniciar Sesión</button>
+  </div>
+</header>
 
-  <!-- Subnav -->
-  <nav class="subnav">
-    <a href="D:\Facultad\Dss\prueba front\Index\index.html">Explorar</a>
-    <a href="./collections.html" class="active">Colecciones</a>
-    <a href="./mapa.html">Mapa</a>
-  </nav>
+<nav class="subnav" id="subnav">
+  <a href="../Index/index.html">Explorar</a>
+  <a href="../Collections/collections.html" class="active">Colecciones</a>
+  <a href="#">Mapa</a>
+</nav>
+
+
+
 
   <!-- Contenido -->
-  <main class="collections">
-    <section class="list">
-      <!-- Card 1 -->
-      <article class="collection-card">
-        <div class="card-header">
-          <h2>Desastres Naturales</h2>
-          <p>
-            Esta es la desc de la colección: desastres naturales, se encuentran las
-            colecciones más desastrosas y naturales (sí, como escuchaste) <strong>ESPECTACULAR</strong>.
-          </p>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-outline" href="#">Ver Colección</a>
-        </div>
-      </article>
+<main class="collections-page">
 
-      <!-- Card 2 -->
-      <article class="collection-card">
-        <div class="card-header">
-          <h2>Título de la Colección</h2>
-          <p>
-            Esta es la descripción de mi colección; tiene muchísima información muy relevante…
-            dale bola que está muy facherita. Nada, eso, copadísimo que estés viendo la colección. Un saludo.
-          </p>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-outline" href="#">Ver Colección</a>
-        </div>
-      </article>
+  <!-- Encabezado del main con switch (sticky) -->
+  <header class="page-head container" aria-label="Opciones de Colecciones">
+    <h1 class="page-title">Colecciones</h1>
 
-      <!-- Card 3 -->
-      <article class="collection-card">
-        <div class="card-header">
-          <h2>Título de la Colección</h2>
-          <p>
-            Otra descripción ilustrativa para mostrar múltiples tarjetas en la lista. Todo
-            con el estilo del Figma.
-          </p>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-outline" href="#">Ver Colección</a>
-        </div>
-      </article>
+    <!-- Switch de modo (sin JS, con hash) -->
+    <nav class="mode-switch" aria-label="Modo de navegación">
+      <a class="mode" data-mode="curado"    href="#curado"     aria-current="page">Curado</a>
+      <a class="mode" data-mode="no-curado" href="#no-curado">No curado</a>
+    </nav>
+  </header>
 
-      <!-- Card 4 -->
-      <article class="collection-card">
-        <div class="card-header">
-          <h2>Título de la Colección</h2>
-          <p>
-            Más texto de ejemplo con el mismo look & feel. Podés duplicar/eliminar cards a gusto.
-          </p>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-outline" href="#">Ver Colección</a>
-        </div>
-      </article>
-    </section>
-  </main>
+  <!-- PANEL: Curado (default si no hay hash) -->
+  <section id="curado" class="list-vertical container" role="region" aria-label="Colecciones curadas">
+    <article class="collection-card">
+      <div class="card-header">
+        <h2>Desastres Naturales</h2>
+        <p>Colección moderada por la comunidad y ONGs asociadas.</p>
+      </div>
+      <div class="card-actions"><a class="btn btn-outline" href="#">Ver Colección</a></div>
+    </article>
+
+    <article class="collection-card">
+      <div class="card-header">
+        <h2>San Juan</h2>
+        <p>Casos priorizados y verificados por revisores.</p>
+      </div>
+      <div class="card-actions"><a class="btn btn-outline" href="#">Ver Colección</a></div>
+    </article>
+  </section>
+
+  <!-- PANEL: No curado -->
+  <section id="no-curado" class="list-vertical container" role="region" aria-label="Colecciones no curadas">
+    <article class="collection-card">
+      <div class="card-header">
+        <h2>Caridad</h2>
+        <p>Contenido cargado por la comunidad. Aún sin revisión.</p>
+      </div>
+      <div class="card-actions"><a class="btn btn-outline" href="#">Ver Colección</a></div>
+    </article>
+  </section>
+
+</main>
+
 </body>
 </html>

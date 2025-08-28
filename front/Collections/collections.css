@@ -18,54 +18,7 @@ body{
   background:var(--ui-bg);
 }
 
-/* ======= Header ======= */
-.navbar{
-  position: sticky; top:0; z-index:10;
-  height: 69px;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0.75rem 2rem;
-  background:#fff;
-  border-bottom:1px solid var(--ui-border);
-}
-
-.brand{ display:flex; align-items:center; gap:16px; }
-.brand-name{ font-weight:600; font-size:24px; color:#000000; }
-
-.brand-dot{
-  width:32px; height:32px; border-radius:999px; display:grid; place-items:center;
-  border:2px dashed var(--ui-blue); position:relative;
-}
-.brand-dot::after{
-  content:""; position:absolute; inset:50% auto auto 50%;
-  width:6px; height:6px; background:var(--ui-blue);
-  border-radius:999px; transform:translate(-50%,-50%);
-}
-
-.header-actions{ display:flex; gap:.75rem; }
-.btn{
-  font:600 0.95rem/1 "Poppins", sans-serif;
-  padding:.6rem 1rem; border-radius:999px; cursor:pointer;
-  border:1px solid #A7A7A7; background:#fff; color:#111;
-}
-.btn-primary{ background:var(--ui-blue); color:#fff; border-color:#A7A7A7; }
-.btn-ghost{ background:#fff; color:#050315; }
-
-/* ======= Subnav ======= */
-.subnav{
-  position: sticky; top:56px; z-index:5;
-  display:flex; gap:2rem; padding:.75rem 2rem;
-  background:#fff; border-bottom:1px solid var(--ui-border);
-}
-.subnav a{
-  text-decoration:none; color:#111; font-weight:600;
-  padding-bottom:.5rem;
-}
-.subnav a.active{
-  color:var(--ui-blue);
-  box-shadow:0 3px 0 0 var(--ui-blue);
-}
-
-/* ======= Contenido ======= */
+/* ======= Contenido específico de colecciones ======= */
 .collections{
   display:flex; justify-content:center;
   padding:1.5rem;
@@ -77,33 +30,103 @@ body{
 
 /* ======= Card ======= */
 .collection-card{
-  background:var(--ui-card);
-  border:1px solid var(--ui-green);
-  border-radius:8px;
-  padding:16px;
-  display:flex; flex-direction:column; gap:24px;
+  background: var(--ui-card);
+  border: none; 
+  border-radius: 8px;
+  padding: 16px;
+  display: flex; 
+  justify-content: space-between; 
+  gap: 16px; 
+  align-items: flex-start;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  transition: box-shadow .25s ease;
 }
-.collection-card .card-header{ display:flex; flex-direction:column; gap:8px; }
-.collection-card h2{
-  margin:0; font-weight:600; font-size:24px; letter-spacing:-.02em;
+.collection-card:hover{
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
 }
-.collection-card p{ margin:0; font-size:16px; line-height:24px; }
+.collection-card .card-header{ max-width: 68ch; }
+.collection-card h2{ margin:0 0 6px; font-weight:600; font-size:24px; }
+.collection-card p{ margin:0; color:var(--ui-muted); }
 
+/* Botón dentro de card */
 .card-actions{ align-self:flex-end; }
-.btn-outline{
+.card-actions .btn.btn-outline{
   display:inline-flex; align-items:center; justify-content:center;
   padding:10px 16px; border-radius:10px;
-  border:3px solid var(--ui-muted); color:var(--ui-muted);
+  border:2px solid var(--ui-muted); color:var(--ui-muted);
   text-decoration:none; font-weight:500;
+  transition: all .25s ease;
 }
-.btn-outline:hover{ background:var(--ui-muted); color:#fff; }
+.card-actions .btn.btn-outline:hover{
+  background: var(--ui-muted); color:#fff;
+}
 
-/* ======= Responsive ======= */
-@media (max-width: 640px){
-  .navbar, .subnav{ padding:.75rem 1rem; }
-  .header-actions{ gap:.5rem; }
-  .btn{ padding:.5rem .8rem; }
+/* ===== Sticky + switch Curado/No curado ===== */
+.container{ max-width: 906px; margin: 0 auto; padding: 1.5rem 1.5rem; }
+
+.collections-page .list-vertical{
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+
+.page-head{
+  position: sticky;
+  top: calc(var(--header-h) + var(--subnav-h));
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  background: var(--ui-bg);
+  padding-top: .75rem; padding-bottom: .5rem;
+  border-bottom: 1px solid var(--ui-border);
+}
+.page-title{ margin:0; font-weight:600; font-size:1.4rem; }
+
+/* Switch */
+.mode-switch{
+  display:inline-grid; grid-auto-flow:column; gap:8px;
+  background:#fff; border:1px solid var(--ui-border);
+  border-radius:999px; padding:6px;
+}
+.mode-switch .mode{
+  text-decoration:none; font-weight:600; padding:8px 14px;
+  border-radius:999px; color:#111; outline-offset:2px;
+}
+.mode-switch .mode[data-mode="curado"]{ background:var(--ui-blue); color:#fff; }
+
+/* Hash toggle */
+.collections-page:has(#no-curado:target) .mode-switch .mode[data-mode="curado"]{
+  background:transparent; color:#111;
+}
+.collections-page:has(#no-curado:target) .mode-switch .mode[data-mode="no-curado"]{
+  background:#111827; color:#fff;
+}
+
+/* Mostrar/ocultar secciones */
+#curado{ display:flex; }
+#no-curado{ display:none; }
+.collections-page:has(#no-curado:target) #curado{ display:none; }
+.collections-page:has(#no-curado:target) #no-curado{ display:flex; }
+
+/* ===== Responsive ===== */
+@media (max-width:768px){
+  .page-head{ grid-template-columns:1fr; gap:10px; }
+  .mode-switch{ justify-self:stretch; }
+  .mode-switch .mode{ text-align:center; }
+}
+@media (max-width:640px){
   .collections{ padding:1rem .75rem; }
   .card-actions{ align-self:stretch; }
   .btn-outline{ width:100%; }
+  .card-actions .btn-outline{ width:100%; }
+}
+
+/* --- MODO CURADO (debe ir al FINAL del archivo) --- */
+.collections-page:not(:has(#no-curado:target)) .card-actions .btn.btn-outline{
+  border-color: var(--ui-blue);
+  color: var(--ui-blue);
+}
+.collections-page:not(:has(#no-curado:target)) .card-actions .btn.btn-outline:hover{
+  background: var(--ui-blue);
+  color: #fff;
 }
