@@ -17,4 +17,5 @@ import lombok.NoArgsConstructor;
 public class Category {
   @Id
   private final String name;
+  //! Faltan cosas
 }

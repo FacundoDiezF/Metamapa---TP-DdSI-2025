@@ -8,6 +8,7 @@ import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
+import ar.utn.edu.frba.ddsi.models.repositories.impl.ICategoryRepository;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,10 +22,13 @@ public class EventService implements IEventService {
 
   ISourceRepository sourceRepository;
 
+  ICategoryRepository categoryRepository;
+
   @Autowired
-  public EventService(IEventRepository eventRepository, ISourceRepository sourceRepository) {
+  public EventService(IEventRepository eventRepository, ISourceRepository sourceRepository, ICategoryRepository categoryRepository) {
     this.eventRepository = eventRepository;
     this.sourceRepository = sourceRepository;
+    this.categoryRepository = categoryRepository;
   }
 
 
@@ -54,13 +58,19 @@ public class EventService implements IEventService {
 
     // Get event source
     Source source = sourceRepository.findByExternalIds(dto.getSourceClientId(), dto.getSourceId());
-    if (source == null)
+    if (source == null) {
       throw new NotFoundException("Source not found for SourceClientId: " + dto.getSourceClientId() + " and sourceId: " + dto.getSourceId());
+    }
 
     Category category = Category // TODO: Deberiamos tener un repo y tomarla en base al "nombre"
         .builder()
         .name(dto.getCategory())
         .build();
+
+    categoryRepository.save(category);
+    //TODO Gguardar la category antes de persistir el event, porque sino trata de guardar algo que no existe y crashea
+
+
 
     //Create event
     Event event = Event.builder()

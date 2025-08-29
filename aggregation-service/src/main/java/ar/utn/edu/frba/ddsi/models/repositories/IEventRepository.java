@@ -39,11 +39,4 @@ public interface IEventRepository extends JpaRepository<Event, Long> {
       AND e.originEventId = :originEventId
     """)
   Event findByExternalIds(Long sourceClientId, Long originSourceId, Long originEventId);
-
-  //Versión mágica (está piola que sea asi de sencillo, pero no pinta usar un method con un nombre tan largo)
-  Event findBySource_SourceClient_IdAndSource_OriginSourceIdAndOriginEventId(
-      Long sourceClientId,
-      Long originSourceId,
-      Long originEventId
-  );
 }
