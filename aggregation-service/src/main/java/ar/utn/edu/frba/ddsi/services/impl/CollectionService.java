@@ -53,10 +53,15 @@ public class CollectionService implements ICollectionService {
         .consensusType(collectionDto.getConsensusType())
         .build();
 
-    //Refresh collection to populate events
-    collection.refresh(null);
+    if (collection.getHandler() == null) { //!Esto NO debería ir acá y ya de por sí está mal utilizar el handler como PK
+      String handler = collection.getTitle().replaceAll(" ", "_");
+      collection.setHandler(handler);
 
-    collectionRepository.save(collection);
+      //Refresh collection to populate events
+      collection.refresh(null);
+
+      collectionRepository.save(collection);
+    }
   }
 
   @Override
@@ -113,10 +118,10 @@ public class CollectionService implements ICollectionService {
   @Override
   public void deleteCollection(String handler) {
     //TODO: validate that user can do this petition.
-    if (collectionRepository.findByHandler(handler) == null)
-      throw new NotFoundException("Collection not found - Handler: " + handler);
+    Collection collection = collectionRepository.findByHandler(handler); //TODO Validar
+    if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
-    collectionRepository.delete(handler);
+    collectionRepository.delete(collection);
   }
 
   @Override
