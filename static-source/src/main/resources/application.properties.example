@@ -1,0 +1,17 @@
+server.port=
+
+# Agregation service URL
+aggregation-service.url=
+
+# Database configuration
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=
+
+# Hibernate configuration
+spring.jpa.hibernate.ddl-auto=
+# Possible values: validate | update | create | create-drop | none
+spring.jpa.show-sql=
+spring.jpa.properties.hibernate.format_sql=
+spring.jpa.properties.hibernate.dialect=
