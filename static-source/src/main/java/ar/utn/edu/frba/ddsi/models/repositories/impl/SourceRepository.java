@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SourceRepository implements ISourceRepository {
-
+public class SourceRepository/* implements ISourceRepository */{
+/*
   Map<Long, Source> sources = new HashMap<>();
   private final AtomicLong idGenerator = new AtomicLong(1);
 
@@ -34,5 +34,5 @@ public class SourceRepository implements ISourceRepository {
   @Override
   public Source findById(Long sourceId) {
     return sources.get(sourceId);
-  }
+  }*/
 }

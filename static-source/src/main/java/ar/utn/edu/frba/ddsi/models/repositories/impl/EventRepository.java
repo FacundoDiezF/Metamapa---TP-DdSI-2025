@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class EventRepository implements IEventRepository {
-  Map<Long, Event> events = new HashMap<>();
+public class EventRepository /*implements IEventRepository*/ {
+  /*Map<Long, Event> events = new HashMap<>();
   private final AtomicLong idGenerator = new AtomicLong(1);
 
   @Override
@@ -46,5 +46,5 @@ public class EventRepository implements IEventRepository {
         .filter(event -> event.getSourceId().equals(sourceId)) //!
         .toList();
   }
-
+*/
 }
