@@ -35,13 +35,13 @@ public class DeletionRequestService implements IDeletionRequestService {
   @Override
   public DeletionRequestOutputDTO create(DeletionRequestCreationDTO drDTO) {
 
-    Event drEvent = eventRepository.findById(drDTO.getEventId());
-    if(drEvent == null) throw new NotFoundException("Event not found - ID: " + drDTO.getEventId());
+    Event drEvent = eventRepository.findById(drDTO.getEventId())
+        .orElseThrow(() -> new NotFoundException("Event not found - ID: " + drDTO.getEventId()));
 
     DeletionRequest deletionRequest = DeletionRequest.from(drDTO, drEvent);
 
     // Get a List of the DRs for the same event.
-    List<DeletionRequest> eventDeletionRequests = deletionRequestRepository.getByEventId(drDTO.getEventId());
+    List<DeletionRequest> eventDeletionRequests = deletionRequestRepository.findByEvent_Id(drDTO.getEventId());
 
     // Check spam.
     if (spamDetector.isSpam(eventDeletionRequests, deletionRequest.getArgument()) && !eventDeletionRequests.isEmpty()) {
@@ -58,9 +58,8 @@ public class DeletionRequestService implements IDeletionRequestService {
 
     //TODO: validate that user can do this petition.
 
-    DeletionRequest deletionRequest = deletionRequestRepository.getById(evaluation.getDeletionRequestId());
-    if (deletionRequest == null)
-      throw new NotFoundException("Deletion request not found - ID: " + evaluation.getDeletionRequestId());
+    DeletionRequest deletionRequest = deletionRequestRepository.findById(evaluation.getDeletionRequestId())
+        .orElseThrow(() -> new NotFoundException("Deletion request not found - ID: " + evaluation.getDeletionRequestId()));
 
     deletionRequest.evaluate(evaluation.isAccepted(), evaluation.getEvaluatorName());
 

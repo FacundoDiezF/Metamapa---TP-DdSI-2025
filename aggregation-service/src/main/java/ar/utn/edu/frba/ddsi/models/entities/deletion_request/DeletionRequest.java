@@ -23,6 +23,7 @@ import lombok.Setter;
 @Table(name = "deletion_requests")
 public class DeletionRequest {
 
+  @Setter
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

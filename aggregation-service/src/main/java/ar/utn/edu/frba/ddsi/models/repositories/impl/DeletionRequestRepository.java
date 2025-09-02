@@ -9,9 +9,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class DeletionRequestRepository implements IDeletionRequestRepository {
-  private final Map<Long, DeletionRequest> deletionRequests = new HashMap<>();
+public class DeletionRequestRepository /*implements IDeletionRequestRepository*/ {
+  /*private final Map<Long, DeletionRequest> deletionRequests = new HashMap<>();
   private final AtomicLong idGenerator = new AtomicLong(1);
 
   @Override
@@ -30,8 +29,7 @@ public class DeletionRequestRepository implements IDeletionRequestRepository {
     return deletionRequests.values().stream().toList();
   }
 
-  @Override
-  public DeletionRequest getById(long id) {
+  public DeletionRequest findById(long id) {
     return deletionRequests.get(id);
   }
 
@@ -39,4 +37,5 @@ public class DeletionRequestRepository implements IDeletionRequestRepository {
   public List<DeletionRequest> getByEventId(long eventId) {
     return deletionRequests.values().stream().filter(dr -> dr.getEvent().getId() == eventId).collect(Collectors.toList());
   }
+  */
 }

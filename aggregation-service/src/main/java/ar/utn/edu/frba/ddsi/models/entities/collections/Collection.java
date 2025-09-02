@@ -10,6 +10,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,24 +31,47 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
+@Entity
+@Table(name="collections")
 public class Collection {
 
   @Setter
+  @Id //! Bastante discutible esto
+  @Column(name="handler")
   private String handler;
 
   @Setter
+  @Column(name="title")
   private String title;
 
   @Setter
+  @Column(name="description")
   private String description;
 
-  @NonNull private final List<Source> sources;
+  //TODO Persistir esto
+  @Transient
   @NonNull private final CollectionCriteria collectionCriteria;
 
   @Setter
+  @Enumerated(EnumType.STRING)
+  @Column(name="consensus")
   private ConsensusType consensusType;
 
+  @ManyToMany
+  @JoinTable(
+      name = "collections_sources",
+      joinColumns = @JoinColumn(name = "collection_id", referencedColumnName = "handler"),
+      inverseJoinColumns = @JoinColumn(name="source_id", referencedColumnName = "id")
+  )
+  @NonNull private final List<Source> sources;
+
   @Builder.Default
+  @ManyToMany
+  @JoinTable(
+      name = "collections_events",
+      joinColumns = @JoinColumn(name = "collection_id", referencedColumnName = "handler"),
+      inverseJoinColumns = @JoinColumn(name="event_id", referencedColumnName = "id")
+  )
   private final Set<Event> events = new HashSet<>();
 
   public void refresh(LocalDateTime lastUpdate) {

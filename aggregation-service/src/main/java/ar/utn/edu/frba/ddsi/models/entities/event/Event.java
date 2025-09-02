@@ -33,6 +33,7 @@ import lombok.Setter;
 @Table(name = "events")
 public class Event {
 
+  @Setter
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

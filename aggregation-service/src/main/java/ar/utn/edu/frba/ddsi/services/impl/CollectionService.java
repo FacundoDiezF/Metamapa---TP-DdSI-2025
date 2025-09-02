@@ -14,9 +14,7 @@ import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.ICollectionRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ICollectionService;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +37,7 @@ public class CollectionService implements ICollectionService {
   public void create(CollectionCreationDTO collectionDto) {
 
     // Get sources from the repository by IDs
-    List<Source> collectionSources = new ArrayList<>(collectionDto.getSourceIds().stream()
-        .map(sourceRepository::findById)
-        .toList());
+    List<Source> collectionSources = sourceRepository.findAllById(collectionDto.getSourceIds()); //! Probar; si llega a devolver una lista inmutable, envolver con new ArrayList<>()
 
     //TODO: validar que todas las fuentes solicitadas existan, tirar error en caso contrario
 
@@ -57,10 +53,15 @@ public class CollectionService implements ICollectionService {
         .consensusType(collectionDto.getConsensusType())
         .build();
 
-    //Refresh collection to populate events
-    collection.refresh(null);
+    if (collection.getHandler() == null) { //!Esto NO debería ir acá y ya de por sí está mal utilizar el handler como PK
+      String handler = collection.getTitle().replaceAll(" ", "_");
+      collection.setHandler(handler);
 
-    collectionRepository.save(collection);
+      //Refresh collection to populate events
+      collection.refresh(null);
+
+      collectionRepository.save(collection);
+    }
   }
 
   @Override
@@ -117,10 +118,10 @@ public class CollectionService implements ICollectionService {
   @Override
   public void deleteCollection(String handler) {
     //TODO: validate that user can do this petition.
-    if (collectionRepository.findByHandler(handler) == null)
-      throw new NotFoundException("Collection not found - Handler: " + handler);
+    Collection collection = collectionRepository.findByHandler(handler); //TODO Validar
+    if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
-    collectionRepository.delete(handler);
+    collectionRepository.delete(collection);
   }
 
   @Override
@@ -146,8 +147,8 @@ public class CollectionService implements ICollectionService {
     Collection collection = collectionRepository.findByHandler(handler);
     if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
-    Source source = sourceRepository.findById(sourceId);
-    if (source == null) throw new NotFoundException("Source not found - Handler: " + handler);
+    Source source = sourceRepository.findById(sourceId)
+        .orElseThrow(() -> new NotFoundException("Source not found - ID: " + sourceId));
 
     collection.remove(source);
 
@@ -160,8 +161,8 @@ public class CollectionService implements ICollectionService {
     Collection collection = collectionRepository.findByHandler(handler);
     if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
-    Source source = sourceRepository.findById(sourceId);
-    if (source == null) throw new NotFoundException("Source not found - Handler: " + handler);
+    Source source = sourceRepository.findById(sourceId)
+        .orElseThrow(() -> new NotFoundException("Source not found - ID: " + sourceId));
 
     collection.add(source);
 

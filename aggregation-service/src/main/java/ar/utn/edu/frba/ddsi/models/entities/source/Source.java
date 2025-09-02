@@ -2,6 +2,7 @@ package ar.utn.edu.frba.ddsi.models.entities.source;
 
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
+import ar.utn.edu.frba.ddsi.models.entities.source.impl.SourceClient;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,9 +10,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +38,9 @@ public class Source {
 
   //-- Source Client
   @NonNull
-  @Transient// TODO: Persistir bien esto, no se como MIERDA se hace!!
-  private final ISourceClientAdapter sourceClient;
+  @ManyToOne
+  @JoinColumn(name = "source_client_id", nullable = false)
+  private final SourceClient sourceClient;
 
   @Column(name = "origin_source_id", nullable = false)
   private final Long originSourceId;// Source ID in the original source module
