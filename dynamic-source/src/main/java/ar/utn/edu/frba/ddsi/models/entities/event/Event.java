@@ -4,11 +4,14 @@ import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Origin;
 import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.*;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
+@Builder
+
+
 public class Event {
 
   //-- Identificador
