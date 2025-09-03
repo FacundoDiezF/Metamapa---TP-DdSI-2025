@@ -5,32 +5,43 @@ import ar.utn.edu.frba.ddsi.models.dtos.input.SourceInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.SourceOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.entities.source.SourceFactory;
+import ar.utn.edu.frba.ddsi.models.repositories.ICategoryRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ISourceService;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SourceService implements ISourceService {
 
-  @Autowired
-  private ISourceRepository sourceRepository;
+  private final ISourceRepository sourceRepository;
+  private final IEventRepository eventRepository;
+  private final ICategoryRepository categoryRepository;
+  private final SourceFactory sourceFactory;
+  private final Publisher publisher;
 
-  @Autowired
-  private IEventRepository eventRepository;
+  public SourceService(
+        ISourceRepository sourceRepository,
+        IEventRepository eventRepository,
+        ICategoryRepository categoryRepository,
+        SourceFactory sourceFactory,
+        Publisher publisher
+    ) {
+      this.sourceRepository = sourceRepository;
+      this.eventRepository = eventRepository;
+      this.categoryRepository = categoryRepository;
+      this.sourceFactory = sourceFactory;
+      this.publisher = publisher;
+    }
 
-  @Autowired
-  private SourceFactory sourceFactory;
 
-  @Autowired
-  private Publisher publisher;
 
   @Override
   public SourceOutputDTO create(SourceInputDTO sourceInput) {
@@ -55,14 +66,23 @@ public class SourceService implements ISourceService {
   }
 
   public void importSourceEvents(Long id) {
-    Source source = sourceRepository.findById(id);
-    if (source == null) {
-      throw new NotFoundException("Source not found - ID: " + id);
-    }
+    Source source = sourceRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Source not found - ID: " + id));
 
     Set<Event> importedEvents = source.importEvents();
 
-    importedEvents.forEach(eventRepository::save);
+    importedEvents.forEach(event -> { //TODO: Implementar de una mejor manera
+      String categoryName = event.getCategory().getName();
+
+      Category category = categoryRepository.findByName(categoryName);
+
+      if (category == null) { //TODO: Verificar el correcto funcionamiento (y persistencia) de las Category.
+        category = categoryRepository.save(new Category(categoryName));
+      }
+      event.setCategory(category);
+    });
+
+    eventRepository.saveAll(importedEvents);
 
     List<EventOutputDTO> outputEvents = importedEvents
         .stream()
@@ -75,13 +95,12 @@ public class SourceService implements ISourceService {
   @Override
   public List<EventOutputDTO> getAllEventsBySourceId(Long id) {
 
-    if (sourceRepository.findById(id) == null) {
-      throw new NotFoundException("Source not found - ID: " + id);
-    }
+    sourceRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Source not found - ID: " + id));
 
     List<Event> events = eventRepository.findBySourceId(id);
 
-    //?TODO Return 404 if source not found
+    //TODO Return 404 if source not found
 
     return events
         .stream()

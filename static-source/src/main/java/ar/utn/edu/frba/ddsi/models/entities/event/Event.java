@@ -47,7 +47,7 @@ public class Event {
 
   @ManyToOne
   @JoinColumn(name = "category_id", nullable = false)
-  private final Category category;
+  @Setter private Category category;
 
 
   @Column(name = "latitude", nullable = false)

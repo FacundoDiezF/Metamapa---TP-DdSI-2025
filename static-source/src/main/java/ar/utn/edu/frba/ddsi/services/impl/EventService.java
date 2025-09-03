@@ -5,7 +5,6 @@ import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.services.IEventService;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +22,8 @@ public class EventService implements IEventService {
 
   @Override
   public EventOutputDTO deleteEvent(Long eventId) {
-    Event event = eventRepository.findById(eventId);
-    if (event == null) throw new NotFoundException("Event not found - ID: " + eventId);
+    Event event = eventRepository.findById(eventId)
+    .orElseThrow(() -> new NotFoundException("Event not found - ID: " + eventId));
 
     event.markAsDeleted();
     eventRepository.save(event);
