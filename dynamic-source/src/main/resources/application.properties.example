@@ -1,9 +1,14 @@
 server.port=8081
-spring.datasource.url=jdbc:mysql://localhost:3306/database_name?useSSL=false&serverTimezone=UTC
-spring.datasource.username=tu_user
-spring.datasource.password=tu_pass
+
+# Database configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/metamapa_dynamic?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+spring.datasource.username=
+spring.datasource.password=
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
-spring.jpa.hibernate.ddl-auto=update
+# Hibernate configuration
+spring.jpa.hibernate.ddl-auto=create-drop
+# Possible values: validate | update | create | create-drop | none
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
