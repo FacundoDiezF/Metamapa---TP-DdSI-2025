@@ -1,8 +1,5 @@
 server.port=
 
-# Agregation service URL
-aggregation-service.url=
-
 # Database configuration
 spring.datasource.url=
 spring.datasource.username=
