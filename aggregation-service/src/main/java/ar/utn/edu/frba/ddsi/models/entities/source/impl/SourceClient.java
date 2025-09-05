@@ -63,6 +63,8 @@ public class SourceClient implements ISourceClientAdapter {
     return client;
   }
 
+  //   http://localhost:8080/source-clients/:id
+
   @Override
   public void subscribe(String callbackUrl) {
     try {

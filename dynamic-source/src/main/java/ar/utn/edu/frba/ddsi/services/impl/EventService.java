@@ -12,7 +12,6 @@ import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,17 +30,8 @@ public class EventService implements IEventService {
   }
 
   @Override
-  public List<EventOutputDTO> getAllEvents(LocalDateTime lastUpdate) {
-
-    return getEvents(lastUpdate).stream().map(EventOutputDTO::from).toList();
-  }
-
-  @Override
-  public List<Event> getEvents(LocalDateTime lastUpdate) {
-    if (lastUpdate != null) {
-      return eventRepository.findAfterDate(lastUpdate); //Incluye dentro findByAccepted()
-    }
-    return eventRepository.findByAccepted();
+  public List<EventOutputDTO> getAllEvents() {
+    return eventRepository.findByAccepted().stream().map(EventOutputDTO::from).toList();
   }
 
   @Override
@@ -57,10 +47,8 @@ public class EventService implements IEventService {
   @Override
   public EventOutputDTO update(Long eventId, EventDTO dto) {
     //TODO: Validar si el usuario puede realizar esta peticion
-    Event event = eventRepository.findById(eventId);
-
-    if (event == null)
-      throw new NotFoundException("Event not found - ID: " + eventId);
+    Event event = eventRepository.findById(eventId)
+        .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
 
     if (!event.getContributor().equals(dto.getContributor()))
       throw new UnauthorizedException("Unauthorized action: event ownership mismatch");
@@ -80,14 +68,13 @@ public class EventService implements IEventService {
 
   @Override
   public EventOutputDTO deleteEvent(Long eventId) {
-    Event event = eventRepository.findById(eventId);
-    if (event == null) throw new NotFoundException("Event not found - Id: " + eventId);
+    Event event = eventRepository.findById(eventId)
+        .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
 
     event.markAsDeleted();
+    eventRepository.save(event);
 
-    Event deletedEvent = eventRepository.delete(event);
-
-    return EventOutputDTO.from(deletedEvent);
+    return EventOutputDTO.from(event);
   }
 
   @Override

@@ -1,26 +1,16 @@
 package ar.utn.edu.frba.ddsi.models.repositories;
 
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
-import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 
-public interface IEventRepository {
-  Event save(Event event);
-
-  List<Event> findAll();
-
-  List<Event> findByDeleted(boolean deleted);
-
-  //Not eliminated, accepted & afterDate
-  List<Event> findAfterDate(LocalDateTime date);
+public interface IEventRepository extends JpaRepository<Event, Long> {
 
   //Not eliminated & accepted
+  @Query("SELECT e FROM Event e WHERE e.deleted = false AND e.accepted = true")
   List<Event> findByAccepted();
-
-  Event findById(Long eventId);
-
-  Event delete(Event event);
 
   List<Event> findBySourceId(Long sourceId);
 }
