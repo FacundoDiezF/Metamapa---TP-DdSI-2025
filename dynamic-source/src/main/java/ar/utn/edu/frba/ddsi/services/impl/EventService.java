@@ -96,12 +96,4 @@ public class EventService implements IEventService {
 
     return EventOutputDTO.from(event);
   }
-
-  @Override
-  public List<EventOutputDTO> getPendingEvents() {
-    return submissionRepository.findPendingSubmissions()
-        .stream().map(SubmissionRequest::getEvent)
-        .map(EventOutputDTO::from)
-        .toList();
-  }
 }

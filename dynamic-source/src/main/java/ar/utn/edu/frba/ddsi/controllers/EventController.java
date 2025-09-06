@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("events")
 public class EventController {
 
+  private final IEventService eventService;
+
   @Autowired
-  private IEventService eventService;
+  public EventController(IEventService eventService) {
+    this.eventService = eventService;
+  }
 
   @GetMapping
   public List<EventOutputDTO> getEvents() {

@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/subscribers")
 public class SubscriberController {
 
+  private final ISubscriberService subscriberService;
+
   @Autowired
-  ISubscriberService subscriberService;
+  public SubscriberController(ISubscriberService subscriberService) {
+    this.subscriberService = subscriberService;
+  }
 
   @PostMapping()
   public void subscribe(@RequestBody SubscriberInputDTO dto) {

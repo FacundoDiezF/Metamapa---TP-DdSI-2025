@@ -12,6 +12,4 @@ public interface IEventService {
   EventOutputDTO update(Long eventId, EventDTO dto);
 
   EventOutputDTO deleteEvent(Long eventId);
-
-  List<EventOutputDTO> getPendingEvents();
 }
