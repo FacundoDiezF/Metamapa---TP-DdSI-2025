@@ -16,14 +16,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubmissionReviewService implements ISubmissionReviewService {
 
-  @Autowired
-  ISubmissionRepository submissionRepository;
+  private final ISubmissionRepository submissionRepository;
+
+  private final IEventRepository eventRepository;
+
+  private final Publisher publisher;
 
   @Autowired
-  IEventRepository eventRepository;
-
-  @Autowired
-  Publisher publisher;
+  private SubmissionReviewService(ISubmissionRepository submissionRepository, IEventRepository eventRepository, Publisher publisher){
+    this.submissionRepository = submissionRepository;
+    this.eventRepository = eventRepository;
+    this.publisher = publisher;
+  }
 
 
   @Override

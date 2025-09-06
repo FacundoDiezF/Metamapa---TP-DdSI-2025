@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Publisher {
-  Set<ISubscriber> subscribers;
+  private final Set<ISubscriber> subscribers;
 
   public Publisher() {
     this.subscribers = new HashSet<>();

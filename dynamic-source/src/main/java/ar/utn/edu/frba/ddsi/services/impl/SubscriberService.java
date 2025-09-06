@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubscriberService implements ISubscriberService {
 
-  Publisher publisher;
+  private final Publisher publisher;
 
-  IEventService eventService;
+  private final IEventService eventService;
 
-  ISourceService sourceService;
+  private final ISourceService sourceService;
 
   public SubscriberService(Publisher publisher,
                            IEventService eventService,

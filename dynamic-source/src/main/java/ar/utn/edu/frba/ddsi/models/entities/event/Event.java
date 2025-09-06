@@ -8,8 +8,6 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.*;
 
-import javax.xml.transform.Source;
-
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
@@ -24,10 +22,12 @@ public class Event {
   private Long id;
 
   @Column(name = "source_id", nullable = false)
-  private Long sourceId;
+  @Builder.Default
+  private final Long sourceId = 1L; // En dinamic siempre es 1
 
   @Column(name = "origin", nullable = false) //TODO revisar esta columba
-  private final Origin origin;
+  @Builder.Default
+  private final Origin origin = Origin.DYNAMIC;
 
   //-- Description
   @Column(name = "title", nullable = false)
@@ -61,47 +61,13 @@ public class Event {
   //-- Extras
   @Setter
   @Column(name = "deleted", nullable = false)
-  private boolean deleted;
+  @Builder.Default
+  private boolean deleted = false;
 
   @Setter
   @Column(name = "accepted", nullable = false)
-  private boolean accepted;
-
-  public static Event from(EventDTO dto) {
-    return new Event(
-        1L, //En la dinámica el sourceId es siempre el mismo puesto que no existen Sources. Esto permite respetar el formato del agregador
-        dto.getTitle(),
-        dto.getDescription(),
-        new Category(dto.getCategory()), //TODO: Manejar Categorias
-        dto.getLatitude(),
-        dto.getLongitude(),
-        dto.getEventDate(),
-        Origin.DYNAMIC,
-        dto.getContributor()
-    );
-  }
-
-  public Event(Long sourceId,
-               String title,
-               String description,
-               Category category,
-               Double latitude,
-               Double longitude,
-               LocalDateTime eventDate,
-               Origin origin,
-               String contributor) {
-    this.sourceId = sourceId;
-    this.title = title;
-    this.description = description;
-    this.category = category;
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.eventDate = eventDate;
-    this.contributor = contributor;
-    this.uploadDate = LocalDateTime.now();
-    this.origin = origin;
-    this.deleted = false;
-  }
+  @Builder.Default
+  private boolean accepted = false;
 
   public void update(EventDTO dto) {
     this.title = dto.getTitle();

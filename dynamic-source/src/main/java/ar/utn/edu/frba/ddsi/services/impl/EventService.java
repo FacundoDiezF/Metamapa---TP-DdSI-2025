@@ -5,27 +5,34 @@ import ar.utn.edu.frba.ddsi.exceptions.UnauthorizedException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
 import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionRequest;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
+import ar.utn.edu.frba.ddsi.services.ICategoryService;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EventService implements IEventService {
 
-  IEventRepository eventRepository;
+  private final IEventRepository eventRepository;
 
-  ISubmissionRepository submissionRepository;
+  private final ISubmissionRepository submissionRepository;
 
-  Publisher publisher;
+  private final ICategoryService categoryService;
 
-  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, Publisher publisher) {
+  private final Publisher publisher;
+
+  @Autowired
+  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, Publisher publisher) {
     this.eventRepository = eventRepository;
     this.submissionRepository = submissionRepository;
+    this.categoryService = categoryService;
     this.publisher = publisher;
   }
 
@@ -38,10 +45,23 @@ public class EventService implements IEventService {
   public EventOutputDTO save(EventDTO dto) {
     //TODO: Validar si el usuario puede realizar esta peticion
 
-    Event eventSaved = eventRepository.save(Event.from(dto));
-    submissionRepository.save(new SubmissionRequest(eventSaved));
+    Category category = categoryService.findOrCreate(dto.getCategory());
 
-    return EventOutputDTO.from(eventSaved);
+    Event event = Event.builder()
+        .title(dto.getTitle())
+        .description(dto.getDescription())
+        .category(category)
+        .latitude(dto.getLatitude())
+        .longitude(dto.getLongitude())
+        .eventDate(dto.getEventDate())
+        .uploadDate(LocalDateTime.now())
+        .contributor(dto.getContributor()) //TODO: Esto deberia ser un usuario
+        .build();
+
+    eventRepository.save(event);
+    submissionRepository.save(new SubmissionRequest(event));
+
+    return EventOutputDTO.from(event);
   }
 
   @Override
