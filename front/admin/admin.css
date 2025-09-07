@@ -380,3 +380,59 @@ body{ overflow:auto; background:var(--ui-bg); color:var(--ui-ink) }
   transform: translateY(0); /* vuelve al hacer click */
 }
 
+/* ====== Solicitudes de Eliminación / Moderación ====== */
+.tabs{ display:flex; gap:.5rem; margin:.25rem 0 1rem }
+.tab{
+    display:inline-block; padding:.5rem .9rem; border-radius:999px;
+    background:#eef2f7; border:1px solid #e5e7eb; font-weight:600; color:#0f172a; text-decoration:none;
+}
+.tab.is-active{ background:#e0f2ff; border-color:#bfdbfe; color:#1d4ed8 }
+
+.mod-card{
+    background:var(--ui-card);
+    border:1px solid var(--ui-border,#e5e7eb);
+    border-radius:var(--radius);
+    box-shadow:0 2px 6px rgba(0,0,0,.05);
+    padding:1rem; display:grid; gap:.9rem;
+}
+.mod-head .mod-title{ margin:.25rem 0 }
+.mod-meta{ margin:.25rem 0 0; color:#64748b; }
+
+.chips{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.25rem 0 }
+.chip{
+    display:inline-block; padding:.25rem .6rem; border-radius:999px; font-size:.8rem; font-weight:700;
+    background:#e2e8f0; border:1px solid #cbd5e1; color:#0f172a;
+}
+.chip-warn{ background:#fef9c3; border-color:#fde68a; color:#854d0e }
+.chip-privacy{ background:#fee2e2; border-color:#fecaca; color:#b91c1c }
+
+.mod-body{
+    display:grid; grid-template-columns: 1fr 340px; gap:1rem;
+}
+.mod-col h4{ margin:.25rem 0 .35rem }
+.evidence{ margin:.25rem 0 .5rem; padding-left:1rem }
+.evidence li{ margin:.15rem 0 }
+
+.mod-aside .fact-summary{
+    border:1px solid #eef2f7; border-radius:10px; padding:.75rem; background:#fff;
+}
+.btn-link{ display:inline-block; margin-top:.35rem; text-decoration:none; color:var(--ui-blue); font-weight:600 }
+
+.mod-actions{ display:flex; flex-wrap:wrap; gap:.5rem }
+.btn{
+    appearance:none; border:1px solid #cbd5e1; background:#fff; color:#0f172a;
+    padding:.6rem .9rem; border-radius:10px; font-weight:700; cursor:pointer;
+}
+.btn.success{ background:#16a34a; color:#fff; border-color:#15803d }
+.btn.danger{ background:#ef4444; color:#fff; border-color:#b91c1c }
+.btn.ghost{ background:#fff; color:#0f172a }
+
+@media (max-width: 980px){
+    .mod-body{ grid-template-columns: 1fr }
+}
+
+/* Chips nuevas para Hechos pendientes */
+.chip-prio-alta   { background:#fee2e2; color:#b91c1c; border-color:#fecaca; }
+.chip-prio-media  { background:#fef3c7; color:#92400e; border-color:#fde68a; }
+.chip-cat         { background:#DBEAFE; color:#1e40af; border-color:#BFDBFE; }
+

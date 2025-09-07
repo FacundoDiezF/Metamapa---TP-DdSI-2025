@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MetaMapa — Hechos pendientes</title>
+
+    <!-- Base compartida -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../shared/tokens.css" />
+    <link rel="stylesheet" href="../shared/nav.css" />
+    <link rel="stylesheet" href="../shared/icons.css" />
+
+    <!-- Estilos del panel -->
+    <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+<!-- Header pegajoso -->
+<header class="navbar">
+    <div class="brand">
+        <div class="brand-mark"><span class="dot"></span></div>
+        <span class="brand-name">MetaMapa</span>
+    </div>
+    <div class="auth-actions">
+        <button class="account-btn" type="button">Administrador</button>
+        <button class="btn-outline" type="button">Inicio</button>
+    </div>
+</header>
+
+<!-- Subnav del sitio -->
+<nav class="subnav">
+    <a href="../Index/index.html">Explorar</a>
+    <a href="../Collections/collections.html">Colecciones</a>
+    <a href="#">Mapa</a>
+    <a href="admin.html" class="active">Panel de Control</a>
+</nav>
+
+<main class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <h3>Panel de Administración</h3>
+        <ul class="admin-menu">
+            <li><a href="admin.html">Resumen</a></li>
+            <li><a href="#">Colecciones</a></li>
+            <li><a href="#">Fuentes</a></li>
+            <li><a href="delete-requests.html">Solicitudes de Eliminación</a></li>
+            <li><a class="is-active" href="admin-hechos.html">Hechos pendientes</a></li>
+            <li><a href="#">Importar CSV</a></li>
+        </ul>
+    </aside>
+
+    <!-- Contenido -->
+    <section class="admin-content">
+        <header class="admin-header">
+            <h1>Hechos pendientes</h1>
+            <p class="muted">Revisa y modera hechos enviados por contribuyentes antes de publicarlos.</p>
+        </header>
+
+        <!-- Hecho #1 -->
+        <article class="mod-card">
+            <header class="mod-head">
+                <h3 class="mod-title">Incendio forestal en Parque Nacional Nahuel Huapi</h3>
+                <div class="chips">
+                    <span class="chip chip-prio-alta">Prioridad: Alta</span>
+                    <span class="chip chip-cat">Desastre Natural</span>
+                </div>
+                <p class="mod-meta">
+                    <span>Por: <strong>Ana García</strong></span> ·
+                    <span>2025-03-10 14:30</span> ·
+                    <span>Ubicación: Parque Nacional Nahuel Huapi, Río Negro</span>
+                </p>
+            </header>
+
+            <div class="mod-body">
+                <div class="mod-col">
+                    <h4>Descripción</h4>
+                    <p>Se reporta un incendio de gran magnitud en el sector norte del parque nacional, con foco activo y propagación a sotobosque.</p>
+
+                    <div class="grid-2">
+                        <div>
+                            <h4>Fuentes</h4>
+                            <ul class="evidence">
+                                <li>Bomberos Voluntarios Bariloche</li>
+                                <li>Parques Nacionales</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Evidencia</h4>
+                            <ul class="evidence">
+                                <li><a href="#">foto_incendio_1.jpg</a></li>
+                                <li><a href="#">reporte_bomberos.pdf</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="mod-aside">
+                    <div class="fact-summary">
+                        <h5>Resumen</h5>
+                        <p><strong>Impacto:</strong> Alto</p>
+                        <p><strong>Reportes:</strong> 12</p>
+                        <a class="btn-link" href="#">Ver detalles</a>
+                    </div>
+                </aside>
+            </div>
+
+            <footer class="mod-actions">
+                <button class="btn success">Aprobar</button>
+                <button class="btn ghost">Modificar</button>
+                <button class="btn danger">Rechazar</button>
+                <button class="btn ghost">Ver historial</button>
+            </footer>
+        </article>
+
+        <!-- Hecho #2 -->
+        <article class="mod-card">
+            <header class="mod-head">
+                <h3 class="mod-title">Contaminación en Río Reconquista</h3>
+                <div class="chips">
+                    <span class="chip chip-prio-media">Prioridad: Media</span>
+                    <span class="chip chip-cat">Medio Ambiente</span>
+                </div>
+                <p class="mod-meta">
+                    <span>Por: <strong>Carlos Méndez</strong></span> ·
+                    <span>2025-03-09 16:45</span> ·
+                    <span>Ubicación: Río Reconquista, San Martín, Buenos Aires</span>
+                </p>
+            </header>
+
+            <div class="mod-body">
+                <div class="mod-col">
+                    <h4>Descripción</h4>
+                    <p>Vertido de sustancias químicas no identificadas en el río, con mortandad de peces y mal olor en la zona.</p>
+
+                    <div class="grid-2">
+                        <div>
+                            <h4>Fuentes</h4>
+                            <ul class="evidence">
+                                <li>Vecinos de la zona</li>
+                                <li>ACUMAR</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Evidencia</h4>
+                            <ul class="evidence">
+                                <li><a href="#">video_contaminacion.mp4</a></li>
+                                <li><a href="#">analisis_agua.pdf</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="mod-aside">
+                    <div class="fact-summary">
+                        <h5>Resumen</h5>
+                        <p><strong>Impacto:</strong> Medio</p>
+                        <p><strong>Reportes:</strong> 5</p>
+                        <a class="btn-link" href="#">Ver detalles</a>
+                    </div>
+                </aside>
+            </div>
+
+            <footer class="mod-actions">
+                <button class="btn success">Aprobar</button>
+                <button class="btn ghost">Modificar</button>
+                <button class="btn danger">Rechazar</button>
+                <button class="btn ghost">Ver historial</button>
+            </footer>
+        </article>
+    </section>
+</main>
+</body>
+</html>
