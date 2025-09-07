@@ -14,12 +14,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +39,8 @@ import lombok.Setter;
 public class Collection {
 
   @Setter
-  @Id //! Bastante discutible esto
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name="handler")
   private String handler;
 
@@ -48,9 +52,11 @@ public class Collection {
   @Column(name="description")
   private String description;
 
-  //TODO Persistir esto
-  @Transient
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "collection_criteria_id", nullable = false)
   @NonNull private final CollectionCriteria collectionCriteria;
+  //TODO: Al crear una Collection, debería fijarme si la CollectionCriteria ya existe para no duplicarla
+  //TODO: Al borrar la Collection, si solo ese usa la CollectionCriteria, tambien deberia borrarla
 
   @Setter
   @Enumerated(EnumType.STRING)
