@@ -8,7 +8,7 @@ import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
-import ar.utn.edu.frba.ddsi.models.repositories.impl.SourceRepository;
+import ar.utn.edu.frba.ddsi.models.repositories.ICategoryRepository;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,10 +22,13 @@ public class EventService implements IEventService {
 
   ISourceRepository sourceRepository;
 
+  ICategoryRepository categoryRepository;
+
   @Autowired
-  public EventService(IEventRepository eventRepository, SourceRepository sourceRepository) {
+  public EventService(IEventRepository eventRepository, ISourceRepository sourceRepository, ICategoryRepository categoryRepository) {
     this.eventRepository = eventRepository;
     this.sourceRepository = sourceRepository;
+    this.categoryRepository = categoryRepository;
   }
 
 
@@ -55,17 +58,23 @@ public class EventService implements IEventService {
 
     // Get event source
     Source source = sourceRepository.findByExternalIds(dto.getSourceClientId(), dto.getSourceId());
-    if (source == null)
+    if (source == null) {
       throw new NotFoundException("Source not found for SourceClientId: " + dto.getSourceClientId() + " and sourceId: " + dto.getSourceId());
+    }
 
     Category category = Category // TODO: Deberiamos tener un repo y tomarla en base al "nombre"
         .builder()
         .name(dto.getCategory())
         .build();
 
+    categoryRepository.save(category);
+    //TODO Gguardar la category antes de persistir el event, porque sino trata de guardar algo que no existe y crashea
+
+
+
     //Create event
     Event event = Event.builder()
-        .inSourceEventId(dto.getId())
+        .originEventId(dto.getId())
         .title(dto.getTitle())
         .description(dto.getDescription())
         .category(category)
@@ -74,7 +83,7 @@ public class EventService implements IEventService {
         .eventDate(dto.getEventDate())
         .uploadDate(dto.getUploadDate())
         .source(source)
-        .inSourceEventId(dto.getId())
+        .originEventId(dto.getId())
         .build();
 
     source.addEvent(event);

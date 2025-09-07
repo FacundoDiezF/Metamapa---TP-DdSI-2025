@@ -8,9 +8,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class SourceRepository implements ISourceRepository {
-  private final Map<Long, Source> sources = new HashMap<>();
+public class SourceRepository /*implements ISourceRepository*/ {
+  /*private final Map<Long, Source> sources = new HashMap<>();
   private final AtomicLong idGenerator = new AtomicLong(1);
 
   @Override
@@ -38,8 +37,8 @@ public class SourceRepository implements ISourceRepository {
   @Override
   public Source findByExternalIds(Long sourceClientId, Long sourceId) {
     return this.findAll().stream()
-        .filter(s -> s.getSourceClient().getId().equals(sourceClientId) && s.getInClientId().equals(sourceId))
+        .filter(s -> s.getSourceClient().getId().equals(sourceClientId) && s.getOriginSourceId().equals(sourceId))
         .findFirst()
         .orElse(null);
-  }
+  }*/
 }

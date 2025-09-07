@@ -1,14 +1,21 @@
 package ar.utn.edu.frba.ddsi.models.entities.event.values;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
+@Entity
+@Table(name = "categories")
+
 public class Category {
-  private final String name;
+    @Setter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private final String name;
+    //! Faltan cosas
 }

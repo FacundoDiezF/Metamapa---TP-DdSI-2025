@@ -5,62 +5,72 @@ import ar.utn.edu.frba.ddsi.exceptions.UnauthorizedException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
 import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionRequest;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
+import ar.utn.edu.frba.ddsi.services.ICategoryService;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EventService implements IEventService {
 
-  IEventRepository eventRepository;
+  private final IEventRepository eventRepository;
 
-  ISubmissionRepository submissionRepository;
+  private final ISubmissionRepository submissionRepository;
 
-  Publisher publisher;
+  private final ICategoryService categoryService;
 
-  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, Publisher publisher) {
+  private final Publisher publisher;
+
+  @Autowired
+  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, Publisher publisher) {
     this.eventRepository = eventRepository;
     this.submissionRepository = submissionRepository;
+    this.categoryService = categoryService;
     this.publisher = publisher;
   }
 
   @Override
-  public List<EventOutputDTO> getAllEvents(LocalDateTime lastUpdate) {
-
-    return getEvents(lastUpdate).stream().map(EventOutputDTO::from).toList();
-  }
-
-  @Override
-  public List<Event> getEvents(LocalDateTime lastUpdate) {
-    if (lastUpdate != null) {
-      return eventRepository.findAfterDate(lastUpdate); //Incluye dentro findByAccepted()
-    }
-    return eventRepository.findByAccepted();
+  public List<EventOutputDTO> getAllEvents() {
+    return eventRepository.findByAccepted().stream().map(EventOutputDTO::from).toList();
   }
 
   @Override
   public EventOutputDTO save(EventDTO dto) {
     //TODO: Validar si el usuario puede realizar esta peticion
 
-    Event eventSaved = eventRepository.save(Event.from(dto));
-    submissionRepository.save(new SubmissionRequest(eventSaved));
+    Category category = categoryService.findOrCreate(dto.getCategory());
 
-    return EventOutputDTO.from(eventSaved);
+    Event event = Event.builder()
+        .title(dto.getTitle())
+        .description(dto.getDescription())
+        .category(category)
+        .latitude(dto.getLatitude())
+        .longitude(dto.getLongitude())
+        .eventDate(dto.getEventDate())
+        .uploadDate(LocalDateTime.now())
+        .contributor(dto.getContributor()) //TODO: Esto deberia ser un usuario
+        .build();
+
+    eventRepository.save(event);
+    submissionRepository.save(new SubmissionRequest(event));
+
+    return EventOutputDTO.from(event);
   }
 
   @Override
   public EventOutputDTO update(Long eventId, EventDTO dto) {
-    //TODO: Validar si el usuario puede realizar esta peticion
-    Event event = eventRepository.findById(eventId);
 
-    if (event == null)
-      throw new NotFoundException("Event not found - ID: " + eventId);
+    //TODO: Validar si el usuario puede realizar esta peticion
+
+    Event event = eventRepository.findById(eventId)
+        .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
 
     if (!event.getContributor().equals(dto.getContributor()))
       throw new UnauthorizedException("Unauthorized action: event ownership mismatch");
@@ -68,7 +78,14 @@ public class EventService implements IEventService {
     if (event.getUploadDate().plusDays(7).isBefore(LocalDateTime.now()))
       throw new IllegalStateException("Event editing window has expired. Modifications are no longer allowed");
 
-    event.update(dto);
+    if (dto.getTitle() != null) event.setTitle(dto.getTitle());
+    if (dto.getDescription() != null) event.setDescription(dto.getDescription());
+    if (dto.getCategory() != null) event.setCategory(categoryService.findOrCreate(dto.getCategory()));
+    if (dto.getLatitude() != null) event.setLatitude(dto.getLatitude());
+    if (dto.getLongitude() != null) event.setLongitude(dto.getLongitude());
+    if (dto.getEventDate() != null) event.setEventDate(dto.getEventDate());
+
+    event.setUpdateDate(LocalDateTime.now());
     Event eventSaved = eventRepository.save(event);
 
     if (eventSaved.isAccepted()) {
@@ -80,21 +97,12 @@ public class EventService implements IEventService {
 
   @Override
   public EventOutputDTO deleteEvent(Long eventId) {
-    Event event = eventRepository.findById(eventId);
-    if (event == null) throw new NotFoundException("Event not found - Id: " + eventId);
+    Event event = eventRepository.findById(eventId)
+        .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
 
     event.markAsDeleted();
+    eventRepository.save(event);
 
-    Event deletedEvent = eventRepository.delete(event);
-
-    return EventOutputDTO.from(deletedEvent);
-  }
-
-  @Override
-  public List<EventOutputDTO> getPendingEvents() {
-    return submissionRepository.findPendingSubmissions()
-        .stream().map(SubmissionRequest::getEvent)
-        .map(EventOutputDTO::from)
-        .toList();
+    return EventOutputDTO.from(event);
   }
 }

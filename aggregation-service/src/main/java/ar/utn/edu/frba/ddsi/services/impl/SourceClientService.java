@@ -35,7 +35,7 @@ public class SourceClientService implements ISourceClientService {
 
   @Override
   public List<SourceClientOutputDTO> getAllClients() {
-    return sourceClientRepository.getAllClients().stream()
+    return sourceClientRepository.findAll().stream()
         .map(SourceClientOutputDTO::from)
         .toList();
   }

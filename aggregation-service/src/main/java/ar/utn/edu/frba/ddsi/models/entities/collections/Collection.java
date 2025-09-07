@@ -10,6 +10,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,24 +34,50 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
+@Entity
+@Table(name="collections")
 public class Collection {
 
   @Setter
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(name="handler")
   private String handler;
 
   @Setter
+  @Column(name="title")
   private String title;
 
   @Setter
+  @Column(name="description")
   private String description;
 
-  @NonNull private final List<Source> sources;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "collection_criteria_id", nullable = false)
   @NonNull private final CollectionCriteria collectionCriteria;
+  //TODO: Al crear una Collection, debería fijarme si la CollectionCriteria ya existe para no duplicarla
+  //TODO: Al borrar la Collection, si solo ese usa la CollectionCriteria, tambien deberia borrarla
 
   @Setter
+  @Enumerated(EnumType.STRING)
+  @Column(name="consensus")
   private ConsensusType consensusType;
 
+  @ManyToMany
+  @JoinTable(
+      name = "collections_sources",
+      joinColumns = @JoinColumn(name = "collection_id", referencedColumnName = "handler"),
+      inverseJoinColumns = @JoinColumn(name="source_id", referencedColumnName = "id")
+  )
+  @NonNull private final List<Source> sources;
+
   @Builder.Default
+  @ManyToMany
+  @JoinTable(
+      name = "collections_events",
+      joinColumns = @JoinColumn(name = "collection_id", referencedColumnName = "handler"),
+      inverseJoinColumns = @JoinColumn(name="event_id", referencedColumnName = "id")
+  )
   private final Set<Event> events = new HashSet<>();
 
   public void refresh(LocalDateTime lastUpdate) {

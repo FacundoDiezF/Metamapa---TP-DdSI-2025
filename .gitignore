@@ -31,8 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
-
-
-
-
 /.github/
+
+### application.properties ###
+**/application.properties

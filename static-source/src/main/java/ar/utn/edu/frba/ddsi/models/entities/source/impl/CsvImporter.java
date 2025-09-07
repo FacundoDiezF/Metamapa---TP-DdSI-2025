@@ -1,7 +1,6 @@
 package ar.utn.edu.frba.ddsi.models.entities.source.impl;
 
-import ar.utn.edu.frba.ddsi.models.entities.event.Event;
-import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
+import ar.utn.edu.frba.ddsi.models.dtos.input.EventImportDTO;
 import ar.utn.edu.frba.ddsi.models.entities.source.IImporter;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import com.opencsv.CSVReader;
@@ -23,52 +22,43 @@ public class CsvImporter implements IImporter {
     return "CSV";
   }
 
-  public Set<Event> importEvents(Source source) {
+  @Override
+  public Set<EventImportDTO> importEvents(Source source) {
 
     InputStream inputStream = getClass().getClassLoader().getResourceAsStream("CSV/" + source.getPath());
-    if (inputStream == null) {
-      throw new RuntimeException("No se pudo encontrar el archivo: " + source.getPath());
-    }
+    if (inputStream == null)
+      throw new RuntimeException("Could not find the file: " + source.getPath());
 
-    Set<Event> events = new HashSet<>();
+    Set<EventImportDTO> eventsDto = new HashSet<>();
 
-    try (
-        CSVReader reader = new CSVReader(
-            new InputStreamReader(inputStream, StandardCharsets.UTF_8)
-        )
-    ) {
+    try (CSVReader reader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
-      String[] headers = reader.readNext();
+      reader.readNext();
       String[] row;
 
+      // Read each row from the CSV and create EventImportDTO
       while ((row = reader.readNext()) != null) {
+
         String title = row[0];
         String description = row[1];
-        Category category = new Category(row[2]);
+        String category = row[2];
         Double latitude = Double.parseDouble(row[3]);
         Double longitude = Double.parseDouble(row[4]);
         LocalDateTime eventDate = null;
 
         try {
-          eventDate = LocalDate.parse(row[5], DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay(); //TODO: Los csv tienen LocalDateTime o LocalDate?
+          eventDate = LocalDate.parse(row[5], DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
         } catch (Exception e) {
           System.out.println("Invalid Date in row: " + Arrays.toString(row));
         }
 
-        Event event = new Event(
-            title,
-            description,
-            category,
-            latitude,
-            longitude,
-            eventDate,
-            source);
-
-        events.add(event);
+        // Add event dto to imperted events
+        EventImportDTO eventDto = new EventImportDTO(title, description, category, latitude, longitude, eventDate, source.getId());
+        eventsDto.add(eventDto);
       }
     } catch (Exception e) {
       e.printStackTrace(); //TODO Cambiar esto por un método de logging más robusto
     }
-    return events;
+    return eventsDto;
   }
 }

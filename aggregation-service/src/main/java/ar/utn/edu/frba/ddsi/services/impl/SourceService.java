@@ -3,8 +3,8 @@ package ar.utn.edu.frba.ddsi.services.impl;
 import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.source.SourceInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.source.SourceOutputDTO;
-import ar.utn.edu.frba.ddsi.models.entities.source.ISourceClientAdapter;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
+import ar.utn.edu.frba.ddsi.models.entities.source.impl.SourceClient;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceClientRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ISourceService;
@@ -30,13 +30,12 @@ public class SourceService implements ISourceService {
 
     // TODO: Validar que la peticion venga de un modulo-fuente registrado (SEGURIDAD)
 
-    ISourceClientAdapter sourceClient = sourceClientRepository.getById(dto.getSourceClientId());
-    if (sourceClient == null)
-      throw new NotFoundException("Source not found - ID: " + dto.getSourceClientId());
+    SourceClient sourceClient = sourceClientRepository.findById(dto.getSourceClientId())
+        .orElseThrow(() -> new NotFoundException("Source not found - ID: " + dto.getSourceClientId()));
 
     Source source = Source.builder()
         .sourceClient(sourceClient)
-        .inClientId(dto.getInClientId())
+        .originSourceId(dto.getInClientId())
         .type(dto.getType())
         .build();
 

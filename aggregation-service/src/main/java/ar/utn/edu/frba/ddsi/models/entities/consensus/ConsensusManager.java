@@ -6,7 +6,7 @@ import ar.utn.edu.frba.ddsi.models.entities.consensus.impl.SimpleMajorityConsens
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
-import ar.utn.edu.frba.ddsi.models.repositories.impl.SourceRepository;
+import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConsensusManager {
 
-  private final SourceRepository sourceRepository;
+  private final ISourceRepository sourceRepository;
   private final IEventRepository eventRepository;
 
   private final List<IConsensusAlgorithm> consensusAlgorithms;
 
   @Autowired
-  public ConsensusManager(IEventRepository eventRepository, SourceRepository sourceRepository) {
+  public ConsensusManager(IEventRepository eventRepository, ISourceRepository sourceRepository) {
     this.eventRepository = eventRepository;
     this.sourceRepository = sourceRepository;
 
@@ -51,7 +51,7 @@ public class ConsensusManager {
       event.setPassedConsensus(newConsensusList);
     });
 
-    allEvents.forEach(eventRepository::save);
+    eventRepository.saveAll(allEvents);
   }
 
 }

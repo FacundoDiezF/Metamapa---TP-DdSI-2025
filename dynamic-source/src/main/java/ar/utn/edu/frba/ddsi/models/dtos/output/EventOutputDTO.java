@@ -19,6 +19,7 @@ public class EventOutputDTO {
   Double longitude;
   LocalDateTime eventDate;
   LocalDateTime uploadDate;
+  LocalDateTime updateDate;
 
   public static EventOutputDTO from(Event event) {
     EventOutputDTO dto = new EventOutputDTO();
@@ -31,6 +32,7 @@ public class EventOutputDTO {
     dto.setLongitude(event.getLongitude());
     dto.setEventDate(event.getEventDate());
     dto.setUploadDate(event.getUploadDate());
+    dto.setUpdateDate(event.getUpdateDate());
     dto.setOrigin(event.getOrigin()); //TODO: Verificar si esta bien pasar el ENUM
     return dto;
   }

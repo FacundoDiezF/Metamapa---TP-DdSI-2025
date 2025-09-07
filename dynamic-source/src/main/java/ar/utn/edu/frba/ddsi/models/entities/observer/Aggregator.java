@@ -5,13 +5,12 @@ import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.SourceOutputDTO;
 import java.util.List;
 
-import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class Aggregator implements ISubscriber {
 
   private final WebClient clientCallBack;
-  private final Long sourceClientId;
+  private final Long sourceClientId; //TODO: No se va a usar mas el id va a estaral en la url de callback
 
   public Aggregator(String callbackUrl, Long sourceClientId) {
     this.clientCallBack = WebClient
@@ -25,24 +24,20 @@ public class Aggregator implements ISubscriber {
     return new Aggregator(dto.getCallbackUrl(), dto.getSourceClientId());
   }
 
-  public void notifyNewEvent(List<Event> event) {
-    // Convertir cada evento a EventOutputDTO y establecer el sourceClientId
-    List<EventOutputDTO> outputEvents = event.stream()
-        .map(EventOutputDTO::from)
-        .peek(e -> e.setSourceClientId(sourceClientId))
-        .toList();
+  public void notifyNewEvent(List<EventOutputDTO> events) {
+    events.forEach(e -> e.setSourceClientId(sourceClientId)); //TODO: No se va a usar mas el id va a estaral en la url de callback
 
     clientCallBack.post()
         .uri("/events")
-        .bodyValue(outputEvents)
+        .bodyValue(events)
         .retrieve()
         .bodyToMono(Void.class)//? Hay respuesta
         .block();
   }
 
-  public void notifyUpdatedEvent(Event event) {
-    EventOutputDTO outputEvent = EventOutputDTO.from(event);
-    outputEvent.setSourceClientId(sourceClientId);
+  public void notifyUpdatedEvent(EventOutputDTO outputEvent) {
+    outputEvent.setSourceClientId(sourceClientId); //TODO: No se va a usar mas el id va a estaral en la url de callback
+
     clientCallBack.put()
         .uri("/events")
         .bodyValue(List.of(outputEvent)) // El agregador espera una lista
@@ -52,7 +47,8 @@ public class Aggregator implements ISubscriber {
   }
 
   public void notifySource(SourceOutputDTO dto) {
-    dto.setSourceClientId(sourceClientId);
+    dto.setSourceClientId(sourceClientId); //TODO: No se va a usar mas el id va a estaral en la url de callback
+
     clientCallBack.post()
         .uri("/sources")
         .bodyValue(dto)

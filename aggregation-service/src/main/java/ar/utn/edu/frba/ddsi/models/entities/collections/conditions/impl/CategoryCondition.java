@@ -1,10 +1,20 @@
 package ar.utn.edu.frba.ddsi.models.entities.collections.conditions.impl;
 
-import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.ICondition;
+import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.Condition;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.NoArgsConstructor;
 
-public class CategoryCondition implements ICondition {
+@NoArgsConstructor(force = true)
+@Entity
+@DiscriminatorValue("CATEGORY")
+public class CategoryCondition extends Condition {
+  @ManyToOne //TODO Cuando se implemente la deduplicación de Conditions, esto debería ser OneToOne
+  @JoinColumn(name = "category_id")
   private final Category category;
 
   public CategoryCondition(Category category) {
@@ -19,6 +29,6 @@ public class CategoryCondition implements ICondition {
     return conditionCategory.equals(eventCategory);
   }
 
-  // TODO: Se compara la cotegoria a partir del String, es correcto?
+  //?Se compara la cotegoria a partir del String, es correcto?
 
 }
