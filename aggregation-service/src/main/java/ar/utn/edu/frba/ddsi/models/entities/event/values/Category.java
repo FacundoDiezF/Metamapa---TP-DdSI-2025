@@ -1,21 +1,31 @@
 package ar.utn.edu.frba.ddsi.models.entities.event.values;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 
 @Getter
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-@Builder
-@Entity
 @Table(name = "categories")
-
 public class Category {
-    @Setter
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private final String name;
-    //! Faltan cosas
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(name = "name", nullable = false)
+  private final String name;
+
+  public Category(String name) {
+    this.name = name;
+  }
 }
