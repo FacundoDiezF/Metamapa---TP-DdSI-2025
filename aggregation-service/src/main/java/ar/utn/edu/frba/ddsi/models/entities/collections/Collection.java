@@ -5,11 +5,6 @@ import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.Collec
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,6 +18,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,48 +35,50 @@ import lombok.Setter;
 @NoArgsConstructor(force = true)
 @Builder
 @Entity
-@Table(name="collections")
+@Table(name = "collections")
 public class Collection {
 
   @Setter
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name="handler")
+  @Column(name = "handler")
   private String handler;
 
   @Setter
-  @Column(name="title")
+  @Column(name = "title")
   private String title;
 
   @Setter
-  @Column(name="description")
+  @Column(name = "description")
   private String description;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "collection_criteria_id", nullable = false)
-  @NonNull private final CollectionCriteria collectionCriteria;
+  @NonNull
+  private final CollectionCriteria collectionCriteria;
   //TODO: Al crear una Collection, debería fijarme si la CollectionCriteria ya existe para no duplicarla
   //TODO: Al borrar la Collection, si solo ese usa la CollectionCriteria, tambien deberia borrarla
 
   @Setter
   @Enumerated(EnumType.STRING)
-  @Column(name="consensus")
+  @Column(name = "consensus")
   private ConsensusType consensusType;
 
   @ManyToMany
   @JoinTable(
       name = "collections_sources",
       joinColumns = @JoinColumn(name = "collection_id", referencedColumnName = "handler"),
-      inverseJoinColumns = @JoinColumn(name="source_id", referencedColumnName = "id")
+      inverseJoinColumns = @JoinColumn(name = "source_id", referencedColumnName = "id")
   )
-  @NonNull private final List<Source> sources;
+  @NonNull
+  private final List<Source> sources;
 
   @Builder.Default
   @ManyToMany
   @JoinTable(
       name = "collections_events",
       joinColumns = @JoinColumn(name = "collection_id", referencedColumnName = "handler"),
-      inverseJoinColumns = @JoinColumn(name="event_id", referencedColumnName = "id")
+      inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id")
   )
   private final Set<Event> events = new HashSet<>();
 
@@ -118,13 +120,13 @@ public class Collection {
     if (dto.getDescription() != null) this.description = dto.getDescription();
   }
 
-  public void remove(Source source){
+  public void remove(Source source) {
     sources.remove(source);
     events.removeIf(e -> e.getSource().equals(source));
   }
 
-  public void add(Source source){
-      sources.add(source);
+  public void add(Source source) {
+    sources.add(source);
 
   }
 }

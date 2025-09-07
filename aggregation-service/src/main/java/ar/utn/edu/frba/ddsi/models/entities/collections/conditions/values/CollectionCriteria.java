@@ -9,12 +9,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.NoArgsConstructor;
 import java.util.List;
+import lombok.NoArgsConstructor;
+
 @NoArgsConstructor(force = true)
 @Entity
-@Table(name="collection_criterias")
-public class CollectionCriteria implements ICondition{
+@Table(name = "collection_criterias")
+public class CollectionCriteria implements ICondition {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +25,7 @@ public class CollectionCriteria implements ICondition{
   @JoinTable(
       name = "criterias_conditions",
       joinColumns = @JoinColumn(name = "criteria_id", referencedColumnName = "id"),
-      inverseJoinColumns = @JoinColumn(name="condition_id", referencedColumnName = "id")
+      inverseJoinColumns = @JoinColumn(name = "condition_id", referencedColumnName = "id")
   )
   private final List<Condition> conditions;
   //TODO: Al crear un CollectionCriteria, debería fijarme si las condition ya existen para no duplicarlas
