@@ -26,4 +26,10 @@ public class GlobalExceptionHandler {
     ErrorResponse errorResponse = new ErrorResponse("UNAUTHORIZED", ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
   }
+
+  @ExceptionHandler(IllegalStateException.class)
+  public ResponseEntity<ErrorResponse> handleIllegalStateException(RuntimeException ex) {
+    ErrorResponse errorResponse = new ErrorResponse("ILLEGAL_STATE", ex.getMessage());
+    return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+  }
 }

@@ -1,6 +1,5 @@
 package ar.utn.edu.frba.ddsi.models.entities.event;
 
-import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Origin;
 import jakarta.persistence.Column;
@@ -29,7 +28,6 @@ import lombok.Setter;
 @Table(name = "events")
 
 public class Event {
-  @Setter
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -44,29 +42,40 @@ public class Event {
   private final Origin origin = Origin.DYNAMIC;
 
   //-- Description
+  @Setter
   @Column(name = "title", nullable = false)
   private String title;
 
+  @Setter
   @Column(name = "description", nullable = false)
   private String description;
 
+  @Setter
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "category_id", nullable = false)
   private Category category;
 
   //-- Ubicacion
+  @Setter
   @Column(name = "latitude", nullable = false)
   private Double latitude;
 
+  @Setter
   @Column(name = "longitude", nullable = false)
   private Double longitude;
 
   //-- Fechas
+  @Setter
   @Column(name = "eventDate", nullable = false)
   private LocalDateTime eventDate;
 
+  @Setter
   @Column(name = "uploadDate", nullable = false)
   private LocalDateTime uploadDate;
+
+  @Setter
+  @Column(name = "updateDate")
+  private LocalDateTime updateDate;
 
   //From Dynamic
   @Column(name = "contributor", nullable = false)
@@ -82,18 +91,6 @@ public class Event {
   @Column(name = "accepted", nullable = false)
   @Builder.Default
   private boolean accepted = false;
-
-  public void update(EventDTO dto) {
-    this.title = dto.getTitle();
-    this.description = dto.getDescription();
-    this.category = new Category(dto.getCategory()); //TODO: Manejar Categorias
-    this.latitude = dto.getLatitude();
-    this.longitude = dto.getLongitude();
-    this.eventDate = dto.getEventDate();
-
-    //Actualiza fecha de carga a la fecha de modificacion
-    this.uploadDate = LocalDateTime.now();
-  }
 
   public void markAsAccepted() {
     this.accepted = true;

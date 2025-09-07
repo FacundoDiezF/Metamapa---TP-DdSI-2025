@@ -10,13 +10,13 @@ import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionRequest;
 import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionState;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
-import ar.utn.edu.frba.ddsi.services.ISubmissionReviewService;
+import ar.utn.edu.frba.ddsi.services.ISubmissionRequestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SubmissionReviewService implements ISubmissionReviewService {
+public class SubmissionRequestService implements ISubmissionRequestService {
 
   private final ISubmissionRepository submissionRepository;
 
@@ -25,7 +25,7 @@ public class SubmissionReviewService implements ISubmissionReviewService {
   private final Publisher publisher;
 
   @Autowired
-  private SubmissionReviewService(ISubmissionRepository submissionRepository, IEventRepository eventRepository, Publisher publisher){
+  private SubmissionRequestService(ISubmissionRepository submissionRepository, IEventRepository eventRepository, Publisher publisher){
     this.submissionRepository = submissionRepository;
     this.eventRepository = eventRepository;
     this.publisher = publisher;
@@ -33,12 +33,12 @@ public class SubmissionReviewService implements ISubmissionReviewService {
 
 
   @Override
-  public SubmissionRequestOutputDTO evaluate(SubmissionEvaluationDTO submissionEvaluation) {
+  public SubmissionRequestOutputDTO evaluate(Long submissionId, SubmissionEvaluationDTO submissionEvaluation) {
 
     //TODO: Validar si el usuario puede realizar esta peticion
 
-    SubmissionRequest submission = submissionRepository.findById(submissionEvaluation.getSubmissionId())
-        .orElseThrow(() -> new NotFoundException("Submission not found - ID: " + submissionEvaluation.getSubmissionId()));
+    SubmissionRequest submission = submissionRepository.findById(submissionId)
+        .orElseThrow(() -> new NotFoundException("Submission not found - ID: " + submissionId));
 
     if (!submission.isPending()) {
       throw new InvalidStateChangeException("The event has already been evaluated: " + submission.getState());

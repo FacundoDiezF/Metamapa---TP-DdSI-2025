@@ -66,7 +66,9 @@ public class EventService implements IEventService {
 
   @Override
   public EventOutputDTO update(Long eventId, EventDTO dto) {
+
     //TODO: Validar si el usuario puede realizar esta peticion
+
     Event event = eventRepository.findById(eventId)
         .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
 
@@ -76,7 +78,14 @@ public class EventService implements IEventService {
     if (event.getUploadDate().plusDays(7).isBefore(LocalDateTime.now()))
       throw new IllegalStateException("Event editing window has expired. Modifications are no longer allowed");
 
-    event.update(dto);
+    if (dto.getTitle() != null) event.setTitle(dto.getTitle());
+    if (dto.getDescription() != null) event.setDescription(dto.getDescription());
+    if (dto.getCategory() != null) event.setCategory(categoryService.findOrCreate(dto.getCategory()));
+    if (dto.getLatitude() != null) event.setLatitude(dto.getLatitude());
+    if (dto.getLongitude() != null) event.setLongitude(dto.getLongitude());
+    if (dto.getEventDate() != null) event.setEventDate(dto.getEventDate());
+
+    event.setUpdateDate(LocalDateTime.now());
     Event eventSaved = eventRepository.save(event);
 
     if (eventSaved.isAccepted()) {

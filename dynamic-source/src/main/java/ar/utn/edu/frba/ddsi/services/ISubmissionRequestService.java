@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface ISubmissionReviewService {
-  SubmissionRequestOutputDTO evaluate(SubmissionEvaluationDTO submissionEvaluation);
+public interface ISubmissionRequestService {
+  SubmissionRequestOutputDTO evaluate(Long submissionId, SubmissionEvaluationDTO submissionEvaluation);
 
   List<SubmissionRequestOutputDTO> getSubmissionRequests(SubmissionState state);
 }
