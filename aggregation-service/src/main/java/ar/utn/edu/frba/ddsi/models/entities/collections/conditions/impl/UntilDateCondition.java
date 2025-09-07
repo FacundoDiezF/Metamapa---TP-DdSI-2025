@@ -1,11 +1,20 @@
 package ar.utn.edu.frba.ddsi.models.entities.collections.conditions.impl;
 
-import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.ICondition;
+import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.Condition;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
-public class UntilDateCondition implements ICondition {
+@NoArgsConstructor(force = true)
+@Entity
+@DiscriminatorValue("UNTIL_DATE")
+public class UntilDateCondition extends Condition {
 
+  @Column(name = "until_date")
   final LocalDateTime to;
 
   public UntilDateCondition(LocalDateTime to) {

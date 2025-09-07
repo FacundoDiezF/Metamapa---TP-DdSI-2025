@@ -11,7 +11,7 @@ public enum ConditionType {
 
   CATEGORY {
     @Override
-    public ICondition toCondition(String conditionValue) {
+    public Condition toCondition(String conditionValue) {
 
       Category category = new Category(conditionValue);
       return new CategoryCondition(category);
@@ -20,7 +20,7 @@ public enum ConditionType {
 
   TITLE {
     @Override
-    public ICondition toCondition(String conditionValue) {
+    public Condition toCondition(String conditionValue) {
 
       return new TitleCondition(conditionValue);
     }
@@ -28,7 +28,7 @@ public enum ConditionType {
 
   FROM_DATE {
     @Override
-    public ICondition toCondition(String conditionValue) {
+    public Condition toCondition(String conditionValue) {
 
       return new FromDateCondition(LocalDateTime.parse(conditionValue));
     }
@@ -36,11 +36,11 @@ public enum ConditionType {
 
   TO_DATE {
     @Override
-    public ICondition toCondition(String conditionValue) {
+    public Condition toCondition(String conditionValue) {
 
       return new UntilDateCondition(LocalDateTime.parse(conditionValue));
     }
   };
 
-  public abstract ICondition toCondition(String conditionValue);
+  public abstract Condition toCondition(String conditionValue);
 }

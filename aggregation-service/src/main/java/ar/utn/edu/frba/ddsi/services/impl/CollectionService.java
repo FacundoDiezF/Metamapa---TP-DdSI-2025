@@ -13,6 +13,7 @@ import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.ICollectionRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
+import ar.utn.edu.frba.ddsi.services.ICollectionCriteriaService;
 import ar.utn.edu.frba.ddsi.services.ICollectionService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,10 +28,13 @@ public class CollectionService implements ICollectionService {
 
   ISourceRepository sourceRepository;
 
+  ICollectionCriteriaService collectionCriteriaService;
+
   @Autowired
-  public CollectionService(ISourceRepository sourceRepository, ICollectionRepository collectionRepository) {
-    this.sourceRepository = sourceRepository;
+  public CollectionService(ICollectionRepository collectionRepository, ISourceRepository sourceRepository, ICollectionCriteriaService collectionCriteriaService) {
     this.collectionRepository = collectionRepository;
+    this.sourceRepository = sourceRepository;
+    this.collectionCriteriaService = collectionCriteriaService;
   }
 
   @Override
@@ -42,7 +46,8 @@ public class CollectionService implements ICollectionService {
     //TODO: validar que todas las fuentes solicitadas existan, tirar error en caso contrario
 
     //Construct CollectionCriteria from DTO
-    CollectionCriteria collectionCriteria = CollectionCriteria.from(collectionDto.getConditions());
+    ////CollectionCriteria collectionCriteria = CollectionCriteria.from(collectionDto.getConditions());
+    CollectionCriteria collectionCriteria = collectionCriteriaService.findOrCreate(collectionDto.getConditions());
 
     // Construct Collection
     Collection collection = Collection.builder()
@@ -53,15 +58,10 @@ public class CollectionService implements ICollectionService {
         .consensusType(collectionDto.getConsensusType())
         .build();
 
-    if (collection.getHandler() == null) { //!Esto NO debería ir acá y ya de por sí está mal utilizar el handler como PK
-      String handler = collection.getTitle().replaceAll(" ", "_");
-      collection.setHandler(handler);
-
       //Refresh collection to populate events
       collection.refresh(null);
 
       collectionRepository.save(collection);
-    }
   }
 
   @Override
