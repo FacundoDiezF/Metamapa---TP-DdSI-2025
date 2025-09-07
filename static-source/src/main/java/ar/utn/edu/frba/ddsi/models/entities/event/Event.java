@@ -28,7 +28,6 @@ import lombok.Setter;
 @Table(name = "events")
 public class Event {
 
-  @Setter
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -66,26 +65,6 @@ public class Event {
   @Builder.Default
   @Column(name = "deleted", nullable = false)
   private boolean deleted = false;
-
-  //* :)
-
-  public Event(String title,
-               String description,
-               Category category,
-               Double latitude,
-               Double longitude,
-               LocalDateTime eventDate,
-               Source source) {
-    this.title = title;
-    this.description = description;
-    this.category = category;
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.eventDate = eventDate;
-    this.uploadDate = LocalDateTime.now();
-    this.source = source;
-    this.deleted = false;
-  }
 
   public Origin getOrigin() {
     return this.source.getType();

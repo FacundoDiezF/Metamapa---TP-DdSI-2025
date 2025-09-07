@@ -1,7 +1,7 @@
 package ar.utn.edu.frba.ddsi.models.entities.source;
 
 import ar.utn.edu.frba.ddsi.converters.ImporterConverter;
-import ar.utn.edu.frba.ddsi.models.entities.event.Event;
+import ar.utn.edu.frba.ddsi.models.dtos.input.EventImportDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Origin;
 import java.util.Set;
 
@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
@@ -27,8 +26,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "sources")
 public class Source{
-
-  @Setter
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -49,7 +46,7 @@ public class Source{
     this.type = Origin.STATIC;
   }
 
-  public Set<Event> importEvents() {
+  public Set<EventImportDTO> importEvents() {
     return this.importer.importEvents(this);
   }
 }
