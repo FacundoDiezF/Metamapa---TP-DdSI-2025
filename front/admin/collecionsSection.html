@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MetaMapa — Gestión de Colecciones</title>
+
+  <!-- Base compartida -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Tokens + navbar + iconos -->
+  <link rel="stylesheet" href="../shared/tokens.css" />
+  <link rel="stylesheet" href="../shared/nav.css" />
+  <link rel="stylesheet" href="../shared/icons.css" />
+
+  <!-- Estilos del panel -->
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- Header global (reutilizado) -->
+  <header class="navbar">
+    <div class="brand">
+      <div class="brand-mark"><span class="dot"></span></div>
+      <span class="brand-name">MetaMapa</span>
+    </div>
+    <div class="auth-actions">
+      <button class="account-btn" type="button">Administrador</button>
+      <a class="btn-outline" >Mi Cuenta</a>
+    </div>
+  </header>
+
+  <!-- Subnav (reutilizado) -->
+  <nav class="subnav">
+    <a href="../Index/index.html">Explorar</a>
+    <a href="../Collections/collections.html">Colecciones</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="admin.html" class="active">Panel de Control</a>
+  </nav>
+
+  <!-- Layout del panel -->
+  <main class="admin-layout">
+    <!-- Sidebar izquierda -->
+    <aside class="admin-sidebar">
+      <h3>Panel de Administración</h3>
+      <ul class="admin-menu">
+        <li><a href="admin.html">Resumen</a></li>
+        <li><a class="is-active" href="collections.html">Colecciones</a></li>
+        <li><a href="#">Fuentes</a></li>
+        <li><a href="#">Moderación</a></li>
+        <li><a href="#">Importar CSV</a></li>
+      </ul>
+    </aside>
+
+    <!-- Contenido -->
+    <section class="admin-content">
+      <!-- Barra de título + acción principal -->
+<header class="page-head">
+  <div>
+    <h1>Gestión de Colecciones</h1>
+    <p class="muted">Administra las colecciones de hechos y su configuración</p>
+  </div>
+
+  <div class="page-actions">
+    <button class="btn btn-primary btn-sm">
+      <img src="../shared/assets/Icons/plus.svg" alt="" aria-hidden="true" class="icon" />
+      Nueva Colección
+    </button>
+  </div>
+</header>
+
+
+      <!-- Lista de colecciones -->
+      <section class="collections-list">
+
+        <!-- Card 1 -->
+<article class="collection-card">
+  <!-- Encabezado -->
+  <div class="card-head">
+    <div class="title-wrap">
+      <h3 class="card-title">Incendios Forestales 2024</h3>
+      <span class="badge badge-good">Activa</span>
+    </div>
+
+    <div class="action-pills">
+      <button class="pill" aria-label="Ver">
+        <img src="../shared/assets/Icons/eye.svg" alt="">
+      </button>
+      <button class="pill" aria-label="Editar">
+        <img src="../shared/assets/Icons/edit.svg" alt="">
+      </button>
+      <button class="pill" aria-label="Eliminar">
+        <img src="../shared/assets/Icons/trash.svg" alt="">
+      </button>
+    </div>
+  </div>
+
+  <!-- Descripción -->
+  <p class="summary">
+    Registro de incendios forestales ocurridos durante el año 2024 en Argentina
+  </p>
+
+  <!-- Metadatos -->
+  <div class="meta-row">
+    <span class="meta-item">
+      <img src="../shared/assets/Icons/location-pin-svgrepo-com.svg" alt="">156 hechos
+    </span>
+    <span class="meta-item">
+      <img src="../shared/assets/Icons/calendar-lines-alt-svgrepo-com.svg" alt="">Actualizado: 2024-03-10
+    </span>
+  </div>
+</article>
+
+
+        <!-- Card 2 -->
+<article class="collection-card">
+  <!-- Encabezado -->
+  <div class="card-head">
+    <div class="title-wrap">
+      <h3 class="card-title">Contaminación Hídrica</h3>
+      <span class="badge badge-good">Activa</span>
+    </div>
+
+    <div class="action-pills">
+      <button class="pill" aria-label="Ver">
+        <img src="../shared/assets/Icons/eye.svg" alt="">
+      </button>
+      <button class="pill" aria-label="Editar">
+        <img src="../shared/assets/Icons/edit.svg" alt="">
+      </button>
+      <button class="pill" aria-label="Eliminar">
+        <img src="../shared/assets/Icons/trash.svg" alt="">
+      </button>
+    </div>
+  </div>
+
+  <!-- Descripción -->
+  <p class="summary">
+    Casos documentados de contaminación en ríos y lagos
+  </p>
+
+  <!-- Metadatos -->
+  <div class="meta-row">
+    <span class="meta-item">
+      <img src="../shared/assets/Icons/location-pin-svgrepo-com.svg" alt="">89 hechos
+    </span>
+    <span class="meta-item">
+      <img src="../shared/assets/Icons/calendar-lines-alt-svgrepo-com.svg" alt="">Actualizado: 2024-03-08
+    </span>
+  </div>
+</article>
+
+
+      </section>
+    </section>
+  </main>
+</body>
+</html>
