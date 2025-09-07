@@ -1,12 +1,7 @@
 package ar.utn.edu.frba.ddsi.models.entities.event.values;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
@@ -14,8 +9,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "categories")
+
 public class Category {
-  @Id
-  private final String name;
-  //! Faltan cosas
+    @Setter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private final String name;
+    //! Faltan cosas
 }

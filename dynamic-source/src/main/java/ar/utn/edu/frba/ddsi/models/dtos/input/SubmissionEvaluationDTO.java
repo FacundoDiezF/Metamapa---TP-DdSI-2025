@@ -5,8 +5,6 @@ import lombok.Data;
 
 @Data
 public class SubmissionEvaluationDTO {
-
-  Long submissionId;
   String reviewer; //TODO: Esto deberia ser un usuario
   SubmissionState state;
   String suggestion;

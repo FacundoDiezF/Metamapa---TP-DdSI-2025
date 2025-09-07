@@ -1,12 +1,23 @@
 package ar.utn.edu.frba.ddsi.models.entities.event.values;
 
-import lombok.Getter;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Getter
-public class Category {
-  private final String name;
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
+@Builder
+@Entity
+@Table(name = "categories")
 
-  public Category(String name) {
+public class Category{
+    @Setter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private final String name;
+    public Category(String name) {
     this.name = name;
   }
 }

@@ -1,15 +1,15 @@
 package ar.utn.edu.frba.ddsi.models.entities.observer;
 
+import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
-import org.springframework.stereotype.Component;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.springframework.stereotype.Component;
 
 @Component
 public class Publisher {
-  Set<ISubscriber> subscribers;
+  private final Set<ISubscriber> subscribers;
 
   public Publisher() {
     this.subscribers = new HashSet<>();
@@ -19,19 +19,15 @@ public class Publisher {
     subscribers.add(subscriber);
   }
 
-  public void unsubscribe(ISubscriber subscriber) {
-    subscribers.remove(subscriber);
-  }
-
   public void notifyNewEvent(Event event) {
     for (ISubscriber subscriber : subscribers) {
-      subscriber.notifyNewEvent(List.of(event));
+      subscriber.notifyNewEvent(List.of(EventOutputDTO.from(event)));
     }
   }
 
   public void notifyUpdatedEvent(Event event) {
     for (ISubscriber subscriber : subscribers) {
-      subscriber.notifyUpdatedEvent(event);
+      subscriber.notifyUpdatedEvent(EventOutputDTO.from(event));
     }
   }
 }

@@ -1,96 +1,102 @@
 package ar.utn.edu.frba.ddsi.models.entities.event;
 
-import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Origin;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
-public class Event {
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
+@Builder
+@Entity
+@Table(name = "events")
 
-  //-- Identificador
-  @Setter
+public class Event {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private final Long sourceId;
-  private final Origin origin;
+
+  @Column(name = "source_id", nullable = false)
+  @Builder.Default
+  private final Long sourceId = 1L; // En dinamic siempre es 1
+
+  @Column(name = "origin", nullable = false) //TODO revisar esta columba
+  @Enumerated(EnumType.STRING)
+  @Builder.Default
+  private final Origin origin = Origin.DYNAMIC;
 
   //-- Description
+  @Setter
+  @Column(name = "title", nullable = false)
   private String title;
+
+  @Setter
+  @Column(name = "description", nullable = false)
   private String description;
+
+  @Setter
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id", nullable = false)
   private Category category;
 
   //-- Ubicacion
+  @Setter
+  @Column(name = "latitude", nullable = false)
   private Double latitude;
+
+  @Setter
+  @Column(name = "longitude", nullable = false)
   private Double longitude;
 
   //-- Fechas
+  @Setter
+  @Column(name = "eventDate", nullable = false)
   private LocalDateTime eventDate;
+
+  @Setter
+  @Column(name = "uploadDate", nullable = false)
   private LocalDateTime uploadDate;
 
+  @Setter
+  @Column(name = "updateDate")
+  private LocalDateTime updateDate;
+
   //From Dynamic
+  @Column(name = "contributor", nullable = false)
   private final String contributor; //TODO: Esto deberia ser un usuario
 
   //-- Extras
   @Setter
-  private boolean deleted;
+  @Column(name = "deleted", nullable = false)
+  @Builder.Default
+  private boolean deleted = false;
+
   @Setter
-  private boolean accepted;
-
-  public static Event from(EventDTO dto) {
-    return new Event(
-        1L, //En la dinámica el sourceId es siempre el mismo puesto que no existen Sources. Esto permite respetar el formato del agregador
-        dto.getTitle(),
-        dto.getDescription(),
-        new Category(dto.getCategory()), //TODO: Manejar Categorias
-        dto.getLatitude(),
-        dto.getLongitude(),
-        dto.getEventDate(),
-        Origin.DYNAMIC,
-        dto.getContributor()
-    );
-  }
-
-  public Event(Long sourceId,
-               String title,
-               String description,
-               Category category,
-               Double latitude,
-               Double longitude,
-               LocalDateTime eventDate,
-               Origin origin,
-               String contributor) {
-    this.sourceId = sourceId;
-    this.title = title;
-    this.description = description;
-    this.category = category;
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.eventDate = eventDate;
-    this.contributor = contributor;
-    this.uploadDate = LocalDateTime.now();
-    this.origin = origin;
-    this.deleted = false;
-  }
-
-  public void update(EventDTO dto) {
-    this.title = dto.getTitle();
-    this.description = dto.getDescription();
-    this.category = new Category(dto.getCategory()); //TODO: Manejar Categorias
-    this.latitude = dto.getLatitude();
-    this.longitude = dto.getLongitude();
-    this.eventDate = dto.getEventDate();
-
-    //Actualiza fecha de carga a la fecha de modificacion
-    this.uploadDate = LocalDateTime.now();
-  }
+  @Column(name = "accepted", nullable = false)
+  @Builder.Default
+  private boolean accepted = false;
 
   public void markAsAccepted() {
     this.accepted = true;
     this.uploadDate = LocalDateTime.now();
   }
+
   public void markAsDeleted() {
     this.deleted = true;
   }
