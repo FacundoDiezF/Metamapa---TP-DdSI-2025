@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sources")
 public class SourceController {
 
-  ISourceService sourceService;
+  private final ISourceService sourceService;
 
   @Autowired
   public SourceController(ISourceService sourceService) {

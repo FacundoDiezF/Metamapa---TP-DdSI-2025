@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/source-clients")
 public class SourceClientController {
 
-  ISourceClientService sourceClientService;
+  private final ISourceClientService sourceClientService;
 
   public SourceClientController(ISourceClientService sourceClientService) {
     this.sourceClientService = sourceClientService;

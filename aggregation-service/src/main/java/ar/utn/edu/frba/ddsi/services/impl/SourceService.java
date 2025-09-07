@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SourceService implements ISourceService {
 
-  ISourceClientRepository sourceClientRepository;
+  private final ISourceClientRepository sourceClientRepository;
 
-  ISourceRepository sourceRepository;
+  private final ISourceRepository sourceRepository;
 
   @Autowired
   public SourceService(ISourceClientRepository sourceClientRepository, ISourceRepository sourceRepository) {

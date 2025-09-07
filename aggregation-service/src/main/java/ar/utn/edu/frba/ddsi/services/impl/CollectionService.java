@@ -24,11 +24,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CollectionService implements ICollectionService {
 
-  ICollectionRepository collectionRepository;
+  private final ICollectionRepository collectionRepository;
 
-  ISourceRepository sourceRepository;
+  private final ISourceRepository sourceRepository;
 
-  ICollectionCriteriaService collectionCriteriaService;
+  private final ICollectionCriteriaService collectionCriteriaService;
 
   @Autowired
   public CollectionService(ICollectionRepository collectionRepository, ISourceRepository sourceRepository, ICollectionCriteriaService collectionCriteriaService) {

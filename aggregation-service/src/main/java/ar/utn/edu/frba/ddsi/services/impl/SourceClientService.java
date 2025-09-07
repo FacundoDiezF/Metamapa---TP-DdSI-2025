@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SourceClientService implements ISourceClientService {
 
-  ISourceClientRepository sourceClientRepository;
+  private final ISourceClientRepository sourceClientRepository;
 
   @Value("${aggregation-service.url}")
   String callbackUrl;

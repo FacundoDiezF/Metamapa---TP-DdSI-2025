@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class ConditionService implements IConditionService {
 
-  IConditionRepository conditionRepository;
+  private final IConditionRepository conditionRepository;
 
   public ConditionService(IConditionRepository conditionRepository) {
     this.conditionRepository = conditionRepository;
