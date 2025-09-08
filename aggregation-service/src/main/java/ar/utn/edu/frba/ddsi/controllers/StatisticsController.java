@@ -30,19 +30,4 @@ public class StatisticsController {
     return statisticsService.findProvinceBy(by, id, order, count);
   }
 
-//  //* "/province?order=desc&count=1&by=category&id=1"
-//  //* "/categories?order=desc&count=1"
-//
-//  @GetMapping("/top-category")
-//  public String
-//
-//  @GetMapping("/categories/{categoryId}/top-province")
-//
-//  public String getProvinceWithMostEventsByCategory() {
-//
-//  }
-//
-//  @GetMapping("/categories/{categoryId}/peak-hour")
-//
-//  @GetMapping("/deletion-requests/spam/count")
 }

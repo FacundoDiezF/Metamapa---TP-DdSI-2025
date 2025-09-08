@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface IProvinceRepository extends JpaRepository<Province,String> {
-  List<Province> findProvinceBy(String by, String id, String order, Integer count);
+  //List<Province> findProvinceBy(String by, String id, String order, Integer count);
 }

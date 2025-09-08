@@ -2,6 +2,7 @@ package ar.utn.edu.frba.ddsi.models.entities.source;
 
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.Location.Location;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -86,8 +87,7 @@ public class Source {
               .title(dto.getTitle())
               .description(dto.getDescription())
               .category(new Category(dto.getCategory()))
-              .latitude(dto.getLatitude())
-              .longitude(dto.getLongitude())
+              .location(new Location(dto.getLatitude(), dto.getLongitude(), null)) //TODO: IMPORTANTE VER COMO SE VAN A CUMUNICAR LAS LOCATION ACTUALMENTE ESTA HARDCODEADO
               .eventDate(dto.getEventDate())
               .uploadDate(dto.getUploadDate())
               .source(this)
