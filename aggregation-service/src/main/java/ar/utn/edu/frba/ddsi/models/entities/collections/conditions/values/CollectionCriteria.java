@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(force = true)
 @Entity
 @Table(name = "collection_criterias")
-public class CollectionCriteria implements ICondition {
+public class CollectionCriteria {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,6 @@ public class CollectionCriteria implements ICondition {
     this.conditions = conditions;
   }
 
-  @Override
   public boolean isSatisfiedBy(Event event) {
     return conditions.stream().allMatch(condition -> condition.isSatisfiedBy(event));
   }
