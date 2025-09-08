@@ -42,25 +42,62 @@
 
   <!-- Layout del panel -->
   <main class="admin-layout">
-    <!-- Sidebar izquierda -->
-    <aside class="admin-sidebar">
-      <h3>Panel de Administración</h3>
-      <ul class="admin-menu">
-        <li><a href="admin.html">Resumen</a></li>
-        <li><a class="is-active" href="collections.html">Colecciones</a></li>
-        <li><a href="#">Fuentes</a></li>
-        <li><a href="#">Moderación</a></li>
-        <li><a href="#">Importar CSV</a></li>
-      </ul>
-    </aside>
+ <!-- Lateral -->
+        <aside class="admin-sidebar">
+            <h3>Panel de Administración</h3>
+            <nav class="admin-menu" class="nav-link">
+                <a href="admin.html" >
+                    <span class="nav-icon">
+                        <img src="../shared/assets/Icons/stats1-svgrepo-com.svg" alt="Resumen">
+                    </span>
+                    <span class="nav-label">Resumen</span>
+                </a>
+
+                <a href="collecionsSection.html" class="nav-link is-active">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/Group.svg" alt="Colecciones">
+                    </span>
+                    <span class="nav-label">Colecciones</span>
+                </a>
+
+                <a href="sources.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/material-symbols_database-outline.svg" alt="Fuentes">
+                    </span>
+                    <span class="nav-label">Fuentes</span>
+                </a>
+
+                <a href="delete-requests.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg"
+                            alt="Solicitudes de Eliminación">
+                    </span>
+                    <span class="nav-label">Solicitudes de Eliminación</span>
+                </a>
+
+                <a href="admin-hechos.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/sand-clock-svgrepo-com.svg" alt="Hechos pendientes">
+                    </span>
+                    <span class="nav-label">Hechos pendientes</span>
+                </a>
+
+                <a href="import-csv.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/uil_import.svg" alt="Importar CSV">
+                    </span>
+                    <span class="nav-label">Importar CSV</span>
+                </a>
+            </nav>
+        </aside>
 
     <!-- Contenido -->
     <section class="admin-content">
       <!-- Barra de título + acción principal -->
 <header class="page-head">
-  <div>
-    <h1>Gestión de Colecciones</h1>
-    <p class="muted">Administra las colecciones de hechos y su configuración</p>
+  <div class="page-head-text">
+    <h1 class="page-title">Colecciones</h1>
+    <p class="page-subtitle">Conjuntos de hechos organizados con un título y descripción</p>
   </div>
 
   <div class="page-actions">
