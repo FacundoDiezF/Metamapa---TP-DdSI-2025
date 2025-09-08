@@ -1,0 +1,8 @@
+server.port=8082
+
+# NaturalDisastersAPI Configuration
+natural-disasters.api.base-url=https://api-ddsi.disilab.ar/public
+natural-disasters.api.credentials.email=
+natural-disasters.api.credentials.password=
+thread.count=4
+event.notify.cron=0 0 * * * *
