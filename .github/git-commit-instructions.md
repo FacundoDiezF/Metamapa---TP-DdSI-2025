@@ -1,26 +1,34 @@
-# Git Commit message Instructions
+# Instrucciones para mensajes de commit en Git
 
-Quiero que sigas las siguientes instrucciones para escribir mensajes de commit en Git:
+Por favor, genera mensajes de commit siguiendo estas reglas:
 
-1. **Usa en el titulo el siguiente formato**:
-   feat: (new feature for the user, not a new feature for build script)
-   fix: (bug fix for the user, not a fix to a build script)
-   docs: (changes to the documentation)
-   style: (formatting, missing semi colons, etc; no production code change)
-   refactor: (refactoring production code, eg. renaming a variable)
-   test: (adding missing tests, refactoring tests; no production code change)
-   chore: (updating grunt tasks etc; no production code change)
-2. **Usa el modo imperativo**: Escribe el mensaje como si estuvieras dando una orden, por ejemplo, "Añadir nueva
-   funcionalidad" en lugar de "Añadido nueva funcionalidad".
-3. **Sé breve y claro**: El mensaje debe ser conciso y directo. Evita detalles innecesarios.
-4. El titulo del commit debe tener un máximo de 50 caracteres.
-5. El titulo del commit debe expresar claramente el propósito del cambio realizado.
-6. Agrega items describiendo los cambios realizados en el cuerpo del commit, separados por saltos de línea.
+## Formato del título
+- Usa el estándar [Conventional Commits](https://www.conventionalcommits.org/):
+   - `feat:` → nueva funcionalidad visible para el usuario.
+   - `fix:` → corrección de errores visible para el usuario.
+   - `docs:` → cambios en documentación.
+   - `style:` → cambios de formato, sin modificar la lógica (espacios, punto y coma, etc.).
+   - `refactor:` → refactorización de código, sin cambio en la funcionalidad.
+   - `test:` → agregar o modificar pruebas, sin afectar el código productivo.
+   - `chore:` → tareas de mantenimiento, configuración, dependencias, etc.
 
-7. Al final del commit, agregar a las siguientes personas para que se vean en el commit de github:
-   Co-authored-By: Valentín Rodrigo Osa Pochelú <valenosa@users.noreply.github.com>
-   Co-authored-By: Mateo Nicolás Hernandez <mateonhernandez@frba.utn.edu.ar>
-   Co-authored-By: Lucas Nahuel Devecchi Di Bella <ldevecchi@frba.utn.edu.ar>
-   Co-authored-By: Facundo Diez Forradellas <FacundoDiezF@users.noreply.github.com>
-   Co-authored-By: Lautaro Dario Cicala Fontao <lcicalafontao@frba.utn.edu.ar>
-8. El commit debe ser escrito en español.
+## Estilo de escritura
+- Usa **modo imperativo** (ejemplo: "Agregar validación" en vez de "Agregado").
+- El título debe ser **claro y breve**, máximo **50 caracteres**.
+- Explica el propósito principal del cambio en el título.
+
+## Cuerpo del commit
+- Usa viñetas para listar los cambios relevantes.
+- Sé conciso pero informativo, sin repetir el título.
+- Separa el cuerpo del título con una línea en blanco.
+
+## Co-autores
+Siempre agrega esta sección al final del commit:  
+Co-authored-by: Valentín Rodrigo Osa Pochelú <valenosa@users.noreply.github.com>
+Co-authored-by: Mateo Nicolás Hernandez <mateonhernandez@frba.utn.edu.ar>
+Co-authored-by: Lucas Nahuel Devecchi Di Bella <ldevecchi@frba.utn.edu.ar>
+Co-authored-by: Facundo Diez Forradellas <FacundoDiezF@users.noreply.github.com>
+Co-authored-by: Lautaro Dario Cicala Fontao <lcicalafontao@frba.utn.edu.ar>
+
+## Idioma
+- Todo el commit debe escribirse en **español**. 
