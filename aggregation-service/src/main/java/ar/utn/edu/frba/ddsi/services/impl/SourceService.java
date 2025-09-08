@@ -4,7 +4,7 @@ import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.source.SourceInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.source.SourceOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
-import ar.utn.edu.frba.ddsi.models.entities.source.impl.SourceClient;
+import ar.utn.edu.frba.ddsi.models.entities.source.SourceClient;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceClientRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ISourceService;

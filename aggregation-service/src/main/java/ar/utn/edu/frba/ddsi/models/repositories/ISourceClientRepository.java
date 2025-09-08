@@ -1,6 +1,6 @@
 package ar.utn.edu.frba.ddsi.models.repositories;
 
-import ar.utn.edu.frba.ddsi.models.entities.source.impl.SourceClient;
+import ar.utn.edu.frba.ddsi.models.entities.source.SourceClient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
