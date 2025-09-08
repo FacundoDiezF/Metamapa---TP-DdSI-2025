@@ -1,0 +1,8 @@
+package ar.utn.edu.frba.ddsi.services;
+
+import java.util.List;
+
+public interface IStatisticsService {
+
+  List<String> findProvinceBy(String id, String handler, String order, Integer count);
+}
