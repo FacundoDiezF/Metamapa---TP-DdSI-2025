@@ -4,6 +4,7 @@ import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -38,5 +39,5 @@ public interface IEventRepository extends JpaRepository<Event, Long> {
       AND e.source.originSourceId = :originSourceId
       AND e.originEventId = :originEventId
     """)
-  Event findByExternalIds(Long sourceClientId, Long originSourceId, Long originEventId);
+  Optional<Event> findByExternalIds(Long sourceClientId, Long originSourceId, Long originEventId);
 }

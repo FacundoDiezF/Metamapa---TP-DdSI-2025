@@ -3,10 +3,12 @@ package ar.utn.edu.frba.ddsi.models.entities.event;
 import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.Location.Location;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -58,11 +60,8 @@ public class Event {
   @JoinColumn(name = "category_id", nullable = false)
   private Category category;
 
-  @Column(name = "latitude", nullable = false)
-  private Double latitude;
-
-  @Column(name = "longitude", nullable = false)
-  private Double longitude;
+  @Embedded
+  private Location location;
 
   @Column(name = "event_date", nullable = false)
   private LocalDateTime eventDate;
@@ -90,8 +89,8 @@ public class Event {
     if (dto.getTitle() != null) this.title = dto.getTitle();
     if (dto.getDescription() != null) this.description = dto.getDescription();
     if (category != null) this.category = category;
-    if (dto.getLatitude() != null) this.latitude = dto.getLatitude();
-    if (dto.getLongitude() != null) this.longitude = dto.getLongitude();
+    if (dto.getLatitude() != null) this.location.setLatitude(dto.getLatitude());
+    if (dto.getLongitude() != null) this.location.setLongitude(dto.getLongitude());
     if (dto.getEventDate() != null) this.eventDate = dto.getEventDate();
   }
 
@@ -106,8 +105,8 @@ public class Event {
     return Objects.equals(this.title, other.title)
         && Objects.equals(this.description, other.description)
         //&& Objects.equals(this.category, other.category) //TODO: Cuando tengamos el repo lo descomentamos
-        && Objects.equals(this.latitude, other.latitude)
-        && Objects.equals(this.longitude, other.longitude)
+        && Objects.equals(this.location.getLatitude(), other.location.getLatitude())
+        && Objects.equals(this.location.getLongitude(), other.location.getLongitude())
         && Objects.equals(this.eventDate, other.eventDate);
   }
 
