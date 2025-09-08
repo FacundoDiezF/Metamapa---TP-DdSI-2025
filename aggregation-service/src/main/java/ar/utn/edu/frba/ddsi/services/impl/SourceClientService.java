@@ -2,7 +2,7 @@ package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.source.SourceClientInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.source.SourceClientOutputDTO;
-import ar.utn.edu.frba.ddsi.models.entities.source.impl.SourceClient;
+import ar.utn.edu.frba.ddsi.models.entities.source.SourceClient;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceClientRepository;
 import ar.utn.edu.frba.ddsi.services.ISourceClientService;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SourceClientService implements ISourceClientService {
 
-  ISourceClientRepository sourceClientRepository;
+  private final ISourceClientRepository sourceClientRepository;
 
   @Value("${aggregation-service.url}")
   String callbackUrl;

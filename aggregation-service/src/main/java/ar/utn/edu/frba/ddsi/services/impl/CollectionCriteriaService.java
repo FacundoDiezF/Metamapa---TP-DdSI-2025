@@ -12,9 +12,10 @@ import java.util.List;
 
 @Service
 public class CollectionCriteriaService implements ICollectionCriteriaService {
-  ICollectionCriteriaRepository collectionCriteriaRepository;
 
-  IConditionService conditionService;
+  private final ICollectionCriteriaRepository collectionCriteriaRepository;
+
+  private final IConditionService conditionService;
 
   public CollectionCriteriaService(ICollectionCriteriaRepository collectionCriteriaRepository, IConditionService conditionService) {
     this.collectionCriteriaRepository = collectionCriteriaRepository;

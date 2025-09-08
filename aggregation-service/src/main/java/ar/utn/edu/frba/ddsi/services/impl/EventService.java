@@ -8,7 +8,7 @@ import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
-import ar.utn.edu.frba.ddsi.models.repositories.ICategoryRepository;
+import ar.utn.edu.frba.ddsi.services.ICategoryService;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,19 +18,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventService implements IEventService {
 
-  IEventRepository eventRepository;
+  private final IEventRepository eventRepository;
 
-  ISourceRepository sourceRepository;
+  private final ISourceRepository sourceRepository;
 
-  ICategoryRepository categoryRepository;
+  private final ICategoryService categoryService;
 
   @Autowired
-  public EventService(IEventRepository eventRepository, ISourceRepository sourceRepository, ICategoryRepository categoryRepository) {
+  public EventService(IEventRepository eventRepository, ISourceRepository sourceRepository, ICategoryService categoryService) {
     this.eventRepository = eventRepository;
     this.sourceRepository = sourceRepository;
-    this.categoryRepository = categoryRepository;
+    this.categoryService = categoryService;
   }
-
 
   @Override
   public List<EventOutputDTO> getEvents(
@@ -62,15 +61,7 @@ public class EventService implements IEventService {
       throw new NotFoundException("Source not found for SourceClientId: " + dto.getSourceClientId() + " and sourceId: " + dto.getSourceId());
     }
 
-    Category category = Category // TODO: Deberiamos tener un repo y tomarla en base al "nombre"
-        .builder()
-        .name(dto.getCategory())
-        .build();
-
-    categoryRepository.save(category);
-    //TODO Gguardar la category antes de persistir el event, porque sino trata de guardar algo que no existe y crashea
-
-
+    Category category = categoryService.findOrCreate(dto.getCategory());
 
     //Create event
     Event event = Event.builder()
@@ -83,12 +74,12 @@ public class EventService implements IEventService {
         .eventDate(dto.getEventDate())
         .uploadDate(dto.getUploadDate())
         .source(source)
-        .originEventId(dto.getId())
         .build();
 
     source.addEvent(event);
+
     sourceRepository.save(source);
-    eventRepository.save(event);
+    eventRepository.save(event); //? Manejar cascade
   }
 
   private void update(EventInputDTO dto) {
@@ -97,10 +88,7 @@ public class EventService implements IEventService {
     if (event == null)
       throw new NotFoundException("Event not found for SourceClientId: " + dto.getSourceClientId() + ", sourceId: " + dto.getSourceId() + " and eventId: " + dto.getId());
 
-    Category category = Category // TODO: Deberíamos tener un repo y tomarla en base al "nombre"
-        .builder()
-        .name(dto.getCategory())
-        .build();
+    Category category = categoryService.findOrCreate(dto.getCategory());
 
     event.update(dto, category);
 

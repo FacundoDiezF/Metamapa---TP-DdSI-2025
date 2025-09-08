@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CollectionRefreshScheduler {
 
-  ICollectionService collectionService;
+  private final  ICollectionService collectionService;
 
-  LocalDateTime lastUpdate = LocalDateTime.now();
+  private LocalDateTime lastUpdate = LocalDateTime.now();
 
   @Autowired
   public CollectionRefreshScheduler(ICollectionService collectionService) {

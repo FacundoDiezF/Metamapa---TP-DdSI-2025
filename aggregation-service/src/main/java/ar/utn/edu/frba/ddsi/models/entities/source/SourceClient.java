@@ -1,13 +1,10 @@
-package ar.utn.edu.frba.ddsi.models.entities.source.impl;
+package ar.utn.edu.frba.ddsi.models.entities.source;
 
 import ar.utn.edu.frba.ddsi.exceptions.SubscriptionException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.input.source.SourceClientInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.source.SubscribeOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
-import ar.utn.edu.frba.ddsi.models.entities.source.ISourceClientAdapter;
-import ar.utn.edu.frba.ddsi.models.entities.source.Source;
-import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PostLoad;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +28,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @NoArgsConstructor(force = true)
 @Entity
 @Table(name = "source_clients")
-public class SourceClient implements ISourceClientAdapter {
+public class SourceClient {
 
   @Setter
   @Id
@@ -65,7 +63,6 @@ public class SourceClient implements ISourceClientAdapter {
 
   //   http://localhost:8080/source-clients/:id
 
-  @Override
   public void subscribe(String callbackUrl) {
     try {
       webClient.post()
@@ -79,7 +76,6 @@ public class SourceClient implements ISourceClientAdapter {
     }
   }
 
-  @Override
   public List<EventInputDTO> fetchEventsBySource(Source source) {
     List<EventInputDTO> eventsDTOs =
         webClient.get()
@@ -94,7 +90,6 @@ public class SourceClient implements ISourceClientAdapter {
     return eventsDTOs;
   }
 
-  @Override
   public void deleteEvent(Event event) {
     try {
       webClient.delete()

@@ -3,7 +3,7 @@ package ar.utn.edu.frba.ddsi.controllers;
 import ar.utn.edu.frba.ddsi.models.dtos.input.deletion_request.DeletionRequestCreationDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.input.deletion_request.DeletionRequestEvaluationDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.deletion_request.DeletionRequestOutputDTO;
-import ar.utn.edu.frba.ddsi.services.impl.DeletionRequestService;
+import ar.utn.edu.frba.ddsi.services.IDeletionRequestService;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/deletion-request")
 public class DeletionRequestController {
 
-  private final DeletionRequestService deletionRequestService;
+  private final IDeletionRequestService deletionRequestService;
 
-  public DeletionRequestController(DeletionRequestService deletionRequestService) {
+  public DeletionRequestController(IDeletionRequestService deletionRequestService) {
     this.deletionRequestService = deletionRequestService;
   }
 

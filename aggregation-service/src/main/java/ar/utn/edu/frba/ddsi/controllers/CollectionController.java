@@ -5,7 +5,7 @@ import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.collection.CollectionOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
-import ar.utn.edu.frba.ddsi.services.impl.CollectionService;
+import ar.utn.edu.frba.ddsi.services.ICollectionService;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/collections")
 public class CollectionController {
 
-  private final CollectionService collectionService;
+  private final ICollectionService collectionService;
 
-  public CollectionController(CollectionService collectionService) {
+  public CollectionController(ICollectionService collectionService) {
     this.collectionService = collectionService;
   }
 
