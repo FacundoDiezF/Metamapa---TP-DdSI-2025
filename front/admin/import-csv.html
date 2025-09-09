@@ -451,10 +451,21 @@
                     </ul>
                 </div>
                 <div class="import-actions">
-                    <a class="btn" href="#" aria-label="Ver detalles">Ver</a>
-                    <a class="btn" href="#" aria-label="Descargar log">Descargar log</a>
-                    <button class="btn danger" type="button" aria-label="Eliminar registro">Eliminar</button>
+                    <a href="#" class="btn ghost">
+                        <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                        Ver
+                    </a>
+                    <a href="#" class="btn ghost">
+                        <img class="icon" src="../shared/assets/icons/download.svg" alt="" aria-hidden="true">
+                        Descargar log
+                    </a>
+                    <button type="button" class="btn danger">
+                        <img class="icon" src="../shared/assets/icons/trash.svg" alt="" aria-hidden="true">
+                        Eliminar
+                    </button>
                 </div>
+
+
             </article>
 
             <!-- Importación EN CURSO -->
@@ -491,8 +502,12 @@
                 </div>
 
                 <div class="import-actions">
-                    <button class="btn danger" type="button">Cancelar</button>
+                    <button type="button" class="btn danger">
+                        <img class="icon" src="../shared/assets/icons/trash.svg" alt="" aria-hidden="true">
+                        Cancelar
+                    </button>
                 </div>
+
             </article>
 
 
@@ -513,7 +528,6 @@
                     <span class="kpi-chip bad" role="listitem">Motivo: delimitador inválido (“;”)</span>
                 </div>
 
-                <!-- 👇 aquí se verá con cajas más chicas y suaves -->
                 <ul class="log-list">
                     <li>Cabecera esperada: <code>título, descripción, categoría, latitud, longitud, fecha</code></li>
                     <li>Se detectó: <code>titulo;descripcion;categoria;latitud;longitud;fecha</code></li>
@@ -521,9 +535,17 @@
 
 
                 <div class="import-actions">
-                    <a class="btn" href="#" aria-label="Ver detalles">Ver</a>
-                    <button class="btn" type="button">Reintentar</button>
+                    <a class="btn ghost" href="#">
+                        <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                        Ver
+                    </a>
+                    <button class="btn success" type="button">
+                        <img class="icon" src="../shared/assets/icons/refresh.svg" alt="" aria-hidden="true">
+                        Reintentar
+                    </button>
                 </div>
+
+
             </article>
 
 
