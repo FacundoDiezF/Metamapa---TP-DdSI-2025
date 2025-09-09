@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
@@ -34,5 +33,14 @@ public class StatisticsController {
       @RequestParam(required = false, defaultValue = "1") Integer count
   ) {
     return statisticsService.findTopCategories(count);
+  }
+
+  @GetMapping("/categories/time")
+  public List<String> getTime(@RequestParam(required = false, defaultValue = "busiest") String order,
+                              @RequestParam(required = false, defaultValue = "hour") String by,
+                              @RequestParam Long id,
+                              @RequestParam(required = false, defaultValue = "1") Integer count
+                              ) {
+    return statisticsService.findTime(by, order, id, count);
   }
 }
