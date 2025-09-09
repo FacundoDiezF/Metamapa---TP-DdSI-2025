@@ -49,7 +49,7 @@ public class EventService implements IEventService {
   @Override
   public void createAll(List<EventInputDTO> dtos) {
     // TODO: Validar que la peticion venga de un modulo-fuente registrado (SEGURIDAD)
-    dtos.forEach(this::create);
+    eventRepository.saveAll(dtos.stream().map(this::buildEventFromDTO).toList()); // TODO: Que se guarde en cascada la source al guardar el evento
   }
 
   @Override
@@ -58,7 +58,19 @@ public class EventService implements IEventService {
     dtos.forEach(this::update);
   }
 
-  private void create(EventInputDTO dto) {
+  private void update(EventInputDTO dto) {
+
+    Event event = eventRepository.findByExternalIds(dto.getSourceClientId(), dto.getSourceId(), dto.getId())
+        .orElseThrow(() -> new NotFoundException("Event not found for SourceClientId: " + dto.getSourceClientId() + " and sourceId: " + dto.getSourceId() + " and eventId: " + dto.getId()));
+
+    Category category = categoryService.findOrCreate(dto.getCategory());
+
+    event.update(dto, category);
+
+    eventRepository.save(event);
+  }
+
+  private Event buildEventFromDTO(EventInputDTO dto) {
 
     // Get event source
     Source source = sourceRepository.findByExternalIds(dto.getSourceClientId(), dto.getSourceId())
@@ -80,21 +92,9 @@ public class EventService implements IEventService {
         .source(source)
         .build();
 
+    //Update source
     source.addEvent(event);
 
-    sourceRepository.save(source);
-    eventRepository.save(event); //? Manejar cascade
-  }
-
-  private void update(EventInputDTO dto) {
-
-    Event event = eventRepository.findByExternalIds(dto.getSourceClientId(), dto.getSourceId(), dto.getId())
-        .orElseThrow(() -> new NotFoundException("Event not found for SourceClientId: " + dto.getSourceClientId() + " and sourceId: " + dto.getSourceId() + " and eventId: " + dto.getId()));
-
-    Category category = categoryService.findOrCreate(dto.getCategory());
-
-    event.update(dto, category);
-
-    eventRepository.save(event);
+    return event;
   }
 }
