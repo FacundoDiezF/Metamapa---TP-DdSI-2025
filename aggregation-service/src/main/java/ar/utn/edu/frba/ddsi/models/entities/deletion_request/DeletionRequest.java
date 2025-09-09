@@ -2,6 +2,7 @@ package ar.utn.edu.frba.ddsi.models.entities.deletion_request;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.deletion_request.DeletionRequestCreationDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,7 +30,7 @@ public class DeletionRequest {
   private Long id;
 
   //-- Event to delete
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.MERGE)
   @JoinColumn(name = "event_id", nullable = false)
   private final Event event;
 

@@ -7,6 +7,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.util.Objects;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(force = true)
@@ -23,12 +24,6 @@ public class CategoryCondition extends Condition {
 
   @Override
   public boolean isSatisfiedBy(Event event) {
-    String conditionCategory = category.getName();
-    String eventCategory = event.getCategory().getName();
-
-    return conditionCategory.equals(eventCategory);
+    return Objects.equals(this.category.getId(), event.getCategory().getId());
   }
-
-  //?Se compara la cotegoria a partir del String, es correcto?
-
 }

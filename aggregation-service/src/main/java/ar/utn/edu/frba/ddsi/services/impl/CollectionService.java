@@ -59,8 +59,9 @@ public class CollectionService implements ICollectionService {
 
       //Refresh collection to populate events
       collection.refresh(null);
+      collectionRepository.save(collection);
 
-       return CollectionOutputDTO.from(collectionRepository.save(collection));
+       return CollectionOutputDTO.from(collection);
   }
 
   @Override
