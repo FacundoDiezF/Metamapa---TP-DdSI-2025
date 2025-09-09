@@ -55,8 +55,20 @@ public class StatisticsService implements IStatisticsService {
 
   @Override
   public List<String> findTopCategories(Integer count) {
-
     List<Category> categories = categoryRepository.findTopCategories(count);
     return categories.stream().map(Category::getName).collect(Collectors.toList());
+  }
+
+  @Override
+  public List<String> findTime(String by, String order, Long id, Integer count) {
+    return switch (order + ":" + by) {
+      case "busiest:hour" -> {
+        if (!categoryRepository.existsById(id))
+          throw new NotFoundException("Category with id " + id + " not found");
+
+        yield categoryRepository.findCategoryBusiestHours(id, count);
+      }
+      default -> new ArrayList<>();
+    };
   }
 }
