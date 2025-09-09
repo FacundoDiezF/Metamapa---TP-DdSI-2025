@@ -2,7 +2,7 @@
 .navbar{
   position:sticky;
   top:0;
-  z-index:100;
+  z-index:3000;
   height: var(--header-h,72px);
   padding: 0 24px;
   display:grid;
@@ -44,7 +44,7 @@
 .subnav{
   position: sticky;
   top: var(--header-h,72px);
-  z-index: 90;
+  z-index: 2500;
   height: var(--subnav-h,44px);
   display: flex; align-items:flex-end; gap:28px;
   padding: 0 24px;
