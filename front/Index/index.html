@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,20 +13,20 @@
   <link rel="stylesheet" href="../shared/tokens.css" />
   <link rel="stylesheet" href="../shared/nav.css" />
   <link rel="stylesheet" href="../shared/icons.css" />
+  <link rel="stylesheet" href="../shared/filters.css" />
+  <link rel="stylesheet" href="../shared/map.css" />
+  <link rel="stylesheet" href="../shared/feauredCollections.css" />
 
 
 
   <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
   <!-- Estilos propios -->
   <link rel="stylesheet" href="indexCSS.css" />
 </head>
+
 <body>
 
   <!-- Header -->
@@ -41,13 +42,13 @@
     </div>
   </header>
 
-<nav class="subnav" id="subnav">
-  <a href="index.html" class="active">Explorar</a>
-  <a href="../Collections/collections.html">Colecciones</a>
-  <a href="#">Mapa</a>
-  <a href="../admin/admin.html">Panel de Control</a>
+  <nav class="subnav" id="subnav">
+    <a href="index.html" class="active">Explorar</a>
+    <a href="../Collections/collections.html">Colecciones</a>
+    <a href="#">Mapa</a>
+    <a href="../admin/admin.html">Panel de Control</a>
 
-</nav>
+  </nav>
 
 
   <!-- Layout principal -->
@@ -88,8 +89,8 @@
       <div class="post-box">
         <input type="text" placeholder="Comparte tus hechos..." />
         <div class="post-icons" aria-hidden="true">
-           <img src="../shared/assets/icons/imagesmode.svg" alt="" class="icon-img">
-          <img src="../shared/assets/icons/sentiment_satisfied.svg" alt="" class="icon-img"> 
+          <img src="../shared/assets/icons/imagesmode.svg" alt="" class="icon-img">
+          <img src="../shared/assets/icons/sentiment_satisfied.svg" alt="" class="icon-img">
         </div>
       </div>
 
@@ -101,8 +102,10 @@
         <span class="tag">Estallido de gasoducto</span>
         <h2>Impacto de Estallido de gasoducto en comunidad de Paraná, Entre Ríos</h2>
         <p class="ubicacion">Paraná, Entre Ríos | 5 May 2025</p>
-        <p>Un grave estallido de gasoducto se registró en Paraná, Entre Ríos. El incidente obligó a evacuar a residentes de la zona. Se ha iniciado una investigación para determinar las causas exactas del incidente.</p>
-        <img src="https://images.unsplash.com/photo-1520975922284-7b683d5a5f0d?q=80&w=1400&auto=format&fit=crop" alt="Incidente" />
+        <p>Un grave estallido de gasoducto se registró en Paraná, Entre Ríos. El incidente obligó a evacuar a residentes
+          de la zona. Se ha iniciado una investigación para determinar las causas exactas del incidente.</p>
+        <img src="https://images.unsplash.com/photo-1520975922284-7b683d5a5f0d?q=80&w=1400&auto=format&fit=crop"
+          alt="Incidente" />
         <p class="fuente">Static • Nombre de la fuente</p>
       </article>
 
@@ -115,7 +118,8 @@
         <h2>Otro hecho de ejemplo</h2>
         <p class="ubicacion">Paraná, Entre Ríos | 6 May 2025</p>
         <p>Descripción del hecho para completar el feed y probar el scroll interno de la columna central.</p>
-        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1400&auto=format&fit=crop" alt="Incidente" />
+        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1400&auto=format&fit=crop"
+          alt="Incidente" />
         <p class="fuente">Static • Nombre de la fuente</p>
       </article>
     </section>
@@ -124,7 +128,10 @@
     <aside class="sidebar-right">
       <div class="map-box">
         <h3>Mapa</h3>
-        <div class="map-frame"><div id="map"></div></div>
+        <div class="map-frame">
+          <div id="map" data-mm-map></div>
+
+        </div>
       </div>
 
       <div class="colecciones">
@@ -179,15 +186,17 @@
   </div>
 
   <!-- Leaflet JS -->
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-  ></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
   <!-- Scripts propios -->
   <script src="layout.js"></script>
-  <script src="map.js"></script>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="../shared/Map/map.js"></script>
+
   <script src="auth.js"></script>
 </body>
+
 </html>
