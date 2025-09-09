@@ -38,15 +38,14 @@ public class CollectionService implements ICollectionService {
   }
 
   @Override
-  public void create(CollectionCreationDTO collectionDto) {
+  public CollectionOutputDTO create(CollectionCreationDTO collectionDto) {
 
     // Get sources from the repository by IDs
-    List<Source> collectionSources = sourceRepository.findAllById(collectionDto.getSourceIds()); //! Probar; si llega a devolver una lista inmutable, envolver con new ArrayList<>()
+    List<Source> collectionSources = sourceRepository.findAllById(collectionDto.getSourceIds());
 
     //TODO: validar que todas las fuentes solicitadas existan, tirar error en caso contrario
 
     //Construct CollectionCriteria from DTO
-    ////CollectionCriteria collectionCriteria = CollectionCriteria.from(collectionDto.getConditions());
     CollectionCriteria collectionCriteria = collectionCriteriaService.findOrCreate(collectionDto.getConditions());
 
     // Construct Collection
@@ -61,7 +60,7 @@ public class CollectionService implements ICollectionService {
       //Refresh collection to populate events
       collection.refresh(null);
 
-      collectionRepository.save(collection);
+       return CollectionOutputDTO.from(collectionRepository.save(collection));
   }
 
   @Override

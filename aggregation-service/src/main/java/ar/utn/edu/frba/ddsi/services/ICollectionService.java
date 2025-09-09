@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ICollectionService {
-  void create(CollectionCreationDTO collectionDto);
+  CollectionOutputDTO create(CollectionCreationDTO collectionDto);
 
   List<CollectionOutputDTO> getCollections();
 

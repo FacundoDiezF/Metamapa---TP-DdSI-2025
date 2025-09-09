@@ -36,8 +36,8 @@ public class CollectionController {
   }
 
   @PostMapping
-  public void createCollection(@RequestBody CollectionCreationDTO collectionCreationDTO) {
-    collectionService.create(collectionCreationDTO);
+  public CollectionOutputDTO createCollection(@RequestBody CollectionCreationDTO collectionCreationDTO) {
+    return collectionService.create(collectionCreationDTO);
   }
 
   @GetMapping("/{handler}/events")

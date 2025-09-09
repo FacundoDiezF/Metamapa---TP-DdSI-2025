@@ -20,14 +20,19 @@ public class StatisticsController {
     this.statisticsService = statisticsService;
   }
 
-  @GetMapping("/province")
+  @GetMapping("/provinces/top")
   public List<String> getProvinceBy(
-      @RequestParam(required = true) String by,
-      @RequestParam(required = true) String id,
-      @RequestParam(required = false, defaultValue = "desc") String order,
+      @RequestParam String by,
+      @RequestParam String id,
       @RequestParam(required = false, defaultValue = "1") Integer count
       ) {
-    return statisticsService.findProvinceBy(by, id, order, count);
+    return statisticsService.findProvinceBy(by, id, count);
   }
 
+  @GetMapping("/categories/top")
+  public List<String> getTopCategories(
+      @RequestParam(required = false, defaultValue = "1") Integer count
+  ) {
+    return statisticsService.findTopCategories(count);
+  }
 }

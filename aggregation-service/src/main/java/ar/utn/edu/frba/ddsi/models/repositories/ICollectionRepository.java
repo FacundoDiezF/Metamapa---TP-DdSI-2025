@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICollectionRepository extends JpaRepository<Collection, Long> {
   Collection findByHandler(String handler);
+
+  boolean existsByHandler(String handler);
 }

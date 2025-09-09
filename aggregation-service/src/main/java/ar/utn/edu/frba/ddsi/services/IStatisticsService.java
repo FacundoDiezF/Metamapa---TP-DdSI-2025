@@ -4,5 +4,7 @@ import java.util.List;
 
 public interface IStatisticsService {
 
-  List<String> findProvinceBy(String id, String handler, String order, Integer count);
+  List<String> findProvinceBy(String id, String handler, Integer count);
+
+  List<String> findTopCategories(Integer count);
 }
