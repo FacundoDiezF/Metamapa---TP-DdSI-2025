@@ -5,11 +5,14 @@ import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Location.Location;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,7 +45,7 @@ public class Event {
 
   //-- Source
   @NonNull
-  @ManyToOne
+  @ManyToOne(cascade= CascadeType.MERGE)
   @JoinColumn(name = "source_id", nullable = false)
   private final Source source;
 
@@ -78,6 +81,7 @@ public class Event {
   //@Builder.Default public Set<Tag> tags = new HashSet<>();
 
   @ElementCollection
+  @Enumerated(EnumType.STRING)
   @CollectionTable(name = "event_passed_consensus", joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
   @Column(name = "consensus_type")
   @Builder.Default

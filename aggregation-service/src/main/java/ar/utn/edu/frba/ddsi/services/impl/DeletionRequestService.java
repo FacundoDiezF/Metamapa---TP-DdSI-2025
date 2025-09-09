@@ -63,7 +63,6 @@ public class DeletionRequestService implements IDeletionRequestService {
 
     deletionRequest.evaluate(evaluation.isAccepted(), evaluation.getEvaluatorName());
 
-    eventRepository.save(deletionRequest.getEvent()); //? A lo mejor al implementar la bbdd esto se hace en cascada al guardar la deletionRequest, CHEQUEAR
     deletionRequestRepository.save(deletionRequest);
     return DeletionRequestOutputDTO.from(deletionRequest);
   }

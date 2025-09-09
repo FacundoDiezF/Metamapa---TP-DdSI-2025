@@ -27,8 +27,14 @@ public class SourceClientService implements ISourceClientService {
   public SourceClientOutputDTO create(SourceClientInputDTO dto) {
     SourceClient sourceClient = sourceClientRepository.save(SourceClient.from(dto));
 
-    //Subscribe to the source client to receive NEW sources and events.
-    sourceClient.subscribe(callbackUrl);
+    try {
+      //Subscribe to the source client to receive NEW sources and events.
+      sourceClient.subscribe(callbackUrl);
+    } catch (Exception e) {
+      // If subscription fails, remove the created source client to maintain consistency.
+      sourceClientRepository.delete(sourceClient);
+      throw e;
+    }
 
     return SourceClientOutputDTO.from(sourceClient);
   }
