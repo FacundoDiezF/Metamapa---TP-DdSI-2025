@@ -7,6 +7,7 @@ import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,16 @@ public class ConsensusManager {
     );
   }
 
-  public void runEvaluation(){
+  @Transactional
+  public void runEvaluation() {
 
     List<Event> allEvents = eventRepository.findByDeleted(false);
 
     List<Source> allSources = sourceRepository.findAll();
 
-    allEvents.parallelStream().forEach(event -> {
-
+    //TODO: Con jpa no es posible usar parallelStream, no permite la edicion de events en threaads paralelos.
+    // Es posible ralizarlo devolviendo un DTO con el evnt y su nueva lista de consensos y luego actualizar los eventos en otro forEach fuera del parallel
+    allEvents.forEach(event -> {
       List<ConsensusType> newConsensusList = new ArrayList<>();
 
       for (IConsensusAlgorithm consensus : consensusAlgorithms) {

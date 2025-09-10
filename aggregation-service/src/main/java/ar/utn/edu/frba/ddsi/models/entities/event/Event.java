@@ -45,7 +45,7 @@ public class Event {
 
   //-- Source
   @NonNull
-  @ManyToOne(cascade= CascadeType.MERGE)
+  @ManyToOne(cascade = CascadeType.MERGE)
   @JoinColumn(name = "source_id", nullable = false)
   private final Source source;
 
@@ -85,7 +85,6 @@ public class Event {
   @CollectionTable(name = "event_passed_consensus", joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
   @Column(name = "consensus_type")
   @Builder.Default
-  @Setter
   private List<ConsensusType> passedConsensus = new ArrayList<>();
 
 
@@ -118,5 +117,11 @@ public class Event {
     this.deleted = true;
     // Update state in the origin source
     source.notifyEventDeleted(this);
+  }
+
+  public void setPassedConsensus(List<ConsensusType> passedConsensus) {
+    //For jpa tracking
+    this.passedConsensus.clear();
+    this.passedConsensus.addAll(passedConsensus);
   }
 }
