@@ -86,19 +86,87 @@
 
     <!-- Feed central (único con scroll) -->
     <section class="feed">
-      <div class="post-box">
-        <input type="text" placeholder="Comparte tus hechos..." />
-        <div class="post-icons" aria-hidden="true">
-          <img src="../shared/assets/icons/imagesmode.svg" alt="" class="icon-img">
-          <img src="../shared/assets/icons/sentiment_satisfied.svg" alt="" class="icon-img">
-        </div>
-      </div>
+      <!-- Share (sin JS): expansible con details/summary -->
+      <details class="share">
+        <summary id="shareSummary" class="post-box" role="button" aria-controls="sharePanel">
+          <input type="text" placeholder="Comparte tus hechos..." readonly />
+          <div class="post-icons" aria-hidden="true">
+            <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen" onclick="event.stopPropagation()">
+              <img src="../shared/assets/icons/imagesmode.svg" alt="">
+            </a>
+            <button type="button" class="post-icon" aria-label="Insertar emoji" onclick="event.stopPropagation()">
+              <img src="../shared/assets/icons/sentiment_satisfied.svg" alt="">
+            </button>
+          </div>
+        </summary>
+
+
+        <form id="sharePanel" class="share-panel" method="post" action="" novalidate>
+          <div class="share-row">
+            <div class="field">
+              <label for="titulo">Título del Hecho</label>
+              <input id="titulo" name="titulo" type="text" placeholder="Título del Hecho" required />
+              <p class="help error-msg">El título es obligatorio.</p>
+            </div>
+
+            <div class="field">
+              <label for="fecha">Fecha</label>
+              <input id="fecha" name="fecha" type="date" required />
+              <p class="help error-msg">Seleccioná una fecha válida.</p>
+            </div>
+
+            <div class="field">
+              <label for="descripcion">Descripción</label>
+              <div class="textarea-wrap">
+                <textarea id="descripcion" name="descripcion" rows="5" placeholder="Describe lo ocurrido…"
+                  required></textarea>
+
+              </div>
+              <p class="help error-msg">La descripción es obligatoria.</p>
+              <p class="help info">Evitá datos personales. Sé claro y específico.</p>
+            </div>
+
+
+            <div class="share-actions">
+              <div class="left-actions">
+                <!-- Categoría: look & feel de Colecciones -->
+                <div class="field field-inline">
+                  <label for="sh-categoria">Categoría</label>
+                  <div class="select select-share">
+                    <select id="sh-categoria" name="categoria" required aria-label="Categoría">
+                      <option value="">Selecciona una categoría</option>
+                      <option>Desastre Natural</option>
+                      <option>Medio Ambiente</option>
+                      <option>Derechos Humanos</option>
+                      <!-- agrega las tuyas -->
+                    </select>
+                    <img src="../shared/assets/icons/chevron-down.svg" alt="" class="select-caret" aria-hidden="true">
+                  </div>
+                  <p class="help error-msg">Elegí una categoría.</p>
+                </div>
+
+                <!-- Ubicación con icono -->
+                <a class="btn chip icon-left" href="#modal-ubicacion">
+                  <img class="icon" src="../shared/assets/icons/location-pin-svgrepo-com.svg" alt="" aria-hidden="true">
+                  Ubicación
+                </a>
+              </div>
+
+              <div class="right-actions">
+                <button type="reset" class="btn ghost small">Limpiar</button>
+                <a href="#shareSuccess" class="btn primary small submit-btn">Enviar</a>
+              </div>
+
+            </div>
+        </form>
+      </details>
+
 
       <!-- Hecho 1 -->
       <article class="hecho">
-        <button class="flag-float" aria-label="Reportar hecho">
+        <a class="flag-float" href="#report-hecho-1" aria-label="Reportar este hecho">
           <img src="../shared/assets/icons/ci_flag.svg" alt="" class="icon-img">
-        </button>
+        </a>
         <span class="tag">Estallido de gasoducto</span>
         <h2>Impacto de Estallido de gasoducto en comunidad de Paraná, Entre Ríos</h2>
         <p class="ubicacion">Paraná, Entre Ríos | 5 May 2025</p>
@@ -111,9 +179,9 @@
 
       <!-- Hecho 2 -->
       <article class="hecho">
-        <button class="flag-float" aria-label="Reportar hecho">
+        <a class="flag-float" href="#report-hecho-1" aria-label="Reportar este hecho">
           <img src="../shared/assets/icons/ci_flag.svg" alt="" class="icon-img">
-        </button>
+        </a>
         <span class="tag">Estallido de gasoducto</span>
         <h2>Otro hecho de ejemplo</h2>
         <p class="ubicacion">Paraná, Entre Ríos | 6 May 2025</p>
@@ -185,6 +253,102 @@
     </div>
   </div>
 
+
+  <!-- Pop-up de éxito -->
+  <div id="shareSuccess" class="modal-overlay target-modal">
+    <div class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="shareSuccessTitle">
+      <a href="#" class="modal-close" aria-label="Cerrar">×</a>
+      <h2 id="shareSuccessTitle">¡Tu hecho se subió correctamente!</h2>
+      <p class="muted">Recuerda que tienes <strong>7 días</strong> para editarlo en caso de quererlo.</p>
+      <a class="primary" href="#"
+        style="display:inline-block; margin-top:.5rem; padding:.6rem 1rem; border-radius:10px; text-decoration:none; background:var(--ui-blue); color:#fff; font-weight:600;">
+        Cerrar
+      </a>
+    </div>
+  </div>
+
+  <!-- Modal: Subir multimedia (CSS-only con :target) -->
+  <div id="modal-media" class="modal-overlay target-modal">
+    <a href="#close" class="overlay-dismiss" aria-label="Cerrar"></a>
+    <div class="modal auth-modal upload-modal" role="dialog" aria-modal="true" aria-labelledby="mediaTitle">
+
+      <h2 id="mediaTitle">Adjuntar imagen</h2>
+      <p class="muted">Podés arrastrar una imagen aquí o seleccionarla desde tu dispositivo. Formatos: JPG, PNG, WebP.
+      </p>
+
+      <form class="upload-form" action="#" method="get" novalidate>
+        <label for="mediaFile" class="dropzone" aria-describedby="mediaHelp">
+          <span class="dz-icon" aria-hidden="true">🖼️</span>
+          <span class="dz-title">Arrastrá y soltá la imagen</span>
+          <span class="dz-sub">o haz clic para explorar…</span>
+          <input id="mediaFile" name="mediaFile" type="file" accept="image/*" required>
+        </label>
+        <p id="mediaHelp" class="help info">Tamaño recomendado &lt; 5 MB. Evitá datos personales o sensibles.</p>
+
+        <div class="upload-actions">
+          <a href="#close" class="btn ghost">Cancelar</a>
+          <!-- Sin JS: este “Adjuntar” cierra el modal. Queda visualmente deshabilitado hasta que haya archivo -->
+          <a href="#" class="btn primary submit-link">Adjuntar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Solicitud de eliminación (CSS-only con :target) -->
+  <div id="report-hecho-1" class="modal-overlay target-modal">
+    <!-- Click en el fondo cierra -->
+    <a href="#close" class="overlay-dismiss" aria-label="Cerrar"></a>
+
+    <div class="modal auth-modal report-modal" role="dialog" aria-modal="true" aria-labelledby="reportTitle-1">
+      <a href="#close" class="modal-close" aria-label="Cerrar">×</a>
+
+      <h2 id="reportTitle-1">Solicitud de eliminación</h2>
+      <p class="muted">
+        Explicá por qué este contenido debería eliminarse.
+        <strong>Mínimo 500 caracteres.</strong> No incluyas datos personales.
+      </p>
+
+      <form class="report-form" action="#" method="post" novalidate>
+        <label class="field">
+          <span class="sr-only">Justificación</span>
+          <textarea id="justificacion-1" name="justificacion" placeholder="Justificación (mín. 500 caracteres)"
+            minlength="500" required rows="8"></textarea>
+          <p class="help info">Escribe una justificación clara y verificable. Evitá datos sensibles.</p>
+          <p class="help error-msg">La justificación debe tener al menos 500 caracteres.</p>
+        </label>
+
+        <div class="upload-actions">
+          <a href="#close" class="btn ghost">Cancelar</a>
+          <!-- Deshabilitado visualmente hasta que textarea sea válido (CSS-only) -->
+          <button type="submit" class="btn primary submit-report" formaction="#reportSuccess" formmethod="get" disabled>
+            Enviar solicitud
+          </button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación DR-->
+  <div id="reportSuccess" class="modal-overlay target-modal">
+    <a href="#close" class="overlay-dismiss" aria-label="Cerrar"></a>
+
+    <div class="modal auth-modal success-modal" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+      <a href="#close" class="modal-close" aria-label="Cerrar">×</a>
+
+      <h2 id="successTitle">Solicitud en revisión</h2>
+      <p class="muted">
+        ¡Gracias por colaborar con la comunidad! Revisaremos tu solicitud y
+        actuaremos de acuerdo con las normas de convivencia para mantener MetaMapa
+        útil, seguro y respetuoso para todas las personas.
+      </p>
+
+      <a href="#close" class="btn primary" style="margin-top:.5rem;">Entendido</a>
+    </div>
+  </div>
+
+
+
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -197,6 +361,23 @@
   <script src="../shared/Map/map.js"></script>
 
   <script src="auth.js"></script>
+
+  <script>
+    document.addEventListener('input', (e) => {
+      const ta = e.target.closest('textarea[minlength]');
+      if (!ta) return;
+      const form = ta.closest('form');
+      const submit = form?.querySelector('.submit-report');
+      if (!submit) return;
+
+      const min = parseInt(ta.getAttribute('minlength') || '500', 10);
+      const ok = ta.value.trim().length >= min;
+      submit.disabled = !ok;
+    });
+  </script>
+
+
+
 </body>
 
 </html>
