@@ -64,6 +64,7 @@ public class Event {
   private Category category;
 
   @Embedded
+  @Setter
   private Location location;
 
   @Column(name = "event_date", nullable = false)

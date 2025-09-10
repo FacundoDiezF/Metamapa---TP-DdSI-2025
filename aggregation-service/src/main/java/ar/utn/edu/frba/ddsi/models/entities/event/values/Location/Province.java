@@ -19,4 +19,8 @@ public class Province {
   @Column(name = "name")
   @Getter
   String name;
+
+  public Province(String name) {
+    this.name = name;
+  }
 }

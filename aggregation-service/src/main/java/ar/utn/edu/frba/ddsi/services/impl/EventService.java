@@ -14,6 +14,8 @@ import ar.utn.edu.frba.ddsi.services.IEventService;
 import ar.utn.edu.frba.ddsi.services.ILocationService;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import ar.utn.edu.frba.ddsi.services.INormalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +30,20 @@ public class EventService implements IEventService {
 
   private final ILocationService locationService;
 
+  private final INormalizationService normalizationService;
+
   @Autowired
-  public EventService(IEventRepository eventRepository, ISourceRepository sourceRepository, ICategoryService categoryService, ILocationService locationService) {
+  public EventService(
+      IEventRepository eventRepository,
+      ISourceRepository sourceRepository,
+      ICategoryService categoryService,
+      ILocationService locationService,
+      INormalizationService normalizationService) {
     this.eventRepository = eventRepository;
     this.sourceRepository = sourceRepository;
     this.categoryService = categoryService;
     this.locationService = locationService;
+    this.normalizationService = normalizationService;
   }
 
   @Override
@@ -49,7 +59,15 @@ public class EventService implements IEventService {
   @Override
   public void createAll(List<EventInputDTO> dtos) {
     // TODO: Validar que la peticion venga de un modulo-fuente registrado (SEGURIDAD)
-    eventRepository.saveAll(dtos.stream().map(this::buildEventFromDTO).toList()); // TODO: Que se guarde en cascada la source al guardar el evento
+
+    List<Event> events = normalizationService.eventLocationNormalization(
+                                                                          dtos
+                                                                          .stream()
+                                                                          .map(this::buildEventFromDTO)
+                                                                          .toList()
+                                                                        );
+
+    eventRepository.saveAll(events); // TODO: Que se guarde en cascada la source al guardar el evento
   }
 
   @Override
