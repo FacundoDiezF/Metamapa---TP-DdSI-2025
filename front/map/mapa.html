@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MetaMapa — Mapa</title>
+
+    <!-- tokens + nav + (tus) estilos compartidos -->
+    <link rel="stylesheet" href="../shared/tokens.css" />
+    <link rel="stylesheet" href="../shared/nav.css" />
+    <link rel="stylesheet" href="../shared/filters.css" />
+    <!-- hoja mínima de esta página -->
+    <link rel="stylesheet" href="mapa.css">
+
+    <!-- Leaflet -->
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""
+    />
+</head>
+<body>
+<!-- Header/Nav compartidos -->
+<header class="navbar">
+    <div class="brand">
+        <div class="brand-mark"><span class="dot"></span></div>
+        <span class="brand-name">MetaMapa</span>
+    </div>
+    <nav class="main-links"></nav>
+    <div class="auth-actions">
+        <button class="account-btn">Registrarse</button>
+        <button class="btn-outline">Iniciar Sesión</button>
+    </div>
+</header>
+
+<nav class="subnav">
+    <a href="../Index/index.html">Explorar</a>
+    <a href="../Collections/collections.html">Colecciones</a>
+    <a href="mapa.html" class="active">Mapa</a>
+    <a href="../admin/admin.html">Panel de Control</a>
+</nav>
+
+<!-- Layout de 2 columnas: filtros + mapa -->
+<main class="map-layout">
+    <aside class="filters">
+        <h3>Categorías</h3>
+        <div class="chip-group">
+            <label class="chip">
+                <input type="checkbox" value="Desastre Natural" checked>
+                <span>Desastre Natural</span>
+            </label>
+            <label class="chip">
+                <input type="checkbox" value="Medio Ambiente" checked>
+                <span>Medio Ambiente</span>
+            </label>
+        </div>
+
+        <h3>Fecha de creación</h3>
+        <label class="date-label">
+            <span>Desde</span>
+            <input id="dateFrom" type="date">
+        </label>
+        <label class="date-label">
+            <span>Hasta</span>
+            <input id="dateTo" type="date">
+        </label>
+
+        <div class="filters-actions">
+            <button id="applyFilters" class="btn-primary">Aplicar filtros</button>
+            <button id="clearFilters" class="btn-outline w-100">Limpiar</button>
+        </div>
+
+        <button id="centerOnMe" class="btn-ghost w-100">Centrar en mi ubicación</button>
+    </aside>
+
+    <section class="map-wrap">
+        <div id="map" aria-label="Mapa de hechos"></div>
+    </section>
+</main>
+
+<!-- Leaflet + JS de la página -->
+<script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+></script>
+<script src="mapa.js"></script>
+</body>
+</html>
