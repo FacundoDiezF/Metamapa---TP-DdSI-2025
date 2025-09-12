@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../shared/icons.css" />
   <link rel="stylesheet" href="../shared/filters.css" />
   <link rel="stylesheet" href="../shared/map.css" />
-  <link rel="stylesheet" href="../shared/feauredCollections.css" />
+  <link rel="stylesheet" href="../shared/featuredCollections.css" />
 
 
 
@@ -258,14 +258,21 @@
   <div id="shareSuccess" class="modal-overlay target-modal">
     <div class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="shareSuccessTitle">
       <a href="#" class="modal-close" aria-label="Cerrar">×</a>
-      <h2 id="shareSuccessTitle">¡Tu hecho se subió correctamente!</h2>
-      <p class="muted">Recuerda que tienes <strong>7 días</strong> para editarlo en caso de quererlo.</p>
+      <h2 id="shareSuccessTitle">¡Tu hecho se publicó con éxito! 🎉</h2>
+      <p class="muted">
+        Tu aporte ya es visible para toda la comunidad.
+        <br>
+        ¿Quieres poder <strong>editarlo o gestionarlo durante 7 días</strong>?
+        <a href="#authOverlay" style="color: var(--ui-blue); font-weight: 600;">Crea tu cuenta</a> y desbloquea más
+        funciones.
+      </p>
       <a class="primary" href="#"
         style="display:inline-block; margin-top:.5rem; padding:.6rem 1rem; border-radius:10px; text-decoration:none; background:var(--ui-blue); color:#fff; font-weight:600;">
-        Cerrar
+        Entendido
       </a>
     </div>
   </div>
+
 
   <!-- Modal: Subir multimedia (CSS-only con :target) -->
   <div id="modal-media" class="modal-overlay target-modal">
