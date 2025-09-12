@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MetaMapa — Desastres Naturales</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../shared/tokens.css">
+    <link rel="stylesheet" href="../../../shared/nav.css">
+    <link rel="stylesheet" href="../../../shared/icons.css">
+    <link rel="stylesheet" href="../../../shared/filters.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="../../../shared/Map/map.css" />
+    <link rel="stylesheet" href="../../../shared/feauredCollections.css" />
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="inCollectionA.css">
+
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="navbar" id="navbar">
+        <div class="brand">
+            <div class="brand-mark"><span class="dot"></span></div>
+            <span class="brand-name">MetaMapa</span>
+        </div>
+
+        <div class="auth-actions">
+            <!-- 1) Píldora Admin primero -->
+            <a href="../../../admin/admin.html" class="pill-admin" role="button" aria-label="Panel de Administración">
+                Administrador
+            </a>
+
+            <!-- 2) Píldora de usuario Abby con dropdown -->
+            <details class="user-menu">
+                <summary class="user-pill" aria-haspopup="menu" aria-expanded="false">
+                    <span class="avatar" aria-hidden="true">
+                        <img src="../../../shared/Assets/pics/avatar.png" alt="">
+                    </span>
+                    <span class="user-name">Abby</span>
+                    <span class="caret" aria-hidden="true">▾</span>
+                </summary>
+
+                <ul class="user-dropdown" role="menu" aria-label="Menú de usuario">
+                    <li role="none"><a role="menuitem" href="#">Mi cuenta</a></li>
+                    <li role="none"><a role="menuitem" href="#">Mis aportes</a></li>
+                    <li role="none"><a role="menuitem" href="#">Preferencias</a></li>
+                    <li role="none">
+                        <hr>
+                    </li>
+                    <li role="none"><a role="menuitem" href="#">Cerrar sesión</a></li>
+                </ul>
+            </details>
+        </div>
+
+    </header>
+
+
+    <!-- Subnav -->
+    <nav class="subnav" id="subnav">
+        <a href="../../../Index/index.html">Explorar</a>
+        <a href="../../collections.html" class="active">Colecciones</a>
+        <a href="#">Mapa</a>
+        <a href="../../../admin/admin.html">Panel de Control</a>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <nav class="incol-breadcrumb">
+        <a href="../../collections.html">Colecciones</a>
+        <span class="sep">›</span>
+        <span class="current">Desastres Naturales</span>
+    </nav>
+
+
+    <!-- Layout 3 columnas -->
+    <main class="layout">
+        <!-- Izquierda: filtros -->
+        <aside class="sidebar">
+            <h3>Filtros</h3>
+
+            <div class="filtro">
+                <label>Categoría <span class="caret">▾</span></label>
+                <div class="chips">
+                    <span class="chip">Derrumbe de cerro</span>
+                    <span class="chip">Terremoto</span>
+                    <span class="chip">Tsunami</span>
+                    <span class="chip">Manteca</span>
+                    <span class="chip">Caridad</span>
+                    <span class="chip mas">+ Más</span>
+                </div>
+            </div>
+
+            <div class="filtro">
+                <label>Fecha de creación</label>
+                <div class="date-range">
+                    <div>
+                        <span>Desde</span>
+                        <input type="date" />
+                    </div>
+                    <div>
+                        <span>Hasta</span>
+                        <input type="date" />
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+
+        <!-- Centro: detalle colección + feed -->
+        <section class="feed">
+            <div id="inicio-feed"></div>
+            <!-- Header de la colección -->
+            <div class="collection-card">
+                <header class="collection-head">
+                    <h3>Desastres Naturales</h3>
+
+                    <!-- Menú de tres puntos -->
+                    <details class="menu-dots">
+                        <summary aria-label="Acciones de colección">⋮</summary>
+                        <ul class="menu-dropdown">
+                            <li><a href="#modal-editar-coleccion">Editar colección</a></li>
+                            <li><a href="#modal-eliminar-coleccion" class="danger">Eliminar colección</a></li>
+                        </ul>
+                    </details>
+                </header>
+
+                <p class="collection-desc">
+                    Esto es la desc de la colección desastres naturales; se encuentran los desastres naturales más…
+                </p>
+            </div>
+
+
+            <!-- Hecho 1 -->
+            <article class="hecho">
+                <button class="flag-float" aria-label="Reportar hecho">
+                    <img src="../../../shared/Assets/Icons/ci_flag.svg" alt="" class="icon-img">
+                </button>
+                <span class="tag">Categoría</span>
+                <h2>Orto evento</h2>
+                <p class="ubicacion">Ubicación | 5 May 2025</p>
+                <p>
+                    Hi, there! This is an app that allows users to search for recipes while keeping their
+                    health in check. The design of this app makes it easy for everyone to find different
+                    recipes of their choice along with…
+                    <a class="vermas" href="#">ver más</a>
+                </p>
+                <p class="fuente">Origen • Nombre de la fuente</p>
+            </article>
+
+            <!-- Hecho 2 con imagen -->
+            <article class="hecho">
+                <button class="flag-float" aria-label="Reportar hecho">
+                    <img src="../../../shared/Assets/Icons/ci_flag.svg" alt="" class="icon-img">
+                </button>
+                <span class="tag">Categoría</span>
+                <h2>Título del evento</h2>
+                <p class="ubicacion">Ubicación | 5 May 2025</p>
+                <p>
+                    Hi, there! This is an app that allows users to search for recipes while keeping their health
+                    in check. The design of this app makes it easy for everyone to find different recipes of
+                    their choice along with…
+                    <a class="vermas" href="#">ver más</a>
+                </p>
+                <img src="https://images.unsplash.com/photo-1520975922284-7b683d5a5f0d?q=80&w=1400&auto=format&fit=crop"
+                    alt="Evento" />
+                <p class="fuente">Static • Nombre de la fuente</p>
+            </article>
+        </section>
+
+        <!-- Derecha: mapa + colecciones -->
+        <aside class="sidebar-right">
+            <div class="map-box">
+                <h3>Mapa</h3>
+                <div class="map-frame">
+                    <div id="map" data-mm-map data-center-lat="-31.744" data-center-lng="-60.490" data-zoom="12"
+                        data-popup="Paraná, Entre Ríos"></div>
+                </div>
+            </div> <!-- ← cierre map-box -->
+
+            <div class="colecciones">
+                <h3>Colecciones</h3>
+                <ul>
+                    <li><a href="inCollection.html#inicio-feed">Desastres naturales <span>CURADO</span></a></li>
+                    <li><a href="inCollection.html#inicio-feed">Caridad <span>NO CURADO</span></a></li>
+                    <li><a href="inCollection.html#inicio-feed">San Juan <span>CURADO</span></a></li>
+                </ul>
+                <button class="explorar">Explorar Mas</button>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="../../../shared/Map/map.js"></script>
+
+
+</body>
+
+</html>
