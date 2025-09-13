@@ -429,6 +429,7 @@ body {
     /* Truncado a máx. 3 líneas */
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }

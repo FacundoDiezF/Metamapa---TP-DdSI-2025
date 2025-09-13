@@ -302,16 +302,41 @@
 
 <body>
     <!-- Header -->
-    <header class="navbar">
+    <header class="navbar" id="navbar">
         <div class="brand">
             <div class="brand-mark"><span class="dot"></span></div>
             <span class="brand-name">MetaMapa</span>
         </div>
+
         <div class="auth-actions">
-            <button class="account-btn" type="button">Administrador</button>
-            <a class="btn-outline">Mi Cuenta</a>
+            <!-- 1) Píldora Admin -->
+            <a href="admin.html" class="pill-admin" role="button" aria-label="Panel de Administración">
+                Administrador
+            </a>
+
+            <!-- 2) Píldora de usuario Abby con dropdown -->
+            <details class="user-menu">
+                <summary class="user-pill" aria-haspopup="menu" aria-expanded="false">
+                    <span class="avatar" aria-hidden="true">
+                        <img src="../shared/Assets/pics/avatar.png" alt="">
+                    </span>
+                    <span class="user-name">Abby</span>
+                    <span class="caret" aria-hidden="true">▾</span>
+                </summary>
+
+                <ul class="user-dropdown" role="menu" aria-label="Menú de usuario">
+                    <li role="none"><a role="menuitem" href="#">Mi cuenta</a></li>
+                    <li role="none"><a role="menuitem" href="#">Mis aportes</a></li>
+                    <li role="none"><a role="menuitem" href="#">Preferencias</a></li>
+                    <li role="none">
+                        <hr>
+                    </li>
+                    <li role="none"><a role="menuitem" href="#">Cerrar sesión</a></li>
+                </ul>
+            </details>
         </div>
     </header>
+
 
     <!-- Subnav -->
     <nav class="subnav">

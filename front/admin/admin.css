@@ -734,62 +734,6 @@ body {
   gap: 12px;
 }
 
-/* Cubre .account-btn, .btn-outline o cualquier otro botón dentro de auth-actions */
-.navbar .auth-actions>button,
-.navbar .auth-actions>a {
-  display: inline-flex;
-  /* caja flexible para centrar contenido */
-  align-items: center;
-  /* centrado vertical */
-  justify-content: center;
-  /* centrado horizontal */
-  height: 40px;
-  /* alto consistente tipo pill */
-  padding: 0 16px;
-  /* padding horizontal; 0 vertical para no descentrar */
-  line-height: 1;
-  /* evita que la tipografía empuje hacia arriba/abajo */
-  border-radius: 9999px;
-  /* pill redondeado */
-  font-weight: 600;
-}
-
-/* Si "Mi cuenta" usa .btn-outline, nos aseguramos que conserve su look */
-.navbar .auth-actions .btn-outline {
-  background: #fff;
-  color: #111827;
-  border: 1px solid #a7a7a7;
-}
-
-/* (Opcional) Si querés que "Mi cuenta" tenga el look primary azul */
-.navbar .auth-actions .account-btn.primary,
-.navbar .auth-actions .btn-primary {
-  background: var(--ui-blue, #3B82F6);
-  color: #fff;
-  border: 1px solid transparent;
-}
-
-.account-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  min-width: 128px;
-  padding: 8px 16px;
-  border-radius: 9999px;
-  border: 1px solid transparent;
-  background: var(--ui-blue);
-  color: #fff;
-  font-family: "Poppins", system-ui, sans-serif;
-  /* 👈 misma tipografía */
-  font-weight: 600;
-  /* 👈 igual que los demás botones */
-  font-size: 0.95rem;
-  /* 👈 uniforme */
-  line-height: 1.2;
-  /* 👈 corrige el “aplastado” */
-  cursor: pointer;
-}
 
 /* ======= Admin · Fuentes ======= */
 
@@ -2107,4 +2051,189 @@ html:has(#modal-nueva-fuente:target) .subnav {
 /* Botones del modal: mismo look cuadrado */
 .modal-actions .btn {
   border-radius: 10px;
+}
+
+/* ===== Navbar · Auth actions unificadas (Admin + Usuario) ===== */
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Píldora azul "Administrador" */
+/* ✔️ misma que inCollectionA */
+.pill-admin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  min-width: 128px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  background: var(--ui-blue);
+  color: #fff;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+}
+
+/* Usuario */
+.user-pill {
+  height: 40px;
+  padding: 6px 12px;
+}
+
+.user-pill .avatar {
+  width: 36px;
+  height: 36px;
+}
+
+.user-pill .avatar img {
+  width: 32px;
+  height: 32px;
+  left: 2px;
+  top: 2px;
+  position: relative;
+}
+
+
+.pill-admin:hover {
+  filter: brightness(.96);
+}
+
+.pill-admin:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ui-blue) 55%, white);
+  outline-offset: 2px;
+}
+
+/* Píldora de usuario (avatar + nombre) con dropdown */
+.user-menu {
+  position: relative;
+  z-index: 2000;
+}
+
+.user-menu>summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.user-menu>summary::-webkit-details-marker {
+  display: none;
+}
+
+.user-menu[open]>summary.user-pill {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .18);
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  border: 1px solid #A7A7A7;
+  background: #EFF6FF;
+  color: #050315;
+  text-decoration: none;
+  outline: none;
+}
+
+.user-pill .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 36px;
+}
+
+.user-pill .avatar img {
+  width: 32px;
+  height: 32px;
+  position: relative;
+  left: 2px;
+  top: 2px;
+  object-fit: cover;
+}
+
+.user-pill .user-name {
+  font-size: 16px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.user-pill .caret {
+  font-size: 14px;
+  opacity: .6;
+}
+
+/* Dropdown */
+.user-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 220px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(2, 8, 20, .12), 0 2px 6px rgba(2, 8, 20, .08);
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  z-index: 3000;
+}
+
+.user-dropdown a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #111827;
+  font-weight: 500;
+}
+
+.user-dropdown a:hover,
+.user-dropdown a:focus-visible {
+  background: #F3F4F6;
+  outline: none;
+}
+
+.user-dropdown hr {
+  border: 0;
+  height: 1px;
+  background: #e5e7eb;
+  margin: 6px;
+}
+
+/* Responsive: ocultar nombre/caret en móvil estrecho */
+@media (max-width:768px) {
+  .user-pill {
+    height: 44px;
+    padding: 4px 8px;
+    gap: 0;
+  }
+
+  .user-pill .avatar {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .user-pill .avatar img {
+    width: 28px;
+    height: 28px;
+    left: 2px;
+    top: 2px;
+  }
+
+  .user-pill .user-name,
+  .user-pill .caret {
+    display: none;
+  }
+
+  .user-dropdown {
+    min-width: 180px;
+  }
 }
