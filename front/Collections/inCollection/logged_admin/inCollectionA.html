@@ -131,6 +131,8 @@
                             <li><a href="#modal-eliminar-coleccion" class="danger">Eliminar colección</a></li>
                         </ul>
                     </details>
+
+
                 </header>
 
                 <p class="collection-desc">
@@ -145,7 +147,7 @@
                     <img src="../../../shared/Assets/Icons/ci_flag.svg" alt="" class="icon-img">
                 </button>
                 <span class="tag">Categoría</span>
-                <h2>Orto evento</h2>
+                <h2>Otro evento</h2>
                 <p class="ubicacion">Ubicación | 5 May 2025</p>
                 <p>
                     Hi, there! This is an app that allows users to search for recipes while keeping their
@@ -200,10 +202,46 @@
 
     </main>
 
+    <!-- Modal: Confirmar eliminación de la colección -->
+    <div id="modal-eliminar-coleccion" class="modal" role="dialog" aria-modal="true"
+        aria-labelledby="modal-eliminar-title">
+        <a class="modal-overlay" href="#close" aria-label="Cerrar"></a>
+
+        <section class="modal-dialog confirm-danger">
+            <header class="modal-head">
+                <h2 id="modal-eliminar-title">Eliminar colección</h2>
+                <a href="#close" class="modal-close" aria-label="Cerrar">×</a>
+            </header>
+
+            <div class="modal-body" style="display:grid; gap:.6rem;">
+                <p style="margin:0; font-weight:600; color:#111827;">
+                    ¿Estás seguro que querés eliminar esta colección?
+                </p>
+                <p class="muted" style="margin:0;">
+                    <strong>La acción no será reversible.</strong> Se perderán los vínculos con fuentes y dejará de
+                    estar disponible.
+                </p>
+            </div>
+
+            <footer class="modal-actions">
+                <a href="#close" class="btn">Cancelar</a>
+                <!-- En la demo cierra el modal; en backend, apuntará a la acción real de borrado -->
+                <a href="#close" class="btn danger">
+                    <img class="icon" src="../../../shared/Assets/Icons/trash.svg" alt="" aria-hidden="true"
+                        style="width:18px;height:18px;">
+                    Eliminar definitivamente
+                </a>
+            </footer>
+        </section>
+    </div>
+
+    <!-- Ancla inerte para cerrar sin mover el scroll -->
+    <div id="close" style="position:fixed;inset:auto;"></div>
+
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="../../../shared/Map/map.js"></script>
-
 
 </body>
 

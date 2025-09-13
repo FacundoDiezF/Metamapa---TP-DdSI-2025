@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MetaMapa — Mis Hechos</title>
+
+    <!-- Base y componentes compartidos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../shared/tokens.css" />
+    <link rel="stylesheet" href="../../shared/nav.css" />
+    <link rel="stylesheet" href="../../shared/icons.css" />
+    <link rel="stylesheet" href="../../shared/filters.css" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="../../shared/Map/map.css" />
+
+    <!-- Estilos de esta vista -->
+    <link rel="stylesheet" href="myEvents.css" />
+</head>
+
+<body>
+    <!-- ===== Navbar (igual a indexL, con user-pill) ===== -->
+    <header class="navbar" id="navbar">
+        <div class="brand">
+            <div class="brand-mark"><span class="dot"></span></div>
+            <span class="brand-name">MetaMapa</span>
+        </div>
+
+        <div class="auth-actions">
+            <details class="user-menu">
+                <summary class="user-pill" aria-haspopup="menu" aria-expanded="false">
+                    <span class="avatar" aria-hidden="true">
+                        <img src="../../shared/Assets/pics/avatar.png" alt="">
+                    </span>
+                    <span class="user-name">Abby</span>
+                    <span class="caret" aria-hidden="true">▾</span>
+                </summary>
+
+                <ul class="user-dropdown" role="menu" aria-label="Menú de usuario">
+                    <li role="none"><a role="menuitem" href="#">Mi cuenta</a></li>
+                    <li role="none"><a role="menuitem" href="#">Mis aportes</a></li>
+                    <li role="none"><a role="menuitem" href="#">Preferencias</a></li>
+                    <li role="none">
+                        <hr>
+                    </li>
+                    <li role="none"><a role="menuitem" href="#">Cerrar sesión</a></li>
+                </ul>
+            </details>
+        </div>
+    </header>
+
+    <!-- ===== Subnav (estilo indexL) ===== -->
+    <nav class="subnav" id="subnav">
+        <a href="../../Index/index.html">Explorar</a>
+        <a href="../../Collections/collections.html">Colecciones</a>
+        <a href="../../map/mapa.html">Mapa</a>
+    </nav>
+
+    <!-- ===== Breadcrumb propio de Mis Hechos ===== -->
+    <nav class="mh-breadcrumb" aria-label="Breadcrumb">
+        <span class="sep">›</span>
+        <span class="current">Mis Aportes</span>
+    </nav>
+
+    <!-- ===== Layout 3 columnas (como inCollection) ===== -->
+    <main class="layout">
+        <!-- Izquierda: filtros -->
+        <aside class="sidebar">
+            <h3>Filtros</h3>
+
+            <div class="filtro">
+                <label>Categoría <span class="caret">▾</span></label>
+                <div class="chips">
+                    <span class="chip">Incendio</span>
+                    <span class="chip">Inundación</span>
+                    <span class="chip">Protesta</span>
+                    <span class="chip">Contaminación</span>
+                    <span class="chip mas">+ Más</span>
+                </div>
+            </div>
+
+            <div class="filtro">
+                <label>Fecha de creación</label>
+                <div class="date-range">
+                    <div>
+                        <span>Desde</span>
+                        <input type="date" />
+                    </div>
+                    <div>
+                        <span>Hasta</span>
+                        <input type="date" />
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Centro: header + feed -->
+        <section class="feed">
+            <div id="inicio-feed"></div>
+
+            <!-- Header de “colección personal” -->
+            <header class="collection-header">
+                <h1>Mis Aportes</h1>
+                <p class="collection-desc">
+                    Este es tu espacio personal: acá se listan los hechos que aportaste a MetaMapa.
+                    Podés revisarlos y <strong>editar durante 7 días</strong> desde su creación.
+                    Recordá evitar datos personales y mantener descripciones claras y verificables.
+                </p>
+            </header>
+
+            <!-- Hecho de ejemplo 1 -->
+            <article class="hecho">
+                <details class="hecho-menu">
+                    <summary aria-label="Acciones del hecho">⋮</summary>
+                    <ul class="menu-dropdown" role="menu" aria-label="Acciones del hecho">
+                        <li role="none"><a role="menuitem" href="#editar-hecho-1">Editar</a></li>
+                        <li role="none"><a role="menuitem" class="danger" href="#report-hecho-1">Reportar</a></li>
+                    </ul>
+                </details>
+
+                <span class="tag">Inundación</span>
+                <h2>Desborde del arroyo en Barrio Puerto</h2>
+                <p class="ubicacion">Paraná, Entre Ríos | 5 May 2025</p>
+                <p>
+                    Calles anegadas y corte de servicios durante 12 horas. Vecinos autoevacuados y asistencia municipal.
+                    <a class="vermas" href="#">ver más</a>
+                </p>
+                <p class="fuente">Origen • Contribución personal</p>
+            </article>
+
+            <!-- Hecho de ejemplo 2 -->
+            <article class="hecho">
+                <details class="hecho-menu">
+                    <summary aria-label="Acciones del hecho">⋮</summary>
+                    <ul class="menu-dropdown" role="menu" aria-label="Acciones del hecho">
+                        <li role="none"><a role="menuitem" href="#editar-hecho-2">Editar</a></li>
+                        <li role="none"><a role="menuitem" class="danger" href="#report-hecho-2">Reportar</a></li>
+                    </ul>
+                </details>
+
+                <span class="tag">Contaminación</span>
+                <h2>Mancha de hidrocarburos en la costa</h2>
+                <p class="ubicacion">Río Paraná | 28 Abr 2025</p>
+                <p>
+                    Se observó una película oleosa de ~300m. Denuncia realizada a Prefectura; se adjuntan fotos y
+                    coordenadas.
+                    <a class="vermas" href="#">ver más</a>
+                </p>
+                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1400&auto=format&fit=crop"
+                    alt="Evidencia" />
+                <p class="fuente">Static • Contribución personal</p>
+            </article>
+        </section>
+
+        <!-- Derecha: mapa + colecciones -->
+        <aside class="sidebar-right">
+            <div class="map-box">
+                <h3>Mapa</h3>
+                <div class="map-frame">
+                    <div id="map" data-mm-map data-center-lat="-31.744" data-center-lng="-60.490" data-zoom="12"
+                        data-popup="Paraná, Entre Ríos"></div>
+                </div>
+            </div>
+
+            <div class="colecciones">
+                <h3>Atajos</h3>
+                <ul>
+                    <li><a href="../collections.html#inicio-feed">Colecciones curadas</a></li>
+                    <li><a href="../../Index/index.html#shareSummary">Publicar nuevo hecho</a></li>
+                </ul>
+                <button class="explorar">Explorar más</button>
+            </div>
+        </aside>
+    </main>
+
+    <!-- (Opcional) Ancla para cerrar modales CSS-only -->
+    <div id="close" style="position:fixed;inset:auto;"></div>
+
+    <!-- Leaflet JS + mapa (ya usados en tu proyecto) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="../../shared/Map/map.js"></script>
+</body>
+
+</html>

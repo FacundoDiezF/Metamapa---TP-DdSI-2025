@@ -1,0 +1,654 @@
+/* ===== Variables base ===== */
+:root {
+    --ui-blue: #3B82F6;
+    --ui-ink: #0f172a;
+    --ui-muted: #6b7280;
+    --ui-bg: #F3F4F6;
+    --ui-card: #fff;
+    --radius: 12px;
+    --header-h: 72px;
+    --subnav-h: 44px;
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    background: var(--ui-bg);
+    color: var(--ui-ink);
+    height: 100vh;
+    /* asegura ocupar toda la ventana */
+    overflow: hidden;
+    /* 🔴 bloquea el scroll global */
+}
+
+/* ===== Breadcrumb (propio) ===== */
+.mh-breadcrumb {
+    position: sticky;
+    top: calc(var(--header-h) + var(--subnav-h));
+    z-index: 80;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .9rem;
+}
+
+.mh-breadcrumb a {
+    color: #111827;
+    text-decoration: none;
+    font-weight: 600
+}
+
+.mh-breadcrumb .current {
+    color: var(--ui-blue);
+    font-weight: 700
+}
+
+.mh-breadcrumb .sep {
+    color: #cbd5e1
+}
+
+/* ===== Layout 3 columnas (como inCollection) ===== */
+.layout {
+    display: grid;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    grid-template-columns: 280px 1fr 300px;
+    height: calc(100dvh - var(--header-h) - var(--subnav-h));
+    overflow: hidden;
+}
+
+@media (max-width:1100px) {
+    .layout {
+        grid-template-columns: 260px 1fr 280px
+    }
+}
+
+@media (max-width:900px) {
+    .layout {
+        grid-template-columns: 1fr
+    }
+}
+
+/* ===== Sidebar izquierda ===== */
+.sidebar {
+    background: var(--ui-card);
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+    padding: 1.2rem;
+    align-self: start;
+}
+
+.sidebar h3 {
+    margin: 0 0 1rem
+}
+
+.filtro {
+    margin-bottom: 1.5rem
+}
+
+.filtro label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: .5rem;
+    color: #333
+}
+
+.caret {
+    color: #667085;
+    font-size: .9rem;
+    margin-left: .3rem
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem
+}
+
+.chip {
+    display: inline-block;
+    padding: .3rem .7rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background: #f5f5f5;
+    font-size: .85rem;
+    cursor: pointer;
+    transition: .2s ease
+}
+
+.chip:hover {
+    background: #e0f2ff;
+    border-color: var(--ui-blue);
+    color: var(--ui-blue)
+}
+
+.chip.mas {
+    background: #e8f0fe;
+    border-color: #4285f4;
+    color: #4285f4
+}
+
+.date-range {
+    display: flex;
+    flex-direction: column;
+    gap: .7rem
+}
+
+.date-range span {
+    font-size: .8rem;
+    color: #555;
+    margin-right: .4rem
+}
+
+.date-range input {
+    width: 100%;
+    padding: .4rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: .9rem
+}
+
+/* ===== Feed centro ===== */
+.feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+    /* 🔴 solo acá */
+    min-height: 0;
+    padding-right: .25rem;
+    /* evita solaparse con scrollbar */
+    -webkit-overflow-scrolling: touch;
+}
+
+#inicio-feed {
+    scroll-margin-top: calc(var(--header-h) + var(--subnav-h) + 12px)
+}
+
+/* Header de “colección” personal */
+.collection-header {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.2rem 1.2rem 1rem;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+}
+
+.collection-header h1 {
+    margin: 0 0 .4rem;
+    font-size: 1.25rem;
+    font-weight: 700
+}
+
+.collection-desc {
+    margin: 0;
+    color: #475569;
+    font-size: .95rem;
+    line-height: 1.45
+}
+
+/* Hechos (cards) */
+.hecho {
+    position: relative;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1.1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+}
+
+.hecho h2 {
+    margin: .5rem 0;
+    font-size: 1.05rem
+}
+
+.hecho .ubicacion {
+    color: var(--ui-blue);
+    font-size: .85rem;
+    margin-bottom: .45rem
+}
+
+.hecho p {
+    font-size: .9rem;
+    margin-bottom: .6rem
+}
+
+.hecho img {
+    width: 100%;
+    border-radius: 8px;
+    margin: .5rem 0
+}
+
+.hecho .fuente {
+    font-size: .75rem;
+    color: #777
+}
+
+.tag {
+    display: inline-block;
+    background: #BDFFDB;
+    color: #000;
+    padding: .2rem .5rem;
+    border-radius: 0 0 15px 15px;
+    font-size: .8rem
+}
+
+.vermas {
+    color: #2563EB;
+    text-decoration: none;
+    font-weight: 600
+}
+
+/* Flag (reportar) */
+.flag-float {
+    position: absolute;
+    top: 15px;
+    right: 19px;
+    appearance: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.flag-float:hover,
+.flag-float:focus {
+    background: #f1f5f9
+}
+
+/* ===== Sidebar derecha ===== */
+.sidebar-right {
+    display: grid;
+    grid-template-rows: auto auto;
+    /* Mapa + Atajos */
+    align-content: start;
+    gap: 1.25rem;
+    /* compacta un poco */
+}
+
+.sidebar-right>* {
+    min-height: 0;
+    margin: 0
+}
+
+.sidebar,
+.sidebar-right,
+.feed {
+    min-height: 0;
+}
+
+.map-box,
+.colecciones {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1rem
+}
+
+.map-box h3 {
+    margin: 0 0 1rem
+}
+
+.map-frame {
+    padding-bottom: 0;
+    border-radius: 10px;
+    overflow: hidden
+}
+
+#map {
+    width: 100%;
+    height: clamp(180px, 28vh, 260px);
+    /* antes 35vh → baja la presión vertical */
+}
+
+.map-box {
+    padding: .9rem;
+}
+
+.colecciones {
+    padding: .9rem;
+}
+
+.colecciones h3 {
+    margin: 0 0 .6rem;
+}
+
+.colecciones ul {
+    margin: 0 0 .75rem;
+}
+
+.colecciones a {
+    color: var(--ui-blue);
+    font-weight: 600;
+    text-decoration: none
+}
+
+.colecciones li {
+    margin-bottom: .5rem
+}
+
+.explorar {
+    width: 100%;
+    padding: .7rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--ui-blue);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer
+}
+
+.explorar:hover {
+    filter: brightness(.95)
+}
+
+/* Contenedor ancho como en index */
+@media (min-width:768px) {
+
+    .mh-breadcrumb,
+    .layout {
+        padding-left: 24px;
+        padding-right: 24px
+    }
+}
+
+/* === Navbar · User pill (traído de indexL y scoped) === */
+.navbar .user-menu {
+    position: relative;
+    z-index: 2000;
+}
+
+.navbar .user-menu>summary {
+    list-style: none;
+    /* quita bullet/triángulo */
+    cursor: pointer;
+    outline: none;
+}
+
+.navbar .user-menu>summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Safari/Chrome */
+
+/* Pill visual */
+.navbar .user-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 48px;
+    padding: 6px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--Light-Text, #A7A7A7);
+    background: var(--Secondary, #EFF6FF);
+    color: var(--Text, #050315);
+    text-decoration: none;
+}
+
+/* Avatar */
+.navbar .user-pill .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex: 0 0 36px;
+}
+
+.navbar .user-pill .avatar img {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    left: 2px;
+    top: 2px;
+    object-fit: cover;
+}
+
+/* Texto y caret */
+.navbar .user-pill .user-name {
+    font-size: 16px;
+    font-weight: 400;
+    white-space: nowrap;
+    color: #050315;
+}
+
+.navbar .user-pill .caret {
+    font-size: 14px;
+    opacity: .6;
+}
+
+/* Estado abierto (foco visual como en indexL) */
+.navbar .user-menu[open]>summary.user-pill {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, .18);
+}
+
+/* Dropdown */
+.navbar .user-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 220px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(2, 8, 20, .12), 0 2px 6px rgba(2, 8, 20, .08);
+    padding: 6px;
+    margin: 0;
+    list-style: none;
+    z-index: 3000;
+}
+
+.navbar .user-dropdown a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #111827;
+    font-weight: 500;
+}
+
+.navbar .user-dropdown a:hover,
+.navbar .user-dropdown a:focus-visible {
+    background: #F3F4F6;
+    outline: none;
+}
+
+/* Responsivo (como indexL) */
+@media (max-width: 768px) {
+    .navbar .user-pill {
+        height: 44px;
+        padding: 4px 8px;
+        gap: 0;
+    }
+
+    .navbar .user-pill .avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .navbar .user-pill .avatar img {
+        width: 28px;
+        height: 28px;
+        left: 2px;
+        top: 2px;
+    }
+
+    .navbar .user-pill .user-name,
+    .navbar .user-pill .caret {
+        display: none;
+    }
+
+    .navbar .user-dropdown {
+        min-width: 180px;
+    }
+}
+
+/* ===== Compresión progresiva por altura de pantalla ===== */
+
+/* Ventanas bajas */
+@media (max-height: 820px) {
+    .layout {
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .sidebar-right {
+        gap: 1rem;
+    }
+
+    #map {
+        height: clamp(150px, 24vh, 220px);
+    }
+}
+
+/* Ventanas muy bajas */
+@media (max-height: 720px) {
+    :root {
+        --header-h: 64px;
+        --subnav-h: 40px;
+    }
+
+    /* reduce barras fijas */
+    .layout {
+        gap: .9rem;
+        padding: .9rem;
+    }
+
+    /* mapa más chico y sin cromos para liberar espacio */
+    #map {
+        height: 140px;
+    }
+
+    .map-box h3 {
+        margin: 0 0 .5rem;
+    }
+
+    .map-frame .leaflet-control-container {
+        display: none;
+    }
+
+    /* opcional: oculta controles */
+
+    /* atajos aún más apretados */
+    .colecciones h3 {
+        margin: 0 0 .5rem;
+    }
+
+    .colecciones ul li {
+        margin-bottom: .35rem;
+    }
+
+    .explorar {
+        padding: .6rem;
+    }
+}
+
+/* Ultra-compacto (ej. laptops chicos / split screen) */
+@media (max-height: 640px) {
+    #map {
+        height: 120px;
+    }
+
+    .map-box {
+        padding: .75rem;
+    }
+
+    .colecciones {
+        padding: .75rem;
+    }
+}
+
+/* ===== Hecho · menú de 3 puntos (CSS-only) ===== */
+.hecho {
+    position: relative;
+    /* ya lo tenés; asegura posicionamiento del menú */
+}
+
+/* Contenedor */
+.hecho-menu {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    display: inline-block;
+    z-index: 10;
+    /* por encima de imágenes dentro de la card */
+}
+
+/* Botón “⋮” */
+.hecho-menu>summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    user-select: none;
+}
+
+.hecho-menu>summary::-webkit-details-marker {
+    display: none;
+}
+
+.hecho-menu>summary:hover,
+.hecho-menu>summary:focus-visible {
+    background: #f3f4f6;
+    outline: none;
+}
+
+/* Dropdown */
+.hecho-menu .menu-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    min-width: 180px;
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 8px 18px rgba(2, 8, 20, .12), 0 2px 6px rgba(2, 8, 20, .08);
+    z-index: 12;
+}
+
+.hecho-menu .menu-dropdown a {
+    display: block;
+    padding: 10px 12px;
+    text-decoration: none;
+    color: #111827;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.hecho-menu .menu-dropdown a:hover,
+.hecho-menu .menu-dropdown a:focus-visible {
+    background: #f1f5f9;
+    outline: none;
+}
+
+.hecho-menu .menu-dropdown a.danger {
+    color: #b91c1c;
+}
+
+/* Tacto cómodo en móviles */
+@media (max-width: 768px) {
+    .hecho-menu>summary {
+        font-size: 22px;
+        padding: 8px 10px;
+    }
+}
