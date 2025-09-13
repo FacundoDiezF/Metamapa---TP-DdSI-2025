@@ -1,64 +1,98 @@
-/* espacio total visible restando header + subnav */
-.map-layout{
-    height: calc(100vh - var(--header-h) - var(--subnav-h));
+/* ===========================
+   LAYOUT MAPA
+=========================== */
+.map-layout {
     display: grid;
-    grid-template-columns: 320px 1fr; /* filtros + mapa */
-    gap: 16px;
-    padding: 16px;
+    grid-template-columns: 280px 1fr;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    height: calc(100dvh - var(--header-h) - var(--subnav-h));
 }
 
-/* columna de filtros (ya podés heredar gran parte de filters.css) */
-.filters{
-    background: var(--ui-card);
-    border: 1px solid var(--ui-border);
-    border-radius: var(--radius);
-    padding: 16px;
+.map-layout>* {
+    min-height: 0;
+}
+
+/* Sidebar de filtros → hereda filters.css */
+.map-layout .sidebar {
+    align-self: stretch;
     overflow: auto;
 }
-.filters h3{ margin: 8px 0 8px; }
-.chip-group{ display:flex; flex-wrap:wrap; gap:8px; }
-.chip{
-    display:inline-flex; align-items:center; gap:6px;
-    padding:6px 10px; border-radius:20px; border:1px solid var(--ui-border);
-    background:#f8fafc; cursor:pointer;
-}
-.chip input{ appearance:none; width:12px; height:12px; border:1px solid #94a3b8; border-radius:3px; }
-.chip input:checked{ background:var(--ui-blue); border-color:var(--ui-blue); }
-.date-label{ display:grid; gap:6px; margin:8px 0; }
-.date-label input{ padding:10px; border:1px solid var(--ui-border); border-radius:10px; }
 
-.filters-actions{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0 12px; }
-.btn-primary{
-    background: var(--ui-blue); color:#fff;
-    border: 1px solid var(--ui-blue);
-    border-radius: 10px; padding:10px 12px; font-weight:600; cursor:pointer;
-}
-
-.btn-ghost{
-    background:#fff; color:var(--ui-blue);
-    border:1px dashed var(--ui-blue);
-    border-radius:10px; padding:10px 12px; cursor:pointer;
-}
-.w-100{ width:100%; }
-
-/* mapa */
-.map-wrap{
+/* ===========================
+   MAPA
+=========================== */
+.map-wrap {
     position: relative;
-    background: var(--ui-card);
-    border: 1px solid var(--ui-border);
-    border-radius: var(--radius);
+    min-height: 0;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
     overflow: hidden;
 }
-#map{ position:absolute; inset:0; }
 
-/* popup Leaflet con tu estética */
-.leaflet-popup-content-wrapper{
-    border-radius: 10px;
-    border:1px solid var(--ui-border);
-    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+/* Responsive: en pantallas chicas, mapa debajo */
+@media (max-width: 900px) {
+    .map-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: calc(100dvh - var(--header-h) - var(--subnav-h));
+    }
+
+    .map-wrap {
+        min-height: 50vh;
+    }
 }
-.leaflet-popup-content h4{ margin:.25rem 0 .35rem; }
-.leaflet-popup-content .meta{ color:#64748b; font-size:.9rem; margin-bottom:.35rem; }
-.leaflet-popup-content a.btn-link{
-    display:inline-block; margin-top:.35rem; text-decoration:none; font-weight:600; color:var(--ui-blue);
+
+/* ===========================
+   LEAFLET POPUP
+=========================== */
+.leaflet-popup-content-wrapper {
+    border-radius: 10px;
+    border: 1px solid var(--ui-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+}
+
+.leaflet-popup-content h4 {
+    margin: .25rem 0 .35rem;
+}
+
+.leaflet-popup-content .meta {
+    color: #64748b;
+    font-size: .9rem;
+    margin-bottom: .35rem;
+}
+
+.leaflet-popup-content a.btn-link {
+    display: inline-block;
+    margin-top: .35rem;
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--ui-blue);
+}
+
+/* ===========================
+   BOTONES
+=========================== */
+.btn-accent {
+    background: #475265;
+    border: 1px solid #475265;
+    color: #fff;
+    font-weight: 600;
+    padding: .6rem 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.btn-accent:hover {
+    background: #5a6476;
+    border-color: #5a6476;
+}
+
+.w-100 {
+    width: 100%;
 }

@@ -41,41 +41,135 @@
 
     <!-- Layout de 2 columnas: filtros + mapa -->
     <main class="map-layout">
-        <aside class="filters">
-            <h3>Categorías</h3>
-            <div class="chip-group">
-                <label class="chip">
-                    <input type="checkbox" value="Desastre Natural" checked>
-                    <span>Desastre Natural</span>
-                </label>
-                <label class="chip">
-                    <input type="checkbox" value="Medio Ambiente" checked>
-                    <span>Medio Ambiente</span>
-                </label>
-            </div>
+        <!-- Filtros unificados -->
+        <aside class="sidebar">
+            <h3>Filtros</h3>
 
-            <h3>Fecha de creación</h3>
-            <label class="date-label">
-                <span>Desde</span>
-                <input id="dateFrom" type="date">
-            </label>
-            <label class="date-label">
-                <span>Hasta</span>
-                <input id="dateTo" type="date">
-            </label>
+            <form class="filters" method="get" action="">
+                <!-- CATEGORÍA -->
+                <details class="flt">
+                    <summary class="flt-head">
+                        <span class="flt-title">Categoría</span>
+                        <span class="caret" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="flt-body">
+                        <div class="chips chips-wrap">
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="cat-desastre" name="categoria[]" value="Desastre Natural">
+                                <label for="cat-desastre" class="chip">Desastre Natural</label>
+                            </span>
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="cat-medioamb" name="categoria[]" value="Medio Ambiente">
+                                <label for="cat-medioamb" class="chip">Medio Ambiente</label>
+                            </span>
 
-            <div class="filters-actions">
-                <button id="applyFilters" class="btn-primary">Aplicar filtros</button>
-                <button id="clearFilters" class="btn-outline w-100">Limpiar</button>
-            </div>
+                            <a class="chip mas" href="#cat-modal">+ Más</a>
+                        </div>
+                        <p class="help info">Seleccioná una o varias categorías.</p>
+                    </div>
+                </details>
 
-            <button id="centerOnMe" class="btn-ghost w-100">Centrar en mi ubicación</button>
+                <!-- FECHA -->
+                <details class="flt">
+                    <summary class="flt-head">
+                        <span class="flt-title">Fecha</span>
+                        <span class="caret" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="flt-body">
+                        <div class="date-range">
+                            <div>
+                                <span>Desde</span>
+                                <input type="date" name="fecha_desde" />
+                            </div>
+                            <div>
+                                <span>Hasta</span>
+                                <input type="date" name="fecha_hasta" />
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- UBICACIÓN -->
+                <details class="flt">
+                    <summary class="flt-head">
+                        <span class="flt-title">Ubicación</span>
+                        <span class="caret" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="flt-body">
+                        <div class="ubic-searchbar">
+                            <input id="ubic-search" name="ubicacion_text" type="search" placeholder="Buscar ubicación…"
+                                list="ubic-sugeridas" autocomplete="off">
+                            <datalist id="ubic-sugeridas">
+                                <option value="CABA">
+                                <option value="Ciudad de Córdoba">
+                                <option value="Rosario">
+                                <option value="Paraná, Entre Ríos">
+                                <option value="Mendoza">
+                                <option value="San Juan">
+                            </datalist>
+                        </div>
+
+                        <div class="chips chips-wrap">
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="u-caba" name="ubicacion[]" value="CABA">
+                                <label for="u-caba" class="chip">CABA</label>
+                            </span>
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="u-parana" name="ubicacion[]" value="Paraná, Entre Ríos">
+                                <label for="u-parana" class="chip">Paraná, Entre Ríos</label>
+                            </span>
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="u-rosario" name="ubicacion[]" value="Rosario">
+                                <label for="u-rosario" class="chip">Rosario</label>
+                            </span>
+                        </div>
+
+                        <p class="help info">Escribí para sugerencias; tildá/destildá chips para sumar o quitar.</p>
+                    </div>
+                </details>
+
+                <!-- FUENTE -->
+                <details class="flt">
+                    <summary class="flt-head">
+                        <span class="flt-title">Fuente</span>
+                        <span class="caret" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="flt-body">
+                        <div class="chips chips-wrap">
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="f-estatica" name="fuente[]" value="estatica">
+                                <label for="f-estatica" class="chip">Estática</label>
+                            </span>
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="f-dinamica" name="fuente[]" value="dinamica">
+                                <label for="f-dinamica" class="chip">Dinámica</label>
+                            </span>
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="f-proxy" name="fuente[]" value="proxy">
+                                <label for="f-proxy" class="chip">Proxy</label>
+                            </span>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Acciones -->
+                <div class="filters-actions">
+                    <button type="reset" class="btn-clean">Limpiar filtros</button>
+                    <button type="submit" class="btn-apply">Aplicar</button>
+                </div>
+
+                <button id="centerOnMe" class="btn-accent w-100" type="button">
+                    Centrar en mi ubicación
+                </button>
+            </form>
         </aside>
 
+        <!-- Mapa -->
         <section class="map-wrap">
             <div id="map" aria-label="Mapa de hechos"></div>
         </section>
     </main>
+
 
     <!-- Overlay Modal -->
     <div id="authOverlay" hidden>
@@ -128,6 +222,45 @@
             </section>
         </div>
     </div>
+
+    <!-- Modal +Más categorías (CSS-only con :target) -->
+    <div id="cat-modal" class="modal-overlay target-modal">
+        <a href="#close" class="overlay-dismiss" aria-label="Cerrar"></a>
+        <div class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="catModalTitle">
+            <a href="#close" class="modal-close" aria-label="Cerrar">×</a>
+            <h2 id="catModalTitle">Seleccionar más categorías</h2>
+
+            <label class="field" style="margin-bottom:.5rem;">
+                <span class="sr-only">Buscar categoría</span>
+                <input type="search" name="cat_q" placeholder="Buscar categoría…">
+            </label>
+
+            <div class="chips chips-grid" style="margin-bottom:.75rem;">
+                <span class="chip-toggle">
+                    <input type="checkbox" id="cat-tsunami" name="categoria[]" value="Tsunami">
+                    <label for="cat-tsunami" class="chip">Tsunami</label>
+                </span>
+                <span class="chip-toggle">
+                    <input type="checkbox" id="cat-inundacion" name="categoria[]" value="Inundación">
+                    <label for="cat-inundacion" class="chip">Inundación</label>
+                </span>
+                <span class="chip-toggle">
+                    <input type="checkbox" id="cat-contaminacion" name="categoria[]" value="Contaminación">
+                    <label for="cat-contaminacion" class="chip">Contaminación</label>
+                </span>
+                <span class="chip-toggle">
+                    <input type="checkbox" id="cat-ddhh" name="categoria[]" value="Derechos Humanos">
+                    <label for="cat-ddhh" class="chip">Derechos Humanos</label>
+                </span>
+            </div>
+
+            <div class="upload-actions">
+                <a href="#close" class="btn ghost">Cerrar</a>
+                <button type="submit" class="btn primary">Aplicar</button>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Leaflet + JS de la página -->
