@@ -886,31 +886,91 @@ footer {
 }
 
 /* Overlay */
-#authOverlay[hidden] { display: none !important; }
-#authOverlay{
-  position: fixed; inset: 0; display: grid; place-items: center;
-  background: rgba(0,0,0,.35);
+#authOverlay[hidden] {
+    display: none !important;
 }
-.auth-modal{ background:#fff; border-radius:12px; padding:24px; min-width:320px; }
-.auth-close{ position:absolute; top:12px; right:12px; }
+
+#authOverlay {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, .35);
+}
+
+.auth-modal {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    min-width: 320px;
+}
+
+.auth-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
 
 
 /* Inputs y botones */
 .auth-modal input {
-  width: 100%;
-  margin: 8px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
 }
+
 .auth-modal button[type="submit"] {
-  background: var(--Accent, #3B82F6);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 8px;
+    background: var(--Accent, #3B82F6);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+}
+
+
+/* ====== Registro: campos nombre/apellido ====== */
+.auth-modal .field {
+    display: block;
+    margin: 10px 0;
+}
+
+.auth-modal .field>span {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #475569;
+}
+
+.auth-modal .req {
+    color: #ef4444;
+    font-weight: 700;
+}
+
+.auth-modal .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+@media (max-width:560px) {
+    .auth-modal .grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* feedback suave de validación nativa */
+.auth-modal input:invalid:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, .15);
+}
+
+.auth-modal input:valid {
+    border-color: #22c55e;
+    background: #f0fdf4;
 }

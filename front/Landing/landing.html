@@ -14,6 +14,7 @@
 
     <!-- Estilos -->
     <link rel="stylesheet" href="landing.css">
+    <link rel="stylesheet" href="../shared/nav.css" />
 </head>
 
 <body>
@@ -26,14 +27,10 @@
             </div>
 
             <div class="mm-actions">
-                <a href="#" class="mm-btn mm-btn--primary" data-auth="open" data-panel="register">
-                    Registrarse
-                </a>
-                <a href="#" class="mm-btn mm-btn--ghost" data-auth="open" data-panel="login">
-                    Iniciar Sesión
-                </a>
-
+                <a href="#" class="mm-btn mm-btn--primary" data-auth="open" data-panel="register">Registrarse</a>
+                <a href="#" class="mm-btn mm-btn--ghost" data-auth="open" data-panel="login">Iniciar Sesión</a>
             </div>
+
         </div>
 
         <!-- opcional -->
@@ -286,9 +283,10 @@
         <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
             <button id="authClose" class="auth-close" aria-label="Cerrar">✕</button>
 
+            <!-- Login -->
             <section id="loginPanel">
                 <h3 id="authTitle">Iniciar sesión</h3>
-                <form id="loginForm">
+                <form id="loginForm" novalidate>
                     <input type="email" placeholder="Email" required>
                     <input type="password" placeholder="Contraseña" required>
                     <button type="submit">Entrar</button>
@@ -296,12 +294,35 @@
                 <p>¿No tenés cuenta? <a href="#" id="toggleRegister">Crear una</a></p>
             </section>
 
+            <!-- Registro -->
             <section id="registerPanel" hidden>
                 <h3>Crear cuenta</h3>
-                <form id="registerForm">
-                    <input type="text" placeholder="Nombre" required>
-                    <input type="email" placeholder="Email" required>
-                    <input type="password" placeholder="Contraseña" required>
+                <form id="registerForm" novalidate>
+                    <div class="grid-2">
+                        <label class="field">
+                            <span>Primer nombre <b class="req">*</b></span>
+                            <input id="firstName" name="firstName" type="text" placeholder="Tu primer nombre"
+                                autocomplete="given-name" required minlength="2">
+                        </label>
+                        <label class="field">
+                            <span>Apellido <b class="req">*</b></span>
+                            <input id="lastName" name="lastName" type="text" placeholder="Tu apellido"
+                                autocomplete="family-name" required minlength="2">
+                        </label>
+                    </div>
+
+                    <label class="field">
+                        <span>Email <b class="req">*</b></span>
+                        <input id="regEmail" name="email" type="email" placeholder="nombre@ejemplo.com" required
+                            autocomplete="email">
+                    </label>
+
+                    <label class="field">
+                        <span>Contraseña <b class="req">*</b></span>
+                        <input id="regPass" name="password" type="password" placeholder="••••••••" required
+                            autocomplete="new-password" minlength="6">
+                    </label>
+
                     <button type="submit">Registrarme</button>
                 </form>
                 <p>¿Ya tenés cuenta? <a href="#" id="toggleLogin">Iniciar sesión</a></p>
@@ -309,7 +330,7 @@
         </div>
     </div>
 
-
+    <!-- Script de auth compartido -->
     <script src="../Index/auth.js"></script>
 
 </body>

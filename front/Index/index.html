@@ -37,9 +37,12 @@
     </div>
 
     <div class="auth-actions">
-      <button id="accountBtn" class="account-btn" type="button" data-state="guest">Registrarse</button>
-      <button id="loginBtn" class="btn-outline" type="button">Iniciar Sesión</button>
+      <button id="accountBtn" class="account-btn" type="button" data-auth="open"
+        data-panel="register">Registrarse</button>
+      <button id="loginBtn" class="btn-outline" type="button" data-auth="open" data-panel="login">Iniciar
+        Sesión</button>
     </div>
+
   </header>
 
   <nav class="subnav" id="subnav">
@@ -214,44 +217,57 @@
   </main>
 
   <!-- Modal auth -->
-  <div class="modal-overlay" id="authOverlay" hidden>
-    <div class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-      <button class="modal-close" id="authClose" aria-label="Cerrar">×</button>
+  <!-- Overlay Modal -->
+  <div id="authOverlay" hidden>
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <button id="authClose" class="auth-close" aria-label="Cerrar">✕</button>
 
       <!-- Login -->
-      <section class="auth-panel" id="loginPanel">
-        <h2 id="authTitle">Accede a tu cuenta</h2>
-        <p class="muted">Bienvenido a MetaMapa</p>
-
-        <form id="loginForm" class="auth-form">
-          <label>Email</label>
-          <input type="email" placeholder="Ingresa tu email" required />
-          <label>Contraseña</label>
-          <input type="password" placeholder="Ingresa tu contraseña" required />
-          <button class="primary" type="submit">Iniciar Sesión</button>
+      <section id="loginPanel">
+        <h3 id="authTitle">Iniciar sesión</h3>
+        <form id="loginForm" novalidate>
+          <input type="email" placeholder="Email" required>
+          <input type="password" placeholder="Contraseña" required>
+          <button type="submit">Entrar</button>
         </form>
-
-        <p class="small">¿No estás registrado? <a href="#" id="toggleRegister">Creá tu cuenta</a></p>
+        <p>¿No tenés cuenta? <a href="#" id="toggleRegister">Crear una</a></p>
       </section>
 
       <!-- Registro -->
-      <section class="auth-panel" id="registerPanel" hidden>
-        <h2>Crear cuenta</h2>
-        <form id="registerForm" class="auth-form">
-          <label>Email</label>
-          <input type="email" placeholder="Ingresa tu email" required />
-          <label>Contraseña</label>
-          <input type="password" placeholder="Ingresa tu contraseña" required />
-          <label>Repetir contraseña</label>
-          <input type="password" placeholder="Ingresa tu contraseña" required />
-          <button class="primary" type="submit">Registrarse</button>
-        </form>
+      <section id="registerPanel" hidden>
+        <h3>Crear cuenta</h3>
+        <form id="registerForm" novalidate>
+          <div class="grid-2">
+            <label class="field">
+              <span>Primer nombre <b class="req">*</b></span>
+              <input id="firstName" name="firstName" type="text" placeholder="Tu primer nombre"
+                autocomplete="given-name" required minlength="2">
+            </label>
+            <label class="field">
+              <span>Apellido <b class="req">*</b></span>
+              <input id="lastName" name="lastName" type="text" placeholder="Tu apellido" autocomplete="family-name"
+                required minlength="2">
+            </label>
+          </div>
 
-        <p class="small">¿Ya tenés cuenta? <a href="#" id="toggleLogin">Inicia sesión</a></p>
+          <label class="field">
+            <span>Email <b class="req">*</b></span>
+            <input id="regEmail" name="email" type="email" placeholder="nombre@ejemplo.com" required
+              autocomplete="email">
+          </label>
+
+          <label class="field">
+            <span>Contraseña <b class="req">*</b></span>
+            <input id="regPass" name="password" type="password" placeholder="••••••••" required
+              autocomplete="new-password" minlength="6">
+          </label>
+
+          <button type="submit">Registrarme</button>
+        </form>
+        <p>¿Ya tenés cuenta? <a href="#" id="toggleLogin">Iniciar sesión</a></p>
       </section>
     </div>
   </div>
-
 
   <!-- Pop-up de éxito -->
   <div id="shareSuccess" class="modal-overlay target-modal">
