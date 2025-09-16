@@ -1,6 +1,9 @@
 # Statistics service port
 server.port=8081
 
+#CronJob for statistics refresh
+statistics.refresh.cron=0 0 * * * *
+
 # Agregation service URL
 aggregation-service.url=http://localhost:8080
 
