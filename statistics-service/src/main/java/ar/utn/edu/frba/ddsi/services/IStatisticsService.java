@@ -10,9 +10,9 @@ public interface IStatisticsService {
 
   List<TopOutputDTO> findTopCategories(Integer count);
 
-  List<TopOutputDTO> findTopProvinceOnCollection(String collectionHandler, Integer count);
+  List<TopOutputDTO> findTopProvincesOnCollection(String collectionHandler, Integer count);
 
-  List<TopOutputDTO> findTopProvinceByCategory(Long categoryId, Integer count);
+  List<TopOutputDTO> findTopProvincesByCategory(Long categoryId, Integer count);
 
-  List<String> findBusiestHourByCategory(Long categoryId, Integer count);
+  List<String> findBusiestHoursByCategory(Long categoryId, Integer count);
 }

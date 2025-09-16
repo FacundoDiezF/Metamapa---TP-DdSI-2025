@@ -36,7 +36,7 @@ public class StatisticsService implements IStatisticsService {
   }
 
   @Override
-  public List<TopOutputDTO> findTopProvinceOnCollection(String collectionHandler, Integer count) {
+  public List<TopOutputDTO> findTopProvincesOnCollection(String collectionHandler, Integer count) {
 
     if (!collectionRepository.existsById(collectionHandler)) {
       throw new NotFoundException("Collection not found - Handler: " + collectionHandler);
@@ -46,7 +46,7 @@ public class StatisticsService implements IStatisticsService {
   }
 
   @Override
-  public List<TopOutputDTO> findTopProvinceByCategory(Long categoryId, Integer count) {
+  public List<TopOutputDTO> findTopProvincesByCategory(Long categoryId, Integer count) {
 
     if (!categoryRepository.existsById(categoryId)) {
       throw new NotFoundException("Category not found - Id: " + categoryId);
@@ -56,7 +56,7 @@ public class StatisticsService implements IStatisticsService {
   }
 
   @Override
-  public List<String> findBusiestHourByCategory(Long categoryId, Integer count) {
+  public List<String> findBusiestHoursByCategory(Long categoryId, Integer count) {
 
     if (!categoryRepository.existsById(categoryId)) {
       throw new NotFoundException("Category not found - Id: " + categoryId);
