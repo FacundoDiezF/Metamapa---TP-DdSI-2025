@@ -1,6 +1,7 @@
 package ar.utn.edu.frba.ddsi.models.collection;
 
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -15,7 +16,8 @@ import java.util.List;
 public class Collection {
 
   @Id
-  private String Id;
+  @Column(name = "handler")
+  private String handler;
 
   @ManyToMany
   @JoinTable(

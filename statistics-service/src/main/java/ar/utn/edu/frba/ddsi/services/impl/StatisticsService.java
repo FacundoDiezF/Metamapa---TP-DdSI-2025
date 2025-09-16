@@ -1,5 +1,6 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
+import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO;
 import ar.utn.edu.frba.ddsi.models.repositories.ICategoryRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ICollectionRepository;
@@ -13,15 +14,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class StatisticsService implements IStatisticsService {
 
-//  private final IProvinceRepository provinceRepository;
-//  private final ICategoryRepository categoryRepository;
-//  private final ICollectionRepository collectionRepository;
+  private final IProvinceRepository provinceRepository;
+  private final ICategoryRepository categoryRepository;
+  private final ICollectionRepository collectionRepository;
 
   @Autowired
   public StatisticsService(IProvinceRepository provinceRepository, ICategoryRepository categoryRepository, ICollectionRepository collectionRepository) {
-//    this.provinceRepository = provinceRepository;
-//    this.categoryRepository = categoryRepository;
-//    this.collectionRepository = collectionRepository;
+    this.provinceRepository = provinceRepository;
+    this.categoryRepository = categoryRepository;
+    this.collectionRepository = collectionRepository;
   }
 
   @Override
@@ -31,21 +32,36 @@ public class StatisticsService implements IStatisticsService {
 
   @Override
   public List<TopOutputDTO> findTopCategories(Integer count) {
-    return List.of(); //TODO: Implementar
+    return categoryRepository.findTopCategories(count);
   }
 
   @Override
   public List<TopOutputDTO> findTopProvinceOnCollection(String collectionHandler, Integer count) {
-    return List.of(); //TODO: Implementar
+
+    if (!collectionRepository.existsById(collectionHandler)) {
+      throw new NotFoundException("Collection not found - Handler: " + collectionHandler);
+    }
+
+    return provinceRepository.findTopByCollection(collectionHandler, count);
   }
 
   @Override
   public List<TopOutputDTO> findTopProvinceByCategory(Long categoryId, Integer count) {
-    return List.of(); //TODO: Implementar
+
+    if (!categoryRepository.existsById(categoryId)) {
+      throw new NotFoundException("Category not found - Id: " + categoryId);
+    }
+
+    return provinceRepository.findTopByCategory(categoryId, count);
   }
 
   @Override
   public List<String> findBusiestHourByCategory(Long categoryId, Integer count) {
-    return List.of(); //TODO: Implementar
+
+    if (!categoryRepository.existsById(categoryId)) {
+      throw new NotFoundException("Category not found - Id: " + categoryId);
+    }
+
+    return categoryRepository.findCategoryBusiestHours(categoryId, count);
   }
 }
