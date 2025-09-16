@@ -28,6 +28,8 @@ public class StatisticsController {
     return statisticsService.findProvinceBy(by, id, count);
   }
 
+  // GET /collection/{handler}/provinces/top
+
   @GetMapping("/categories/top")
   public List<String> getTopCategories(
       @RequestParam(required = false, defaultValue = "1") Integer count
