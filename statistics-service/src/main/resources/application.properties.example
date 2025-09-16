@@ -1,5 +1,5 @@
 # Statistics service port
-server.port=8081
+server.port=8084
 
 #CronJob for statistics refresh
 statistics.refresh.cron=0 0 * * * *
