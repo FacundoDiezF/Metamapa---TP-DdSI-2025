@@ -13,8 +13,7 @@ public class EventOutputDTO {
   String title;
   String description;
   String category;
-  Double latitude;
-  Double longitude;
+  LocationOutputDTO location;
   LocalDateTime eventDate;
   LocalDateTime uploadDate;
 
@@ -26,8 +25,7 @@ public class EventOutputDTO {
     dto.setDescription(event.getDescription());
     dto.setCategory(event.getCategory().getName());
     dto.setOrigin(event.getSource().getType());
-    dto.setLatitude(event.getLocation().getLatitude()); //TODO: CAMBIAR a DTO de Location
-    dto.setLongitude(event.getLocation().getLongitude()); //TODO: CAMBIAR a DTO de Location
+    dto.setLocation(LocationOutputDTO.from(event.getLocation()));
     dto.setEventDate(event.getEventDate());
     dto.setUploadDate(event.getUploadDate());
     return dto;
