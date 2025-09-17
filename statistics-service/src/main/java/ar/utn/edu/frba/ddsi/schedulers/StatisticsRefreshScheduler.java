@@ -7,19 +7,19 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CollectionRefreshScheduler {
+public class StatisticsRefreshScheduler {
 
   private final IStatisticsService statisticsService;
 
   private LocalDateTime lastUpdate = LocalDateTime.now();
 
   @Autowired
-  public CollectionRefreshScheduler(IStatisticsService statisticsService) {
+  public StatisticsRefreshScheduler(IStatisticsService statisticsService) {
     this.statisticsService = statisticsService;
   }
 
   @Scheduled(cron = "${statistics.refresh.cron}")
-  public void refreshCollections() {
+  public void refreshStatistics() {
 
     statisticsService.refreshStatistics(lastUpdate);
 
