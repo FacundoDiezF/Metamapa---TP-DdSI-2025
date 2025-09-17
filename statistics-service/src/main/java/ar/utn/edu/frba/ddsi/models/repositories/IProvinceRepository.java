@@ -13,7 +13,7 @@ public interface IProvinceRepository extends JpaRepository<Province, Long> {
 
   //TODO: Ver si esto anda bien
   @Query("""
-      SELECT new ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO(p.id, p.name, COUNT(e.id))
+      SELECT new ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO(p.name, COUNT(e.id))
       FROM Province p
       JOIN Event e ON e.location.province = p
       JOIN Category c ON e.category.id = c.id
@@ -29,7 +29,7 @@ public interface IProvinceRepository extends JpaRepository<Province, Long> {
 
   //TODO: Ver si esto anda bien
   @Query("""
-      SELECT new ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO(p.id, p.name, COUNT(e.id))
+      SELECT new ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO(p.name, COUNT(e.id))
       FROM Province p
       JOIN Event e ON e.location.province = p
       JOIN Collection c ON e MEMBER OF c.events

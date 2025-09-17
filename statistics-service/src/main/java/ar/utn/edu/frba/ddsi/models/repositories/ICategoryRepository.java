@@ -12,7 +12,7 @@ public interface ICategoryRepository extends JpaRepository<Category, Long> {
 
   //TODO: Ver si esto anda bien
   @Query("""
-        SELECT new ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO(c.id, c.name, COUNT(e.id))
+        SELECT new ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO(c.name, COUNT(e.id))
         FROM Category c
         JOIN Event e ON e.category = c
         GROUP BY c.id

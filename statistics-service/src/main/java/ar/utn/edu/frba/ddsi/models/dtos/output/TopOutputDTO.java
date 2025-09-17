@@ -5,14 +5,11 @@ import lombok.Data;
 @Data
 public class TopOutputDTO {
 
-  Long entityId;
-
   String entityName;
 
   Long occurrences;
 
-  public TopOutputDTO(Long entityId, String entityName, Long occurrences) {
-    this.entityId = entityId;
+  public TopOutputDTO(String entityName, Long occurrences) {
     this.entityName = entityName;
     this.occurrences = occurrences;
   }
