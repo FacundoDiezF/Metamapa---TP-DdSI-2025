@@ -26,8 +26,8 @@ public class EventOutputDTO {
     dto.setDescription(event.getDescription());
     dto.setCategory(event.getCategory().getName());
     dto.setOrigin(event.getSource().getType());
-    dto.setLatitude(event.getLocation().getLatitude()); //TODO: CAMBIAR a DTO de Location
-    dto.setLongitude(event.getLocation().getLongitude()); //TODO: CAMBIAR a DTO de Location
+    dto.setLatitude(event.getLocation().getCoordinate().getLatitude()); //TODO: CAMBIAR a DTO de Location
+    dto.setLongitude(event.getLocation().getCoordinate().getLongitude()); //TODO: CAMBIAR a DTO de Location
     dto.setEventDate(event.getEventDate());
     dto.setUploadDate(event.getUploadDate());
     return dto;

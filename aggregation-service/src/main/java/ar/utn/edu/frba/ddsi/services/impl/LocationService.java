@@ -2,56 +2,83 @@ package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.models.entities.adapters.LocationAPI;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
-import ar.utn.edu.frba.ddsi.models.entities.event.values.Location.Location;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Coordinate;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Department;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Municipality;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Province;
+import ar.utn.edu.frba.ddsi.models.repositories.IDepartmentRepository;
+import ar.utn.edu.frba.ddsi.models.repositories.IMunicipalityRepository;
+import ar.utn.edu.frba.ddsi.models.repositories.IProvinceRepository;
 import ar.utn.edu.frba.ddsi.services.ILocationService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class LocationService implements ILocationService {
 
   private final LocationAPI locationAPI;
+  private final IProvinceRepository provinceRepository;
+  private final IMunicipalityRepository municipalityRepository;
+  private final IDepartmentRepository departmentRepository;
 
-  public LocationService(LocationAPI locationAPI) {
+  public LocationService(LocationAPI locationAPI,
+                         IProvinceRepository provinceRepository,
+                         IMunicipalityRepository municipalityRepository,
+                         IDepartmentRepository departmentRepository) {
     this.locationAPI = locationAPI;
+    this.provinceRepository = provinceRepository;
+    this.municipalityRepository = municipalityRepository;
+    this.departmentRepository = departmentRepository;
   }
 
   @Override
-  public Location findOrCreate(Double latitude, Double longitude) {
+  public Location findOrCreate(Double latitude, Double longitude) { //TODO Test
     // TODO se fija si ya existe la location en la BBDD. La API esta en los modulos.
-    return Location.builder()
+    Coordinate coordinate = Coordinate.builder()
         .latitude(latitude)
         .longitude(longitude)
+        .build();
+
+    return Location.builder()
+        .coordinate(coordinate)
         .build();
   }
 
   @Override
-  public Map<Location, List<Event>> findOrCreateLocationByEvents(List<Event> events){
+  public List<Location> findOrCreateLocationByCoordinates(Set<Coordinate> coordinates){ //TODO Test
 
-    Map<Location, List<Event>> locationEventMap = locationAPI.getLocationsByEvents(events);
+    //1. Get locations from API
+    List<Location> locations = locationAPI.getLocationsByCoordinate(coordinates);
 
+    //2. Separate provinces, municipalities and departments in individual lists
+    Set<Province> provinces = new HashSet<>();
+    Set<Municipality> municipalities = new HashSet<>();
+    Set<Department> departments = new HashSet<>();
 
+    for (Location location : locations) { //In this case it suffices with a set because for the three classes, equals() and hashCode() were overwritten
+      if (location.getProvince() != null && location.getProvince().getName() != null) {
+        provinces.add(location.getProvince());
+      }
+      if (location.getMunicipality() != null && location.getMunicipality().getName() != null) {
+        municipalities.add(location.getMunicipality());
+      }
+      if (location.getDepartment() != null && location.getDepartment().getName() != null) {
+        departments.add(location.getDepartment());
+      }
+    }
 
-//    Map<Province, List<Event>> provinceEventMap = locationAdapter.getProvincesByEvents(events);
-//
-//    Set<String> provinceNames = provinceEventMap.keySet().stream()
-//        .map(Province::getName)
-//        .collect(Collectors.toSet());
-//
-//    List<Province> persistedProvinces = provinceRepository.findAllByName(provinceNames);
-//    Map<String, Province> persistedMap = persistedProvinces.stream()
-//        .collect(Collectors.toMap(Province::getName, Function.identity()));
-//
-//    for (String name : provinceNames) {
-//      if (!persistedMap.containsKey(name)) {
-//        Province newProvince = new Province(name);
-//        Province saved = provinceRepository.save(newProvince);
-//        persistedMap.put(name, saved);
-//      }
-//    }
+    //3. Persist provinces, municipalities and departments
+    //TODO Creo que esto no funciona bien porque no esta verificando si ya existen en base al nombre, manejar eso
+    provinceRepository.saveAll(provinces);
+    municipalityRepository.saveAll(municipalities);
+    departmentRepository.saveAll(departments);
 
-    return null;
+    //4. Return locations
+    return locations;
   }
 }

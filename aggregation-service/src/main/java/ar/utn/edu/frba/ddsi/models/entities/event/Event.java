@@ -3,7 +3,7 @@ package ar.utn.edu.frba.ddsi.models.entities.event;
 import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
-import ar.utn.edu.frba.ddsi.models.entities.event.values.Location.Location;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -94,8 +94,8 @@ public class Event {
     if (dto.getTitle() != null) this.title = dto.getTitle();
     if (dto.getDescription() != null) this.description = dto.getDescription();
     if (category != null) this.category = category;
-    if (dto.getLatitude() != null) this.location.setLatitude(dto.getLatitude());
-    if (dto.getLongitude() != null) this.location.setLongitude(dto.getLongitude());
+    if (dto.getLatitude() != null) this.location.getCoordinate().setLatitude(dto.getLatitude());
+    if (dto.getLongitude() != null) this.location.getCoordinate().setLongitude(dto.getLongitude());
     if (dto.getEventDate() != null) this.eventDate = dto.getEventDate();
   }
 
@@ -105,14 +105,13 @@ public class Event {
     return passedConsensus.contains(consensusType);
   }
 
-  public boolean isEquivalent(Event other) {
-    if (other == null) return false;
-    return Objects.equals(this.title, other.title)
-        && Objects.equals(this.description, other.description)
-        //&& Objects.equals(this.category, other.category) //TODO: Cuando tengamos el repo lo descomentamos
-        && Objects.equals(this.location.getLatitude(), other.location.getLatitude())
-        && Objects.equals(this.location.getLongitude(), other.location.getLongitude())
-        && Objects.equals(this.eventDate, other.eventDate);
+  public boolean isEquivalent(Event that) {
+    if (that == null) return false;
+    return Objects.equals(this.title, that.title)
+        && Objects.equals(this.description, that.description)
+        //&& Objects.equals(this.category, that.category) //TODO: Cuando tengamos el repo lo descomentamos
+        && Objects.equals(this.location.getCoordinate(), that.location.getCoordinate())
+        && Objects.equals(this.eventDate, that.eventDate);
   }
 
   public void markAsDeleted() {

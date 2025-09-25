@@ -10,6 +10,10 @@ statistics.refresh.cron=0 0 * * * *
 # Agregation service URL
 aggregation-service.url=http://localhost:8080
 
+# LocationAPI
+geo-ref.url=
+thread.count=4
+
 # Database configuration
 spring.datasource.url=jdbc:mysql://localhost:3306/metamapa_aggregator?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
 spring.datasource.username=

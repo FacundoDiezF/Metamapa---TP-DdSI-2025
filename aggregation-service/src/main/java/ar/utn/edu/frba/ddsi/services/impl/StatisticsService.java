@@ -2,7 +2,7 @@ package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
-import ar.utn.edu.frba.ddsi.models.entities.event.values.Location.Province;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Province;
 import ar.utn.edu.frba.ddsi.models.repositories.ICategoryRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ICollectionRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IProvinceRepository;
