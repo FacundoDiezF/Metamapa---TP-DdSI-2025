@@ -1,0 +1,24 @@
+:root{
+  /* Colores y medidas base */
+  --ui-blue:#3B82F6;
+  --ui-ink:#0f172a;
+  --ui-muted:#6b7280;
+  --ui-bg:#F3F4F6;
+  --ui-card:#ffffff;
+  --ui-border:#e5e7eb;
+  --radius:12px;
+
+  /* Alturas por defecto; tu layout.js las ajusta en runtime */
+  --header-h:72px;
+  --subnav-h:44px;
+}
+
+/* Base mínima compartida */
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body{
+  margin:0;
+  font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:var(--ui-bg);
+  color:var(--ui-ink);
+}
