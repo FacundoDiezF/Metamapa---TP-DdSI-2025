@@ -11,7 +11,7 @@ public class StatisticsRefreshScheduler {
 
   private final IStatisticsService statisticsService;
 
-  private LocalDateTime lastUpdate = LocalDateTime.now();
+  private LocalDateTime lastUpdate;
 
   @Autowired
   public StatisticsRefreshScheduler(IStatisticsService statisticsService) {
@@ -20,9 +20,8 @@ public class StatisticsRefreshScheduler {
 
   @Scheduled(cron = "${statistics.refresh.cron}")
   public void refreshStatistics() {
-
     statisticsService.refreshStatistics(lastUpdate);
-
     lastUpdate = LocalDateTime.now();
+    System.out.println("FIN");
   }
 }

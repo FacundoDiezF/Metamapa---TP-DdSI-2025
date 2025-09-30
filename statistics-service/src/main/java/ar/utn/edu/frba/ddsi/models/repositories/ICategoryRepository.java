@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICategoryRepository extends JpaRepository<Category, Long> {
 
+  Category findByName(String name);
+
   //TODO: Ver si esto anda bien
   @Query("""
         SELECT new ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO(c.name, COUNT(e.id))

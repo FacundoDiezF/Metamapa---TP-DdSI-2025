@@ -4,7 +4,9 @@ import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO;
 import ar.utn.edu.frba.ddsi.models.repositories.ICategoryRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ICollectionRepository;
+import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IProvinceRepository;
+import ar.utn.edu.frba.ddsi.services.IEventService;
 import ar.utn.edu.frba.ddsi.services.IStatisticsService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,18 +19,23 @@ public class StatisticsService implements IStatisticsService {
   private final IProvinceRepository provinceRepository;
   private final ICategoryRepository categoryRepository;
   private final ICollectionRepository collectionRepository;
+  private final IEventService eventService;
 
   @Autowired
-  public StatisticsService(IProvinceRepository provinceRepository, ICategoryRepository categoryRepository, ICollectionRepository collectionRepository) {
+  public StatisticsService(IProvinceRepository provinceRepository, ICategoryRepository categoryRepository, ICollectionRepository collectionRepository, IEventRepository eventRepository, IEventService eventService) {
     this.provinceRepository = provinceRepository;
     this.categoryRepository = categoryRepository;
     this.collectionRepository = collectionRepository;
+    this.eventService = eventService;
   }
 
   @Override
   public void refreshStatistics(LocalDateTime lastUpdate) {
-    //TODO: Implementar, pullear datos del agrgador y popular este modulo con esos datos
+
+    eventService.fetchEvents(lastUpdate);
+
   }
+
 
   @Override
   public List<TopOutputDTO> findTopCategories(Integer count) {

@@ -106,7 +106,7 @@ public class Collection {
     return allEvents;
   }
 
-  public Set<Event> getMetamapaEvents() {
+  private Set<Event> getMetamapaEvents() {
     //Pull and filter events from Metamapa sources (in parallel to improve performance).
     return this.sources.parallelStream()
         .filter(Source::isMetamapa)

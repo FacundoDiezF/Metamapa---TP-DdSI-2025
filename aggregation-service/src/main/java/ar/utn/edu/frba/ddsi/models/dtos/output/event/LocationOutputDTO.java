@@ -15,7 +15,7 @@ public class LocationOutputDTO {
     LocationOutputDTO dto = new LocationOutputDTO();
     dto.setLatitude(location.getLatitude());
     dto.setLongitude(location.getLongitude());
-    dto.setProvince(location.getProvince().getName());
+    dto.setProvince("Bs As");
     return dto;
   }
 }
