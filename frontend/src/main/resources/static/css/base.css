@@ -1,0 +1,100 @@
+/* Reset mínimo + box model */
+* {
+    box-sizing: border-box
+}
+
+html, body {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ui-ink);
+    background: var(--ui-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tipografía semántica */
+h1 {
+    font-size: var(--fs-3xl);
+    margin: .5rem 0 1rem;
+    line-height: 1.15
+}
+
+h2 {
+    font-size: var(--fs-2xl);
+    margin: .5rem 0 1rem;
+    line-height: 1.2
+}
+
+h3 {
+    font-size: var(--fs-xl);
+    margin: .5rem 0 .75rem;
+    line-height: 1.25
+}
+
+p, li {
+    font-size: var(--fs-md);
+    line-height: 1.55
+}
+
+small {
+    font-size: var(--fs-sm);
+    color: var(--ui-muted)
+}
+
+a {
+    color: var(--ui-blue);
+    text-decoration: none
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+/* Contenedor común y secciones */
+.container {
+    width: min(1100px, 100% - 2rem);
+    margin-inline: auto
+}
+
+.section {
+    padding: var(--sp-6) 0
+}
+
+/* Listas limpias */
+.ul-reset {
+    list-style: none;
+    margin: 0;
+    padding: 0
+}
+
+/* Formularios base */
+input, select, textarea, button {
+    font: inherit;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: .6rem .75rem;
+    border: 1px solid var(--ui-border);
+    border-radius: 10px;
+    background: #fff;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-color: transparent;
+}
+
+/* Helpers de layout */
+.visually-hidden {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+}
