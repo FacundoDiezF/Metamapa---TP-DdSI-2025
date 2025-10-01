@@ -107,14 +107,3 @@
 .card.lg {
     padding: var(--sp-6)
 }
-
-/* Nav baseline (si no tenés uno global ya) – opcional */
-.navbar {
-    height: var(--header-h);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #fff;
-    border-bottom: 1px solid var(--ui-border);
-    padding: 0 var(--sp-4);
-}

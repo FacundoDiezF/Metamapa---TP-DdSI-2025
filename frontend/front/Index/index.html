@@ -18,11 +18,10 @@
     <link rel="stylesheet" href="../shared/utilities.css">
 
     <!-- Estilos -->
-    <link rel="stylesheet" href="../shared/tokens.css"/>
     <link rel="stylesheet" href="../shared/nav.css"/>
     <link rel="stylesheet" href="../shared/icons.css"/>
     <link rel="stylesheet" href="../shared/filters.css"/>
-    <link rel="stylesheet" href="../shared/map.css"/>
+    <link rel="stylesheet" href="../shared/Map/map.css"/>
     <link rel="stylesheet" href="../shared/featuredCollections.css"/>
 
 
@@ -65,7 +64,7 @@
 <!-- Layout principal -->
 <main class="layout">
     <!-- Sidebar izquierda -->
-    <aside class="sidebar">
+    <aside class="sidebar card">
         <h3>Filtros</h3>
 
         <!-- Form GET para que el backend aplique filtros -->
@@ -206,7 +205,7 @@
     <section class="feed">
         <!-- Share (sin JS): expansible con details/summary -->
         <details class="share">
-            <summary id="shareSummary" class="post-box" role="button" aria-controls="sharePanel">
+            <summary id="shareSummary" class="card post-box" role="button" aria-controls="sharePanel">
                 <input type="text" placeholder="Comparte tus hechos..." readonly/>
                 <div class="post-icons" aria-hidden="true">
                     <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen"
@@ -285,7 +284,7 @@
 
 
         <!-- Hecho 1 -->
-        <article class="hecho">
+        <article class="hecho card">
             <a class="flag-float" href="#report-hecho-1" aria-label="Reportar este hecho">
                 <img src="../shared/assets/icons/ci_flag.svg" alt="" class="icon-img">
             </a>
@@ -301,7 +300,7 @@
         </article>
 
         <!-- Hecho 2 -->
-        <article class="hecho">
+        <article class="hecho card">
             <a class="flag-float" href="#report-hecho-1" aria-label="Reportar este hecho">
                 <img src="../shared/assets/icons/ci_flag.svg" alt="" class="icon-img">
             </a>
@@ -317,7 +316,7 @@
 
     <!-- Sidebar derecha -->
     <aside class="sidebar-right">
-        <div class="map-box">
+        <div class="card map-box">
             <h3>Mapa</h3>
             <div class="map-frame">
                 <div id="map" data-mm-map></div>
@@ -325,7 +324,7 @@
             </div>
         </div>
 
-        <div class="colecciones">
+        <div class="card colecciones">
             <h3>Colecciones</h3>
             <ul>
                 <li><a href="#">Desastres naturales <span>CURADO</span></a></li>
