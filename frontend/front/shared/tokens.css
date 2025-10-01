@@ -1,24 +1,44 @@
-:root{
-  /* Colores y medidas base */
-  --ui-blue:#3B82F6;
-  --ui-ink:#0f172a;
-  --ui-muted:#6b7280;
-  --ui-bg:#F3F4F6;
-  --ui-card:#ffffff;
-  --ui-border:#e5e7eb;
-  --radius:12px;
+:root {
+    /* —— Colores —— */
+    --ui-blue: #3B82F6;
+    --ui-ink: #0f172a;
+    --ui-muted: #6b7280;
+    --ui-bg: #F3F4F6;
+    --ui-card: #ffffff;
+    --ui-border: #e5e7eb;
+    --ui-accent: #10b981;
+    --ui-warn: #f59e0b;
+    --ui-error: #ef4444;
 
-  /* Alturas por defecto; tu layout.js las ajusta en runtime */
-  --header-h:72px;
-  --subnav-h:44px;
-}
+    /* —— Tipografía —— */
+    --font-sans: Poppins, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --fs-xxs: .75rem; /* 12px */
+    --fs-xs: .8125rem; /* 13px */
+    --fs-sm: .875rem; /* 14px */
+    --fs-md: 1rem; /* 16px */
+    --fs-lg: 1.125rem; /* 18px */
+    --fs-xl: 1.375rem; /* 22px */
+    --fs-2xl: 1.75rem; /* 28px */
+    --fs-3xl: 2rem; /* 32px */
 
-/* Base mínima compartida */
-*{ box-sizing:border-box }
-html,body{ height:100% }
-body{
-  margin:0;
-  font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background:var(--ui-bg);
-  color:var(--ui-ink);
+    /* —— Espaciado —— */
+    --sp-1: .25rem;
+    --sp-2: .5rem;
+    --sp-3: .75rem;
+    --sp-4: 1rem;
+    --sp-5: 1.25rem;
+    --sp-6: 1.5rem;
+    --sp-8: 2rem;
+
+    /* —— Bordes y sombras —— */
+    --radius: 12px;
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, .05);
+    --shadow-md: 0 6px 16px rgba(0, 0, 0, .08);
+
+    /* —— Layout —— */
+    --header-h: 72px;
+    --subnav-h: 44px;
+
+    /* —— Focus ring —— */
+    --focus-ring: 0 0 0 3px rgba(59, 130, 246, .35);
 }
