@@ -380,12 +380,12 @@ p {
 /* ===========================
    HECHOS DESTACADOS
 =========================== */
-.facts {
+.events {
     background: var(--Background);
     padding: 32px 0
 }
 
-.facts__wrap {
+.events__wrap {
     width: min(1375px, 100%);
     display: flex;
     gap: 48px;
@@ -841,7 +841,7 @@ footer {
         gap: 28px
     }
 
-    .facts__wrap {
+    .events__wrap {
         grid-template-columns: 1fr
     }
 

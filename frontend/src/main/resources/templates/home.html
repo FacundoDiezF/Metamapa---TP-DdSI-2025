@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+<head>
+    <title>MetaMapa · Home</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="container py-5">
+        <h1 class="mb-3">Bienvenido a MetaMapa</h1>
+        <p class="lead">Plataforma abierta y colaborativa para mapear hechos, colecciones e información comunitaria.</p>
+
+        <hr class="my-4"/>
+
+        <div class="row g-4 mt-2">
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Explora el mapa</h5>
+                        <p class="card-text">Visualizá hechos reportados en distintas comunidades y categorías.</p>
+                        <a th:href="@{/mapa}" class="btn btn-primary">Ir al mapa</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Colecciones</h5>
+                        <p class="card-text">Accedé a colecciones temáticas con información destacada.</p>
+                        <a th:href="@{/colecciones}" class="btn btn-outline-secondary">Ver colecciones</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

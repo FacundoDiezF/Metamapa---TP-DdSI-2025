@@ -1,12 +1,7 @@
-/* Focus visible coherente para todo lo interactivo */
-:where(a, button, input, select, textarea, [tabindex])::selection {
-    background: rgba(59, 130, 246, .2)
-}
-
-:where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
-    outline: none;
-    box-shadow: var(--focus-ring);
-}
+/* ===========================
+   COMPONENTS — UI Reutilizables
+   (sin colisionar con Bootstrap)
+=========================== */
 
 /* Tarjetas */
 .card {
@@ -17,7 +12,10 @@
     box-shadow: var(--shadow-sm);
 }
 
-/* Botones */
+.card.sm { padding: var(--sp-4); }
+.card.lg { padding: var(--sp-6); }
+
+/* Botones (BEM para no chocar con .btn/.btn-primary de Bootstrap) */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -27,39 +25,28 @@
     border: 1px solid var(--ui-border);
     background: #fff;
     color: var(--ui-ink);
-    font-weight: 600;
+    font-weight: var(--font-weight-medium); /* 500 */
     cursor: pointer;
     transition: .2s ease background, .2s ease border-color, .06s ease transform;
 }
+.btn:hover { background: #f9fafb; }
+.btn:active { transform: translateY(0); }
 
-.btn:hover {
-    background: #f9fafb
-}
-
-.btn:active {
-    transform: translateY(0)
-}
-
-.btn-primary {
+.btn--primary {
     background: var(--ui-blue);
     color: #fff;
     border-color: transparent;
+    font-weight: var(--font-weight-semibold); /* 600 */
 }
+.btn--primary:hover { filter: brightness(.95); }
 
-.btn-primary:hover {
-    filter: brightness(.95)
-}
-
-.btn-ghost {
+.btn--ghost {
     background: transparent;
     border-color: transparent;
 }
+.btn--ghost:hover { background: #f3f4f6; }
 
-.btn-ghost:hover {
-    background: #f3f4f6;
-}
-
-/* Badges/Pills */
+/* Badges / Pills */
 .badge {
     display: inline-block;
     padding: .25rem .5rem;
@@ -67,43 +54,7 @@
     background: #eef2ff;
     color: #3730a3;
     font-weight: 600;
-    font-size: var(--fs-sm)
+    font-size: var(--fs-sm);
 }
-
-.badge.warn {
-    background: #fef3c7;
-    color: #b45309
-}
-
-.badge.error {
-    background: #fee2e2;
-    color: #991b1b
-}
-
-/* Grillas comunes */
-.grid-2 {
-    display: grid;
-    gap: var(--sp-4);
-    grid-template-columns:1fr 1fr
-}
-
-.grid-3 {
-    display: grid;
-    gap: var(--sp-4);
-    grid-template-columns:repeat(3, 1fr)
-}
-
-@media (max-width: 900px) {
-    .grid-2, .grid-3 {
-        grid-template-columns:1fr
-    }
-}
-
-/* Cards variantes (opcionales por tamaño) */
-.card.sm {
-    padding: var(--sp-4)
-}
-
-.card.lg {
-    padding: var(--sp-6)
-}
+.badge.warn  { background: #fef3c7; color: #b45309; }
+.badge.error { background: #fee2e2; color: #991b1b; }

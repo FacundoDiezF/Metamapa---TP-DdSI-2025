@@ -1,81 +1,139 @@
+/* ===========================
+   BASE — Reset, Layout y Tipografía
+   (Usa variables de tokens.css)
+=========================== */
+
 /* Reset mínimo + box model */
-* {
-    box-sizing: border-box
+* { box-sizing: border-box; }
+
+/* Variables NO globales (tamaños, spacing, layout, etc.) */
+:root {
+    /* —— Escala tipográfica (Figma) —— */
+    --fs-h1: 32px;
+    --fs-h2: 24px;
+    --fs-h3: 20px;
+    --fs-large-body: 18px;
+    --fs-body: 16px;
+    --fs-small: 14px;
+    --fs-metamapa: 30px;
+
+    /* —— Escala adicional (utilidades internas) —— */
+    --fs-xxs: .75rem;      /* 12px */
+    --fs-xs:  .8125rem;    /* 13px */
+    --fs-sm:  .875rem;     /* 14px */
+    --fs-md:  1rem;        /* 16px */
+    --fs-lg:  1.125rem;    /* 18px */
+    --fs-xl:  1.375rem;    /* 22px */
+    --fs-2xl: 1.75rem;     /* 28px */
+    --fs-3xl: 2rem;        /* 32px */
+
+    /* —— Espaciado —— */
+    --sp-1: .25rem;
+    --sp-2: .5rem;
+    --sp-3: .75rem;
+    --sp-4: 1rem;
+    --sp-5: 1.25rem;
+    --sp-6: 1.5rem;
+    --sp-8: 2rem;
+
+    /* —— Bordes y sombras —— */
+    --radius: 12px;
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, .05);
+    --shadow-md: 0 6px 16px rgba(0, 0, 0, .08);
+
+    /* —— Layout —— */
+    --header-h: 72px;
+    --subnav-h: 44px;
+
+    /* —— Focus ring —— */
+    --focus-ring: 0 0 0 3px rgba(59, 130, 246, .35);
 }
 
+/* Fuente global del sitio */
 html, body {
-    height: 100%
-}
-
-body {
-    margin: 0;
     font-family: var(--font-sans);
-    color: var(--ui-ink);
-    background: var(--ui-bg);
+    font-weight: var(--font-weight-regular);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Tipografía semántica */
-h1 {
-    font-size: var(--fs-3xl);
-    margin: .5rem 0 1rem;
-    line-height: 1.15
+body {
+    margin: 0;
+    color: var(--ui-ink);
+    background: var(--ui-bg);
 }
 
-h2 {
-    font-size: var(--fs-2xl);
-    margin: .5rem 0 1rem;
-    line-height: 1.2
+/* Selección + focus visible coherente */
+::selection { background: rgba(59, 130, 246, .2); }
+:where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
 }
 
-h3 {
-    font-size: var(--fs-xl);
+/* Tipografía semántica — escala Figma */
+h1, .h1 {
+    font-size: var(--fs-h1);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+    margin: .5rem 0 1rem;
+}
+
+h2, .h2 {
+    font-size: var(--fs-h2);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.3;
+    margin: .5rem 0 1rem;
+}
+
+h3, .h3 {
+    font-size: var(--fs-h3);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.4;
     margin: .5rem 0 .75rem;
-    line-height: 1.25
 }
 
-p, li {
-    font-size: var(--fs-md);
-    line-height: 1.55
+.large-body {
+    font-size: var(--fs-large-body);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.5;
 }
 
-small {
-    font-size: var(--fs-sm);
-    color: var(--ui-muted)
+body, .body {
+    font-size: var(--fs-body);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.6;
 }
 
-a {
-    color: var(--ui-blue);
-    text-decoration: none
+.small-text {
+    font-size: var(--fs-small);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.6;
 }
 
-a:hover {
-    text-decoration: underline
+/* Marca MetaMapa */
+.brand, .metamapa {
+    font-size: var(--fs-metamapa);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.2px; /* opcional para afinar */
 }
+
+/* Texto general */
+p, li { font-size: var(--fs-md); line-height: 1.55; }
+small { font-size: var(--fs-sm); color: var(--ui-muted); }
+
+/* Links */
+a { color: var(--ui-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
 /* Contenedor común y secciones */
-.container {
-    width: min(1100px, 100% - 2rem);
-    margin-inline: auto
-}
-
-.section {
-    padding: var(--sp-6) 0
-}
+.container { width: min(1100px, 100% - 2rem); margin-inline: auto; }
+.section { padding: var(--sp-6) 0; }
 
 /* Listas limpias */
-.ul-reset {
-    list-style: none;
-    margin: 0;
-    padding: 0
-}
+.ul-reset { list-style: none; margin: 0; padding: 0; }
 
 /* Formularios base */
-input, select, textarea, button {
-    font: inherit;
-}
-
+input, select, textarea, button { font: inherit; }
 input, select, textarea {
     width: 100%;
     padding: .6rem .75rem;
@@ -83,18 +141,15 @@ input, select, textarea {
     border-radius: 10px;
     background: #fff;
 }
-
 input:focus, select:focus, textarea:focus {
     outline: none;
     box-shadow: var(--focus-ring);
     border-color: transparent;
 }
 
-/* Helpers de layout */
+/* Helper de accesibilidad */
 .visually-hidden {
     position: absolute !important;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
+    height: 1px; width: 1px; overflow: hidden;
     clip: rect(1px, 1px, 1px, 1px);
 }
