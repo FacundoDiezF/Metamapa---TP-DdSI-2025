@@ -1,0 +1,17 @@
+<th:block th:fragment="navbar">
+    <div class="mm-nav" role="banner" aria-label="MetaMapa">
+        <div class="mm-nav__inner container">
+            <div class="mm-brand">
+                <span class="mm-mark" aria-hidden="true"><span class="dot"></span></span>
+                <span class="mm-name">MetaMapa</span>
+            </div>
+            <div class="mm-actions">
+                <a href="#" class="mm-btn mm-btn--primary" data-auth="open" data-panel="register" data-bs-toggle="modal" data-bs-target="#registerModal">Registrarse</a>
+                <a href="#" class="mm-btn mm-btn--ghost" data-auth="open" data-panel="login" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar Sesión</a>
+            </div>
+        </div>
+        <div class="mm-center-badge" aria-hidden="true">
+            <span class="mm-logo-badge"><span class="dot"></span></span>
+        </div>
+    </div>
+</th:block>

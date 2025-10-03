@@ -1,0 +1,131 @@
+/* ===========================
+   BASE — Reset, Layout y Tipografía
+=========================== */
+
+/* Reset mínimo + box model */
+* { box-sizing: border-box; }
+
+:root {
+    /* —— Espaciado local —— */
+    --sp-1: .25rem;
+    --sp-2: .5rem;
+    --sp-3: .75rem;
+    --sp-4: 1rem;
+    --sp-5: 1.25rem;
+    --sp-6: 1.5rem;
+    --sp-8: 2rem;
+
+    /* —— Bordes y sombras locales —— */
+    --radius: 12px;
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, .05);
+    --shadow-md: 0 6px 16px rgba(0, 0, 0, .08);
+
+    /* —— Layout local —— */
+    --subnav-h: 44px;
+
+    /* —— Focus ring —— */
+    --focus-ring: 0 0 0 3px rgba(59, 130, 246, .35);
+}
+
+/* Fuente global del sitio */
+html { font-size: 100%; } /* 16px por defecto */
+
+html, body {
+    font-family: var(--font-sans);
+    font-weight: var(--fw-regular);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    color: var(--ui-ink);
+    background: var(--ui-bg);
+}
+
+/* Selección + focus visible */
+::selection { background: rgba(59, 130, 246, .2); }
+:where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+/* ===========================
+   Tipografía base (semántica)
+=========================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-tight);
+    margin: 0 0 .5em;
+    color: var(--Text, #0f172a);
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-h4); }
+h5 { font-size: var(--fs-h5); }
+h6 { font-size: var(--fs-h6); }
+
+body, .body {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    font-weight: var(--fw-regular);
+}
+
+.large-body { font-size: var(--fs-large-body); line-height: 1.5; }
+.small-text { font-size: var(--fs-small); line-height: 1.6; }
+
+/* Marca (solo logo MetaMapa) */
+.mm-name {
+    font-family: var(--font-brand);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-brand);
+    line-height: var(--lh-brand);
+}
+
+/* Texto genérico y utilidades */
+p, li { font-size: 1rem; line-height: 1.55; }
+.text-muted { color: var(--DarkAccent, #64748b); }
+.fw-medium { font-weight: var(--fw-medium); }
+.fw-semibold { font-weight: var(--fw-semibold); }
+.fw-bold { font-weight: var(--fw-bold); }
+
+/* Links */
+a { color: var(--Accent); text-decoration: none; }
+a:hover, a:focus-visible { text-decoration: underline; }
+
+/* Contenedor de sección común */
+.section { padding: var(--sp-6) 0; }
+
+/* Listas limpias */
+.ul-reset { list-style: none; margin: 0; padding: 0; }
+
+/* Formularios base */
+input, select, textarea, button { font: inherit; }
+input, select, textarea {
+    width: 100%;
+    padding: .6rem .75rem;
+    border: 1px solid var(--ui-border);
+    border-radius: 10px;
+    background: #fff;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-color: transparent;
+}
+
+/* Helper de accesibilidad */
+.visually-hidden {
+    position: absolute !important;
+    height: 1px; width: 1px; overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+/* Ajuste de lectura en móviles muy pequeños */
+@media (max-width: 360px) {
+    :root { /* solo el body baja un punto si querés */ }
+}

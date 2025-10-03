@@ -1,0 +1,42 @@
+/* ===== Colecciones (shared) ===== */
+.colecciones{
+  background:var(--ui-card);
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:1rem;
+}
+
+.colecciones h3{ margin-bottom:1rem; }
+
+.colecciones ul{
+  list-style:none;
+  margin:0 0 1rem;
+  padding:0;
+}
+
+.colecciones li{ margin-bottom:.5rem; }
+
+.colecciones a{
+  color:var(--ui-blue);
+  font-weight:600;
+  text-decoration:none;
+}
+
+.colecciones a span{
+  font-size:.75rem;
+  margin-left:.5rem;
+  color:#555;
+}
+
+.colecciones .explorar{
+  width:100%;
+  padding:.7rem;
+  border:none;
+  border-radius:8px;
+  background:var(--ui-blue);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.colecciones .explorar:hover{ filter:brightness(.95); }
