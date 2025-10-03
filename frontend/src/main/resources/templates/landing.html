@@ -12,279 +12,232 @@
 
 <body>
 
-<!-- Navbar específica de landing -->
+<!-- Navbar  -->
 <th:block layout:fragment="navbar">
-
 </th:block>
 
-<!-- ================== HERO ================== -->
-<section class="section hero-wrap">  <!-- panel claro opcional -->
-    <div class="container hero">
-        <div class="hero__image">
-            <img class="hero__img"
-                 th:src="@{/shared/img/landing_metamapa.png}"
-                 alt="Ilustración del mapa colaborativo MetaMapa">
-        </div>
+<main id="main-content" class="landing-page" layout:fragment="content">
+    <div th:replace="fragments/_navbar_landing :: navbarSticky"></div>
 
-        <div class="hero__text">
-            <h1 class="brand">MetaMapa</h1>
-            <p class="tagline">Plataforma de Mapeo Colaborativo</p>
+    <!-- ================== HERO ================== -->
+    <section class="section hero-wrap">
+        <div class="container hero">
+            <div class="hero__image">
+                <img class="hero__img"
+                     th:src="@{/shared/img/landing_metamapa.png}"
+                     alt="Ilustración del mapa colaborativo MetaMapa">
+            </div>
 
-            <div class="hero__actions">
-                <a th:href="@{/home}" class="mm-btn mm-btn--primary">Explorar Más</a>
-                <a href="#" id="loginBtnHero" class="mm-btn mm-btn--ghost"
-                   data-auth="open" data-panel="login">Iniciar Sesión</a>
+            <div class="hero__text">
+                <h1 class="brand">MetaMapa</h1>
+                <p class="tagline">Plataforma de Mapeo Colaborativo</p>
+
+                <div class="hero__actions">
+                    <a th:href="@{/home}" class="mm-btn mm-btn--primary">Explorar Más</a>
+
+                    <!-- Abre modal dummy de login -->
+                    <a href="#"
+                       id="loginBtnHero"
+                       class="mm-btn mm-btn--ghost"
+                       data-bs-toggle="modal"
+                       data-bs-target="#authLoginModal">
+                        Iniciar Sesión
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
+    <!-- ================== PROPÓSITO ================== -->
+    <section id="proposito" class="section">
+        <div class="container purpose">
+            <h2 class="title">Propósito y Objetivos de MetaMapa</h2>
+            <p class="subtitle">
+                MetaMapa es una plataforma colaborativa que permite a las comunidades organizar, visualizar y compartir
+                información de manera interactiva, creando mapas de conocimiento colectivo que fortalecen la
+                participación ciudadana.
+            </p>
 
-<!-- NAVBAR sticky -->
-<div th:replace="fragments/_navbar_landing :: navbarSticky"></div>
-
-<!-- ================== PROPÓSITO ================== -->
-<section id="proposito" class="section">
-    <div class="container purpose">
-        <h2 class="title">Propósito y Objetivos de MetaMapa</h2>
-        <p class="subtitle">
-            MetaMapa es una plataforma colaborativa que permite a las comunidades organizar, visualizar y compartir
-            información de manera interactiva, creando mapas de conocimiento colectivo que fortalecen la
-            participación ciudadana.
-        </p>
-
-        <div class="purpose__grid">
-            <article class="purpose__item">
-                <div class="icon-bubble">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <circle cx="11" cy="11" r="7" stroke="var(--Accent)" stroke-width="2"/>
-                        <path d="M21 21L16.65 16.65" stroke="var(--Accent)" stroke-width="2"
-                              stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <div>
-                    <h4>Colaboración</h4>
-                    <p>Conectamos comunidades para crear conocimiento colectivo</p>
-                </div>
-            </article>
-
-            <article class="purpose__item">
-                <div class="icon-bubble">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path
-                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"
-                                fill="var(--Accent)"/>
-                    </svg>
-                </div>
-                <div>
-                    <h4>Mapeo</h4>
-                    <p>Visualizamos información de manera geográfica e interactiva</p>
-                </div>
-            </article>
-
-            <article class="purpose__item">
-                <div class="icon-bubble">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M16 11a4 4 0 1 0-8 0v2H5a3 3 0 0 0-3 3v2h20v-2a3 3 0 0 0-3-3h-3v-2Z"
-                              fill="var(--Accent)"/>
-                    </svg>
-                </div>
-                <div>
-                    <h4>Comunidad</h4>
-                    <p>Fomentamos la participación ciudadana y el intercambio</p>
-                </div>
-            </article>
-        </div>
-    </div>
-</section>
-
-<!-- ================== COLECCIONES DESTACADAS ================== -->
-<section id="colecciones" class="section featured">
-    <div class="container">
-        <h2 class="title">Colecciones Destacadas</h2>
-        <p class="subtitle">Explora nuestras colecciones más populares y descubre información valiosa</p>
-
-        <div class="cards" role="list">
-            <article class="card" role="listitem">
-                <h5>Eventos Comunitarios</h5>
-                <div class="card__body">
-                    <p>Actividades y Encuentros organizados por la comunidad</p>
-                    <span class="pill">128 elementos</span>
-                </div>
-                <a href="#" class="mm-btn mm-btn--outline-light">Ver colección</a>
-                <div class="meta">🛈 Última actualización: 8 días</div>
-            </article>
-
-            <article class="card" role="listitem">
-                <h5>Eventos Comunitarios</h5>
-                <div class="card__body">
-                    <p>Actividades y Encuentros organizados por la comunidad</p>
-                    <span class="pill">128 elementos</span>
-                </div>
-                <a href="#" class="mm-btn mm-btn--outline-light">Ver colección</a>
-                <div class="meta">🛈 Última actualización: 8 días</div>
-            </article>
-
-            <article class="card" role="listitem">
-                <h5>Eventos Comunitarios</h5>
-                <div class="card__body">
-                    <p>Actividades y Encuentros organizados por la comunidad</p>
-                    <span class="pill">128 elementos</span>
-                </div>
-                <a href="#" class="mm-btn mm-btn--outline-light">Ver colección</a>
-                <div class="meta">🛈 Última actualización: 8 días</div>
-            </article>
-
-            <article class="card" role="listitem">
-                <h5>Eventos Comunitarios</h5>
-                <div class="card__body">
-                    <p>Actividades y Encuentros organizados por la comunidad</p>
-                    <span class="pill">128 elementos</span>
-                </div>
-                <a href="#" class="mm-btn mm-btn--outline-light">Ver colección</a>
-                <div class="meta">🛈 Última actualización: 8 días</div>
-            </article>
-        </div>
-    </div>
-</section>
-
-<!-- ================== HECHOS DESTACADOS ================== -->
-<section id="hechos" class="section facts">
-    <div class="container">
-        <h2 class="title">Hechos Destacados</h2>
-        <p class="subtitle">Explora los hechos más relevantes reportados por nuestra comunidad en el mapa</p>
-
-        <div class="events__wrap">
-            <div class="map-box">
-                <div class="map" aria-label="Mapa de hechos">
-                    <img class="map__img" th:src="@{/shared/img/landing_map.png}" alt="Mapa de hechos">
-                    <div class="legend" aria-label="Leyenda del mapa">
-                        <h6>Leyenda</h6>
-                        <div class="legend-row"><span class="dot dot--seek"></span> <span>Se busca</span></div>
-                        <div class="legend-row"><span class="dot dot--fire"></span> <span>Incendios</span></div>
-                        <div class="legend-row"><span class="dot dot--event"></span> <span>Eventos</span></div>
+            <div class="purpose__grid">
+                <article class="purpose__item">
+                    <div class="icon-bubble">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7" stroke="var(--Accent)" stroke-width="2"/>
+                            <path d="M21 21L16.65 16.65" stroke="var(--Accent)" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
                     </div>
-                </div>
-                <a class="facts__cta" th:href="@{/hechos/nuevo}">¡Subí tu hecho!</a>
+                    <div>
+                        <h4>Colaboración</h4>
+                        <p>Conectamos comunidades para crear conocimiento colectivo</p>
+                    </div>
+                </article>
+
+                <article class="purpose__item">
+                    <div class="icon-bubble">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"
+                                  fill="var(--Accent)"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>Mapeo</h4>
+                        <p>Visualizamos información de manera geográfica e interactiva</p>
+                    </div>
+                </article>
+
+                <article class="purpose__item">
+                    <div class="icon-bubble">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M16 11a4 4 0 1 0-8 0v2H5a3 3 0 0 0-3 3v2h20v-2a3 3 0 0 0-3-3h-3v-2Z"
+                                  fill="var(--Accent)"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>Comunidad</h4>
+                        <p>Fomentamos la participación ciudadana y el intercambio</p>
+                    </div>
+                </article>
             </div>
+        </div>
+    </section>
 
-            <aside class="facts__panel">
-                <div class="facts__lead">
-                    <img th:src="@{/shared/img/Icons/location-pin-svgrepo-com.svg}" alt="Ubicación"
-                         class="facts__icon"/>
-                    <p class="lead-title">Selecciona un hecho en el mapa</p>
-                    <p class="lead-desc">Haz clic en cualquier marcador del mapa para ver los detalles del hecho
-                        reportado</p>
+    <!-- ================== COLECCIONES DESTACADAS ================== -->
+    <section id="colecciones" class="section featured">
+        <div class="container">
+            <h2 class="title">Colecciones Destacadas</h2>
+            <p class="subtitle">Explora nuestras colecciones más populares y descubre información valiosa</p>
+
+            <div class="cards" role="list">
+                <article class="card" role="listitem">
+                    <h5>Eventos Comunitarios</h5>
+                    <div class="card__body">
+                        <p>Actividades y Encuentros organizados por la comunidad</p>
+                        <span class="pill">128 elementos</span>
+                    </div>
+                    <a href="#" class="mm-btn mm-btn--outline-light">Ver colección</a>
+                    <div class="meta">🛈 Última actualización: 8 días</div>
+                </article>
+
+                <article class="card" role="listitem">
+                    <h5>Eventos Comunitarios</h5>
+                    <div class="card__body">
+                        <p>Actividades y Encuentros organizados por la comunidad</p>
+                        <span class="pill">128 elementos</span>
+                    </div>
+                    <a href="#" class="mm-btn mm-btn--outline-light">Ver colección</a>
+                    <div class="meta">🛈 Última actualización: 8 días</div>
+                </article>
+
+                <article class="card" role="listitem">
+                    <h5>Eventos Comunitarios</h5>
+                    <div class="card__body">
+                        <p>Actividades y Encuentros organizados por la comunidad</p>
+                        <span class="pill">128 elementos</span>
+                    </div>
+                    <a href="#" class="mm-btn mm-btn--outline-light">Ver colección</a>
+                    <div class="meta">🛈 Última actualización: 8 días</div>
+                </article>
+
+                <article class="card" role="listitem">
+                    <h5>Eventos Comunitarios</h5>
+                    <div class="card__body">
+                        <p>Actividades y Encuentros organizados por la comunidad</p>
+                        <span class="pill">128 elementos</span>
+                    </div>
+                    <a href="#" class="mm-btn mm-btn--outline-light">Ver colección</a>
+                    <div class="meta">🛈 Última actualización: 8 días</div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================== HECHOS DESTACADOS ================== -->
+    <section id="hechos" class="section facts">
+        <div class="container">
+            <h2 class="title">Hechos Destacados</h2>
+            <p class="subtitle">Explora los hechos más relevantes reportados por nuestra comunidad en el mapa</p>
+
+            <div class="events__wrap">
+                <div class="map-box">
+                    <div class="map" aria-label="Mapa de hechos">
+                        <img class="map__img" th:src="@{/shared/img/landing_map.png}" alt="Mapa de hechos">
+                        <div class="legend" aria-label="Leyenda del mapa">
+                            <h6>Leyenda</h6>
+                            <div class="legend-row"><span class="dot dot--seek"></span> <span>Se busca</span></div>
+                            <div class="legend-row"><span class="dot dot--fire"></span> <span>Incendios</span></div>
+                            <div class="legend-row"><span class="dot dot--event"></span> <span>Eventos</span></div>
+                        </div>
+                    </div>
+                    <a class="facts__cta" th:href="@{/hechos/nuevo}">¡Subí tu hecho!</a>
                 </div>
 
-                <div class="facts__list">
-                    <a href="#" class="facts__all">Todos los hechos</a>
+                <aside class="facts__panel">
+                    <div class="facts__lead">
+                        <img th:src="@{/shared/img/Icons/location-pin-svgrepo-com.svg}" alt="Ubicación"
+                             class="facts__icon"/>
+                        <p class="lead-title">Selecciona un hecho en el mapa</p>
+                        <p class="lead-desc">Haz clic en cualquier marcador del mapa para ver los detalles del hecho
+                            reportado</p>
+                    </div>
 
-                    <!-- Event Card 1 -->
-                    <a href="#" class="fact-link">
+                    <div class="facts__list">
+                        <a href="#" class="facts__all">Todos los hechos</a>
+
+                        <!-- Event Card 1 -->
+                        <a href="#" class="fact-link">
                             <span class="facts__badge facts__badge--fire">
                                 <img th:src="@{/shared/img/Icons/Events_cat/mdi_fire.svg}" alt="Incendio"/>
                             </span>
-                        <div>
-                            <p class="facts__title">Incendio en Córdoba</p>
-                            <p class="facts__place">Sierras de Córdoba</p>
-                        </div>
-                    </a>
+                            <div>
+                                <p class="facts__title">Incendio en Córdoba</p>
+                                <p class="facts__place">Sierras de Córdoba</p>
+                            </div>
+                        </a>
 
-                    <!-- Event Card 2 -->
-                    <a href="#" class="fact-link">
+                        <!-- Event Card 2 -->
+                        <a href="#" class="fact-link">
                             <span class="facts__badge facts__badge--spill">
                                 <img th:src="@{/shared/img/Icons/Events_cat/water.svg}" alt="Derrame"/>
-
                             </span>
-                        <div>
-                            <p class="facts__title">Derrame en Río Paraná</p>
-                            <p class="facts__place">Puerto de Rosario</p>
-                        </div>
-                    </a>
+                            <div>
+                                <p class="facts__title">Derrame en Río Paraná</p>
+                                <p class="facts__place">Puerto de Rosario</p>
+                            </div>
+                        </a>
 
-                    <!-- Event Card 3 -->
-                    <a href="#" class="fact-link">
+                        <!-- Event Card 3 -->
+                        <a href="#" class="fact-link">
                             <span class="facts__badge facts__badge--protest">
-                                <img th:src="@{/shared/img/Icons/Events_cat/streamline-sharp_sign-hashtag-remix.svg}"
-                                     alt="Protesta"/>
+                                <img th:src="@{/shared/img/Icons/Events_cat/streamline-sharp_sign-hashtag-remix.svg}" alt="Protesta"/>
                             </span>
-                        <div>
-                            <p class="facts__title">Protesta pacífica en CABA</p>
-                            <p class="facts__place">Plaza de Mayo</p>
-                        </div>
-                    </a>
-                </div>
-            </aside>
+                            <div>
+                                <p class="facts__title">Protesta pacífica en CABA</p>
+                                <p class="facts__place">Plaza de Mayo</p>
+                            </div>
+                        </a>
+                    </div>
+                </aside>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Overlay Modal -->
-<div id="authOverlay" hidden>
-    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-        <button id="authClose" class="auth-close" aria-label="Cerrar">✕</button>
-
-        <!-- Login -->
-        <section id="loginPanel">
-            <h3 id="authTitle">Iniciar sesión</h3>
-            <form id="loginForm" novalidate>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Contraseña" required>
-                <button type="submit">Entrar</button>
-            </form>
-            <p>¿No tenés cuenta? <a href="#" id="toggleRegister">Crear una</a></p>
-        </section>
-
-        <!-- Registro -->
-        <section id="registerPanel" hidden>
-            <h3>Crear cuenta</h3>
-            <form id="registerForm" novalidate>
-                <div class="row row-cols-1 row-cols-md-2 g-3">
-                    <label class="field">
-                        <span>Primer nombre <b class="req">*</b></span>
-                        <input id="firstName" name="firstName" type="text" placeholder="Tu primer nombre"
-                               autocomplete="given-name" required minlength="2">
-                    </label>
-                    <label class="field">
-                        <span>Apellido <b class="req">*</b></span>
-                        <input id="lastName" name="lastName" type="text" placeholder="Tu apellido"
-                               autocomplete="family-name" required minlength="2">
-                    </label>
-                </div>
-
-                <label class="field">
-                    <span>Email <b class="req">*</b></span>
-                    <input id="regEmail" name="email" type="email" placeholder="nombre@ejemplo.com" required
-                           autocomplete="email">
-                </label>
-
-                <label class="field">
-                    <span>Contraseña <b class="req">*</b></span>
-                    <input id="regPass" name="password" type="password" placeholder="••••••••" required
-                           autocomplete="new-password" minlength="6">
-                </label>
-
-                <button type="submit">Registrarme</button>
-            </form>
-            <p>¿Ya tenés cuenta? <a href="#" id="toggleLogin">Iniciar sesión</a></p>
-        </section>
-    </div>
-</div>
-
-</section>
+</main>
 
 <!-- Footer específico de landing -->
 <th:block layout:fragment="footer">
-    <div th:replace="fragments/_footer_landing :: footer"></div>
+    <div th:replace="~{fragments/_footer_landing :: footer}"></div>
 </th:block>
 
+<!-- Modals dummy -->
+<div th:replace="~{fragments/_authModals :: authModals}"></div>
+
+<!-- Scripts de página -->
 <th:block layout:fragment="pageScripts">
-    <script th:src="@{/js/auth.js}"></script>
+    <!-- Quitamos auth.js porque ya no usamos overlay custom -->
     <script>
         // collapse navbar en mobile
         document.addEventListener('click', (e) => {
-            const link = e.target.closest('.navbar .nav-link');
+            const link = e.target.closest('.navbar .nav-link, .navbar .dropdown-item');
             const collapse = document.querySelector('#landingNav');
             if (link && collapse && collapse.classList.contains('show')) {
                 const bsCollapse = bootstrap.Collapse.getInstance(collapse);
@@ -292,19 +245,32 @@
             }
         });
 
-        // efecto scroll sticky
+        // efecto scroll sticky para barra con .landing-sticky
         (() => {
             const wrap = document.querySelector('.landing-sticky');
             if (!wrap) return;
-            const onScroll = () => {
-                wrap.classList.toggle('is-scrolled', window.scrollY > 2);
-            };
+            const onScroll = () => wrap.classList.toggle('is-scrolled', window.scrollY > 2);
             onScroll();
-            window.addEventListener('scroll', onScroll, {passive: true});
+            window.addEventListener('scroll', onScroll, { passive: true });
         })();
     </script>
-</th:block>
 
+    <script>
+        // Evita que el navegador “recuerde” la posición de scroll al recargar/navegar
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        // Garantiza que arranque en top aún con bfcache (vuelta atrás/adelante)
+        window.addEventListener('pageshow', (e) => {
+            if (e.persisted) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        });
+        // En carga normal
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        });
+    </script>
+
+</th:block>
 
 </body>
 </html>
