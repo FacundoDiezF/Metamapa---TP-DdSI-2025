@@ -1,6 +1,5 @@
-<th:block th:fragment="navbar" xmlns:th="http://www.w3.org/1999/xhtml">
+<th:block th:fragment="navbarSticky" xmlns:th="http://www.w3.org/1999/xhtml">
     <nav class="mm-nav mm-nav--landing navbar navbar-expand-lg navbar-light sticky-top">
-
         <div class="container">
             <a class="navbar-brand mm-brand d-flex align-items-center gap-3" th:href="@{/}">
                 <span class="mm-mark position-relative d-inline-block" aria-hidden="true"></span>
@@ -19,13 +18,10 @@
                     <li class="nav-item"><a class="nav-link" th:href="@{/#footer}">Acerca</a></li>
                 </ul>
 
-
                 <div class="nav-actions">
                     <a class="mm-btn mm-btn--primary mm-btn--pill" href="#" data-auth="open" data-panel="register">Registrarse</a>
-                    <a class="mm-btn mm-btn--ghost mm-btn--pill" href="#" data-auth="open" data-panel="login">Iniciar
-                        Sesión</a>
+                    <a class="mm-btn mm-btn--ghost  mm-btn--pill" href="#" data-auth="open" data-panel="login">Iniciar Sesión</a>
                 </div>
-
             </div>
         </div>
     </nav>
