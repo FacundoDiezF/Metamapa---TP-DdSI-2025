@@ -1,17 +1,44 @@
-<!-- templates/fragments/_footer_landing.html -->
 <th:block th:fragment="footer" xmlns:th="">
-    <section id="footer" class="mm-footer mm-footer--landing">
-        <div class="container py-4">
-            <div class="row gy-3">
-                <div class="col-12 col-md-6">
-                    <strong>MetaMapa</strong>
-                    <p class="mb-0">Sistema colaborativo para mapear información con foco en privacidad.</p>
+    <footer id="footer" class="mm-footer--landing">
+        <div class="container footer">
+            <div class="footer__grid">
+                <!-- Marca -->
+                <div class="footer__brand">
+                    <h3>MetaMapa</h3>
+                    <p>Plataforma colaborativa para el mapeo transparente de hechos. Diseñada para ONGs e instituciones que buscan generar conocimiento colectivo.</p>
                 </div>
-                <div class="col-12 col-md-6 text-md-end">
-                    <a th:href="@{/privacidad}" class="link-underline link-underline-opacity-0 me-3">Privacidad</a>
-                    <a th:href="@{/terminos}" class="link-underline link-underline-opacity-0">Términos</a>
-                </div>
+
+                <!-- Columna 1 -->
+                <nav class="footer__col" aria-label="Privacidad y Legal">
+                    <h4>Privacidad y Legal</h4>
+                    <a href="#">Términos y condiciones</a>
+                    <a href="#">Política de privacidad</a>
+                    <a href="#">Aviso legal</a>
+                    <a href="#">Cookies</a>
+                </nav>
+
+                <!-- Columna 2 -->
+                <nav class="footer__col" aria-label="Contacto">
+                    <h4>Contacto</h4>
+                    <a href="#">Soporte técnico</a>
+                    <a href="#">Reportar problema</a>
+                    <a href="#">Sugerencias</a>
+                    <a href="#">Prensa</a>
+                </nav>
+
+                <!-- Columna 3 -->
+                <nav class="footer__col" aria-label="Recursos para ONGs">
+                    <h4>Recursos para ONGs</h4>
+                    <a href="#">Guía de uso</a>
+                    <a href="#">Capacitaciones</a>
+                    <a href="#">API para organizaciones</a>
+                    <a href="#">Casos de éxito</a>
+                </nav>
+            </div>
+
+            <div class="footer__copy">
+                © 2025 MetaMapa. Todos los derechos reservados.
             </div>
         </div>
-    </section>
+    </footer>
 </th:block>

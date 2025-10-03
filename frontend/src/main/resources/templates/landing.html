@@ -36,13 +36,9 @@
                     <a th:href="@{/home}" class="mm-btn mm-btn--primary">Explorar Más</a>
 
                     <!-- Abre modal dummy de login -->
-                    <a href="#"
-                       id="loginBtnHero"
-                       class="mm-btn mm-btn--ghost"
-                       data-bs-toggle="modal"
-                       data-bs-target="#authLoginModal">
-                        Iniciar Sesión
-                    </a>
+                    <a href="#" id="loginBtnHero"
+                       class="mm-btn mm-btn--primary mm-btn--pill mm-btn--blue"
+                       data-auth="open" data-panel="login">Iniciar Sesión</a>
                 </div>
             </div>
         </div>
@@ -63,7 +59,8 @@
                     <div class="icon-bubble">
                         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                             <circle cx="11" cy="11" r="7" stroke="var(--Accent)" stroke-width="2"/>
-                            <path d="M21 21L16.65 16.65" stroke="var(--Accent)" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M21 21L16.65 16.65" stroke="var(--Accent)" stroke-width="2"
+                                  stroke-linecap="round"/>
                         </svg>
                     </div>
                     <div>
@@ -208,7 +205,8 @@
                         <!-- Event Card 3 -->
                         <a href="#" class="fact-link">
                             <span class="facts__badge facts__badge--protest">
-                                <img th:src="@{/shared/img/Icons/Events_cat/streamline-sharp_sign-hashtag-remix.svg}" alt="Protesta"/>
+                                <img th:src="@{/shared/img/Icons/Events_cat/streamline-sharp_sign-hashtag-remix.svg}"
+                                     alt="Protesta"/>
                             </span>
                             <div>
                                 <p class="facts__title">Protesta pacífica en CABA</p>
@@ -251,7 +249,7 @@
             if (!wrap) return;
             const onScroll = () => wrap.classList.toggle('is-scrolled', window.scrollY > 2);
             onScroll();
-            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('scroll', onScroll, {passive: true});
         })();
     </script>
 
@@ -262,11 +260,11 @@
         }
         // Garantiza que arranque en top aún con bfcache (vuelta atrás/adelante)
         window.addEventListener('pageshow', (e) => {
-            if (e.persisted) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+            if (e.persisted) window.scrollTo({top: 0, left: 0, behavior: 'instant'});
         });
         // En carga normal
         window.addEventListener('load', () => {
-            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+            window.scrollTo({top: 0, left: 0, behavior: 'instant'});
         });
     </script>
 
