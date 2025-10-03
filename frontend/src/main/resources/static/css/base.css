@@ -126,7 +126,7 @@ a { color: var(--ui-blue); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* Contenedor común y secciones */
-.container { width: min(1100px, 100% - 2rem); margin-inline: auto; }
+/* removed to avoid Bootstrap collision */
 .section { padding: var(--sp-6) 0; }
 
 /* Listas limpias */

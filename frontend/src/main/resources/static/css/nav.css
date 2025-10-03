@@ -1,17 +1,5 @@
 /* ===== NavBar unificada ===== */
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 3000;
-  height: var(--header-h, 72px);
-  padding: 0 24px;
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  align-items: center;
-  gap: 24px;
-  background: #fff;
-  border-bottom: 1px solid #e5e7eb;
-}
+/* removed to avoid Bootstrap collision */
 
 .brand {
   display: flex;
@@ -186,14 +174,14 @@
   cursor: pointer;
 }
 
-.auth-modal .grid-2 {
+.auth-modal .row /* was grid-2 */ {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
 @media(max-width:560px) {
-  .auth-modal .grid-2 {
+  .auth-modal .row /* was grid-2 */ {
     grid-template-columns: 1fr;
   }
 }

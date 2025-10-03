@@ -282,7 +282,7 @@ body {
   display: grid;
 }
 
-#cat-modal .modal {
+#cat-modal .mm-modal {
   position: relative;
   width: min(92vw, 480px);
   background: #fff;

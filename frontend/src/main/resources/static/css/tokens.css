@@ -3,16 +3,37 @@
 =========================== */
 
 :root {
+    --header-h: 100px;
+
     /* —— Colores —— */
-    --ui-blue:   #3B82F6;
-    --ui-ink:    #0f172a;
-    --ui-muted:  #6b7280;
-    --ui-bg:     #F3F4F6;
-    --ui-card:   #ffffff;
-    --ui-border: #e5e7eb;
-    --ui-accent: #10b981;
-    --ui-warn:   #f59e0b;
-    --ui-error:  #ef4444;
+    --Text: #050315;
+    --LightText: #A7A7A7;
+    --Background: #F3F4F6;
+    --Secondary: #EFF6FF;
+    --Accent: #3B82F6;
+    --DarkAccent: #475265;
+    --Details: #BDFFDB;
+    --AltDetails: #F97316;
+    --ModuleBG: #FFFFFF;
+    --InboxBG: #F2F2F2;
+
+    --radius-8: 8px;
+    --radius-10: 10px;
+    --radius-12: 12px;
+
+    --shadow-1: 0 1px 4px rgba(0, 0, 0, .25);
+    --shadow-soft: 0 1px 3px rgba(0, 0, 0, .08);
+
+    /* NEW: alias en minúscula para compatibilidad */
+    --text: var(--Text);
+    --light-text: var(--LightText);
+    --background: var(--Background);
+    --secondary: var(--Secondary);
+    --accent: var(--Accent);
+    --dark-accent: var(--DarkAccent);
+    --details: var(--Details);
+    --alt-details: var(--AltDetails);
+    --module-bg: var(--ModuleBG);
 
     /* —— Tipografías —— */
     --font-sans: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
@@ -22,4 +43,8 @@
     --font-weight-medium:    500;
     --font-weight-semibold:  600;
     --font-weight-bold:      700;
+}
+
+@media (max-width:640px) {
+    :root { --header-h: 72px; }
 }

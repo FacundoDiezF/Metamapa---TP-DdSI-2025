@@ -31,7 +31,7 @@
 
                 <div class="hero__actions">
                     <a th:href="@{/home}" class="btn btn--primary">Explorar Más</a>
-                    <a href="#" id="loginBtnHero" class="btn btn--secondary" data-auth="open" data-panel="login">Iniciar
+                    <a href="#" id="loginBtnHero" class="btn btn--ghost" data-auth="open" data-panel="login">Iniciar
                         Sesión</a> <!--Cambiar-->
 
                 </div>
@@ -108,7 +108,7 @@
                             <h5 class="card-title">Eventos Comunitarios</h5>
                             <p class="card-text">Actividades y Encuentros organizados por la comunidad</p>
                             <span class="pill d-inline-block mb-2">128 elementos</span>
-                            <a href="#" class="btn btn-outline-secondary">Ver colección</a>
+                            <a href="#" class="btn btn--ghost">Ver colección</a>
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">🛈 Última actualización: 8 días</small>
@@ -122,7 +122,7 @@
                             <h5 class="card-title">Eventos Comunitarios</h5>
                             <p class="card-text">Actividades y Encuentros organizados por la comunidad</p>
                             <span class="pill d-inline-block mb-2">128 elementos</span>
-                            <a href="#" class="btn btn-outline-secondary">Ver colección</a>
+                            <a href="#" class="btn btn--ghost">Ver colección</a>
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">🛈 Última actualización: 8 días</small>
@@ -136,7 +136,7 @@
                             <h5 class="card-title">Eventos Comunitarios</h5>
                             <p class="card-text">Actividades y Encuentros organizados por la comunidad</p>
                             <span class="pill d-inline-block mb-2">128 elementos</span>
-                            <a href="#" class="btn btn-outline-secondary">Ver colección</a>
+                            <a href="#" class="btn btn--ghost">Ver colección</a>
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">🛈 Última actualización: 8 días</small>
@@ -150,7 +150,7 @@
                             <h5 class="card-title">Eventos Comunitarios</h5>
                             <p class="card-text">Actividades y Encuentros organizados por la comunidad</p>
                             <span class="pill d-inline-block mb-2">128 elementos</span>
-                            <a href="#" class="btn btn-outline-secondary">Ver colección</a>
+                            <a href="#" class="btn btn--ghost">Ver colección</a>
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">🛈 Última actualización: 8 días</small>
@@ -175,9 +175,10 @@
                              alt="Mapa ilustrativo de hechos destacados">
                         <div class="legend" aria-label="Leyenda del mapa">
                             <h6>Leyenda</h6>
-                            <div class="row"><span class="dot dot--seek"></span> <span>Se busca</span></div>
-                            <div class="row"><span class="dot dot--fire"></span> <span>Incendios</span></div>
-                            <div class="row"><span class="dot dot--event"></span> <span>Eventos</span></div>
+                             <div class="legend-row"><span class="dot dot--seek"></span> <span>Se busca</span></div>
+                             <div class="legend-row"><span class="dot dot--fire"></span> <span>Incendios</span></div>
+                             <div class="legend-row"><span class="dot dot--event"></span> <span>Eventos</span></div>
+
                         </div>
                     </div>
                     <a class="facts__cta" th:href="@{/home}">¡Subí tu hecho!</a>
@@ -255,13 +256,13 @@
             <section id="registerPanel" hidden>
                 <h3>Crear cuenta</h3>
                 <form id="registerForm" novalidate>
-                    <div class="grid-2">
-                        <label class="field">
+                    <div class="row g-3">
+                        <label class="field col-12 col-md-6">
                             <span>Primer nombre <b class="req">*</b></span>
                             <input id="firstName" name="firstName" type="text" placeholder="Tu primer nombre"
                                    autocomplete="given-name" required minlength="2">
                         </label>
-                        <label class="field">
+                        <label class="field col-12 col-md-6">
                             <span>Apellido <b class="req">*</b></span>
                             <input id="lastName" name="lastName" type="text" placeholder="Tu apellido"
                                    autocomplete="family-name" required minlength="2">

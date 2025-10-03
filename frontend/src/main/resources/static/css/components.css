@@ -12,8 +12,13 @@
     box-shadow: var(--shadow-sm);
 }
 
-.card.sm { padding: var(--sp-4); }
-.card.lg { padding: var(--sp-6); }
+.card.sm {
+    padding: var(--sp-4);
+}
+
+.card.lg {
+    padding: var(--sp-6);
+}
 
 /* Botones (BEM para no chocar con .btn/.btn-primary de Bootstrap) */
 .btn {
@@ -29,8 +34,14 @@
     cursor: pointer;
     transition: .2s ease background, .2s ease border-color, .06s ease transform;
 }
-.btn:hover { background: #f9fafb; }
-.btn:active { transform: translateY(0); }
+
+.btn:hover {
+    background: #f9fafb;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
 
 .btn--primary {
     background: var(--ui-blue);
@@ -38,13 +49,20 @@
     border-color: transparent;
     font-weight: var(--font-weight-semibold); /* 600 */
 }
-.btn--primary:hover { filter: brightness(.95); }
+
+.btn--primary:hover {
+    filter: brightness(.95);
+}
 
 .btn--ghost {
     background: transparent;
-    border-color: transparent;
+    border: 1px dashed var(--Accent);
+    color: var(--Accent);
 }
-.btn--ghost:hover { background: #f3f4f6; }
+
+.btn--ghost:hover {
+    background: #f3f4f6;
+}
 
 /* Badges / Pills */
 .badge {
@@ -56,5 +74,21 @@
     font-weight: 600;
     font-size: var(--fs-sm);
 }
-.badge.warn  { background: #fef3c7; color: #b45309; }
-.badge.error { background: #fee2e2; color: #991b1b; }
+
+.badge.warn {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.badge.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.btn--secondary {
+    all: unset;
+}
+
+.btn--secondary {
+    @apply .btn--ghost;
+}

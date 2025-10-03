@@ -8,37 +8,57 @@ Toda la interfaz se construye con **layouts Thymeleaf**, **fragments reutilizabl
 
 ## 🎨 Guía de estilos
 
-### 1. `tokens.css`
-📍 **Colores y fuentes globales**  
-Contiene:
-- Paleta de colores (`--ui-blue`, `--ui-accent`, etc.).
-- Tipografías (familia `--font-sans` y pesos `--font-weight-*`).
+Perfecto 🚀
+Ahora que ya tenemos el desglose detallado de roles de cada `.css`, te armo una versión breve para un **README.md**, pensada para el repo de tu proyecto.
 
-### 2. `base.css`
-📍 **Reglas globales y semánticas**  
-Incluye:
-- Reset (`box-sizing`, márgenes base).
-- Escala tipográfica (`h1`, `h2`, `h3`, body, small).
-- Layout (`.container`, `.section`).
-- Formularios base (`input`, `textarea`, `button`).
-- Helpers de accesibilidad (`.visually-hidden`).
-- Focus ring unificado.
+---
 
-👉 Usar para cambios de **estructura tipográfica, layout global o formularios**.
+# 🎨 Guía CSS · MetaMapa
 
-### 3. `components.css`
-📍 **Componentes de UI reutilizables**  
-Incluye:
-- **Botones** (`.btn`, `.btn--primary`, `.btn--ghost`).
-- **Cards** (`.card`, `.card.sm`, `.card.lg`).
-- **Badges/Pills** (`.badge`, `.badge.warn`, `.badge.error`).
+Este proyecto usa **Spring Boot MVC + Thymeleaf + Bootstrap**.
+Los estilos se dividen en **archivos compartidos** y **archivos específicos por página**.
 
-👉 Usar para **botones, tarjetas o etiquetas**.
+## 📂 Archivos compartidos
 
-### 4. `[page].css` (ej: `landing.css`)
-📍 **Estilos específicos de cada vista**  
-Cada página puede tener su propio CSS.  
-👉 Usar sólo para lo que no sea global/reutilizable.
+### **`tokens.css`**
+  Variables globales: colores, tipografías, radios, sombras, layout tokens (`--Accent`, `--font-sans`, `--header-h`).
+  👉 Fuente de verdad del diseño. No incluye resets ni componentes.
+
+### **`base.css`**
+  Reset y fundamentos: normalización (`*`, `html`, `body`), escala tipográfica, accesibilidad (`:focus-visible`), formularios básicos.
+  👉 No contiene colores ni componentes.
+
+### **`components.css`**
+  UI reutilizable: `.btn`, `.btn--primary`, `.btn--ghost`, `.card`, `.badge`, `.pill`.
+  👉 Componentes atómicos, sin estilos de página.
+
+### **`icons.css`**
+  Estilos de íconos: tamaños (`.icon-sm`, `.icon-lg`), colores (`.icon--accent`, `.icon--muted`).
+  👉 No define paths ni assets.
+
+### **`nav.css`**
+  Barra de navegación: `.mm-nav`, `.mm-brand`, `.mm-btn`, variantes (`.mm-nav--with-center`).
+  👉 Scoped con prefijo `mm-`.
+
+### **`footer.css`** *(futuro)*
+  Grid y estructura del footer: `.footer__grid`, `.footer__brand`, `.footer__col`.
+  👉 Solo aplica al footer.
+
+## 🗂 Archivos por página
+
+Cada página (Landing, Mapa, Colecciones, etc.) tiene su propio `.css` en `static/css/`.
+Ejemplo: `landing.css` → estilos específicos de la landing.
+
+## 🔑 Regla de oro
+
+* `tokens.css` → variables globales.
+* `base.css` → resets y fundamentos.
+* `components.css` → piezas reusables.
+* `icons.css`, `nav.css`, `footer.css` → secciones globales.
+* `.css` por página → estilos locales.
+
+❌ Nunca sobrescribir `.container`, `.row`, `.card` de Bootstrap.
+✔️ Si hace falta, scopear (ej: `.featured .card { ... }`).
 
 ---
 
