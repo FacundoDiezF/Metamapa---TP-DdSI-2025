@@ -13,7 +13,7 @@ public class LandingController {
     return "landing";
   }
 
-  // Placeholders de rutas futuras
+  // Otras rutas
   @GetMapping("/home")
   public String home() { return "home"; }
 }

@@ -798,25 +798,17 @@ html {
 }
 
 /* ========== BLOQUES NO MODIFICAR ========== */
-/* 1) Quitar el aire que mete .section en el hero */
 .section.hero-wrap {
     padding-top: 0 !important;
-    /* si querés, también compactá abajo */
-    /* padding-bottom: 16px; */
 }
 
-/* 2) No centres verticalmente el hero: pegalo arriba del wrapper */
 .hero-wrap {
-    /* si tenías min-height, podés dejarlo o quitarlo.
-       Si lo dejás, alínealo arriba para evitar aire */
-    /* min-height: calc(100svh - var(--header-h, 72px)); */
     display: grid;
     align-items: start;
     background: #F6FAFF;
     border-radius: 24px;
 }
 
-/* 3) Compactar el padding superior del contenido */
 .hero {
     padding-top: 0;
     padding-bottom: clamp(32px, 5vw, 56px);

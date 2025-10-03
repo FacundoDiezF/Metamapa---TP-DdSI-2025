@@ -32,10 +32,10 @@
                 <h1 class="brand">MetaMapa</h1>
                 <p class="tagline">Plataforma de Mapeo Colaborativo</p>
 
+                <!-- TODO modals funcionales-->
                 <div class="hero__actions">
                     <a th:href="@{/home}" class="mm-btn mm-btn--primary">Explorar Más</a>
 
-                    <!-- Abre modal dummy de login -->
                     <a href="#" id="loginBtnHero"
                        class="mm-btn mm-btn--primary mm-btn--pill mm-btn--blue"
                        data-auth="open" data-panel="login">Iniciar Sesión</a>
@@ -226,12 +226,11 @@
     <div th:replace="~{fragments/_footer_landing :: footer}"></div>
 </th:block>
 
-<!-- Modals dummy -->
+<!-- TODO Modals dummy -->
 <div th:replace="~{fragments/_authModals :: authModals}"></div>
 
 <!-- Scripts de página -->
 <th:block layout:fragment="pageScripts">
-    <!-- Quitamos auth.js porque ya no usamos overlay custom -->
     <script>
         // collapse navbar en mobile
         document.addEventListener('click', (e) => {

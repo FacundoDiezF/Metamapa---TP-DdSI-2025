@@ -125,7 +125,7 @@ input:focus, select:focus, textarea:focus {
     clip: rect(1px, 1px, 1px, 1px);
 }
 
-/* Ajuste de lectura en móviles muy pequeños (opcional) */
+/* Ajuste de lectura en móviles muy pequeños */
 @media (max-width: 360px) {
     :root { /* solo el body baja un punto si querés */ }
 }

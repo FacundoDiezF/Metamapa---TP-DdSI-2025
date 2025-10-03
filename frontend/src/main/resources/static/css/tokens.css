@@ -77,8 +77,3 @@
     /* Marca */
     --fs-brand: 30px; /* MetaMapa: Poppins Medium 30 */
 }
-
-/* Ajuste navbar en móviles */
-@media (max-width: 640px) {
-    :root { --header-h: 64px; }
-}
