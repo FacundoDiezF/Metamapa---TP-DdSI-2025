@@ -36,6 +36,129 @@
 }
 
 /* ===========================
+   Navbar (landing) — look legacy
+=========================== */
+.mm-nav--landing {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    --nav-h: var(--header-h, 72px);
+    height: var(--nav-h);
+    background: #fff;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    box-shadow: 0 1px 0 rgba(0,0,0,.02);
+}
+
+/* Marca y nombre */
+.mm-nav--landing .navbar-brand { padding-top: .5rem; padding-bottom: .5rem; }
+.mm-nav--landing .mm-name {
+    font-family: var(--font-brand);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-brand);
+    color: #334155;
+    letter-spacing: .2px;
+}
+.mm-nav--landing .mm-mark {
+    position: relative;
+    width: 44px; height: 44px;
+    border-radius: 9999px;
+    border: 2px solid var(--Accent);
+}
+.mm-nav--landing .mm-mark::before {
+    content: "";
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 9999px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--Accent);
+}
+
+/* Links del menú */
+.mm-nav--landing .nav-link {
+    color: #64748b;
+    font-weight: 600;
+    padding: .5rem .75rem;
+    opacity: 1;
+    text-decoration: none;
+}
+.mm-nav--landing .nav-link:hover,
+.mm-nav--landing .nav-link:focus-visible {
+    color: #0f172a;
+    text-decoration: none;
+}
+
+/* Botones estilo “píldora” */
+.mm-nav--landing .mm-btn--pill {
+    border-radius: 9999px;
+    padding: .8rem 1.75rem;
+    font-size: .95rem;
+    font-weight: 600;
+}
+
+/* Primario (azul) */
+.mm-nav--landing .mm-btn--primary {
+    background: var(--Accent);
+    border-color: var(--Accent);
+    color: #fff;
+    box-shadow: 0 3px 0 rgba(0,0,0,.05) inset;
+}
+.mm-nav--landing .mm-btn--primary:hover,
+.mm-nav--landing .mm-btn--primary:focus-visible {
+    filter: brightness(.97);
+}
+
+/* Ghost claro con texto oscuro (como legacy) */
+.mm-nav--landing .mm-btn--ghost {
+    background: #fff;
+    color: #0f172a;                                   /* slate-900 */
+    border-color: rgba(15, 23, 42, .2);               /* gris suave */
+}
+.mm-nav--landing .mm-btn--ghost:hover,
+.mm-nav--landing .mm-btn--ghost:focus-visible {
+    background: #f8fafc;                              /* slate-50 */
+}
+
+/* Toggler (hamburguesa) visible en fondo blanco */
+.mm-nav--landing.navbar-light .navbar-toggler { border-color: rgba(0,0,0,.15); }
+.mm-nav--landing.navbar-light .navbar-toggler-icon { filter: none; }
+
+.mm-nav--landing .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;               /* espacio entre botones */
+    margin-left: auto;       /* empuja completamente a la derecha */
+    padding-left: 1rem;      /* aire con respecto al menú */
+}
+
+.landing-sticky.is-scrolled .mm-nav--landing {
+    box-shadow: 0 6px 12px rgba(0,0,0,.06);
+    border-bottom-color: rgba(0,0,0,.04);
+}
+
+.landing-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1030; /* sobre el contenido */
+    background: #fff; /* evita transparencias en el scroll */
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .mm-nav--landing { height: auto; }
+    .mm-nav--landing .navbar-collapse { padding-top: .5rem; }
+    .mm-nav--landing .d-flex.gap-3 { margin-top: .5rem; }
+}
+
+html {
+    scroll-behavior: smooth;
+    /* evita que la navbar tape el inicio de la sección */
+    scroll-padding-top: var(--header-h, 72px);
+}
+
+#proposito, #colecciones, #hechos, #footer { scroll-margin-top: var(--header-h, 72px); }
+
+/* ===========================
    HERO
 =========================== */
 .hero {
@@ -68,6 +191,10 @@
     justify-self: start;
 }
 
+.landing .hero {
+    padding: 64px 0;
+}
+
 .brand {
     color: var(--Accent);
     font-weight: 500;
@@ -89,7 +216,7 @@
     justify-content: center;
 }
 
-.hero__actions .btn {
+.hero__actions .mm-btn {
     flex: 1;
     min-width: 180px;
     /* ancho mínimo */
@@ -250,7 +377,15 @@
     gap: 24px;
 }
 
-
+.featured .card .mm-btn--outline-light {
+    width: 213px;
+    height: 33px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px; /* respeta tu legacy */
+    font-size: 18px;
+    text-decoration: none;
+}
 
 /* ===========================
    HECHOS DESTACADOS
@@ -481,68 +616,21 @@
     /* espacio debajo del icono */
 }
 
-
-
-
 /* ===========================
-   FOOTER
+   FOOTER (Landing)
 =========================== */
-footer {
-    background: var(--DarkAccent);
-    color: #fff;
+.mm-footer--landing {
+    background: #0f172a; /* slate-900 */
+    color: #e2e8f0; /* slate-200 */
 }
 
-.footer {
-    display: grid;
-    gap: 24px;
+.mm-footer--landing a {
+    color: #93c5fd;
 }
 
-.footer__grid {
-    display: grid;
-    grid-template-columns: 1.2fr repeat(3, 1fr);
-    gap: clamp(16px, 5vw, 40px);
-    align-items: start;
-    border-bottom: 1px solid rgba(255, 255, 255, .15);
-    padding-bottom: 16px;
-}
-
-/* Columna de marca */
-.footer__brand h3 {
-    margin: 0;
-    font-size: 30px;
-    font-weight: 500;
-}
-
-.footer__brand p {
-    margin: 6px 0 0;
-    color: #D5D5D5;
-    font-size: 14px;
-    font-weight: 300;
-    max-width: 320px;
-}
-
-/* Columnas de enlaces */
-.footer__col h4 {
-    margin: 0 0 4px;
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.footer__col a {
-    display: block;
-    color: #fff;
-    opacity: .9;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 300;
-    margin: 6px 0;
-}
-
-.footer__copy {
-    text-align: center;
-    font-size: 14px;
-    font-weight: 300;
-    opacity: .9;
+/* azul claro */
+.mm-footer--landing a:hover, .mm-footer--landing a:focus-visible {
+    text-decoration: underline;
 }
 
 /* Responsive */
@@ -558,125 +646,10 @@ footer {
     }
 }
 
-
-/* ===========================
-   NAV
-=========================== */
-
-.mm-nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--module-bg, #fff);
-    border-bottom: 1px solid #e5e7eb;
-    height: var(--header-h)
-}
-
-.mm-nav__inner {
-    width: min(1728px, 100%);
-    margin-inline: auto;
-    height: var(--header-h);
-    padding: 18px 52px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between
-}
-
-.mm-brand {
-    display: flex;
-    align-items: center;
-    gap: 16px
-}
-
-.mm-mark {
-    width: 50px;
-    height: 50px;
-    border-radius: 9999px;
-    position: relative;
-    outline: 2.17px solid var(--accent, #3B82F6);
-    outline-offset: -1.09px
-}
-
-.mm-mark .dot {
-    position: absolute;
-    left: 20px;
-    top: 20px;
-    width: 10px;
-    height: 10px;
-    border-radius: 9999px;
-    background: var(--accent, #3B82F6)
-}
-
-.mm-name {
-    color: var(--dark-accent, #475265);
-    font: 500 30px/1 Poppins, system-ui, sans-serif
-}
-
-.mm-actions {
-    display: flex;
-    align-items: center;
-    gap: 32px
-}
-
-.mm-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 139px;
-    height: 64px;
-    padding: 8px 10px;
-    border-radius: 100px;
-    text-decoration: none;
-    font: 400 18px/1 Poppins, system-ui, sans-serif;
-    outline: 1px solid var(--light-text, #A7A7A7);
-    outline-offset: -1px
-}
-
-.mm-btn--primary {
-    background: var(--accent, #3B82F6);
-    color: var(--module-bg, #fff)
-}
-
-.mm-btn--ghost {
-    background: #fff;
-    color: var(--text, #050315)
-}
-
-.mm-nav.mm-nav--with-center {
-    position: sticky
-}
-
-.mm-nav.mm-nav--with-center .mm-center-badge {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    display: grid;
-    place-items: center
-}
-
-.mm-nav.mm-nav--with-center .mm-logo-badge {
-    width: 56px;
-    height: 56px;
-    border-radius: 9999px;
-    border: 2px dashed var(--accent, #3B82F6);
-    background: #fff;
-    display: grid;
-    place-items: center;
-    box-shadow: 0 10px 30px rgba(2, 6, 23, .12);
-    transform: translateY(-12px)
-}
-
-.mm-nav.mm-nav--with-center .mm-logo-badge .dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 9999px;
-    background: var(--accent, #3B82F6)
-}
-
 /* ===========================
    RESPONSIVE
 =========================== */
-@media (max-width:1100px) {
+@media (max-width: 1100px) {
     .hero {
         grid-template-columns: 1fr
     }
@@ -695,7 +668,7 @@ footer {
     }
 }
 
-@media (max-width:980px) {
+@media (max-width: 980px) {
     .purpose__grid {
         grid-template-columns: 1fr
     }
@@ -709,20 +682,25 @@ footer {
         grid-template-columns: 1fr
     }
 
+    /* si lo usás como grid */
     .map {
         width: 100%;
         max-width: 560px
     }
 }
 
+/* NUEVO: breakpoint móvil pequeño (<=560px) */
+@media (max-width: 560px) {
     .cards {
         grid-template-columns: 1fr
     }
 
+    /* <- Esta estaba suelta */
     .mm-name {
         font-size: 20px
     }
 
+    /* <- Si se usa en landing */
     .mm-mark {
         width: 40px;
         height: 40px
@@ -738,6 +716,28 @@ footer {
         min-width: 120px;
         font-size: 16px
     }
+}
+
+
+.mm-name {
+    font-size: 20px
+}
+
+.mm-mark {
+    width: 40px;
+    height: 40px
+}
+
+.mm-mark .dot {
+    left: 15px;
+    top: 15px
+}
+
+.mm-btn {
+    height: 48px;
+    min-width: 120px;
+    font-size: 16px
+}
 
 /* Overlay */
 #authOverlay[hidden] {
@@ -794,7 +794,7 @@ footer {
     margin: 10px 0;
 }
 
-.auth-modal .field>span {
+.auth-modal .field > span {
     display: block;
     font-size: 14px;
     margin-bottom: 6px;

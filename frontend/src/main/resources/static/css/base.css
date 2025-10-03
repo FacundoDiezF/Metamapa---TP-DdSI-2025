@@ -1,33 +1,12 @@
 /* ===========================
    BASE — Reset, Layout y Tipografía
-   (Usa variables de tokens.css)
 =========================== */
 
 /* Reset mínimo + box model */
 * { box-sizing: border-box; }
 
-/* Variables NO globales (tamaños, spacing, layout, etc.) */
 :root {
-    /* —— Escala tipográfica (Figma) —— */
-    --fs-h1: 32px;
-    --fs-h2: 24px;
-    --fs-h3: 20px;
-    --fs-large-body: 18px;
-    --fs-body: 16px;
-    --fs-small: 14px;
-    --fs-metamapa: 30px;
-
-    /* —— Escala adicional (utilidades internas) —— */
-    --fs-xxs: .75rem;      /* 12px */
-    --fs-xs:  .8125rem;    /* 13px */
-    --fs-sm:  .875rem;     /* 14px */
-    --fs-md:  1rem;        /* 16px */
-    --fs-lg:  1.125rem;    /* 18px */
-    --fs-xl:  1.375rem;    /* 22px */
-    --fs-2xl: 1.75rem;     /* 28px */
-    --fs-3xl: 2rem;        /* 32px */
-
-    /* —— Espaciado —— */
+    /* —— Espaciado local —— */
     --sp-1: .25rem;
     --sp-2: .5rem;
     --sp-3: .75rem;
@@ -36,13 +15,12 @@
     --sp-6: 1.5rem;
     --sp-8: 2rem;
 
-    /* —— Bordes y sombras —— */
+    /* —— Bordes y sombras locales —— */
     --radius: 12px;
     --shadow-sm: 0 2px 6px rgba(0, 0, 0, .05);
     --shadow-md: 0 6px 16px rgba(0, 0, 0, .08);
 
-    /* —— Layout —— */
-    --header-h: 72px;
+    /* —— Layout local —— */
     --subnav-h: 44px;
 
     /* —— Focus ring —— */
@@ -50,9 +28,11 @@
 }
 
 /* Fuente global del sitio */
+html { font-size: 100%; } /* 16px por defecto */
+
 html, body {
     font-family: var(--font-sans);
-    font-weight: var(--font-weight-regular);
+    font-weight: var(--fw-regular);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -63,70 +43,61 @@ body {
     background: var(--ui-bg);
 }
 
-/* Selección + focus visible coherente */
+/* Selección + focus visible */
 ::selection { background: rgba(59, 130, 246, .2); }
 :where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
     outline: none;
     box-shadow: var(--focus-ring);
 }
 
-/* Tipografía semántica — escala Figma */
-h1, .h1 {
-    font-size: var(--fs-h1);
-    font-weight: var(--font-weight-bold);
-    line-height: 1.2;
-    margin: .5rem 0 1rem;
+/* ===========================
+   Tipografía base (semántica)
+=========================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-tight);
+    margin: 0 0 .5em;
+    color: var(--Text, #0f172a);
 }
 
-h2, .h2 {
-    font-size: var(--fs-h2);
-    font-weight: var(--font-weight-bold);
-    line-height: 1.3;
-    margin: .5rem 0 1rem;
-}
-
-h3, .h3 {
-    font-size: var(--fs-h3);
-    font-weight: var(--font-weight-semibold);
-    line-height: 1.4;
-    margin: .5rem 0 .75rem;
-}
-
-.large-body {
-    font-size: var(--fs-large-body);
-    font-weight: var(--font-weight-regular);
-    line-height: 1.5;
-}
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-h4); }
+h5 { font-size: var(--fs-h5); }
+h6 { font-size: var(--fs-h6); }
 
 body, .body {
     font-size: var(--fs-body);
-    font-weight: var(--font-weight-regular);
-    line-height: 1.6;
+    line-height: var(--lh-body);
+    font-weight: var(--fw-regular);
 }
 
-.small-text {
-    font-size: var(--fs-small);
-    font-weight: var(--font-weight-regular);
-    line-height: 1.6;
+.large-body { font-size: var(--fs-large-body); line-height: 1.5; }
+.small-text { font-size: var(--fs-small); line-height: 1.6; }
+
+/* Marca (solo logo MetaMapa) */
+.mm-name {
+    font-family: var(--font-brand);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-brand);
+    line-height: var(--lh-brand);
 }
 
-/* Marca MetaMapa */
-.brand, .metamapa {
-    font-size: var(--fs-metamapa);
-    font-weight: var(--font-weight-bold);
-    letter-spacing: -0.2px; /* opcional para afinar */
-}
-
-/* Texto general */
-p, li { font-size: var(--fs-md); line-height: 1.55; }
-small { font-size: var(--fs-sm); color: var(--ui-muted); }
+/* Texto genérico y utilidades */
+p, li { font-size: 1rem; line-height: 1.55; }
+.text-muted { color: var(--DarkAccent, #64748b); }
+.fw-medium { font-weight: var(--fw-medium); }
+.fw-semibold { font-weight: var(--fw-semibold); }
+.fw-bold { font-weight: var(--fw-bold); }
 
 /* Links */
-a { color: var(--ui-blue); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a { color: var(--Accent); text-decoration: none; }
+a:hover, a:focus-visible { text-decoration: underline; }
 
-/* Contenedor común y secciones */
-/* removed to avoid Bootstrap collision */
+/* Contenedor de sección común */
 .section { padding: var(--sp-6) 0; }
 
 /* Listas limpias */
@@ -152,4 +123,9 @@ input:focus, select:focus, textarea:focus {
     position: absolute !important;
     height: 1px; width: 1px; overflow: hidden;
     clip: rect(1px, 1px, 1px, 1px);
+}
+
+/* Ajuste de lectura en móviles muy pequeños (opcional) */
+@media (max-width: 360px) {
+    :root { /* solo el body baja un punto si querés */ }
 }

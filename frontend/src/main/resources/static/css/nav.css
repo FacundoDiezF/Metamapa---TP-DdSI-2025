@@ -1,5 +1,4 @@
 /* ===== NavBar unificada ===== */
-/* removed to avoid Bootstrap collision */
 
 .brand {
   display: flex;
@@ -174,14 +173,14 @@
   cursor: pointer;
 }
 
-.auth-modal .row /* was grid-2 */ {
+.auth-modal .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
 @media(max-width:560px) {
-  .auth-modal .row /* was grid-2 */ {
+  .auth-modal .row {
     grid-template-columns: 1fr;
   }
 }

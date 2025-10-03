@@ -1,0 +1,17 @@
+<!-- templates/fragments/_footer_landing.html -->
+<th:block th:fragment="footer">
+    <section id="footer" class="mm-footer mm-footer--landing">
+        <div class="container py-4">
+            <div class="row gy-3">
+                <div class="col-12 col-md-6">
+                    <strong>MetaMapa</strong>
+                    <p class="mb-0">Sistema colaborativo para mapear información con foco en privacidad.</p>
+                </div>
+                <div class="col-12 col-md-6 text-md-end">
+                    <a th:href="@{/privacidad}" class="link-underline link-underline-opacity-0 me-3">Privacidad</a>
+                    <a th:href="@{/terminos}" class="link-underline link-underline-opacity-0">Términos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
