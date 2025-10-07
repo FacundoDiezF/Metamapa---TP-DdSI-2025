@@ -43,7 +43,7 @@ public class EventService implements IEventService {
     List<EventInputDTO> eventDtos = AgregatorServiceWebClient.get()
         .uri(uriBuilder -> uriBuilder
             .path("/events")
-            .queryParam("fromUploadDate", lastUpdate)
+            .queryParam("fromUpdatedDate", lastUpdate)
             .build())
         .retrieve()
         .bodyToFlux(EventInputDTO.class)
@@ -90,7 +90,7 @@ public class EventService implements IEventService {
   }
 
   private void fetchProvinces() {
-    //TODO: Esto esta hardcodeado
+    //TODO: Esto esta hardcodeado, deberia pulleralo desde GET /provinces del Aggregator Service (misma logica que fetchCategories)
     Province test = new Province(1L, "Bs As");
     provinceRepository.save(test);
   }

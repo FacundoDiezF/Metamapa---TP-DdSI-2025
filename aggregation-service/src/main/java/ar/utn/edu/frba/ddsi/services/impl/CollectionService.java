@@ -16,7 +16,10 @@ import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ICollectionCriteriaService;
 import ar.utn.edu.frba.ddsi.services.ICollectionService;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +43,7 @@ public class CollectionService implements ICollectionService {
   public CollectionOutputDTO create(CollectionCreationDTO collectionDto) {
 
     // Get sources from the repository by IDs
-    List<Source> collectionSources = sourceRepository.findAllById(collectionDto.getSourceIds());
+    Set<Source> collectionSources = new HashSet<>(sourceRepository.findAllById(collectionDto.getSourceIds()));
 
     //TODO: validar que todas las fuentes solicitadas existan, tirar error en caso contrario
 
@@ -168,9 +171,6 @@ public class CollectionService implements ICollectionService {
         .orElseThrow(() -> new NotFoundException("Source not found - ID: " + sourceId));
 
     collection.add(source);
-
-    collection.refresh(null);
-
     collectionRepository.save(collection);
   }
 }

@@ -75,7 +75,7 @@ public class Collection {
       inverseJoinColumns = @JoinColumn(name = "source_id", referencedColumnName = "id")
   )
   @NonNull
-  private final List<Source> sources;
+  private final Set<Source> sources;
 
   @Builder.Default
   @ManyToMany
@@ -136,11 +136,15 @@ public class Collection {
 
   public void remove(Source source) {
     sources.remove(source);
-    events.removeIf(e -> e.getSource().equals(source));
+    boolean anyRemoved = events.removeIf(e -> e.getSource().equals(source));
+
+    if (anyRemoved) {
+      updatedDate = LocalDateTime.now();
+    }
   }
 
   public void add(Source source) {
     sources.add(source);
-
+    this.refresh(null);
   }
 }

@@ -4,8 +4,8 @@ import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO;
 import ar.utn.edu.frba.ddsi.models.repositories.ICategoryRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ICollectionRepository;
-import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IProvinceRepository;
+import ar.utn.edu.frba.ddsi.services.ICollectionService;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import ar.utn.edu.frba.ddsi.services.IStatisticsService;
 import java.time.LocalDateTime;
@@ -20,22 +20,29 @@ public class StatisticsService implements IStatisticsService {
   private final ICategoryRepository categoryRepository;
   private final ICollectionRepository collectionRepository;
   private final IEventService eventService;
+  private final ICollectionService collectionService;
 
   @Autowired
-  public StatisticsService(IProvinceRepository provinceRepository, ICategoryRepository categoryRepository, ICollectionRepository collectionRepository, IEventRepository eventRepository, IEventService eventService) {
+  public StatisticsService(IProvinceRepository provinceRepository, ICategoryRepository categoryRepository, ICollectionRepository collectionRepository, IEventService eventService, ICollectionService collectionService) {
     this.provinceRepository = provinceRepository;
     this.categoryRepository = categoryRepository;
     this.collectionRepository = collectionRepository;
     this.eventService = eventService;
+    this.collectionService = collectionService;
   }
 
   @Override
   public void refreshStatistics(LocalDateTime lastUpdate) {
 
+    // Fetch events since last update
     eventService.fetchEvents(lastUpdate);
+
+    //Fetch Collections since last update
+    collectionService.fetchCollections(lastUpdate);
 
   }
 
+  //----- Statistics methods (maybe move to their oun service)
 
   @Override
   public List<TopOutputDTO> findTopCategories(Integer count) {
