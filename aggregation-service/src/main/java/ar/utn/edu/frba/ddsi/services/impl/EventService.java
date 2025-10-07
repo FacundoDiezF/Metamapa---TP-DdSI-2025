@@ -42,8 +42,9 @@ public class EventService implements IEventService {
       LocalDateTime untilUploadDate,
       LocalDateTime fromUploadDate,
       LocalDateTime untilEventDate,
-      LocalDateTime fromEventDate) {
-    return eventRepository.findFiltered(category, untilUploadDate, fromUploadDate, untilEventDate, fromEventDate).stream().map(EventOutputDTO::from).toList();
+      LocalDateTime fromEventDate,
+      LocalDateTime fromUpdatedDate) {
+    return eventRepository.findFiltered(category, untilUploadDate, fromUploadDate, untilEventDate, fromEventDate, fromUpdatedDate).stream().map(EventOutputDTO::from).toList();
   }
 
   @Override

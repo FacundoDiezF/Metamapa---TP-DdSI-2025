@@ -16,6 +16,7 @@ public class EventOutputDTO {
   LocationOutputDTO location;
   LocalDateTime eventDate;
   LocalDateTime uploadDate;
+  LocalDateTime updatedDate;
 
   public static EventOutputDTO from(Event event) {
     EventOutputDTO dto = new EventOutputDTO();
@@ -28,6 +29,7 @@ public class EventOutputDTO {
     dto.setLocation(LocationOutputDTO.from(event.getLocation()));
     dto.setEventDate(event.getEventDate());
     dto.setUploadDate(event.getUploadDate());
+    dto.setUpdatedDate(event.getUpdatedDate());
     return dto;
   }
 }

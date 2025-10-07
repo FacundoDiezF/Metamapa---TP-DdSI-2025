@@ -52,6 +52,10 @@ public class Collection {
   @Column(name = "description")
   private String description;
 
+  @Builder.Default
+  @Column(name = "updated_date", nullable = false)
+  private LocalDateTime updatedDate = LocalDateTime.now(); //Only updated when events are added/removed
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "collection_criteria_id", nullable = false)
   @NonNull
@@ -87,10 +91,16 @@ public class Collection {
     // Update the events, adding new ones and removing those that no longer satisfy the criteria.
     for (Source source : this.sources) {
       for (Event event : source.getEvents(lastUpdate)) {
+        boolean wasAdded = false;
+        boolean wasRemoved = false;
         if (this.collectionCriteria.isSatisfiedBy(event)) {
-          events.add(event);
+          wasAdded = events.add(event);
         } else {
-          events.remove(event);
+          wasRemoved = events.remove(event);
+        }
+
+        if (wasAdded || wasRemoved) {
+          updatedDate = LocalDateTime.now();
         }
       }
       // PD: No se filtra las MetaMapa ya que no deberian tener events en su lista.
@@ -104,6 +114,10 @@ public class Collection {
     Set<Event> allEvents = new HashSet<>(events);
     allEvents.addAll(getMetamapaEvents());
     return allEvents;
+  }
+
+  public List<Long> getEventsIds() {
+    return events.stream().map(Event::getId).toList();
   }
 
   private Set<Event> getMetamapaEvents() {
