@@ -1,0 +1,21 @@
+/* pages/home.css — migrado desde Index/indexCSS.css (resumen) */
+
+.subnav {
+    display:flex; gap:.75rem; padding:.5rem 1rem; border-bottom:1px solid var(--Border, #e5e7eb);
+}
+.subnav a { text-decoration:none; padding:.5rem .75rem; border-radius:8px; }
+.subnav a.active { background: var(--Accent-100, #eef2ff); }
+
+.home-grid {
+    display:grid; grid-template-columns: 280px 1fr 380px; gap: 1rem; padding: 1rem;
+}
+@media (max-width: 992px){ .home-grid{ grid-template-columns:1fr; } }
+
+.sidebar.card, .hecho.card, .post-box.card { border-radius:16px; padding:1rem; box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,.06)); }
+
+.feed .tag { display:inline-block; margin:.25rem 0; padding:.125rem .5rem; border-radius:999px; background:#f1f5f9; font-size:.85rem; }
+.flag-float { position:absolute; right:.75rem; top:.75rem; }
+
+.share summary { list-style:none; }
+.share summary::-webkit-details-marker { display:none; }
+.share-panel .share-actions { display:flex; justify-content:flex-end; gap:.5rem; }

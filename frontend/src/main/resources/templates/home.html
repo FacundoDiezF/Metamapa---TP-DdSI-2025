@@ -1,37 +1,52 @@
-<!-- templates/pages/home.html -->
-<html th:replace="~{layout/base :: html}" xmlns:th="http://www.thymeleaf.org">
+<!-- templates/home.html -->
+<html th:replace="~{layout/base :: html}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- Estilos específicos de la página -->
+<th:block layout:fragment="pageStyles">
+    <link rel="stylesheet" th:href="@{/css/pages/home.css}"/>
+</th:block>
+
 <div th:fragment="contenido">
-    <!-- CSS específico de la grilla -->
-    <link rel="stylesheet" href="/css/pages/home.css"/>
+    <!-- Subnav de Home (opcional) -->
+    <div th:replace="~{fragments/_subnav_home :: subnavHome}"></div>
 
-    <!-- Inyecto el componente grid3 pasando mis 3 fragmentos -->
+    <!-- Grilla 3 columnas (usa tu componente) -->
     <div th:replace="~{components/grid3 :: grid3(
-        ~{fragments/_filters :: filters},         /* left  */
-        ~{fragments/_feed-home :: feedHome},      /* center*/
-        ~{fragments/_map :: map}                  /* right */
-  )}"></div>
+        ~{fragments/_filters :: filters},
+        ~{fragments/_feed-home :: feedHome},
+        ~{fragments/_map :: map}
+    )}"></div>
 
-    <!-- Scripts de página-->
-    <script src="/js/home/auth.js"></script>
+    <!-- Modals de autenticación -->
+    <div th:replace="~{fragments/_authModals :: authModals}"></div>
+</div>
 
-    <!-- Leaflet -->
+<!-- Scripts específicos -->
+<th:block layout:fragment="pageScripts">
+    <!-- Leaflet solo en Home -->
     <link rel="stylesheet"
           href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- JS de la página -->
+    <script th:src="@{/js/home/layout.js}"></script>
+    <!-- Si ya tenés auth global, no dupliques -->
+    <script th:src="@{/js/auth.js}"></script>
+
     <script>
         (function(){
-            var mapEl = document.getElementById('map');
+            const mapEl = document.getElementById('map');
             if (mapEl && window.L) {
-                var map = L.map('map').setView([-34.6037, -58.3816], 11);
+                const map = L.map('map').setView([-34.6037, -58.3816], 11); // CABA
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19, attribution: '&copy; OpenStreetMap'
                 }).addTo(map);
             }
         })();
     </script>
-</div>
+</th:block>
 </html>
