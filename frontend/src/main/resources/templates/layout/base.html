@@ -28,7 +28,7 @@
 <!-- Header (fragment) -->
 <header>
     <th:block layout:fragment="navbar">
-        <div th:replace="~{layout/_navbar :: navbar}"></div>
+        <div th:replace="~{layout/fragments/_navbar :: navbar}"></div>
     </th:block>
 </header>
 
@@ -36,11 +36,6 @@
 <main>
     <div th:replace="~{${contenido} :: contenido}"></div>
 </main>
-
-<!-- Footer (fragment) -->
-<footer>
-        <div th:replace="~{fragments/landing/_footer_landing :: footer}"></div>
-</footer>
 
 </body>
 </html>

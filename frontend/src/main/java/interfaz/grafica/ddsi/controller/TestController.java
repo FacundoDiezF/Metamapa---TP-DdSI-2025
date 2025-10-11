@@ -8,6 +8,6 @@ public class TestController {
 
     @GetMapping("/test")
     public String test() {
-        return "test"; // templates/test.html
+        return "layout/grid3";
     }
 }

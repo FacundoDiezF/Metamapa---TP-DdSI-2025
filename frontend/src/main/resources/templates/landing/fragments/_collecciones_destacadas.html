@@ -1,0 +1,20 @@
+<section th:fragment="colecciones" id="colecciones" class="section featured">
+    <div class="container">
+        <h2 class="title">Colecciones Destacadas</h2>
+        <p class="subtitle">Explora nuestras colecciones más populares y descubre información valiosa</p>
+
+        <ul class="cards">
+            <li th:each="collection: ${topCollections}" class="card">
+                <h5 th:text="${collection.title}">Titulo Coleccion</h5>
+                <div class="card__body">
+                    <p th:text="${collection.description}">Descripcion de la coleccion</p>
+                    <span th:text="'+ '+${collection.eventIds.size()}" class="pill"></span>
+                </div>
+                <a href="#" class="mm-btn mm-btn--outline-light">Ver colección</a>
+                <div class="meta">🛈 Última actualización: 8 días</div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- TODO poner el path correcto al boton Ver Coleccion, en base a su ${collection.handler}-->
