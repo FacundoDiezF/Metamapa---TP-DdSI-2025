@@ -1,23 +1,18 @@
-<!DOCTYPE html>
-<html lang="es"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/base}">
-<head>
-    <title th:text="${pageTitle} ?: 'MetaMapa'">MetaMapa</title>
-    <th:block layout:fragment="pageStyles">
-        <link rel="stylesheet" th:href="@{/css/pages/landing.css}"/>
-    </th:block>
-</head>
+<html layout:decorate="~{layout/base}">
 
-<body>
 
-<!-- Navbar  -->
-<th:block layout:fragment="navbar">
+<!-- Inserta tu CSS propio -->
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="@{/css/pages/landing.css}"/>
 </th:block>
 
-<main id="main-content" class="landing-page" layout:fragment="content">
-    <div th:replace="fragments/_navbar_landing :: navbarSticky"></div>
+
+<!-- Remplaza navbar ℹ️ Esto solo lo hace la landing -->
+<div layout:fragment="navbar">
+    <div th:replace="fragments/landing/_navbar_landing :: navbar "></div>
+</div>
+
+<div th:fragment="contenido" class="landing-page">
 
     <!-- ================== HERO ================== -->
     <section class="section hero-wrap">
@@ -218,56 +213,4 @@
             </div>
         </div>
     </section>
-
-</main>
-
-<!-- Footer específico de landing -->
-<th:block layout:fragment="footer">
-    <div th:replace="~{fragments/_footer_landing :: footer}"></div>
-</th:block>
-
-<!-- TODO Modals dummy -->
-<div th:replace="~{fragments/_authModals :: authModals}"></div>
-
-<!-- Scripts de página -->
-<th:block layout:fragment="pageScripts">
-    <script>
-        // collapse navbar en mobile
-        document.addEventListener('click', (e) => {
-            const link = e.target.closest('.navbar .nav-link, .navbar .dropdown-item');
-            const collapse = document.querySelector('#landingNav');
-            if (link && collapse && collapse.classList.contains('show')) {
-                const bsCollapse = bootstrap.Collapse.getInstance(collapse);
-                bsCollapse?.hide();
-            }
-        });
-
-        // efecto scroll sticky para barra con .landing-sticky
-        (() => {
-            const wrap = document.querySelector('.landing-sticky');
-            if (!wrap) return;
-            const onScroll = () => wrap.classList.toggle('is-scrolled', window.scrollY > 2);
-            onScroll();
-            window.addEventListener('scroll', onScroll, {passive: true});
-        })();
-    </script>
-
-    <script>
-        // Evita que el navegador “recuerde” la posición de scroll al recargar/navegar
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-        // Garantiza que arranque en top aún con bfcache (vuelta atrás/adelante)
-        window.addEventListener('pageshow', (e) => {
-            if (e.persisted) window.scrollTo({top: 0, left: 0, behavior: 'instant'});
-        });
-        // En carga normal
-        window.addEventListener('load', () => {
-            window.scrollTo({top: 0, left: 0, behavior: 'instant'});
-        });
-    </script>
-
-</th:block>
-
-</body>
 </html>

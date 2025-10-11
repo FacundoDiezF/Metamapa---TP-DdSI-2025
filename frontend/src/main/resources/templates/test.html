@@ -1,4 +1,15 @@
-<html th:replace="~{layout/base :: html}">
+<!--   PLANTILLA BASE PARA UNA PAG -->
+
+<html layout:decorate="~{layout/base}">
+
+<head>
+    <!-- Styleshets -->
+    <th:block layout:fragment="extraStyles">
+        <link rel="stylesheet" th:href="@{/css/pages/ESTOesEJEMPLO.css}"/>
+    </th:block>
+</head>
+
+<!-- Page content -->
 <div th:fragment="contenido">
     <h1>Test Page</h1>
     <p>This is a test page to verify the layout and fragments.</p>
