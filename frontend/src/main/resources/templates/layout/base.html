@@ -37,5 +37,14 @@
     <th:block th:replace="~{${contenido} :: contenido}"></th:block>
 </main>
 
+<!-- Fragmento global de modals de autenticación -->
+<div th:replace="~{fragments/_authModals :: authModals}"></div>
+
+<!-- Scripts globales -->
+<script th:src="@{/js/auth.js}"></script>
+
+<!-- Scripts específicos de página -->
+<th:block layout:fragment="extraScripts"></th:block>
+
 </body>
 </html>

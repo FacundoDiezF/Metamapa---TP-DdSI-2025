@@ -1,5 +1,4 @@
 <th:block th:fragment="navbar">
-    <!-- Header -->
     <header class="navbar" id="navbar">
         <div class="brand">
             <div class="brand-mark"><span class="dot"></span></div>
@@ -7,20 +6,20 @@
         </div>
 
         <div class="auth-actions">
-            <button id="accountBtn" class="account-btn" type="button" data-auth="open"
-                    data-panel="register">Registrarse
+            <button id="accountBtn" class="account-btn" type="button"
+                    data-auth="open" data-panel="register">
+                Registrarse
             </button>
-            <button id="loginBtn" class="btn-outline" type="button" data-auth="open" data-panel="login">Iniciar
-                Sesión
+            <button id="loginBtn" class="btn-outline" type="button"
+                    data-auth="open" data-panel="login">
+                Iniciar Sesión
             </button>
         </div>
-
     </header>
 
     <nav class="subnav" id="subnav">
-        <a href="index.html" class="active">Explorar</a>
-        <a href="../Collections/collections.html">Colecciones</a>
-        <a href="../map/mapa.html">Mapa</a>
-
+        <a th:href="@{/explore}" class="active">Explorar</a>
+        <a th:href="@{/collections}">Colecciones</a>
+        <a th:href="@{/map}">Mapa</a>
     </nav>
 </th:block>
