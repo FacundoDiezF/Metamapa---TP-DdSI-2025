@@ -1,17 +1,26 @@
 <th:block th:fragment="navbar">
-    <div class="mm-nav" role="banner" aria-label="MetaMapa">
-        <div class="mm-nav__inner container">
-            <div class="mm-brand">
-                <span class="mm-mark" aria-hidden="true"><span class="dot"></span></span>
-                <span class="mm-name">MetaMapa</span>
-            </div>
-            <div class="mm-actions">
-                <a href="#" class="mm-btn mm-btn--primary" data-auth="open" data-panel="register" data-bs-toggle="modal" data-bs-target="#registerModal">Registrarse</a>
-                <a href="#" class="mm-btn mm-btn--ghost" data-auth="open" data-panel="login" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar Sesión</a>
-            </div>
+    <!-- Header -->
+    <header class="navbar" id="navbar">
+        <div class="brand">
+            <div class="brand-mark"><span class="dot"></span></div>
+            <span class="brand-name">MetaMapa</span>
         </div>
-        <div class="mm-center-badge" aria-hidden="true">
-            <span class="mm-logo-badge"><span class="dot"></span></span>
+
+        <div class="auth-actions">
+            <button id="accountBtn" class="account-btn" type="button" data-auth="open"
+                    data-panel="register">Registrarse
+            </button>
+            <button id="loginBtn" class="btn-outline" type="button" data-auth="open" data-panel="login">Iniciar
+                Sesión
+            </button>
         </div>
-    </div>
+
+    </header>
+
+    <nav class="subnav" id="subnav">
+        <a href="index.html" class="active">Explorar</a>
+        <a href="../Collections/collections.html">Colecciones</a>
+        <a href="../map/mapa.html">Mapa</a>
+
+    </nav>
 </th:block>
