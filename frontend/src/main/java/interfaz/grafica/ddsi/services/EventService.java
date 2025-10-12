@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventService {
 
-  List<EventDTO> getEvents(){
+  public List<EventDTO> getEvents(){
     //TODO que le pida al agregador todos los eventos
     return mockEvents();
   }
