@@ -1,7 +1,10 @@
 package interfaz.grafica.ddsi.controller;
 
+import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
+import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
+import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.EventService;
 import java.util.List;
@@ -11,15 +14,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class HomeController {
+public class PagesController {
 
   private final CollectionService collectionService;
   private final EventService eventService;
+  private final CategoryService categoryService;
 
   @Autowired
-  public HomeController(CollectionService collectionService, EventService eventService) {
+  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService) {
     this.collectionService = collectionService;
     this.eventService = eventService;
+    this.categoryService = categoryService;
   }
 
   @GetMapping("/")
@@ -37,8 +42,11 @@ public class HomeController {
 
   @GetMapping("/explore")
   public String explore(Model model){
-    List<EventDTO> events = eventService.getEvents();
+    List<EventDTO> events = eventService.getAllEvents();
+    List<CategoryDTO> categories = categoryService.getAllCategories();
     model.addAttribute("events", events);
+    model.addAttribute("newEvent", new EventOutputDTO());
+    model.addAttribute("categories", categories);
     model.addAttribute("pageTitle", "MetaMapa · Explore");
     return "explore";
   }

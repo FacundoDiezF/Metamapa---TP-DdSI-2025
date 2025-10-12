@@ -14,7 +14,7 @@ public class CollectionService {
     return mockColecciones().subList(0, 4);
   }
 
-  public List<CollectionDTO> getCollections() {
+  public List<CollectionDTO> getAllCollections() {
     //TODO que le pida al agregador todas las colecciones
     return mockColecciones();
   }

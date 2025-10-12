@@ -1,0 +1,31 @@
+<article class="hecho card" th:fragment="cardFragment(item)">
+    <a class="flag-float" href="#report-hecho-1" aria-label="Reportar este hecho">
+        <img
+                src="../../static/shared/img/icons/ci_flag.svg"
+                alt="Report flag" class="icon-img"
+        >
+    </a>
+    <span class="tag" th:text="${event.category}">
+        Categoria
+    </span>
+    <h2 th:text="${event.title}">
+        Titulo del Hecho
+    </h2>
+    <p class="ubicacion"
+       th:text=" 'Localidad' + ', ' + ${event.location.province} + ' | ' + ${#temporals.format(event.eventDate, 'dd MMMM yyyy')}">
+        Localidad, Provincia | dd MMMM yyyy
+    </p>
+    <p th:text="${event.description}">
+        Descripción del hecho muy buena descripcion la verdad que me gusta mucho este hecho
+        que paso y que es muy interesante y que deberian saber todos los usuarios de
+    </p>
+    <img
+            src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1400&auto=format&fit=crop"
+            alt="Incidente"
+    />
+    <p class="fuente" th:text="${event.Origin} + ' • ' + ${event.sourceId}">
+        Static • Nombre de la fuente
+    </p>
+</article>
+
+<!-- TODO: Nombres de fuentes? remplazar Localidad-->

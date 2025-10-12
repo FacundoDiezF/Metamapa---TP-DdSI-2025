@@ -1,6 +1,6 @@
 package interfaz.grafica.ddsi.dtos;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data
@@ -12,13 +12,11 @@ public class EventDTO {
   String description;
   String category;
   LocationDTO location;
-  LocalDateTime eventDate;
-  LocalDateTime uploadDate;
-  LocalDateTime updatedDate;
+  LocalDate eventDate;
 
   public EventDTO(Long id, Long sourceId, Origin origin, String title, String description,
-                  String category, LocationDTO location, LocalDateTime eventDate, LocalDateTime uploadDate,
-                  LocalDateTime updatedDate) {
+                  String category, LocationDTO location, LocalDate eventDate
+  ) {
     this.id = id;
     this.sourceId = sourceId;
     this.origin = origin;
@@ -27,7 +25,5 @@ public class EventDTO {
     this.category = category;
     this.location = location;
     this.eventDate = eventDate;
-    this.uploadDate = uploadDate;
-    this.updatedDate = updatedDate;
   }
 }
