@@ -9,7 +9,7 @@
 
 <!-- Remplaza navbar ℹ️ Esto solo lo hace la landing -->
 <div layout:fragment="navbar">
-    <div th:replace="landing/fragments/_navbar_landing :: navbar "></div>
+    <div th:replace="fragments/landing/_navbar_landing :: navbar "></div>
 </div>
 
 <div th:fragment="contenido" class="landing-page">
@@ -40,10 +40,10 @@
     </section>
 
     <!-- Proposito -->
-    <section th:replace="~{landing/fragments/_proposito :: proposito}"></section>
+    <section th:replace="~{fragments/landing/_proposito :: proposito}"></section>
 
     <!-- Colecciones Destacadas -->
-    <section th:replace="~{landing/fragments/_collecciones_destacadas :: colecciones}"></section>
+    <section th:replace="~{fragments/landing/_collecciones_destacadas :: colecciones}"></section>
 
     <!-- Hechos destacados -->
     <section id="hechos" class="section facts">
@@ -118,7 +118,7 @@
 
     <!-- Footer (fragment) -->
     <footer>
-        <div th:replace="~{landing/fragments/_footer_landing :: footer}"></div>
+        <div th:replace="~{fragments/landing/_footer_landing :: footer}"></div>
     </footer>
 </div>
 

@@ -1,0 +1,23 @@
+<html layout:decorate="~{layout/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <th:block layout:fragment="extraStyles">
+        <link rel="stylesheet" th:href="@{/css/pages/explore.css}"/>
+        <link rel="stylesheet" th:href="@{/css/filters.css}"/>
+    </th:block>
+</head>
+
+<div th:fragment="contenido" class="landing-page">
+
+    <!-- Sidebar izquierda -->
+    <aside class="sidebar card" th:replace="~{fragments/explore/_sidebar_left :: left}"></aside>
+
+<!--    &lt;!&ndash; Feed central (único con scroll) &ndash;&gt;-->
+<!--    <section class="feed" th:insert="~{fragments/explore/_explore_center}"></section>-->
+
+<!--    &lt;!&ndash; Sidebar derecha &ndash;&gt;-->
+<!--    <aside class="sidebar-right" th:replace="~{fragments/explore/_sidebar_rigth :: rigth}"></aside>-->
+</div>
+
+</html>

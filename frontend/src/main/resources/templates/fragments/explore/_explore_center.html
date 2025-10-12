@@ -1,0 +1,111 @@
+<section>
+    <!-- Share (sin JS): expansible con details/summary -->
+    <details class="share">
+        <summary id="shareSummary" class="card post-box" role="button" aria-controls="sharePanel">
+            <input type="text" placeholder="Comparte tus hechos..." readonly/>
+            <div class="post-icons" aria-hidden="true">
+                <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen"
+                   onclick="event.stopPropagation()">
+                    <img src="../shared/assets/icons/imagesmode.svg" alt="">
+                </a>
+                <button type="button" class="post-icon" aria-label="Insertar emoji"
+                        onclick="event.stopPropagation()">
+                    <img src="../shared/assets/icons/sentiment_satisfied.svg" alt="">
+                </button>
+            </div>
+        </summary>
+
+        <form id="sharePanel" class="share-panel" method="post" action="" novalidate>
+            <div class="share-row">
+                <div class="field">
+                    <label for="titulo">Título del Hecho</label>
+                    <input id="titulo" name="titulo" type="text" placeholder="Título del Hecho" required/>
+                    <p class="help error-msg">El título es obligatorio.</p>
+                </div>
+
+                <div class="field">
+                    <label for="fecha">Fecha</label>
+                    <input id="fecha" name="fecha" type="date" required/>
+                    <p class="help error-msg">Seleccioná una fecha válida.</p>
+                </div>
+
+                <div class="field">
+                    <label for="descripcion">Descripción</label>
+                    <div class="textarea-wrap">
+                <textarea id="descripcion" name="descripcion" rows="5" placeholder="Describe lo ocurrido…"
+                          required></textarea>
+
+                    </div>
+                    <p class="help error-msg">La descripción es obligatoria.</p>
+                    <p class="help info">Evitá datos personales. Sé claro y específico.</p>
+                </div>
+
+
+                <div class="share-actions">
+                    <div class="left-actions">
+                        <!-- Categoría: look & feel de Colecciones -->
+                        <div class="field field-inline">
+                            <label for="sh-categoria">Categoría</label>
+                            <div class="select select-share">
+                                <select id="sh-categoria" name="categoria" required aria-label="Categoría">
+                                    <option value="">Selecciona una categoría</option>
+                                    <option>Desastre Natural</option>
+                                    <option>Medio Ambiente</option>
+                                    <option>Derechos Humanos</option>
+                                    <!-- agrega las tuyas -->
+                                </select>
+                                <img src="../shared/assets/icons/chevron-down.svg" alt="" class="select-caret"
+                                     aria-hidden="true">
+                            </div>
+                            <p class="help error-msg">Elegí una categoría.</p>
+                        </div>
+
+                        <!-- Ubicación con icono -->
+                        <a class="btn chip icon-left" href="#modal-ubicacion">
+                            <img class="icon" src="../shared/assets/icons/location-pin-svgrepo-com.svg" alt=""
+                                 aria-hidden="true">
+                            Ubicación
+                        </a>
+                    </div>
+
+                    <div class="right-actions">
+                        <button type="reset" class="btn ghost small">Limpiar</button>
+                        <a href="#shareSuccess" class="btn primary small submit-btn">Enviar</a>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </details>
+
+
+    <!-- Hecho 1 -->
+    <article class="hecho card">
+        <a class="flag-float" href="#report-hecho-1" aria-label="Reportar este hecho">
+            <img src="../shared/assets/icons/ci_flag.svg" alt="" class="icon-img">
+        </a>
+        <span class="tag">Estallido de gasoducto</span>
+        <h2>Impacto de Estallido de gasoducto en comunidad de Paraná, Entre Ríos</h2>
+        <p class="ubicacion">Paraná, Entre Ríos | 5 May 2025</p>
+        <p>Un grave estallido de gasoducto se registró en Paraná, Entre Ríos. El incidente obligó a evacuar a
+            residentes
+            de la zona. Se ha iniciado una investigación para determinar las causas exactas del incidente.</p>
+        <img src="https://images.unsplash.com/photo-1520975922284-7b683d5a5f0d?q=80&w=1400&auto=format&fit=crop"
+             alt="Incidente"/>
+        <p class="fuente">Static • Nombre de la fuente</p>
+    </article>
+
+    <!-- Hecho 2 -->
+    <article class="hecho card">
+        <a class="flag-float" href="#report-hecho-1" aria-label="Reportar este hecho">
+            <img src="../shared/assets/icons/ci_flag.svg" alt="" class="icon-img">
+        </a>
+        <span class="tag">Estallido de gasoducto</span>
+        <h2>Otro hecho de ejemplo</h2>
+        <p class="ubicacion">Paraná, Entre Ríos | 6 May 2025</p>
+        <p>Descripción del hecho para completar el feed y probar el scroll interno de la columna central.</p>
+        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1400&auto=format&fit=crop"
+             alt="Incidente"/>
+        <p class="fuente">Static • Nombre de la fuente</p>
+    </article>
+</section>

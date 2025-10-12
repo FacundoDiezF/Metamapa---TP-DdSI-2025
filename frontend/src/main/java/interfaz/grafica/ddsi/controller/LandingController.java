@@ -25,6 +25,6 @@ public class LandingController {
     List<CollectionDTO> topCollections = collectionService.getTopCollections();
     model.addAttribute("topCollections", topCollections);
     model.addAttribute("pageTitle", "MetaMapa · Landing");
-    return "landing/landing";
+    return "landing";
   }
 }

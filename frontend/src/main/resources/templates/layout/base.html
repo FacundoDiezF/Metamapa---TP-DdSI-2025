@@ -33,8 +33,8 @@
 </header>
 
 <!-- Contenido principal -->
-<main>
-    <div th:replace="~{${contenido} :: contenido}"></div>
+<main class="layout">
+    <th:block th:replace="~{${contenido} :: contenido}"></th:block>
 </main>
 
 </body>
