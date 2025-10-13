@@ -3,27 +3,36 @@
         <img src="../shared/assets/icons/ci_flag.svg" alt="" class="icon-img">
 
     </a>
-    <span class="tag" th:text="${event.category}">
+    <span class="tag" th:text="${item.category}">
         Categoria
     </span>
-    <h2 th:text="${event.title}">
+    <h2 th:text="${item.title}">
         Titulo del Hecho
     </h2>
     <p class="ubicacion"
-       th:text=" 'Localidad' + ', ' + ${event.location.province} + ' | ' + ${#temporals.format(event.eventDate, 'dd MMMM yyyy')}">
+       th:text=" 'Localidad' + ', ' + ${item.location.province} + ' | ' + ${#temporals.format(item.eventDate, 'dd MMMM yyyy')}">
         Localidad, Provincia | dd MMMM yyyy
     </p>
-    <p th:text="${event.description}">
+    <p th:text="${item.description}">
         Descripción del hecho muy buena descripcion la verdad que me gusta mucho este hecho
         que paso y que es muy interesante y que deberian saber todos los usuarios de
     </p>
+
+<!--    <img th:if="${item.image}" th:src="${item.image}" alt="Imagen del hecho"/>-->
+
     <img
             src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1400&auto=format&fit=crop"
             alt="Incidente"
     />
-    <p class="fuente" th:text="${event.Origin} + ' • ' + ${event.sourceId}">
+    <p class="fuente" th:text="${item.Origin} + ' • ' + ${item.sourceId}">
         Static • Nombre de la fuente
     </p>
 </article>
 
-<!-- TODO: Nombres de fuentes? remplazar Localidad-->
+<!--
+TODO:
+- Nombres de fuentes?
+- Remplazar Localidad
+- Imagen del hecho
+- Modal del reporte especifico del hecho
+ -->
