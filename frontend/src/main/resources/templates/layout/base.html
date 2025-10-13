@@ -26,14 +26,14 @@
 <body>
 
 <!-- Header (fragment) -->
-<header  class="navbar" id="navbar">
+<header>
     <th:block layout:fragment="navbar">
         <div th:replace="~{layout/fragments/_navbar :: navbar}"></div>
     </th:block>
 </header>
 
 <!-- Contenido principal -->
-<main>
+<main class="layout">
     <th:block th:replace="~{${contenido} :: contenido}"></th:block>
 </main>
 
