@@ -29,13 +29,11 @@
                         <p th:text="${col.description}">Descripcion.</p>
                     </div>
 
-                    <div class="card-actions"><a class="btn btn-outline" href="inCollection/inCollection.html">Ver
+                    <div class="card-actions"><a class="btn btn-outline" th:href="@{/collection/{handler}(handler=${col.handler})}" >Ver
                         Colección</a></div>
                 </article>
             </th:block>
     </section>
 
 </div>
-
-
 </html>
