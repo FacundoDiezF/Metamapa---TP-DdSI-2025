@@ -18,6 +18,9 @@
     --AltDetails: #F97316;
     --ModuleBG: #FFFFFF;
     --InboxBG: #F2F2F2;
+    --Danger: #EF4444;
+    --Success: #22C55E;
+    --Muted: #475569;
 
     /* Sombras y radios (tokens globales que usamos en varias páginas) */
     --radius-8: 8px;

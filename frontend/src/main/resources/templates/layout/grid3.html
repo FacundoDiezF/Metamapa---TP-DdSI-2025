@@ -1,5 +1,5 @@
-<th:block th:fragment="grid3(left, center, right)">
+<div th:fragment="grid3(left, center, right)" class="layout">
     <aside class="sidebar" th:replace="${left}"></aside>
     <main class="center-slot" th:insert="${center}"></main>
     <aside class="sidebar-right" th:replace="${right}"></aside>
-</th:block>
+</div>
