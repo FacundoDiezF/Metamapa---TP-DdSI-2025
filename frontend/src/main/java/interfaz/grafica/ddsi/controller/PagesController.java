@@ -40,6 +40,14 @@ public class PagesController {
     return "landing";
   }
 
+  @GetMapping("/collections")
+  public String collections(Model model){
+    List<CollectionDTO> collections = collectionService.getAllCollections();
+    model.addAttribute("collections", collections);
+    model.addAttribute("pageTitle", "MetaMapa · Colecciones");
+    return "collections";
+  }
+
   @GetMapping("/explore")
   public String explore(Model model){
     List<EventDTO> events = eventService.getAllEvents();
