@@ -165,4 +165,9 @@ public class LocationService implements ILocationService {
     // 4. Persist only new
     saveAll.accept(toSave);
   }
+
+  @Override
+  public List<Province> getAllProvinces() {
+    return provinceRepository.findAll();
+  }
 }

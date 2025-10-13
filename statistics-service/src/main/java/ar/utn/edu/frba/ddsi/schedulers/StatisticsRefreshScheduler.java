@@ -22,6 +22,6 @@ public class StatisticsRefreshScheduler {
   public void refreshStatistics() {
     statisticsService.refreshStatistics(lastUpdate);
     lastUpdate = LocalDateTime.now();
-    System.out.println("FIN");
+    System.out.println("FIN"); //?
   }
 }

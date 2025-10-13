@@ -89,9 +89,18 @@ public class EventService implements IEventService {
     categoryRepository.saveAll(categories);
   }
 
-  private void fetchProvinces() {
-    //TODO: Esto esta hardcodeado, deberia pulleralo desde GET /provinces del Aggregator Service (misma logica que fetchCategories)
-    Province test = new Province(1L, "Bs As");
-    provinceRepository.save(test);
+  private void fetchProvinces() {//TODO TEST
+    List<Province> provinces = AgregatorServiceWebClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/locations/provinces")
+            .build())
+        .retrieve()
+        .bodyToFlux(Province.class) //? A lo mejor hay que hacer un DTO (me daba bronca que el DTO y la entidad sean iguales)
+        .collectList()
+        .block();
+
+    if (provinces == null || provinces.isEmpty()) return;
+
+    provinceRepository.saveAll(provinces);
   }
 }
