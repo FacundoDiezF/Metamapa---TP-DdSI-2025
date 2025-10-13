@@ -23,7 +23,7 @@ public class NormalizationService implements INormalizationService {
   @Override
   // TODO: Esto podría hacerse con un cron task en tiempos de baja demanda o un servicio aparte, pero habría que implementar la lógica para que o no muestre los eventos que todavía no fueron normalizados, o presentarlos como "no normalizados" en el front, algo así.
   public List<Event> eventLocationNormalization(List<Event> events){//TODO Test
-    //1. Map events by coordinates
+    //1. Map events by coordinates (just to cover an extreme case of events with same coordinates on the same request)
     Map<Coordinate, List<Event>> coordenateEventMap = new HashMap<>();
     for (Event event : events) {
       Coordinate coordinate = event.getLocation().getCoordinate();

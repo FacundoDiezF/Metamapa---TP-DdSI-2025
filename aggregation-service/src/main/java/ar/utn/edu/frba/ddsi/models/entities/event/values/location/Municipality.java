@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
@@ -18,6 +19,8 @@ public class Municipality {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Setter
+  @Getter
   Long id;
 
   @Column(name = "name")

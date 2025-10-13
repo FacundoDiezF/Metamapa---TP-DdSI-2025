@@ -40,4 +40,6 @@ public interface IProvinceRepository extends JpaRepository<Province, Long> {
       @Param("collectionId") String collectionId,
       @Param("count") Integer count
   );
+
+  List<Province> findByNameIn(List<String> names);
 }

@@ -1,7 +1,6 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.models.entities.adapters.LocationAPI;
-import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Coordinate;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Department;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
@@ -15,8 +14,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class LocationService implements ILocationService {
@@ -55,66 +57,112 @@ public class LocationService implements ILocationService {
     //1. Get locations from API
     List<Location> locations = locationAPI.getLocationsByCoordinate(coordinates);
 
-    //2. Separate provinces, municipalities and departments in individual lists
+    //2. Persist locations
+    this.persistLocations(locations);
+
+    //3. Return locations
+    return locations;
+  }
+
+  private void persistLocations(List<Location> locations){ //TODO Test
     Set<Province> provinces = new HashSet<>();
     Set<Municipality> municipalities = new HashSet<>();
     Set<Department> departments = new HashSet<>();
 
-    for (Location location : locations) { //In this case it suffices with a set because for the three classes, equals() and hashCode() were overwritten
-      if (location.getProvince() != null && location.getProvince().getName() != null) {
-        provinces.add(location.getProvince());
-        //TODO Try this so every location references a province object that is in the provinces set
-        //*This is to avoid having multiple Province objects with the same name but different references
-        //*Which leads to the list of locations having objects without ids
-        if(!provinces.add(location.getProvince())){
-          location.setProvince(provinces
-              .stream()
-              .filter(p -> p.equals(location.getProvince()))
-              .findFirst()
-                  .orElseThrow(
-                      () -> new RuntimeException("Province" + location.getProvince().getName() + "found within the set, but equals couldn't be obtained")
-                  ));
-        }
-      }
-      if (location.getMunicipality() != null && location.getMunicipality().getName() != null) {
-        municipalities.add(location.getMunicipality());
-        //TODO Try this so every location references a municipality object that is in the municipalities set
-        //*This is to avoid having multiple Municipality objects with the same name but different references
-        //*Which leads to the list of locations having objects without ids
-        if(!municipalities.add(location.getMunicipality())){
-          location.setMunicipality(municipalities
-              .stream()
-              .filter(m -> m.equals(location.getMunicipality()))
-              .findFirst()
-              .orElseThrow(
-                  () -> new RuntimeException("Municipality" + location.getMunicipality().getName() + "found within the set, but equals couldn't be obtained")
-              ));
-        }
-      }
-      if (location.getDepartment() != null && location.getDepartment().getName() != null) {
-        departments.add(location.getDepartment());
-        //TODO Try this so every location references a department object that is in the departments set
-        //*This is to avoid having multiple Department objects with the same name but different references
-        //*Which leads to the list of locations having objects without ids
-        if(!departments.add(location.getDepartment())){
-          location.setDepartment(departments
-              .stream()
-              .filter(d -> d.equals(location.getDepartment()))
-              .findFirst()
-              .orElseThrow(
-                  () -> new RuntimeException("Department" + location.getDepartment().getName() + "found within the set, but equals couldn't be obtained")
-              ));
-        }
-      }
+    //1. Separate provinces, municipalities and departments in individual sets
+    this.deduplicateLocations(locations, provinces, municipalities, departments);
+
+    //2. Persist non-persisted provinces, municipalities and departments, and retrieve persisted ones (avoiding duplication)
+    this.persistNonPersisted(provinces, municipalities, departments);
+  }
+
+  private void deduplicateLocations(
+      List<Location> locations,
+      Set<Province> provinces,
+      Set<Municipality> municipalities,
+      Set<Department> departments
+  ) {
+    for (Location location : locations) {//In this case it suffices with a set because for the three classes, equals() and hashCode() were overwritten
+      location.deduplicateAndSet(
+          location.getProvince(),
+          provinces,
+          Location::setProvince,
+          Province::getName,
+          "Province"
+      );
+      location.deduplicateAndSet(
+          location.getMunicipality(),
+          municipalities,
+          Location::setMunicipality,
+          Municipality::getName,
+          "Municipality"
+      );
+      location.deduplicateAndSet(
+          location.getDepartment(),
+          departments,
+          Location::setDepartment,
+          Department::getName,
+          "Department"
+      );
+    }
+  }
+
+  private void persistNonPersisted(Set<Province> provinces, Set<Municipality> municipalities, Set<Department> departments) {
+    this.persistNonPersisted(
+        provinces,
+        provinceRepository::findByNameIn,
+        Province::getName,
+        Province::getId,
+        Province::setId,
+        provinceRepository::saveAll
+    );
+
+    this.persistNonPersisted(
+        municipalities,
+        municipalityRepository::findByNameIn,
+        Municipality::getName,
+        Municipality::getId,
+        Municipality::setId,
+        municipalityRepository::saveAll
+    );
+
+    this.persistNonPersisted(
+        departments,
+        departmentRepository::findByNameIn,
+        Department::getName,
+        Department::getId,
+        Department::setId,
+        departmentRepository::saveAll
+    );
+  }
+
+  private <T, ID> void persistNonPersisted(
+      Set<T> set,
+      Function<List<String>, List<T>> findByNameIn,
+      Function<T, String> getName,
+      Function<T, ID> getId,
+      BiConsumer<T, ID> setId,
+      Consumer<Iterable<T>> saveAll
+  ) {
+    // 1. Find existing by name
+    Set<T> existing = new HashSet<>(findByNameIn.apply(
+        set.stream().map(getName).toList()
+    ));
+
+    // 2. Set IDs for existing
+    for (T entity : set) {
+      existing.stream()
+          .filter(e -> getName.apply(e).equals(getName.apply(entity)))
+          .findFirst()
+          .ifPresent(e -> setId.accept(entity, getId.apply(e)));
     }
 
-    //3. Persist provinces, municipalities and departments
-    //TODO Creo que esto no funciona bien porque no esta verificando si ya existen en base al nombre, manejar eso
-    provinceRepository.saveAll(provinces);
-    municipalityRepository.saveAll(municipalities);
-    departmentRepository.saveAll(departments);
+    // 3. Save only new
+    Set<T> toSave = set.stream()
+        .filter(e -> getId.apply(e) == null)
+        .collect(Collectors.toSet());
 
-    //4. Return locations
-    return locations;
+    // 4. Persist only new
+    saveAll.accept(toSave);
   }
 }
