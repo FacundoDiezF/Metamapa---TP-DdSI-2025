@@ -1,7 +1,6 @@
 package ar.utn.edu.frba.ddsi.models.entities.event.values.location;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.api.APILocationInputDTO;
-import ar.utn.edu.frba.ddsi.models.dtos.input.api.LocationAPIResultInputDTO;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;

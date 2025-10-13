@@ -32,7 +32,9 @@ public class SourceClientService implements ISourceClientService {
       sourceClient.subscribe(callbackUrl);
     } catch (Exception e) {
       // If subscription fails, remove the created source client to maintain consistency.
-      sourceClientRepository.delete(sourceClient);
+      //sourceClientRepository.delete(sourceClient); //! Está tirando un error cuando sucede esto porque todavía tiene sources que la referencian
+      //La gracia de esto en realidad es atrapar un error si falla la suscripcion, pero termina agarrando el error al fallar la crearcion de eventos
+      //TODO Solucionar error de source client con sources referenciándola intentando ser borrada
       throw e;
     }
 

@@ -66,6 +66,7 @@ public class EventService implements IEventService {
         .toList();
 
     //2. Normalize locations
+    //TODO pensar como manejar el caso en el que falla la API, si guardar eventos sin normalizar o que (y como manejar el error
     List<Event> normalizedEvents = normalizationService.eventLocationNormalization(events);
 
     //3. Save events
