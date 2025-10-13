@@ -12,7 +12,7 @@ import java.util.List;
 public interface ICollectionService {
   CollectionOutputDTO create(CollectionCreationDTO collectionDto);
 
-  List<CollectionOutputDTO> getCollections();
+  List<CollectionOutputDTO> getCollections(LocalDateTime fromUpdateDate);
 
   List<EventOutputDTO> getEventsFromCollection(
       boolean curedNavigation,

@@ -1,0 +1,13 @@
+/* ===== Mapa (shared) ===== */
+.map-frame{
+  border-radius:10px;
+  overflow:hidden;
+  min-height:0;
+}
+
+#map,
+.mm-map{
+  display:block;
+  width:100%;
+  height:clamp(220px, 35vh, 320px);
+}

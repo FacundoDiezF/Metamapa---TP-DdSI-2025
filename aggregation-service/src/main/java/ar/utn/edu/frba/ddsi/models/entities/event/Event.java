@@ -45,7 +45,7 @@ public class Event {
 
   //-- Source
   @NonNull
-  @ManyToOne(cascade= CascadeType.MERGE)
+  @ManyToOne(cascade = CascadeType.MERGE)
   @JoinColumn(name = "source_id", nullable = false)
   private final Source source;
 
@@ -75,6 +75,10 @@ public class Event {
   private final LocalDateTime uploadDate;
 
   @Builder.Default
+  @Column(name = "updated_date", nullable = false)
+  private LocalDateTime updatedDate = LocalDateTime.now();
+
+  @Builder.Default
   @Column(name = "deleted", nullable = false)
   private boolean deleted = false;
 
@@ -86,7 +90,6 @@ public class Event {
   @CollectionTable(name = "event_passed_consensus", joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
   @Column(name = "consensus_type")
   @Builder.Default
-  @Setter
   private List<ConsensusType> passedConsensus = new ArrayList<>();
 
 
@@ -97,6 +100,7 @@ public class Event {
     if (dto.getLatitude() != null) this.location.getCoordinate().setLatitude(dto.getLatitude());
     if (dto.getLongitude() != null) this.location.getCoordinate().setLongitude(dto.getLongitude());
     if (dto.getEventDate() != null) this.eventDate = dto.getEventDate();
+    this.updatedDate = LocalDateTime.now();
   }
 
   public boolean meetsAlgorithmConsensus(ConsensusType consensusType) {
@@ -118,5 +122,11 @@ public class Event {
     this.deleted = true;
     // Update state in the origin source
     source.notifyEventDeleted(this);
+  }
+
+  public void setPassedConsensus(List<ConsensusType> passedConsensus) {
+    //For jpa tracking
+    this.passedConsensus.clear();
+    this.passedConsensus.addAll(passedConsensus);
   }
 }

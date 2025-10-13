@@ -2,6 +2,7 @@ package ar.utn.edu.frba.ddsi.models.dtos.output.collection;
 
 import ar.utn.edu.frba.ddsi.models.dtos.output.source.SourceOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.collections.Collection;
+import java.util.ArrayList;
 import lombok.Data;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class CollectionOutputDTO {
   String title;
   String description;
   List<SourceOutputDTO> sources;
+  List<Long> eventIds;
 
 
   public static CollectionOutputDTO from(Collection collection) {
@@ -21,6 +23,7 @@ public class CollectionOutputDTO {
     dto.title = collection.getTitle();
     dto.description = collection.getDescription();
     dto.sources = collection.getSources().stream().map(SourceOutputDTO::from).toList();
+    dto.eventIds = collection.getEventsIds();
     return dto;
   }
 }

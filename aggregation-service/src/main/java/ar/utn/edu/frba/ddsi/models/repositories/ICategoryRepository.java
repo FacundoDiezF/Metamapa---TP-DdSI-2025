@@ -10,25 +10,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICategoryRepository extends JpaRepository<Category, Long> {
   Optional<Category> findByName(String name);
-
-  @Query("""
-    SELECT c
-    FROM Category c
-    JOIN Event e ON e.category = c
-    GROUP BY c.id
-    ORDER BY COUNT(e.id) DESC
-    LIMIT :count
-  """)
-  List<Category> findTopCategories(Integer count);
-
-  @Query(value = """
-  SELECT DATE_FORMAT(e.event_date, '%l%p') AS event_hour
-  FROM events e
-  WHERE e.category_id = :categoryId
-  GROUP BY event_hour
-  ORDER BY COUNT(*) DESC
-  LIMIT :count
-""", nativeQuery = true)
-  List<String> findCategoryBusiestHours(Long categoryId, Integer count);
-
 }

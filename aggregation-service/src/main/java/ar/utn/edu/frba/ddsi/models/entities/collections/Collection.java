@@ -52,6 +52,10 @@ public class Collection {
   @Column(name = "description")
   private String description;
 
+  @Builder.Default
+  @Column(name = "updated_date", nullable = false)
+  private LocalDateTime updatedDate = LocalDateTime.now(); //Only updated when events are added/removed
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "collection_criteria_id", nullable = false)
   @NonNull
@@ -71,7 +75,7 @@ public class Collection {
       inverseJoinColumns = @JoinColumn(name = "source_id", referencedColumnName = "id")
   )
   @NonNull
-  private final List<Source> sources;
+  private final Set<Source> sources;
 
   @Builder.Default
   @ManyToMany
@@ -87,10 +91,16 @@ public class Collection {
     // Update the events, adding new ones and removing those that no longer satisfy the criteria.
     for (Source source : this.sources) {
       for (Event event : source.getEvents(lastUpdate)) {
+        boolean wasAdded = false;
+        boolean wasRemoved = false;
         if (this.collectionCriteria.isSatisfiedBy(event)) {
-          events.add(event);
+          wasAdded = events.add(event);
         } else {
-          events.remove(event);
+          wasRemoved = events.remove(event);
+        }
+
+        if (wasAdded || wasRemoved) {
+          updatedDate = LocalDateTime.now();
         }
       }
       // PD: No se filtra las MetaMapa ya que no deberian tener events en su lista.
@@ -106,7 +116,11 @@ public class Collection {
     return allEvents;
   }
 
-  public Set<Event> getMetamapaEvents() {
+  public List<Long> getEventsIds() {
+    return events.stream().map(Event::getId).toList();
+  }
+
+  private Set<Event> getMetamapaEvents() {
     //Pull and filter events from Metamapa sources (in parallel to improve performance).
     return this.sources.parallelStream()
         .filter(Source::isMetamapa)
@@ -122,11 +136,15 @@ public class Collection {
 
   public void remove(Source source) {
     sources.remove(source);
-    events.removeIf(e -> e.getSource().equals(source));
+    boolean anyRemoved = events.removeIf(e -> e.getSource().equals(source));
+
+    if (anyRemoved) {
+      updatedDate = LocalDateTime.now();
+    }
   }
 
   public void add(Source source) {
     sources.add(source);
-
+    this.refresh(null);
   }
 }

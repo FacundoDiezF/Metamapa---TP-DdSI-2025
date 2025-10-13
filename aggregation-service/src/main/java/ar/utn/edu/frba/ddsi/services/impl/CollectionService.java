@@ -16,8 +16,10 @@ import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ICollectionCriteriaService;
 import ar.utn.edu.frba.ddsi.services.ICollectionService;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +43,7 @@ public class CollectionService implements ICollectionService {
   public CollectionOutputDTO create(CollectionCreationDTO collectionDto) {
 
     // Get sources from the repository by IDs
-    List<Source> collectionSources = sourceRepository.findAllById(collectionDto.getSourceIds());
+    Set<Source> collectionSources = new HashSet<>(sourceRepository.findAllById(collectionDto.getSourceIds()));
 
     //TODO: validar que todas las fuentes solicitadas existan, tirar error en caso contrario
 
@@ -57,16 +59,20 @@ public class CollectionService implements ICollectionService {
         .consensusType(collectionDto.getConsensusType())
         .build();
 
-      //Refresh collection to populate events
-      collection.refresh(null);
-      collectionRepository.save(collection);
+    //Refresh collection to populate events
+    collection.refresh(null);
+    collectionRepository.save(collection);
 
-       return CollectionOutputDTO.from(collection);
+    return CollectionOutputDTO.from(collection);
   }
 
   @Override
-  public List<CollectionOutputDTO> getCollections() {
-    return collectionRepository.findAll().stream().map(CollectionOutputDTO::from).toList();
+  public List<CollectionOutputDTO> getCollections(LocalDateTime fromUpdateDate) {
+    List<Collection> collections =
+        fromUpdateDate != null
+            ? collectionRepository.findAllByUpdatedDateAfter(fromUpdateDate)
+            : collectionRepository.findAll();
+    return collections.stream().map(CollectionOutputDTO::from).toList();
   }
 
   @Override
@@ -142,8 +148,8 @@ public class CollectionService implements ICollectionService {
   }
 
   @Override
-  public void removeSource(String handler, Long sourceId){
-  //TODO: validate that user can do this petition.
+  public void removeSource(String handler, Long sourceId) {
+    //TODO: validate that user can do this petition.
     Collection collection = collectionRepository.findByHandler(handler);
     if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
@@ -156,7 +162,7 @@ public class CollectionService implements ICollectionService {
   }
 
   @Override
-  public void addSource(String handler, Long sourceId){
+  public void addSource(String handler, Long sourceId) {
     //TODO: validate that user can do this petition.
     Collection collection = collectionRepository.findByHandler(handler);
     if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
@@ -165,9 +171,6 @@ public class CollectionService implements ICollectionService {
         .orElseThrow(() -> new NotFoundException("Source not found - ID: " + sourceId));
 
     collection.add(source);
-
-    collection.refresh(null);
-
     collectionRepository.save(collection);
   }
 }

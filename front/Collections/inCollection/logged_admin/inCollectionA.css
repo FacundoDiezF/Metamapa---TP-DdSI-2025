@@ -1,0 +1,762 @@
+/* =========================================================
+   0) Tokens / variables
+   ========================================================= */
+:root {
+    --ui-blue: #3B82F6;
+    --ui-ink: #0f172a;
+    --ui-muted: #6b7280;
+    --ui-bg: #F3F4F6;
+    --ui-card: #ffffff;
+    --radius: 12px;
+
+    --header-h: 72px;
+    --subnav-h: 44px;
+}
+
+/* =========================================================
+   1) Reset / base
+   ========================================================= */
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
+
+html {
+    scroll-behavior: smooth
+}
+
+body {
+    margin: 0;
+    font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    background: var(--ui-bg);
+    color: var(--ui-ink);
+    overflow: auto;
+}
+
+/* =========================================================
+   2) Navegación secundaria y breadcrumb
+   ========================================================= */
+/* La subnav en esta página NO es sticky */
+.subnav {
+    position: static;
+    top: auto;
+    z-index: auto
+}
+
+.incol-breadcrumb {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 2450;
+    height: 44px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 0 24px 8px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.incol-breadcrumb a {
+    color: #111827;
+    text-decoration: none;
+    font-weight: 600
+}
+
+.incol-breadcrumb .current {
+    color: #3B82F6;
+    font-weight: 700
+}
+
+.incol-breadcrumb .sep {
+    color: #cbd5e1;
+    margin: 0 6px
+}
+
+/* (Breadcrumb genérico por si se reusa en otras vistas) */
+.breadcrumb {
+    position: sticky;
+    top: calc(var(--header-h) + var(--subnav-h));
+    z-index: 80;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .9rem;
+}
+
+.breadcrumb a {
+    color: #111827;
+    text-decoration: none;
+    font-weight: 600
+}
+
+.breadcrumb .current {
+    color: var(--ui-muted)
+}
+
+.breadcrumb .sep {
+    color: #cbd5e1
+}
+
+/* =========================================================
+   3) Layout de tres columnas
+   ========================================================= */
+.layout {
+    display: grid;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    grid-template-columns: 280px 1fr 300px;
+    min-height: calc(100vh - var(--header-h) - 44px);
+    /* header + breadcrumb */
+}
+
+@media (max-width:1100px) {
+    .layout {
+        grid-template-columns: 260px 1fr 280px
+    }
+}
+
+@media (max-width:900px) {
+    .layout {
+        grid-template-columns: 1fr
+    }
+}
+
+/* Padding lateral amplio en >=768px (parecido a index) */
+@media (min-width:768px) {
+    .layout {
+        padding-left: 24px;
+        padding-right: 24px
+    }
+}
+
+/* =========================================================
+   4) Header (píldoras Admin + Usuario)
+   ========================================================= */
+.auth-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+/* Admin */
+.pill-admin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-width: 128px;
+    padding: 0 16px;
+    border-radius: 9999px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    background: var(--ui-blue);
+    color: #fff;
+    border: 1px solid transparent;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+}
+
+.pill-admin:hover {
+    filter: brightness(.96)
+}
+
+.pill-admin:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--ui-blue) 55%, white);
+    outline-offset: 2px
+}
+
+/* Usuario (avatar + nombre) */
+.user-menu {
+    position: relative;
+    z-index: 2000
+}
+
+.user-menu>summary {
+    list-style: none
+}
+
+.user-menu>summary::-webkit-details-marker {
+    display: none
+}
+
+.user-menu[open]>summary.user-pill {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, .18)
+}
+
+.user-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    padding: 6px 12px;
+    border-radius: 100px;
+    border: 1px solid #A7A7A7;
+    background: #EFF6FF;
+    cursor: pointer;
+    color: #050315;
+    text-decoration: none;
+    outline: none;
+}
+
+.user-pill .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex: 0 0 36px
+}
+
+.user-pill .avatar img {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    left: 2px;
+    top: 2px;
+    object-fit: cover
+}
+
+.user-pill .user-name {
+    font-size: 16px;
+    font-weight: 400;
+    white-space: nowrap
+}
+
+.user-pill .caret {
+    font-size: 14px;
+    opacity: .6
+}
+
+.user-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 220px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(2, 8, 20, .12), 0 2px 6px rgba(2, 8, 20, .08);
+    padding: 6px;
+    margin: 0;
+    list-style: none;
+    z-index: 3000;
+}
+
+.user-dropdown a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #111827;
+    font-weight: 500;
+}
+
+.user-dropdown a:hover,
+.user-dropdown a:focus-visible {
+    background: #F3F4F6;
+    outline: none
+}
+
+.user-dropdown hr {
+    border: 0;
+    height: 1px;
+    background: #e5e7eb;
+    margin: 6px
+}
+
+@media (max-width:768px) {
+    .user-pill {
+        height: 44px;
+        padding: 4px 8px;
+        gap: 0
+    }
+
+    .user-pill .avatar {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px
+    }
+
+    .user-pill .avatar img {
+        width: 28px;
+        height: 28px;
+        left: 2px;
+        top: 2px
+    }
+
+    .user-pill .user-name,
+    .user-pill .caret {
+        display: none
+    }
+
+    .user-dropdown {
+        min-width: 180px
+    }
+}
+
+/* =========================================================
+   5) Sidebar izquierda (filtros)
+   ========================================================= */
+.sidebar {
+    background: var(--ui-card);
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+    padding: 1.2rem;
+    align-self: start;
+}
+
+.sidebar h3 {
+    margin: 0 0 1rem
+}
+
+.filtro {
+    margin-bottom: 1.5rem
+}
+
+.filtro label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: .5rem;
+    color: #333
+}
+
+.caret {
+    color: #667085;
+    font-size: .9rem;
+    margin-left: .3rem
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem
+}
+
+.chip {
+    display: inline-block;
+    padding: .3rem .7rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background: #f5f5f5;
+    font-size: .85rem;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.chip:hover {
+    background: #e0f2ff;
+    border-color: var(--ui-blue);
+    color: var(--ui-blue)
+}
+
+.chip.mas {
+    background: #e8f0fe;
+    border-color: #4285f4;
+    color: #4285f4
+}
+
+.date-range {
+    display: flex;
+    flex-direction: column;
+    gap: .7rem
+}
+
+.date-range span {
+    font-size: .8rem;
+    color: #555;
+    margin-right: .4rem
+}
+
+.date-range input {
+    width: 100%;
+    padding: .4rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: .9rem
+}
+
+/* =========================================================
+   6) Feed (centro) + Card de Colección
+   ========================================================= */
+.feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0
+}
+
+#inicio-feed {
+    scroll-margin-top: calc(var(--header-h) + var(--subnav-h) + 12px)
+}
+
+/* Card de colección (con menú de 3 puntos) */
+.collection-card {
+    background: var(--ui-card, #fff);
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.2rem 1.2rem 1rem;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+}
+
+.collection-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    margin: 0 0 .5rem 0;
+}
+
+.collection-card h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ui-ink);
+}
+
+.collection-card .collection-desc {
+    margin: 0;
+    color: #475569;
+    font-size: .95rem;
+    line-height: 1.45;
+
+    /* Truncado a máx. 3 líneas */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* =========================================================
+   7) Menú de tres puntos (reutilizable)
+   ========================================================= */
+.menu-dots {
+    position: relative;
+    display: inline-block
+}
+
+.menu-dots summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.menu-dots summary::-webkit-details-marker {
+    display: none
+}
+
+.menu-dots summary:hover {
+    background: #f3f4f6
+}
+
+.menu-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    min-width: 180px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    z-index: 1000;
+}
+
+.menu-dropdown a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #111827;
+    font-weight: 500;
+}
+
+.menu-dropdown a:hover {
+    background: #f1f5f9
+}
+
+.menu-dropdown .danger {
+    color: #b91c1c
+}
+
+/* =========================================================
+   8) Hechos (cards del feed)
+   ========================================================= */
+.hecho {
+    position: relative;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1.1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+}
+
+.hecho h2 {
+    margin: .5rem 0;
+    font-size: 1.05rem
+}
+
+.hecho .ubicacion {
+    color: var(--ui-blue);
+    font-size: .85rem;
+    margin-bottom: .45rem
+}
+
+.hecho p {
+    font-size: .9rem;
+    margin-bottom: .6rem
+}
+
+.hecho img {
+    width: 100%;
+    border-radius: 8px;
+    margin: .5rem 0
+}
+
+.hecho .fuente {
+    font-size: .75rem;
+    color: #777
+}
+
+.tag {
+    display: inline-block;
+    background: #BDFFDB;
+    color: #000;
+    padding: .2rem .5rem;
+    border-radius: 0 0 15px 15px;
+    font-size: .8rem
+}
+
+.vermas {
+    color: #2563EB;
+    text-decoration: none;
+    font-weight: 600
+}
+
+/* Flag (reportar) */
+.flag-float {
+    position: absolute;
+    top: 15px;
+    right: 19px;
+    appearance: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.flag-float:hover,
+.flag-float:focus {
+    background: #f1f5f9
+}
+
+/* =========================================================
+   9) Sidebar derecha (mapa + colecciones)
+   ========================================================= */
+.sidebar-right {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-rows: auto auto;
+    align-content: start
+}
+
+.sidebar-right>* {
+    min-height: 0;
+    margin: 0
+}
+
+/* defensivo */
+
+.map-box,
+.colecciones {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.map-box h3 {
+    margin: 0 0 1rem
+}
+
+.map-box .map-frame {
+    padding-bottom: 0
+}
+
+/* fuese necesario por UI Leaflet */
+
+.map-static {
+    width: 100%;
+    height: clamp(220px, 35vh, 320px);
+    object-fit: cover;
+    display: block
+}
+
+.colecciones h3 {
+    margin-bottom: 1rem
+}
+
+.colecciones ul {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0
+}
+
+.colecciones li {
+    margin-bottom: .5rem
+}
+
+.colecciones a {
+    color: var(--ui-blue);
+    font-weight: 600;
+    text-decoration: none
+}
+
+.colecciones a span {
+    font-size: .75rem;
+    margin-left: .5rem;
+    color: #555
+}
+
+.explorar {
+    width: 100%;
+    padding: .7rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--ui-blue);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.explorar:hover {
+    filter: brightness(.95)
+}
+
+/* ===== Modal CSS-only (con :target) — FIX: oculto por defecto ===== */
+.modal {
+    position: fixed;
+    inset: 0;
+    /* 👇 clave del fix */
+    display: none;
+    /* ← oculto por defecto */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+    place-items: start center;
+    padding: clamp(16px, 8vh, 96px) 16px 16px;
+    z-index: 2147483647;
+}
+
+.modal:target {
+    display: grid;
+    /* ← muestro solo al ser target */
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    backdrop-filter: blur(1.5px);
+    z-index: 0;
+}
+
+.modal-dialog {
+    position: relative;
+    width: min(640px, 100%);
+    max-height: calc(100vh - clamp(16px, 8vh, 96px) - 24px);
+    overflow: auto;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, .18);
+    padding: 1rem 1rem .75rem;
+    display: grid;
+    gap: .9rem;
+    z-index: 1;
+}
+
+.modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .25rem .25rem .5rem;
+}
+
+.modal-head h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.modal-close {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #0f172a;
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    background: #f3f4f6;
+}
+
+.modal-actions {
+    display: flex;
+    gap: .5rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .65rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #0f172a;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.btn.danger {
+    background: #ef4444;
+    color: #fff;
+    border-color: #b91c1c;
+}
+
+.btn.danger .icon {
+    filter: brightness(0) invert(1) contrast(100%);
+}
+
+.confirm-danger {
+    border-top: 4px solid #ef4444;
+}
+
+.confirm-danger .modal-head h2 {
+    color: #b91c1c;
+}
+
+/* Bloqueo de scroll cuando hay un modal abierto */
+html:has(.modal:target),
+body:has(.modal:target) {
+    overflow: hidden;
+    height: 100%;
+}
