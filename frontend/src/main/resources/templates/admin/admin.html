@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>MetaMapa — Administración</title>
+
+    <!-- Base y estilo compartido -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Basics -->
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../shared/components.css">
+    <link rel="stylesheet" href="../shared/utilities.css">
+
+    <!-- Tus tokens + navbar + iconos -->
+    <link rel="stylesheet" href="../shared/tokens.css"/>
+    <link rel="stylesheet" href="../shared/nav.css"/>
+    <link rel="stylesheet" href="../shared/icons.css"/>
+
+    <!-- Estilos del panel -->
+    <link rel="stylesheet" href="admin.css"/>
+</head>
+
+<body>
+
+<!-- Header pegajoso (reutilizado) -->
+<!-- Header (navbar unificada) -->
+<header class="navbar" id="navbar">
+    <div class="brand">
+        <div class="brand-mark"><span class="dot"></span></div>
+        <span class="brand-name">MetaMapa</span>
+    </div>
+
+    <div class="auth-actions">
+        <!-- 1) Píldora Admin -->
+        <a href="admin.html" class="pill-admin" role="button" aria-label="Panel de Administración">
+            Administrador
+        </a>
+
+        <!-- 2) Píldora de usuario Abby con dropdown -->
+        <details class="user-menu">
+            <summary class="user-pill" aria-haspopup="menu" aria-expanded="false">
+                    <span class="avatar" aria-hidden="true">
+                        <img src="../shared/Assets/pics/avatar.png" alt="">
+                    </span>
+                <span class="user-name">Abby</span>
+                <span class="caret" aria-hidden="true">▾</span>
+            </summary>
+
+            <ul class="user-dropdown" role="menu" aria-label="Menú de usuario">
+                <li role="none"><a role="menuitem" href="#">Mi cuenta</a></li>
+                <li role="none"><a role="menuitem" href="#">Mis aportes</a></li>
+                <li role="none"><a role="menuitem" href="#">Preferencias</a></li>
+                <li role="none">
+                    <hr>
+                </li>
+                <li role="none"><a role="menuitem" href="#">Cerrar sesión</a></li>
+            </ul>
+        </details>
+    </div>
+</header>
+
+
+<!-- Subnav (reutilizado) -->
+<nav class="subnav">
+    <a href="../Index/index.html">Explorar</a>
+    <a href="../Collections/collections.html">Colecciones</a>
+    <a href="../map/mapa.html">Mapa</a>
+    <a href="admin.html" class="active">Panel de Control</a>
+</nav>
+
+<!-- Layout  -->
+<main class="admin-layout">
+    <!-- Lateral -->
+    <aside class="admin-sidebar">
+        <h3>Panel de Administración</h3>
+        <nav class="admin-menu">
+            <a href="admin.html" class="nav-link is-active">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/Icons/stats1-svgrepo-com.svg" alt="Resumen">
+                    </span>
+                <span class="nav-label">Resumen</span>
+            </a>
+
+            <a href="stats.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/insight-svgrepo-com.svg" alt="Estadísticas">
+                    </span>
+                <span class="nav-label">Estadísticas</span>
+            </a>
+
+            <a href="collecionsSection.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/Group.svg" alt="Colecciones">
+                    </span>
+                <span class="nav-label">Colecciones</span>
+            </a>
+
+            <a href="delete-requests.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg"
+                             alt="Solicitudes de Eliminación">
+                    </span>
+                <span class="nav-label">Solicitudes de Eliminación</span>
+            </a>
+
+            <a href="admin-hechos.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/sand-clock-svgrepo-com.svg" alt="Hechos pendientes">
+                    </span>
+                <span class="nav-label">Hechos pendientes</span>
+            </a>
+
+            <a href="sources.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/material-symbols_database-outline.svg" alt="Fuentes">
+                    </span>
+                <span class="nav-label">Fuentes</span>
+            </a>
+
+            <a href="import-csv.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/uil_import.svg" alt="Importar CSV">
+                    </span>
+                <span class="nav-label">Importar CSV</span>
+            </a>
+        </nav>
+    </aside>
+
+
+    <!-- Contenido -->
+    <section class="admin-content">
+        <header class="admin-header">
+            <h1>Resumen de Actividad</h1>
+            <p class="muted">Resumen de actividad y gestión de contenido</p>
+        </header>
+
+        <!-- KPIs -->
+        <div class="kpis">
+            <article class="kpi">
+                <div class="kpi-title">Total Hechos</div>
+                <div class="kpi-value">1.247</div>
+                <div class="kpi-foot good">+12% desde el mes pasado</div>
+            </article>
+
+            <article class="kpi">
+                <div class="kpi-title">Hechos Pendientes</div>
+                <div class="kpi-value">23</div>
+                <div class="kpi-foot warn">Requieren moderación</div>
+            </article>
+
+            <article class="kpi">
+                <div class="kpi-title">Fuentes Activas</div>
+                <div class="kpi-value">76</div>
+                <div class="kpi-foot">de 89 totales</div>
+            </article>
+
+            <article class="kpi">
+                <div class="kpi-title">Solicitudes Eliminación</div>
+                <div class="kpi-value">8</div>
+                <div class="kpi-foot danger">Pendientes de revisión</div>
+            </article>
+        </div>
+
+        <!-- Dos columnas: actividad + resumen moderación -->
+        <div class="grid-2">
+            <section class="card">
+                <h3 class="card-title">Actividad Reciente</h3>
+
+                <div class="activity">
+                    <div class="item">
+                        <div class="badge badge-warn">Pendiente</div>
+                        <div class="info">
+                            <p class="title">Nuevo hecho reportado: Incendio en Córdoba</p>
+                            <p class="meta">Hace 2 horas</p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="badge badge-good">Aprobado</div>
+                        <div class="info">
+                            <p class="title">Hecho aprobado: Contaminación en Río de la Plata</p>
+                            <p class="meta">Hace 4 horas</p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="badge badge-warn">Pendiente</div>
+                        <div class="info">
+                            <p class="title">Solicitud de eliminación para hecho #1234</p>
+                            <p class="meta">Hace 6 horas</p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="badge badge-info">Activo</div>
+                        <div class="info">
+                            <p class="title">Nueva fuente agregada: Ministerio de Ambiente</p>
+                            <p class="meta">Hace 1 día</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="card">
+                <h3 class="card-title">Resumen de Moderación</h3>
+
+                <ul class="mod-list">
+                    <li class="ok">
+                        <span>Hechos Aprobados</span>
+                        <strong>1.198</strong>
+                    </li>
+                    <li class="pending">
+                        <span>Pendientes</span>
+                        <strong>23</strong>
+                    </li>
+                    <li class="rejected">
+                        <span>Rechazados</span>
+                        <strong>26</strong>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </section>
+</main>
+</body>
+
+</html>

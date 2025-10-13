@@ -3,7 +3,7 @@
 =========================== */
 .map-layout {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 320px minmax(0, 1fr);
     gap: 1rem;
     padding: 1rem 1.5rem;
     height: calc(100dvh - var(--header-h) - var(--subnav-h));

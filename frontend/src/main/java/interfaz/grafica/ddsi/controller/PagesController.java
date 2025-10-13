@@ -7,9 +7,11 @@ import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.EventService;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -88,6 +90,14 @@ public class PagesController {
     model.addAttribute("pageTitle", "MetaMapa · Colecciones");
     return "collections";
   }
+
+    @GetMapping("/map")
+    public String mapa(Model model){
+        List<EventDTO> allEvents = eventService.getAll();
+        model.addAttribute("events", allEvents);
+        model.addAttribute("pageTitle", "MetaMapa · Mapa");
+        return "map";
+    }
 
   @GetMapping("/404")
   public String notFound(Model model) {

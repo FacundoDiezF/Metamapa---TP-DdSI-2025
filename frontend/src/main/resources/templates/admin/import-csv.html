@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>MetaMapa — Importar CSV</title>
+
+    <!-- Base compartida -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Basics -->
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../shared/components.css">
+    <link rel="stylesheet" href="../shared/utilities.css">
+
+    <link rel="stylesheet" href="../shared/tokens.css"/>
+    <link rel="stylesheet" href="../shared/nav.css"/>
+    <link rel="stylesheet" href="../shared/icons.css"/>
+
+    <!-- Estilos del panel -->
+    <link rel="stylesheet" href="admin.css"/>
+
+    <!-- Estilos locales mínimos (no duplican admin.css) -->
+    <style>
+        /* ====== Uploader (CSS-only) ====== */
+        .uploader {
+            display: grid;
+            gap: .8rem;
+        }
+
+        .droparea {
+            position: relative;
+            display: grid;
+            place-items: center;
+            min-height: 160px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            background: #fff;
+            text-align: center;
+            padding: 1.25rem;
+            color: #475569;
+        }
+
+        .droparea .arrow {
+            display: inline-grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            background: #f8fafc;
+            margin-bottom: .5rem;
+            font-size: 24px;
+            line-height: 1;
+            color: #64748b;
+        }
+
+        /* Input real oculto, accesible por label/btn */
+        .file-input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            margin-top: .4rem;
+        }
+
+        .file-actions .btn {
+            cursor: pointer;
+        }
+
+        .drop-hint {
+            margin: 0;
+            color: #64748b;
+        }
+
+        /* Aviso gris (mockup) */
+        .warn-box {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: .9rem 1rem;
+            color: #334155;
+            font-size: .95rem;
+        }
+
+        .warn-box .i {
+            display: inline-grid;
+            place-items: center;
+            width: 20px;
+            height: 20px;
+            margin-right: .5rem;
+            border-radius: 999px;
+            background: #e5e7eb;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        /* Botón CTA ancho en Dark Accent */
+        .btn-cta {
+            background: var(--ui-dark-accent, #475265) !important;
+            border: 1px solid transparent !important;
+            color: #fff !important;
+            font: 600 1rem "Poppins", sans-serif;
+            padding: 14px 20px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            cursor: pointer;
+            transition: background .2s ease;
+        }
+
+        .btn-cta:hover {
+            background: #374151 !important;
+        }
+
+        /* ===== Historial de Importaciones ===== */
+        .import-card {
+            display: grid;
+            gap: .6rem;
+            padding: 1.5rem;
+        }
+
+        /* +aire */
+        .import-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+        }
+
+        .import-meta {
+            margin: 0;
+            color: var(--ui-muted);
+        }
+
+        .kpi-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .kpi-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .35rem .6rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 999px;
+            background: #fff;
+            font-size: .9rem;
+        }
+
+        .kpi-chip.bad {
+            background: #fee2e2;
+            border-color: #fecaca;
+            color: #991b1b;
+        }
+
+        @media (max-width: 720px) {
+            .kpi-row {
+                gap: .6rem;
+            }
+        }
+
+        /* KPIs con fondo tenue */
+        .kpi-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin: .75rem 0 0;
+        }
+
+        .kpi-box {
+            text-align: center;
+            border-radius: 12px;
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .kpi-total {
+            background: #f9fafb;
+            color: var(--ui-ink, #050315);
+        }
+
+        .kpi-proc {
+            background: #eff6ff;
+            color: var(--ui-blue, #3B82F6);
+        }
+
+        .kpi-valid {
+            background: #ecfdf5;
+            color: #16a34a;
+        }
+
+        .kpi-error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .kpi-number {
+            font-size: 1.4rem;
+            display: block;
+        }
+
+        .kpi-label {
+            font-size: .9rem;
+            font-weight: 500;
+            opacity: .9;
+        }
+
+        /* Barra de progreso arriba de las KPIs */
+        .progress-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            margin: .25rem 0 .5rem;
+            color: var(--ui-ink, #0f172a);
+        }
+
+        .progress-row .hint {
+            color: var(--ui-muted);
+            font-weight: 600;
+        }
+
+        .progress-row .pct {
+            color: var(--ui-ink);
+            font-weight: 700;
+        }
+
+        .progressbar {
+            width: 100%;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progressbar .fill {
+            height: 100%;
+            background: var(--ui-blue, #3B82F6);
+            width: var(--p, 0%);
+            border-radius: 999px;
+        }
+
+        /* Importación con Error: caja compacta + safe wrapping */
+        .import-card.error .log-list {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: .6rem .8rem;
+            font-size: .85rem;
+            line-height: 1.4;
+            margin-top: .5rem;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .import-card.error .log-list li {
+            margin: .25rem 0;
+            color: #991b1b;
+            list-style-type: disc;
+            list-style-position: inside;
+        }
+
+        .import-card.error .log-list code {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            border-radius: 6px;
+            padding: 2px 5px;
+            font-size: .8rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            color: #991b1b;
+            white-space: pre-wrap;
+        }
+
+        /* Espaciado de fields del form */
+        .import-card .card-title {
+            margin-bottom: 1rem;
+        }
+
+        .import-card .field {
+            display: grid;
+            gap: .5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .import-card .field label {
+            margin-bottom: .25rem;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Header -->
+<header class="navbar" id="navbar">
+    <div class="brand">
+        <div class="brand-mark"><span class="dot"></span></div>
+        <span class="brand-name">MetaMapa</span>
+    </div>
+
+    <div class="auth-actions">
+        <!-- 1) Píldora Admin -->
+        <a href="admin.html" class="pill-admin" role="button" aria-label="Panel de Administración">
+            Administrador
+        </a>
+
+        <!-- 2) Píldora de usuario Abby con dropdown -->
+        <details class="user-menu">
+            <summary class="user-pill" aria-haspopup="menu" aria-expanded="false">
+                    <span class="avatar" aria-hidden="true">
+                        <img src="../shared/Assets/pics/avatar.png" alt="">
+                    </span>
+                <span class="user-name">Abby</span>
+                <span class="caret" aria-hidden="true">▾</span>
+            </summary>
+
+            <ul class="user-dropdown" role="menu" aria-label="Menú de usuario">
+                <li role="none"><a role="menuitem" href="#">Mi cuenta</a></li>
+                <li role="none"><a role="menuitem" href="#">Mis aportes</a></li>
+                <li role="none"><a role="menuitem" href="#">Preferencias</a></li>
+                <li role="none">
+                    <hr>
+                </li>
+                <li role="none"><a role="menuitem" href="#">Cerrar sesión</a></li>
+            </ul>
+        </details>
+    </div>
+</header>
+
+
+<!-- Subnav -->
+<nav class="subnav">
+    <a href="../Index/index.html">Explorar</a>
+    <a href="../Collections/collections.html">Colecciones</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="admin.html" class="active">Panel de Control</a>
+</nav>
+
+<main class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <h3>Panel de Administración</h3>
+        <nav class="admin-menu">
+            <a href="admin.html" class="nav-link">
+                <span class="nav-icon"><img src="../shared/assets/Icons/stats1-svgrepo-com.svg" alt=""></span>
+                <span class="nav-label">Resumen</span>
+
+                <a href="stats.html" class="nav-link">
+                        <span class="nav-icon">
+                            <img src="../shared/assets/icons/insight-svgrepo-com.svg" alt="">
+                        </span>
+                    <span class="nav-label">Estadísticas</span>
+                </a>
+            </a>
+            <a href="collecionsSection.html" class="nav-link">
+                <span class="nav-icon"><img src="../shared/assets/icons/Group.svg" alt=""></span>
+                <span class="nav-label">Colecciones</span>
+            </a>
+
+            <a href="delete-requests.html" class="nav-link">
+                    <span class="nav-icon"><img src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg"
+                                                alt=""></span>
+                <span class="nav-label">Solicitudes de Eliminación</span>
+            </a>
+            <a href="admin-hechos.html" class="nav-link">
+                <span class="nav-icon"><img src="../shared/assets/icons/sand-clock-svgrepo-com.svg" alt=""></span>
+                <span class="nav-label">Hechos pendientes</span>
+            </a>
+
+            <a href="sources.html" class="nav-link">
+                    <span class="nav-icon"><img src="../shared/assets/icons/material-symbols_database-outline.svg"
+                                                alt=""></span>
+                <span class="nav-label">Fuentes</span>
+            </a>
+
+            <a href="import-csv.html" class="nav-link is-active">
+                <span class="nav-icon"><img src="../shared/assets/icons/uil_import.svg" alt=""></span>
+                <span class="nav-label">Importar CSV</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Contenido -->
+    <section class="admin-content">
+        <header class="page-head">
+            <div class="page-head-text">
+                <h1 class="page-title">Importar CSV</h1>
+                <p class="page-subtitle">Carga archivos CSV a una colección y revisa el historial de importaciones
+                </p>
+            </div>
+        </header>
+
+        <!-- ===== Formulario: Nuevo Archivo CSV (sin JS) ===== -->
+        <article class="card import-card" aria-labelledby="newcsv-title">
+            <h3 class="card-title" id="newcsv-title">Nuevo Archivo CSV</h3>
+
+            <form action="#" method="post" enctype="multipart/form-data" class="uploader" novalidate>
+
+
+                <!-- Uploader -->
+                <div class="field">
+                    <label for="csvfile">Archivo CSV</label>
+
+                    <div class="droparea" aria-describedby="csv-help">
+                        <span class="arrow" aria-hidden="true">↥</span>
+                        <strong>Arrastra tu archivo CSV aquí</strong>
+                        <p class="drop-hint">o haz clic para seleccionar</p>
+
+                        <!-- input real ocupa todo el área para soportar “clic/arrastrar” a nivel UI (sin JS) -->
+                        <input class="file-input" id="csvfile" name="csvfile" type="file" accept=".csv,text/csv"
+                               required/>
+                    </div>
+
+                    <div id="csv-help" class="warn-box" role="note">
+                        <span class="i" aria-hidden="true">!</span>
+                        <strong>Formato requerido:</strong>
+                        columnas <em>título, descripción, categoría, latitud, longitud, fecha</em>.
+                        Tamaño máx. 50MB por archivo. Codificación recomendada: UTF-8 con separador “,”.
+                    </div>
+
+                    <!-- Acciones -->
+                    <div class="file-actions" role="group" aria-label="Acciones de importación">
+                        <!-- ÚNICO botón grande, ancho completo -->
+                        <button type="submit" class="btn btn-primary btn-cta">
+                            <img class="icon" src="../shared/assets/icons/uil_import.svg" alt="" aria-hidden="true">
+                            Iniciar Importación
+                        </button>
+                    </div>
+            </form>
+        </article>
+
+        <!-- ===== Historial ===== -->
+        <h3 class="card-title" style="margin-top:.5rem;">Historial de Importaciones</h3>
+
+        <!-- Importación COMPLETADA -->
+        <article class="card import-card" aria-labelledby="imp-1">
+            <header class="import-head">
+                <h3 id="imp-1" class="card-title">incendios_cordoba_2024.csv</h3>
+                <span class="badge badge-good">Completado</span>
+            </header>
+            <p class="import-meta">
+                Colección: <strong>Incendios Forestales 2024</strong> ·
+                Iniciado: 2024-03-10 09:15 ·
+                Completado: 2024-03-10 09:47
+            </p>
+            <div class="kpi-boxes">
+                <div class="kpi-box kpi-total">
+                    <span class="kpi-number">15,420</span>
+                    <span class="kpi-label">Total Filas</span>
+                </div>
+                <div class="kpi-box kpi-proc">
+                    <span class="kpi-number">15,420</span>
+                    <span class="kpi-label">Procesadas</span>
+                </div>
+                <div class="kpi-box kpi-valid">
+                    <span class="kpi-number">15,398</span>
+                    <span class="kpi-label">Válidas</span>
+                </div>
+                <div class="kpi-box kpi-error">
+                    <span class="kpi-number">22</span>
+                    <span class="kpi-label">Errores</span>
+                </div>
+            </div>
+
+            <div>
+                <p class="muted" style="margin:.35rem 0 .15rem;">Errores encontrados</p>
+                <ul class="log-list">
+                    <li>Fila 156: Coordenadas inválidas</li>
+                    <li>Fila 892: Fecha fuera de rango</li>
+                    <li>Fila 1205: Campo obligatorio vacío</li>
+                </ul>
+                <p class="muted" style="margin:.6rem 0 .15rem;">Advertencias</p>
+                <ul class="log-list">
+                    <li>18 filas con coordenadas aproximadas</li>
+                    <li>Algunos campos de descripción truncados</li>
+                </ul>
+            </div>
+            <div class="import-actions">
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                    Ver
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/download.svg" alt="" aria-hidden="true">
+                    Descargar log
+                </a>
+                <button type="button" class="btn danger">
+                    <img class="icon" src="../shared/assets/icons/trash.svg" alt="" aria-hidden="true">
+                    Eliminar
+                </button>
+            </div>
+
+
+        </article>
+
+        <!-- Importación EN CURSO -->
+        <article class="card import-card" aria-labelledby="imp-2">
+            <header class="import-head">
+                <h3 id="imp-2" class="card-title">contaminacion_riachuelo.csv</h3>
+                <span class="badge badge-warn">Importando</span>
+            </header>
+
+            <p class="import-meta">
+                Colección: <strong>Contaminación Hídrica</strong> ·
+                Iniciado: 2024-03-10 14:22
+            </p>
+
+            <!-- NUEVO: texto + % y barra arriba -->
+            <div class="progress-row" aria-label="Estado de importación">
+                <span class="hint">Importando datos…</span>
+                <span class="pct" aria-live="polite">67%</span>
+            </div>
+            <div class="progressbar" style="--p:67%;">
+                <div class="fill"></div>
+            </div>
+
+            <!-- Tus boxes de métricas (ya adaptadas) -->
+            <div class="kpi-boxes" aria-label="Progreso de importación">
+                <div class="kpi-box kpi-total"><span class="kpi-number">8,934</span><span class="kpi-label">Total
+                            Filas</span></div>
+                <div class="kpi-box kpi-proc"><span class="kpi-number">5,986</span><span
+                        class="kpi-label">Procesadas</span></div>
+                <div class="kpi-box kpi-valid"><span class="kpi-number">5,901</span><span
+                        class="kpi-label">Válidas</span></div>
+                <div class="kpi-box kpi-error"><span class="kpi-number">85</span><span
+                        class="kpi-label">Errores</span></div>
+            </div>
+
+            <div class="import-actions">
+                <button type="button" class="btn danger">
+                    <img class="icon" src="../shared/assets/icons/trash.svg" alt="" aria-hidden="true">
+                    Cancelar
+                </button>
+            </div>
+
+        </article>
+
+
+        <!-- Importación con ERROR (ejemplo) -->
+
+        <article class="card import-card error" aria-labelledby="imp-3">
+            <header class="import-head">
+                <h3 id="imp-3" class="card-title">hechos_ambiente_2023.csv</h3>
+                <span class="badge" style="background:#fee2e2; color:#991b1b; border-color:#fecaca;">Error</span>
+            </header>
+            <p class="import-meta">
+                Colección: <strong>Contaminación Hídrica</strong> ·
+                Iniciado: 2024-02-28 18:02 ·
+                Falló: 2024-02-28 18:03
+            </p>
+            <div class="kpi-row" role="list">
+                <span class="kpi-chip" role="listitem">Total: <strong>—</strong></span>
+                <span class="kpi-chip bad" role="listitem">Motivo: delimitador inválido (“;”)</span>
+            </div>
+
+            <ul class="log-list">
+                <li>Cabecera esperada: <code>título, descripción, categoría, latitud, longitud, fecha</code></li>
+                <li>Se detectó: <code>titulo;descripcion;categoria;latitud;longitud;fecha</code></li>
+            </ul>
+
+
+            <div class="import-actions">
+                <a class="btn ghost" href="#">
+                    <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                    Ver
+                </a>
+                <button class="btn success" type="button">
+                    <img class="icon" src="../shared/assets/icons/refresh.svg" alt="" aria-hidden="true">
+                    Reintentar
+                </button>
+            </div>
+
+
+        </article>
+
+
+    </section>
+</main>
+</body>
+
+</html>

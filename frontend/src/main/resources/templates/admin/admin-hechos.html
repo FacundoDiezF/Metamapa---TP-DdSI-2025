@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MetaMapa — Hechos pendientes</title>
+
+    <!-- Base compartida -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Basics -->
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../shared/components.css">
+    <link rel="stylesheet" href="../shared/utilities.css">
+
+    <link rel="stylesheet" href="../shared/tokens.css" />
+    <link rel="stylesheet" href="../shared/nav.css" />
+    <link rel="stylesheet" href="../shared/icons.css" />
+
+    <!-- Estilos del panel -->
+    <link rel="stylesheet" href="admin.css" />
+</head>
+
+<body>
+    <!-- Header pegajoso -->
+    <header class="navbar" id="navbar">
+        <div class="brand">
+            <div class="brand-mark"><span class="dot"></span></div>
+            <span class="brand-name">MetaMapa</span>
+        </div>
+
+        <div class="auth-actions">
+            <!-- 1) Píldora Admin -->
+            <a href="admin.html" class="pill-admin" role="button" aria-label="Panel de Administración">
+                Administrador
+            </a>
+
+            <!-- 2) Píldora de usuario Abby con dropdown -->
+            <details class="user-menu">
+                <summary class="user-pill" aria-haspopup="menu" aria-expanded="false">
+                    <span class="avatar" aria-hidden="true">
+                        <img src="../shared/Assets/pics/avatar.png" alt="">
+                    </span>
+                    <span class="user-name">Abby</span>
+                    <span class="caret" aria-hidden="true">▾</span>
+                </summary>
+
+                <ul class="user-dropdown" role="menu" aria-label="Menú de usuario">
+                    <li role="none"><a role="menuitem" href="#">Mi cuenta</a></li>
+                    <li role="none"><a role="menuitem" href="#">Mis aportes</a></li>
+                    <li role="none"><a role="menuitem" href="#">Preferencias</a></li>
+                    <li role="none">
+                        <hr>
+                    </li>
+                    <li role="none"><a role="menuitem" href="#">Cerrar sesión</a></li>
+                </ul>
+            </details>
+        </div>
+    </header>
+
+
+    <!-- Subnav del sitio -->
+    <nav class="subnav">
+        <a href="../Index/index.html">Explorar</a>
+        <a href="../Collections/collections.html">Colecciones</a>
+        <a href="#">Mapa</a>
+        <a href="admin.html" class="active">Panel de Control</a>
+    </nav>
+
+    <main class="admin-layout">
+        <!-- Lateral -->
+        <aside class="admin-sidebar">
+            <h3>Panel de Administración</h3>
+            <nav class="admin-menu" class="nav-link">
+                <a href="admin.html">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/Icons/stats1-svgrepo-com.svg" alt="Resumen">
+                    </span>
+                    <span class="nav-label">Resumen</span>
+                </a>
+
+                <a href="stats.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/insight-svgrepo-com.svg" alt="Estadísticas">
+                    </span>
+                    <span class="nav-label">Estadísticas</span>
+                </a>
+
+                <a href="collecionsSection.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/Group.svg" alt="Colecciones">
+                    </span>
+                    <span class="nav-label">Colecciones</span>
+                </a>
+
+                <a href="delete-requests.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg"
+                            alt="Solicitudes de Eliminación">
+                    </span>
+                    <span class="nav-label">Solicitudes de Eliminación</span>
+                </a>
+
+                <a href="admin-hechos.html" class="nav-link is-active">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/sand-clock-svgrepo-com.svg" alt="Hechos pendientes">
+                    </span>
+                    <span class="nav-label">Hechos pendientes</span>
+                </a>
+
+                <a href="sources.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/material-symbols_database-outline.svg" alt="Fuentes">
+                    </span>
+                    <span class="nav-label">Fuentes</span>
+                </a>
+
+                <a href="import-csv.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/uil_import.svg" alt="Importar CSV">
+                    </span>
+                    <span class="nav-label">Importar CSV</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Contenido -->
+        <section class="admin-content">
+            <header class="admin-header">
+                <h1>Hechos pendientes</h1>
+                <p class="muted">Revisa y modera hechos enviados por contribuyentes antes de publicarlos.</p>
+            </header>
+
+            <!-- Hecho #1 -->
+            <article class="mod-card">
+                <header class="mod-head">
+                    <h3 class="mod-title">Incendio forestal en Parque Nacional Nahuel Huapi</h3>
+                    <div class="chips">
+                        <span class="chip chip-prio-alta">Prioridad: Alta</span>
+                        <span class="chip chip-cat">Desastre Natural</span>
+                    </div>
+                    <p class="mod-meta">
+                        <span>Por: <strong>Ana García</strong></span> ·
+                        <span>2025-03-10 14:30</span> ·
+                        <span>Ubicación: Parque Nacional Nahuel Huapi, Río Negro</span>
+                    </p>
+                </header>
+
+                <div class="mod-body">
+                    <div class="mod-col">
+                        <h4>Descripción</h4>
+                        <p>Se reporta un incendio de gran magnitud en el sector norte del parque nacional, con foco
+                            activo y propagación a sotobosque.</p>
+
+                        <div class="grid-2">
+                            <div>
+                                <h4>Multimedia</h4>
+                                <ul class="evidence">
+                                    <li><a href="#">foto_incendio_1.jpg</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="mod-aside">
+                        <div class="fact-summary">
+                            <h5>Resumen</h5>
+                            <p><strong>Impacto:</strong> Alto</p>
+                            <p><strong>Reportes:</strong> 12</p>
+                            <a class="btn-link" href="#">Ver detalles</a>
+                        </div>
+                    </aside>
+                </div>
+
+                <footer class="mod-actions">
+                    <a href="#" class="btn success">
+                        <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt=""
+                            aria-hidden="true">
+                        Aprobar
+                    </a>
+                    <a href="#" class="btn ghost">
+                        <img class="icon" src="../shared/assets/icons/edit.svg" alt="" aria-hidden="true">
+                        Modificar
+                    </a>
+                    <a href="#" class="btn danger">
+                        <img class="icon" src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg" alt=""
+                            aria-hidden="true">
+                        Rechazar
+                    </a>
+                    <a href="#" class="btn ghost">
+                        <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                        Ver historial
+                    </a>
+                </footer>
+
+            </article>
+
+            <!-- Hecho #2 -->
+            <article class="mod-card">
+                <header class="mod-head">
+                    <h3 class="mod-title">Contaminación en Río Reconquista</h3>
+                    <div class="chips">
+                        <span class="chip chip-prio-media">Prioridad: Media</span>
+                        <span class="chip chip-cat">Medio Ambiente</span>
+                    </div>
+                    <p class="mod-meta">
+                        <span>Por: <strong>Carlos Méndez</strong></span> ·
+                        <span>2025-03-09 16:45</span> ·
+                        <span>Ubicación: Río Reconquista, San Martín, Buenos Aires</span>
+                    </p>
+                </header>
+
+                <div class="mod-body">
+                    <div class="mod-col">
+                        <h4>Descripción</h4>
+                        <p>Vertido de sustancias químicas no identificadas en el río, con mortandad de peces y mal olor
+                            en la zona.</p>
+
+                        <div class="grid-2">
+                            <div>
+                                <h4>Multimedia</h4>
+                                <ul class="evidence">
+                                    <li><a href="#">foto_contaminacion.jpg</a></li>
+                                    <li><a href="#">foto_alrededores.jpg</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="mod-aside">
+                        <div class="fact-summary">
+                            <h5>Resumen</h5>
+                            <p><strong>Impacto:</strong> Medio</p>
+                            <p><strong>Reportes:</strong> 5</p>
+                            <a class="btn-link" href="#">Ver detalles</a>
+                        </div>
+                    </aside>
+                </div>
+
+                <footer class="mod-actions">
+                    <a href="#" class="btn success">
+                        <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt=""
+                            aria-hidden="true">
+                        Aprobar
+                    </a>
+                    <a href="#" class="btn ghost">
+                        <img class="icon" src="../shared/assets/icons/edit.svg" alt="" aria-hidden="true">
+                        Modificar
+                    </a>
+                    <a href="#" class="btn danger">
+                        <img class="icon" src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg" alt=""
+                            aria-hidden="true">
+                        Rechazar
+                    </a>
+                    <a href="#" class="btn ghost">
+                        <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                        Ver historial
+                    </a>
+                </footer>
+
+            </article>
+        </section>
+    </main>
+</body>
+
+</html>
