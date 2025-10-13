@@ -18,8 +18,9 @@
     </div>
 
     <nav class="subnav" id="subnav">
-        <a th:href="@{/explore}" class="active">Explorar</a>
-        <a th:href="@{/collections}">Colecciones</a>
-        <a th:href="@{/map}">Mapa</a>
+        <a th:href="@{/explore}" th:classappend="${active}=='explore' ? ' active'">Explorar</a>
+        <a th:href="@{/collections}" th:classappend="${active}=='collections' ? ' active'">Colecciones</a>
+        <a th:href="@{/map}" th:classappend="${active}=='map' ? ' active'">Mapa</a>
     </nav>
+
 </th:block>

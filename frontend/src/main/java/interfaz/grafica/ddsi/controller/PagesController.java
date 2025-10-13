@@ -7,7 +7,9 @@ import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.EventService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,23 +42,37 @@ public class PagesController {
     return "landing";
   }
 
+    @GetMapping("/explore")
+    public String explore(Model model) {
+        List<EventDTO> events = eventService.getAllEvents();
+        List<CategoryDTO> categories = categoryService.getAllCategories();
+
+        // MARKERS para Leaflet (solo eventos con coords)
+        List<Map<String, Object>> markers = events.stream()
+                .filter(e -> e.getLocation() != null && e.getLocation().getLongitude() != null)
+                .map(e -> {
+                    Map<String, Object> m = new HashMap<>();
+                    m.put("lat", e.getLocation().getLatitude());
+                    m.put("lng", e.getLocation().getLongitude());
+                    m.put("title", e.getTitle());
+                    m.put("category", e.getCategory());
+                    m.put("id", e.getId());
+                    return m;
+                }).toList();
+
+        model.addAttribute("events", events);
+        model.addAttribute("newEvent", new EventOutputDTO());
+        model.addAttribute("categories", categories);
+        model.addAttribute("pageTitle", "MetaMapa · Explorar");
+        model.addAttribute("active", "explore");
+        return "explore";
+    }
   @GetMapping("/collections")
   public String collections(Model model){
     List<CollectionDTO> collections = collectionService.getAllCollections();
     model.addAttribute("collections", collections);
     model.addAttribute("pageTitle", "MetaMapa · Colecciones");
     return "collections";
-  }
-
-  @GetMapping("/explore")
-  public String explore(Model model){
-    List<EventDTO> events = eventService.getAllEvents();
-    List<CategoryDTO> categories = categoryService.getAllCategories();
-    model.addAttribute("events", events);
-    model.addAttribute("newEvent", new EventOutputDTO());
-    model.addAttribute("categories", categories);
-    model.addAttribute("pageTitle", "MetaMapa · Explore");
-    return "explore";
   }
 
   @GetMapping("/404")

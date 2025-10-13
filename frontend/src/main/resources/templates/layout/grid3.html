@@ -1,5 +1,5 @@
-<section class="home-grid" th:fragment="grid3(left, center, right)">
-    <aside class="left-sidebar" th:insert="${left}"></aside>
-    <main class="feed" th:insert="${center}"></main>
-    <aside class="right-sidebar" th:insert="${right}"></aside>
-</section>
+<th:block th:fragment="grid3(left, center, right)">
+    <aside class="sidebar" th:replace="${left}"></aside>
+    <main class="center-slot" th:insert="${center}"></main>
+    <aside class="sidebar-right" th:replace="${right}"></aside>
+</th:block>

@@ -6,19 +6,25 @@
         <link rel="stylesheet" th:href="@{/css/pages/explore.css}"/>
         <link rel="stylesheet" th:href="@{/css/filters.css}"/>
     </th:block>
+
 </head>
 
-<div th:fragment="contenido" class="layout">
+<th:block th:fragment="contenido">
+    <section th:replace="~{layout/grid3 :: grid3(
+        ~{layout/fragments/_sidebar_left :: left},
+        ~{fragments/explore/_explore_center :: center},
+        ~{layout/fragments/_sidebar_right :: right}
+      )}"></section>
+</th:block>
 
-    <!-- Sidebar izquierda -->
-    <aside th:replace="~{fragments/explore/_sidebar_left :: left}"></aside>
-
-    <!-- Feed central (único con scroll) -->
-    <section th:replace="~{fragments/explore/_explore_center}"></section>
-
-    <!-- Sidebar derecha -->
-    <aside th:replace="~{fragments/explore/_sidebar_rigth :: rigth}"></aside>
-
-</div>
-
+<th:block layout:fragment="extraScripts">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // markers desde backend
+        const MM_MARKERS = /*[[${markers}]]*/ [];
+    </script>
+    <script th:src="@{/js/explore-map.js}"></script>
+    <!-- Script pequeño que ajusta layout: margen de la primera card y altura del mapa -->
+    <script th:src="@{/js/explore-layout-fix.js}"></script>
+</th:block>
 </html>
