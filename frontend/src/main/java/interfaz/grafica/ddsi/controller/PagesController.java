@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class PagesController {
@@ -35,41 +36,54 @@ public class PagesController {
   }
 
   @GetMapping("/landing")
-  public String landing(Model model){
-    List<CollectionDTO> topCollections = collectionService.getTopCollections();
+  public String landing(Model model) {
+    List<CollectionDTO> topCollections = collectionService.getTop();
     model.addAttribute("topCollections", topCollections);
     model.addAttribute("pageTitle", "MetaMapa · Landing");
     return "landing";
   }
 
-    @GetMapping("/explore")
-    public String explore(Model model) {
-        List<EventDTO> events = eventService.getAllEvents();
-        List<CategoryDTO> categories = categoryService.getAllCategories();
+  @GetMapping("/explore")
+  public String explore(Model model) {
+    List<EventDTO> events = eventService.getAll();
+    List<CategoryDTO> categories = categoryService.getAllCategories();
 
-        // MARKERS para Leaflet (solo eventos con coords)
-        List<Map<String, Object>> markers = events.stream()
-                .filter(e -> e.getLocation() != null && e.getLocation().getLongitude() != null)
-                .map(e -> {
-                    Map<String, Object> m = new HashMap<>();
-                    m.put("lat", e.getLocation().getLatitude());
-                    m.put("lng", e.getLocation().getLongitude());
-                    m.put("title", e.getTitle());
-                    m.put("category", e.getCategory());
-                    m.put("id", e.getId());
-                    return m;
-                }).toList();
+    // MARKERS para Leaflet (solo eventos con coords)
+    List<Map<String, Object>> markers = events.stream()
+        .filter(e -> e.getLocation() != null && e.getLocation().getLongitude() != null)
+        .map(e -> {
+          Map<String, Object> m = new HashMap<>();
+          m.put("lat", e.getLocation().getLatitude());
+          m.put("lng", e.getLocation().getLongitude());
+          m.put("title", e.getTitle());
+          m.put("category", e.getCategory());
+          m.put("id", e.getId());
+          return m;
+        }).toList();
 
-        model.addAttribute("events", events);
-        model.addAttribute("newEvent", new EventOutputDTO());
-        model.addAttribute("categories", categories);
-        model.addAttribute("pageTitle", "MetaMapa · Explorar");
-        model.addAttribute("active", "explore");
-        return "explore";
-    }
+    model.addAttribute("events", events);
+    model.addAttribute("newEvent", new EventOutputDTO());
+    model.addAttribute("categories", categories);
+    model.addAttribute("pageTitle", "MetaMapa · Explorar");
+    model.addAttribute("active", "explore");
+    return "explore";
+  }
+
+  @GetMapping("/collection/{handler}")
+  public String inCollection(Model model, @PathVariable String handler) {
+    CollectionDTO collection = collectionService.getByHandler(handler);
+    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler);
+
+    model.addAttribute("collection", collection);
+    model.addAttribute("events", eventsFromCol);
+
+    model.addAttribute("pageTitle", "MetaMapa · " + collection.getTitle());
+    return "inCollection";
+  }
+
   @GetMapping("/collections")
-  public String collections(Model model){
-    List<CollectionDTO> collections = collectionService.getAllCollections();
+  public String collections(Model model) {
+    List<CollectionDTO> collections = collectionService.getAll();
     model.addAttribute("collections", collections);
     model.addAttribute("pageTitle", "MetaMapa · Colecciones");
     return "collections";

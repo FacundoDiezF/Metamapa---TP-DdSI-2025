@@ -21,7 +21,7 @@ public class ShareController {
   @PostMapping("/event")
   public String handleShareForm(@ModelAttribute("newEvent") EventOutputDTO newEvent, Model model) {
 
-    eventService.postEvent(newEvent);
+    eventService.postNew(newEvent);
 
     return "redirect:/explore#shareSuccess";
   }

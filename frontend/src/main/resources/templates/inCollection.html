@@ -1,0 +1,18 @@
+<html layout:decorate="~{layout/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="@{/css/pages/explore.css}"/>
+    <link rel="stylesheet" th:href="@{/css/filters.css}"/>
+</th:block>
+
+
+<th:block th:fragment="contenido">
+    <section th:replace="~{layout/grid3 :: grid3(
+        ~{layout/fragments/_sidebar_left :: left},
+        ~{fragments/inCollection/_inCollection_center :: center},
+        ~{layout/fragments/_sidebar_right :: right}
+      )}"></section>
+</th:block>
+
+</html>

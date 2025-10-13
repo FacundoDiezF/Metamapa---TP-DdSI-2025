@@ -9,14 +9,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class CollectionService {
 
-  public List<CollectionDTO> getTopCollections() {
+  public List<CollectionDTO> getTop() {
     //TODO: Que le pida al agregador 4 collecciones
     return mockColecciones().subList(0, 4);
   }
 
-  public List<CollectionDTO> getAllCollections() {
+  public List<CollectionDTO> getAll() {
     //TODO que le pida al agregador todas las colecciones
     return mockColecciones();
+  }
+
+  public CollectionDTO getByHandler(String handler) {
+    //TODO que le pida al agregador la coleccion por handler
+    return mockColecciones().get(0);
   }
 
   //! BORRAR CUANDO ESTE EL AGREGADOR
@@ -74,5 +79,4 @@ public class CollectionService {
         )
     );
   }
-
 }

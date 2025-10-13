@@ -1,0 +1,16 @@
+<section th:fragment="center" class="feed">
+
+    <!-- Header de la colección -->
+    <header class="collection-header">
+        <h1 th:text="${collection.title}">Título Colección</h1>
+        <p class="collection-desc" th:text="${collection.description}">
+            Descripcion de la coleccion
+        </p>
+    </header>
+
+    <!-- EVENTOS -->
+    <th:block th:each="event : ${events}">
+        <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
+    </th:block>
+
+</section>

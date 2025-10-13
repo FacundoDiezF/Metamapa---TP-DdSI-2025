@@ -11,12 +11,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventService {
 
-  public List<EventDTO> getAllEvents() {
+  public List<EventDTO> getAll() {
     //TODO que le pida al agregador todos los eventos
     return mockEvents();
   }
 
-  public void postEvent(EventOutputDTO newEvent) {
+  public List<EventDTO> getAllByCollection(String handler) {
+    //TODO que le pida al agregador todos los eventos
+    return mockEvents();
+  }
+
+  public void postNew(EventOutputDTO newEvent) {
     //TODO que le mande el evento al agregador (Debemos crear el endpoint y que rediriga a la fuente dinamica)
   }
 
