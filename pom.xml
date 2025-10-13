@@ -26,6 +26,7 @@
         <module>aggregation-service</module>
         <module>proxy-source</module>
         <module>dynamic-source</module>
+        <module>statistics-service</module>
 
     </modules>
     <scm>

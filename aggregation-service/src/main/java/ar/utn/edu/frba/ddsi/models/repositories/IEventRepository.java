@@ -23,13 +23,15 @@ public interface IEventRepository extends JpaRepository<Event, Long> {
       AND (:fromUploadDate IS NULL OR e.uploadDate > :fromUploadDate)
       AND (:untilEventDate IS NULL OR e.eventDate < :untilEventDate)
       AND (:fromEventDate IS NULL OR e.eventDate > :fromEventDate)
+      AND (:fromUpdatedDate IS NULL OR e.updatedDate > :fromUpdatedDate)
     """)
   List<Event> findFiltered(
       String category,
       LocalDateTime untilUploadDate,
       LocalDateTime fromUploadDate,
       LocalDateTime untilEventDate,
-      LocalDateTime fromEventDate
+      LocalDateTime fromEventDate,
+      LocalDateTime fromUpdatedDate
   );
 
   //TODO Probar

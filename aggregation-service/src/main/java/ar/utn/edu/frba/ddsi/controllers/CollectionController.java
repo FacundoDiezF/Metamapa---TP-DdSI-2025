@@ -31,8 +31,10 @@ public class CollectionController {
   }
 
   @GetMapping
-  public List<CollectionOutputDTO> getCollections() {
-    return collectionService.getCollections();
+  public List<CollectionOutputDTO> getCollections(
+      @RequestParam (required = false) LocalDateTime fromUpdatedDate
+  ) {
+    return collectionService.getCollections(fromUpdatedDate);
   }
 
   @PostMapping

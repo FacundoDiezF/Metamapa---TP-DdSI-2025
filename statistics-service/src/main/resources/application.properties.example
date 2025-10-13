@@ -1,0 +1,21 @@
+# Statistics service port
+server.port=8084
+
+#CronJob for statistics refresh
+statistics.refresh.cron=0 0 * * * *
+
+# Agregation service URL
+aggregation-service.url=http://localhost:8080
+
+# Database configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/metamapa_statistics?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# Hibernate configuration
+spring.jpa.hibernate.ddl-auto=create-drop
+# Possible values: validate | update | create | create-drop | none
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect

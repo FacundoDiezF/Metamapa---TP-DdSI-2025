@@ -74,6 +74,10 @@ public class Event {
   private final LocalDateTime uploadDate;
 
   @Builder.Default
+  @Column(name = "updated_date", nullable = false)
+  private LocalDateTime updatedDate = LocalDateTime.now();
+
+  @Builder.Default
   @Column(name = "deleted", nullable = false)
   private boolean deleted = false;
 
@@ -95,6 +99,7 @@ public class Event {
     if (dto.getLatitude() != null) this.location.setLatitude(dto.getLatitude());
     if (dto.getLongitude() != null) this.location.setLongitude(dto.getLongitude());
     if (dto.getEventDate() != null) this.eventDate = dto.getEventDate();
+    this.updatedDate = LocalDateTime.now();
   }
 
   public boolean meetsAlgorithmConsensus(ConsensusType consensusType) {
