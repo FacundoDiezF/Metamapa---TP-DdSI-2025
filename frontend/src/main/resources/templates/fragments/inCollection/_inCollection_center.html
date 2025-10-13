@@ -9,7 +9,12 @@
     </header>
 
     <!-- EVENTOS -->
-    <th:block th:each="event : ${events}">
+    <!-- EVENTOS -->
+    <th:block th:if="${#lists.isEmpty(events)}">
+        <p>No hay Eventos disponibles.</p>
+    </th:block>
+
+    <th:block th:if="${!#lists.isEmpty(events)}" th:each="event : ${events}">
         <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
     </th:block>
 
