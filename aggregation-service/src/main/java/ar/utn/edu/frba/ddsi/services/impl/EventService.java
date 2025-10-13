@@ -5,7 +5,7 @@ import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
-import ar.utn.edu.frba.ddsi.models.entities.event.values.Location.Location;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
@@ -14,6 +14,8 @@ import ar.utn.edu.frba.ddsi.services.IEventService;
 import ar.utn.edu.frba.ddsi.services.ILocationService;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import ar.utn.edu.frba.ddsi.services.INormalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +30,20 @@ public class EventService implements IEventService {
 
   private final ILocationService locationService;
 
+  private final INormalizationService normalizationService;
+
   @Autowired
-  public EventService(IEventRepository eventRepository, ISourceRepository sourceRepository, ICategoryService categoryService, ILocationService locationService) {
+  public EventService(
+      IEventRepository eventRepository,
+      ISourceRepository sourceRepository,
+      ICategoryService categoryService,
+      ILocationService locationService,
+      INormalizationService normalizationService) {
     this.eventRepository = eventRepository;
     this.sourceRepository = sourceRepository;
     this.categoryService = categoryService;
     this.locationService = locationService;
+    this.normalizationService = normalizationService;
   }
 
   @Override
@@ -50,7 +60,18 @@ public class EventService implements IEventService {
   @Override
   public void createAll(List<EventInputDTO> dtos) {
     // TODO: Validar que la peticion venga de un modulo-fuente registrado (SEGURIDAD)
-    eventRepository.saveAll(dtos.stream().map(this::buildEventFromDTO).toList()); // TODO: Que se guarde en cascada la source al guardar el evento
+    //1. Build events from dtos
+    List<Event> events = dtos
+        .stream()
+        .map(this::buildEventFromDTO)
+        .toList();
+
+    //2. Normalize locations
+    //TODO pensar como manejar el caso en el que falla la API, si guardar eventos sin normalizar o que (y como manejar el error
+    List<Event> normalizedEvents = normalizationService.eventLocationNormalization(events);
+
+    //3. Save events
+    eventRepository.saveAll(normalizedEvents); // TODO: Que se guarde en cascada la source al guardar el evento
   }
 
   @Override
