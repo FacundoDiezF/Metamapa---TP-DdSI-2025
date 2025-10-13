@@ -10,8 +10,8 @@
         Titulo del Hecho
     </h2>
     <p class="ubicacion"
-       th:text=" 'Localidad' + ', ' + ${item.location.province} + ' | ' + ${#temporals.format(item.eventDate, 'dd MMMM yyyy')}">
-        Localidad, Provincia | dd MMMM yyyy
+       th:text=" ${item.location.municipality} + ', ' + ${item.location.department} + ' - ' + ${item.location.province} + ' | ' + ${#temporals.format(item.eventDate, 'dd MMMM yyyy')}">
+        Municipalidad - Department, Provincia | dd MMMM yyyy
     </p>
     <p th:text="${item.description}">
         Descripción del hecho muy buena descripcion la verdad que me gusta mucho este hecho
