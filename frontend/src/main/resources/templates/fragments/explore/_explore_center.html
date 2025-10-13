@@ -60,6 +60,7 @@
                                 <!---- Selector Categorias -->
                                 <select id="sh-categoria" name="categoria" required aria-label="Categoría"
                                         th:field="*{category}">
+                                    <option value="">Selecciona una categoría</option>
                                     <option th:each="cat : ${categories}" th:value="${cat.name}" th:text="${cat.name}">
                                         Nombre de Categoría Dinámica
                                     </option>

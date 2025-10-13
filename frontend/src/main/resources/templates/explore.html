@@ -11,13 +11,13 @@
 <div th:fragment="contenido" class="layout">
 
     <!-- Sidebar izquierda -->
-    <aside class="sidebar card" th:replace="~{fragments/explore/_sidebar_left :: left}"></aside>
+    <aside th:replace="~{fragments/explore/_sidebar_left :: left}"></aside>
 
     <!-- Feed central (único con scroll) -->
-    <section class="feed" th:insert="~{fragments/explore/_explore_center}"></section>
+    <section th:replace="~{fragments/explore/_explore_center}"></section>
 
     <!-- Sidebar derecha -->
-    <aside class="sidebar-right" th:replace="~{fragments/explore/_sidebar_rigth :: rigth}"></aside>
+    <aside th:replace="~{fragments/explore/_sidebar_rigth :: rigth}"></aside>
 
 </div>
 
