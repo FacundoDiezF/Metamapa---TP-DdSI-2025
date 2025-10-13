@@ -11,8 +11,10 @@ statistics.refresh.cron=0 0 * * * *
 aggregation-service.url=http://localhost:8080
 
 # LocationAPI
-geo-ref.url=
+geo-ref.url=https://apis.datos.gob.ar/georef/api
 thread.count=4
+batch.size=1000
+response.byte.size=1048576
 
 # Database configuration
 spring.datasource.url=jdbc:mysql://localhost:3306/metamapa_aggregator?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
