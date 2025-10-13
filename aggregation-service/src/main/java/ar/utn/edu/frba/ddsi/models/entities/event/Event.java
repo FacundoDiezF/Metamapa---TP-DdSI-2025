@@ -65,6 +65,7 @@ public class Event {
 
   @Embedded
   @Setter
+  @Getter
   private Location location;
 
   @Column(name = "event_date", nullable = false)
