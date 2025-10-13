@@ -64,7 +64,7 @@ public class LocationService implements ILocationService {
     return locations;
   }
 
-  private void persistLocations(List<Location> locations){ //TODO Test
+  private void persistLocations(List<Location> locations){
     Set<Province> provinces = new HashSet<>();
     Set<Municipality> municipalities = new HashSet<>();
     Set<Department> departments = new HashSet<>();
