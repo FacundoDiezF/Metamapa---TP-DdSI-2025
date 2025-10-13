@@ -1,13 +1,11 @@
 <html layout:decorate="~{layout/base}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<head>
     <th:block layout:fragment="extraStyles">
         <link rel="stylesheet" th:href="@{/css/pages/explore.css}"/>
         <link rel="stylesheet" th:href="@{/css/filters.css}"/>
     </th:block>
 
-</head>
 
 <th:block th:fragment="contenido">
     <section th:replace="~{layout/grid3 :: grid3(
