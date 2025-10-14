@@ -88,6 +88,7 @@ public class PagesController {
     List<CollectionDTO> collections = collectionService.getAll();
     model.addAttribute("collections", collections);
     model.addAttribute("pageTitle", "MetaMapa · Colecciones");
+    model.addAttribute("active", "collections");
     return "collections";
   }
 
@@ -96,6 +97,7 @@ public class PagesController {
         List<EventDTO> allEvents = eventService.getAll();
         model.addAttribute("events", allEvents);
         model.addAttribute("pageTitle", "MetaMapa · Mapa");
+        model.addAttribute("active", "map");
         return "map";
     }
 

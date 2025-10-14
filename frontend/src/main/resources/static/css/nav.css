@@ -59,7 +59,7 @@
     font-size: var(--fs-brand, 30px);
     line-height: var(--lh-brand, 1.1);
     letter-spacing: -0.01em;
-    color: var(--Text, #050315);
+    color: var(--DarkAccent);
     margin: 0;
 }
 
@@ -84,7 +84,8 @@
 }
 
 /* mapear a variantes */
-.account-btn { /* “Registrarse” */
+/* “Registrarse” */
+.account-btn {
     border: 1px solid transparent;
     border-radius: 9999px;
     padding: .5rem 1rem;
@@ -94,8 +95,8 @@
     cursor: pointer;
 }
 .account-btn:hover {
-    background: var(--AltDetails, #2563EB);
-    border-color: var(--AltDetails, #2563EB);
+    background: #2563EB;
+    border-color:#2563EB;
 }
 .account-btn:focus-visible {
     outline: 2px solid color-mix(in srgb, var(--Accent) 45%, #fff);
@@ -131,7 +132,6 @@
 
 /* ===== Subnav ===== */
 .subnav {
-    font-family: var(--font-sans, 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif);
     line-height: var(--lh-snug, 1.3);
     position: sticky;
     top: var(--header-h, 72px);
@@ -151,9 +151,8 @@
     display: inline-block;
     padding: 8px 0 10px;
     text-decoration: none;
-    color: var(--Text, #111827);
-    font-weight: var(--fw-semibold, 600);
-    font-size: var(--fs-sm, .875rem);
+    color: #111827; /* color directo como en legacy */
+    font-weight: 600; /* más pesado, como en legacy */
     line-height: 1.2;
     white-space: nowrap;
 }
