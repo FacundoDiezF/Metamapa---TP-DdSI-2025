@@ -94,9 +94,9 @@ public class PagesController {
   }
 
   @GetMapping("/collections")
-  public String collections(Model model) {
-    List<CollectionDTO> collections = collectionService.getAll();
-    model.addAttribute("collections", collections);
+  public String collections(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+    PageDTO<CollectionDTO> collectionPage = collectionService.getAll(page);
+    model.addAttribute("collections", collectionPage.getContent());
     model.addAttribute("pageTitle", "MetaMapa · Colecciones");
     model.addAttribute("active", "collections");
     return "collections";

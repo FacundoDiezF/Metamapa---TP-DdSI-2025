@@ -59,4 +59,16 @@ public class ServerAdapter {
         .collectList()
         .block();
   }
+
+  public PageDTO<CollectionDTO> getAllCollections(int page) {
+    return webClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/collections")
+            .queryParam("page", page)
+            //.queryParam("fromUpdatedDate", lastUpdate)
+            .build())
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<CollectionDTO>>() {})
+        .block();
+  }
 }
