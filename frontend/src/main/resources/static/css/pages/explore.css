@@ -42,9 +42,58 @@
   border: 1px solid #e5e7eb;
   background: #f6f7f9;
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .post-icons { display:flex; gap:.4rem; align-items:center; }
+
+/* ============ Share Form (details/summary) ============ */
+details.share {
+  border-radius: 12px;
+}
+
+details.share > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+details.share > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Cuando está abierto, el post-box pierde sus bordes inferiores redondeados */
+details.share[open] > summary.post-box {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.share-panel {
+  background: var(--ui-card, #fff);
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+/* Deshabilitado por defecto */
+.share-panel .submit-btn {
+  pointer-events: none;
+  opacity: .55;
+  cursor: not-allowed;
+  filter: saturate(.7);
+}
+
+/* Cuando NO hay requeridos inválidos -> habilitar */
+.share-panel:not(:has(:required:invalid)) .submit-btn {
+  pointer-events: auto;
+  opacity: 1;
+  cursor: pointer;
+  filter: none;
+}
 
 /* Hechos (cards) */
 .hecho {
@@ -188,7 +237,223 @@ img, video { max-width:100%; height:auto; }
 
 .modal-close,
 .modal-close:link,
+
 .modal-close:visited {
     text-decoration: none;
     color: inherit
+}
+
+.modal-close:hover {
+    color: #374151;
+    opacity: 1;
+    text-decoration: none;
+}
+
+a.btn,
+a.modal-close {
+    text-decoration: none !important;
+}
+
+.btn.primary,
+a.btn.primary {
+    background: var(--ui-blue);
+    color: #fff !important;
+    border: 1px solid transparent;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn,
+.btn.primary,
+.btn.ghost,
+a.btn,
+a.btn.primary,
+a.btn.ghost {
+    font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    font-weight: 600;
+}
+
+.target-modal {
+    display: none;
+}
+
+.target-modal:target {
+    display: grid;
+}
+
+.upload-form {
+    display: grid;
+    gap: .8rem;
+}
+
+.dropzone {
+    position: relative;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    gap: .25rem;
+    padding: 1.25rem;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    background: #f8fafc;
+    cursor: pointer;
+    color: #0f172a;
+}
+
+.dropzone:hover {
+    background: #f3f4f6;
+}
+
+.dropzone:focus-within {
+    outline: 3px solid rgba(59, 130, 246, .25);
+    outline-offset: 2px;
+}
+
+.dropzone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+
+.post-icons {
+    display: flex;
+    gap: .4rem;
+    align-items: center;
+}
+
+.post-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.post-icon img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.post-icon:hover,
+.post-icon:focus-visible {
+    background: #eef2f7;
+    outline: none;
+}
+
+.overlay-dismiss {
+    position: fixed;
+    inset: 0;
+    position: absolute;
+    inset: 0;
+    display: block;
+    z-index: 0;
+}
+
+.success-modal {
+    position: relative;
+    z-index: 1;
+}
+
+.success-modal h2 {
+    margin-bottom: .25rem;
+}
+
+.success-modal .muted {
+    margin: 0 0 .75rem;
+}
+
+.upload-modal {
+    position: relative;
+    z-index: 1;
+}
+
+.overlay-dismiss {
+    position: absolute;
+    inset: 0;
+    display: block;
+    z-index: 0;
+}
+
+.report-modal {
+    position: relative;
+    z-index: 1;
+}
+
+.report-form textarea {
+    width: 100%;
+    padding: .95rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    background: #f6f7f9;
+    font: inherit;
+    resize: vertical;
+    min-height: 180px;
+    transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+    padding-right: 1rem;
+    background-image: none !important;
+    background-repeat: no-repeat;
+}
+
+.report-form textarea:focus {
+    outline: none;
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, .15);
+}
+
+.report-form textarea:valid {
+    border-color: #22c55e;
+    background-color: #f0fdf4;
+}
+
+.report-form textarea:focus:invalid {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+}
+
+.report-form textarea:valid,
+.report-form textarea:focus:invalid {
+    background-image: none !important;
+    background-color: #fff;
+}
+
+.report-form .help {
+    margin-top: .35rem;
+    font-size: .85rem;
+}
+
+.report-form .help.info {
+    color: var(--ui-muted);
+}
+
+.report-form .error-msg {
+    display: none;
+    color: #b91c1c;
+}
+
+.report-form:has(textarea:focus:invalid) .error-msg {
+    display: block;
+}
+
+.report-form .submit-report[disabled] {
+    opacity: .55;
+    cursor: not-allowed;
+    filter: saturate(.6);
+}
+
+.report-form:has(textarea:valid) .submit-report {
+    opacity: 1;
+    cursor: pointer;
+    filter: none;
 }
