@@ -6,6 +6,7 @@ import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
+import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
@@ -50,6 +51,8 @@ public class EventService implements IEventService {
   @Override
   public Page<EventOutputDTO> getEvents(
       List<Long> category_in,
+      List<Long> province_in,
+      List<Origin> source_in,
       LocalDateTime uploadDate_lt,
       LocalDateTime uploadDate_gt,
       LocalDateTime eventDate_lt,
@@ -57,7 +60,7 @@ public class EventService implements IEventService {
       LocalDateTime fromUpdatedDate,
       Pageable pageable
   ) {
-    Page<Event> eventsPage = eventRepository.findFiltered(category_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt, fromUpdatedDate, pageable);
+    Page<Event> eventsPage = eventRepository.findFiltered(category_in, province_in, source_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt, fromUpdatedDate, pageable);
     return eventsPage.map(EventOutputDTO::from);
   }
 
