@@ -120,6 +120,6 @@ public class PagesController {
   @GetMapping("/404")
   public String notFound(Model model) {
     model.addAttribute("titulo", "No encontrado");
-    return "404";
+    return "error/404";
   }
 }

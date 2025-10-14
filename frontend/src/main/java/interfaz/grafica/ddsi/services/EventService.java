@@ -8,7 +8,10 @@ import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import java.time.LocalDate;
 import java.util.List;
 import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
+import interfaz.grafica.ddsi.exceptions.BackendException;
+import interfaz.grafica.ddsi.exceptions.ConnectionException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
 public class EventService {
@@ -22,14 +25,12 @@ public class EventService {
 
   public PageDTO<EventDTO> getAll(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
     //TODO TEST
-    //!No está paginado
     try {
       return server.getAllEvents();
-    } catch (Exception e) { //TODO Vista de error de conexión
-
-      System.err.println("Error al conectar con el backend: " + e.getMessage());
-
-      return new PageDTO<>();
+    } catch (WebClientResponseException e) {
+      throw new BackendException("Backend error: " + e.getStatusCode());
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
     }
   }
 
