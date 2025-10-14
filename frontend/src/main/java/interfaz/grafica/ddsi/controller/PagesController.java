@@ -56,9 +56,10 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
+      @RequestParam(defaultValue = "0", name = "page") int page,
       Model model) {
 
-    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in);
+    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
     List<CategoryDTO> categories = categoryService.getAllCategories();
     List<ProvinceDTO> provinces = locationService.getAllProvinces();
 
@@ -108,9 +109,11 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
+      @RequestParam(defaultValue = "0", name = "page") int page,
+
       Model model) {
 
-    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in); //? Ahora mismo el mapa solo muestra los eventos de la pagina que trae
+    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page); //? Ahora mismo el mapa solo muestra los eventos de la pagina que trae
     model.addAttribute("events", eventPage.getContent());
     model.addAttribute("pageTitle", "MetaMapa · Mapa");
     model.addAttribute("active", "map");
