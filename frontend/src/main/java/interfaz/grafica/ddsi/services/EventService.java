@@ -6,19 +6,44 @@ import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import java.time.LocalDate;
 import java.util.List;
+import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EventService {
 
-  public List<EventDTO> getAll() {
-    //TODO que le pida al agregador todos los eventos
-    return mockEvents();
+
+  private final ServerAdapter server;
+
+  public EventService(ServerAdapter server){
+    this.server = server;
   }
 
-  public List<EventDTO> getAllByCollection(String handler) {
-    //TODO que le pida al agregador todos los eventos
-    return mockEvents();
+  public List<EventDTO> getAll(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
+    //TODO TEST
+    //!No está paginado
+    try {
+      return server.getAllEvents();
+    } catch (Exception e) { //TODO Vista de error de conexión
+
+      System.err.println("Error al conectar con el backend: " + e.getMessage());
+
+      return List.of();
+    }
+  }
+
+  public List<EventDTO> getAllByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
+    //TODO TEST
+    //!No está paginado
+    try {
+      return server.getAllEventsByCollection(handler);
+    } catch (Exception e) { //TODO Vista de error de conexión
+
+      System.err.println("Error al conectar con el backend: " + e.getMessage());
+
+      return List.of();
+    }
+
   }
 
   public void postNew(EventOutputDTO newEvent) {
@@ -46,7 +71,7 @@ public class EventService {
             "Impacto de Estallido de gasoducto en comunidad de Paraná, Entre Ríos",
             "Un grave estallido de gasoducto se registró en Paraná, Entre Ríos. El incidente obligó a evacuar a residentes de la zona. Se ha iniciado una investigación para determinar las causas exactas del incidente.",
             "Estallido de gasoducto",
-            new LocationDTO(-31.742240, -60.536204, "Entre Ríos"),
+            new LocationDTO(-31.742240, -60.536204, "Entre Ríos", "Paraná", "Paraná"),
             date1
         ),
 
@@ -58,7 +83,7 @@ public class EventService {
             "Otro hecho de ejemplo para probar el scroll interno",
             "Descripción del hecho para completar el feed y probar el scroll interno de la columna central. Esta descripción es corta.",
             "Estallido de gasoducto",
-            new LocationDTO(-31.742240, -60.536204, "Entre Ríos"),
+            new LocationDTO(-31.742240, -60.536204, "Entre Ríos", "Paraná", "San Benito"),
             date2
         ),
 
@@ -70,7 +95,7 @@ public class EventService {
             "Alerta Roja por Desborde de Río en Villa María",
             "Se declaró alerta roja debido a las fuertes lluvias que causaron el desborde del río en la madrugada, afectando zonas ribereñas.",
             "Desastre Natural",
-            new LocationDTO(-32.407778, -63.243611, "Córdoba"),
+            new LocationDTO(-32.407778, -63.243611, "Córdoba", "General San Martín", "Villa María"),
             date3
         ),
 
@@ -82,7 +107,7 @@ public class EventService {
             "Corte Total en Ruta Nacional 3 por protestas sociales",
             "Manifestantes cortaron la Ruta 3 en reclamo de mejoras laborales y salariales. Se recomienda evitar la zona.",
             "Protesta Social",
-            new LocationDTO(-45.8641, -67.4812, "Chubut"),
+            new LocationDTO(-45.8641, -67.4812, "Chubut", "Escalante", "Comodoro Rivadavia"),
             date4
         ),
 
@@ -94,7 +119,7 @@ public class EventService {
             "Sismo de magnitud 5.1 cerca de la Cordillera",
             "Se registró un temblor de magnitud moderada con epicentro a 50 km al oeste de la capital mendocina, sin daños mayores reportados.",
             "Desastre Natural",
-            new LocationDTO(-33.00, -68.82, "Mendoza"),
+            new LocationDTO(-33.00, -68.82, "Mendoza", "Luján de Cuyo", "Potrerillos"),
             date5
         ),
 
@@ -106,7 +131,7 @@ public class EventService {
             "Contaminación del Riachuelo por derrame químico",
             "Organizaciones ambientales reportan un nuevo derrame químico en el Riachuelo, afectando gravemente el ecosistema local.",
             "Medio Ambiente",
-            new LocationDTO(-34.64, -58.37, "Buenos Aires"),
+            new LocationDTO(-34.64, -58.37, "Buenos Aires", "Avellaneda", "Dock Sud"),
             date6
         ),
 
@@ -118,9 +143,10 @@ public class EventService {
             "Evacuación masiva por Incendio Forestal en Sierra de la Ventana",
             "Un incendio fuera de control en la zona serrana obligó a la evacuación preventiva de varias localidades turísticas.",
             "Incendio Forestal",
-            new LocationDTO(-38.08, -61.94, "Buenos Aires"),
+            new LocationDTO(-38.08, -61.94, "Buenos Aires", "Tornquist", "Sierra de la Ventana"),
             date7
         )
     );
+
   }
 }

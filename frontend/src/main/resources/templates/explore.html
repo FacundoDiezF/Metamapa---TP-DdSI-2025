@@ -9,7 +9,7 @@
 
 <th:block th:fragment="contenido">
     <section th:replace="~{layout/grid3 :: grid3(
-        ~{layout/fragments/_sidebar_left :: left},
+        ~{layout/fragments/_sidebar_left :: filter-form(@{/explore})},
         ~{fragments/explore/_explore_center :: center},
         ~{layout/fragments/_sidebar_right :: right}
       )}"></section>

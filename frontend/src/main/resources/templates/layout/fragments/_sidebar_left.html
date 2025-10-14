@@ -1,10 +1,10 @@
-<aside th:fragment="left" class="sidebar card">
+<aside th:fragment="filter-form(actionUrl)" class="sidebar card">
     <!-- Collapse visible en mobile; en desktop queda siempre abierto -->
     <div id="mm-filtros" class="collapse d-lg-block show">
         <h3>Filtros</h3>
 
         <!-- Form GET para que el backend aplique filtros -->
-        <form class="filters" method="get" action="">
+        <form class="filters" method="get" th:action="${actionUrl}">
 
             <!-- CATEGORÍA -->
             <details class="flt">
@@ -15,20 +15,21 @@
 
                 <div class="flt-body">
                     <div class="chips chips-wrap">
-            <span class="chip-toggle">
-              <input type="checkbox" id="cat-incendio" name="categoria[]" value="Incendio forestal">
-              <label for="cat-incendio" class="chip">Incendio forestal</label>
-            </span>
-                        <span class="chip-toggle">
-              <input type="checkbox" id="cat-derrumbe" name="categoria[]" value="Derrumbe de cerro">
-              <label for="cat-derrumbe" class="chip">Derrumbe de cerro</label>
-            </span>
-                        <span class="chip-toggle">
-              <input type="checkbox" id="cat-terremoto" name="categoria[]" value="Terremoto">
-              <label for="cat-terremoto" class="chip">Terremoto</label>
-            </span>
 
+                        <span th:each="cat : ${categories}" class="chip-toggle">
+
+                              <input type="checkbox" name="category_in" th:id="'cat:' + ${cat.id}"
+                                     th:value="${cat.id}"
+                                     th:checked="${param.category_in != null and param.category_in.contains(cat.id.toString())}"
+                              />
+                              <label th:for="'cat:' + ${cat.id}" class="chip" th:text="${cat.name}">
+                                  Nombre Tag Categoria
+                              </label>
+                        </span>
+
+                        <!-- TODO: Chip +mas y su ref(modal) -->
                         <a class="chip mas" href="#cat-modal">+ Más</a>
+
                     </div>
                     <p class="help info">Seleccioná una o varias categorías.</p>
                 </div>
@@ -45,17 +46,17 @@
                     <div class="date-range">
                         <div>
                             <span>Desde</span>
-                            <input type="date" name="fecha_desde"/>
+                            <input type="date" name="eventDate_gt" th:value="${param.eventDate_gt}"/>
                         </div>
                         <div>
                             <span>Hasta</span>
-                            <input type="date" name="fecha_hasta"/>
+                            <input type="date" name="eventDate_lt" th:value="${param.eventDate_lt}"/>
                         </div>
                     </div>
                 </div>
             </details>
 
-            <!-- UBICACIÓN -->
+            <!-- Ubicacion -->
             <details class="flt">
                 <summary class="flt-head">
                     <span class="flt-title">Ubicación</span>
@@ -63,42 +64,24 @@
                 </summary>
 
                 <div class="flt-body">
-                    <div class="ubic-searchbar">
-                        <input id="ubic-search" name="ubicacion_text" type="search" placeholder="Buscar ubicación…"
-                               list="ubic-sugeridas" autocomplete="off">
-                        <datalist id="ubic-sugeridas">
-                            <option value="CABA">
-                            <option value="Ciudad de Córdoba">
-                            <option value="Rosario">
-                            <option value="Paraná, Entre Ríos">
-                            <option value="Mendoza">
-                            <option value="San Juan">
-                            <option value="Neuquén">
-                        </datalist>
-                    </div>
-
                     <div class="chips chips-wrap">
-            <span class="chip-toggle">
-              <input type="checkbox" id="u-caba" name="ubicacion[]" value="CABA">
-              <label for="u-caba" class="chip">CABA</label>
-            </span>
-                        <span class="chip-toggle">
-              <input type="checkbox" id="u-parana" name="ubicacion[]" value="Paraná, Entre Ríos">
-              <label for="u-parana" class="chip">Paraná, Entre Ríos</label>
-            </span>
-                        <span class="chip-toggle">
-              <input type="checkbox" id="u-rosario" name="ubicacion[]" value="Rosario">
-              <label for="u-rosario" class="chip">Rosario</label>
-            </span>
-                        <span class="chip-toggle">
-              <input type="checkbox" id="u-mendoza" name="ubicacion[]" value="Mendoza">
-              <label for="u-mendoza" class="chip">Mendoza</label>
-            </span>
-                    </div>
 
-                    <p class="help info">
-                        Escribí para sugerencias; tildá/destildá chips para sumar o quitar.
-                    </p>
+                        <span th:each="prov : ${provinces}" class="chip-toggle">
+
+                              <input type="checkbox" name="province_in" th:id="'prov:' + ${prov.id}"
+                                     th:value="${prov.id}"
+                                     th:checked="${param.province_in != null and param.province_in.contains(prov.id.toString())}"
+                              />
+                              <label th:for="'prov:' + ${prov.id}" class="chip" th:text="${prov.name}">
+                                  Nombre Provincia
+                              </label>
+                        </span>
+
+                        <!-- TODO: Chip +mas y su ref(modal) -->
+                        <a class="chip mas" href="#cat-modal">+ Más</a>
+
+                    </div>
+                    <p class="help info">Seleccioná una o varias provincias.</p>
                 </div>
             </details>
 
@@ -111,28 +94,55 @@
 
                 <div class="flt-body">
                     <div class="chips chips-wrap">
-            <span class="chip-toggle">
-              <input type="checkbox" id="f-estatica" name="fuente[]" value="estatica">
-              <label for="f-estatica" class="chip">Estática</label>
-            </span>
+
                         <span class="chip-toggle">
-              <input type="checkbox" id="f-dinamica" name="fuente[]" value="dinamica">
-              <label for="f-dinamica" class="chip">Dinámica</label>
-            </span>
+                          <input type="checkbox" id="s-static" name="source_in" value="STATIC"
+                                 th:checked="${param.source_in != null and param.source_in.contains('STATIC')}"/>
+                          <label for="s-static" class="chip">Estática</label>
+                        </span>
+
                         <span class="chip-toggle">
-              <input type="checkbox" id="f-proxy" name="fuente[]" value="proxy">
-              <label for="f-proxy" class="chip">Proxy</label>
-            </span>
+                          <input type="checkbox" id="s-dynamic" name="source_in" value="DYNAMIC"
+                                 th:checked="${param.source_in != null and param.source_in.contains('DYNAMIC')}"/>
+                          <label for="s-dynamic" class="chip">Dinámica</label>
+                        </span>
+
+                        <span class="chip-toggle">
+                          <input type="checkbox" id="s-proxy" name="source_in" value="PROXY"
+                                 th:checked="${param.source_in != null and param.source_in.contains('PROXY')}"/>
+                          <label for="s-proxy" class="chip">Proxy</label>
+                        </span>
+
+                        <span class="chip-toggle">
+                          <input type="checkbox" id="s-metamapa" name="source_in" value="METAMAPA"
+                                 th:checked="${param.source_in != null and param.source_in.contains('METAMAPA')}"/>
+                          <label for="s-metamapa" class="chip">Metamapa</label>
+                        </span>
+
                     </div>
                 </div>
             </details>
 
             <!-- Acciones -->
             <div class="filters-actions">
-                <button type="reset" class="btn-clean">Limpiar filtros</button>
+                <a th:href="${actionUrl}" class="btn-clean">Limpiar filtros</a>
                 <button type="submit" class="btn-apply">Aplicar</button>
             </div>
 
         </form>
     </div>
+
+    <script>
+        // Guardar estado (abierto/cerrado) de las secciones de filtro
+        document.querySelectorAll('details.flt').forEach(det => {
+            const key = 'flt:' + det.querySelector('.flt-title').textContent.trim();
+            const saved = localStorage.getItem(key);
+            if (saved === 'open') det.setAttribute('open', '');
+
+            det.addEventListener('toggle', () => {
+                localStorage.setItem(key, det.open ? 'open' : 'closed');
+            });
+        });
+    </script>
+
 </aside>
