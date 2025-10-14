@@ -10,9 +10,8 @@
 <div th:fragment="contenido" class="map-layout">
 
     <!-- Mapa -->
-    <aside th:replace="~{layout/fragments/_sidebar_left:: left}">
+    <aside th:replace="~{layout/fragments/_sidebar_left:: filter-form(@{/map})}"></aside>
 
-    </aside>
     <section class="map-wrap">
         <div id="map" aria-label="Mapa de hechos"></div>
     </section>

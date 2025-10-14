@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventService {
 
-  public List<EventDTO> getAll() {
-    //TODO que le pida al agregador todos los eventos
+  public List<EventDTO> getAll(List<Long> category_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
+    //TODO que le pida al agregador todos los eventos (con los filtros)
     return mockEvents();
   }
 
-  public List<EventDTO> getAllByCollection(String handler) {
-    //TODO que le pida al agregador todos los eventos
+  public List<EventDTO> getAllByCollection(String handler, List<Long> category_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
+    //TODO que le pida al agregador todos los eventos (con los filtros)
     return mockEvents();
   }
 
