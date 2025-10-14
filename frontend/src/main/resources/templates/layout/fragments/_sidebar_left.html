@@ -56,6 +56,35 @@
                 </div>
             </details>
 
+            <!-- Ubicacion -->
+            <details class="flt">
+                <summary class="flt-head">
+                    <span class="flt-title">Ubicación</span>
+                    <span class="caret" aria-hidden="true">▾</span>
+                </summary>
+
+                <div class="flt-body">
+                    <div class="chips chips-wrap">
+
+                        <span th:each="prov : ${provinces}" class="chip-toggle">
+
+                              <input type="checkbox" name="province_in" th:id="'prov:' + ${prov.id}"
+                                     th:value="${prov.id}"
+                                     th:checked="${param.province_in != null and param.province_in.contains(prov.id.toString())}"
+                              />
+                              <label th:for="'prov:' + ${prov.id}" class="chip" th:text="${prov.name}">
+                                  Nombre Provincia
+                              </label>
+                        </span>
+
+                        <!-- TODO: Chip +mas y su ref(modal) -->
+                        <a class="chip mas" href="#cat-modal">+ Más</a>
+
+                    </div>
+                    <p class="help info">Seleccioná una o varias provincias.</p>
+                </div>
+            </details>
+
             <!-- FUENTE -->
             <details class="flt">
                 <summary class="flt-head">

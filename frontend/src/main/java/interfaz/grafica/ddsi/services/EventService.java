@@ -19,7 +19,7 @@ public class EventService {
     this.server = server;
   }
 
-  public List<EventDTO> getAll(List<Long> category_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
+  public List<EventDTO> getAll(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
     //TODO TEST
     //!No está paginado
     try {
@@ -32,7 +32,7 @@ public class EventService {
     }
   }
 
-  public List<EventDTO> getAllByCollection(String handler, List<Long> category_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
+  public List<EventDTO> getAllByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
     //TODO TEST
     //!No está paginado
     try {
