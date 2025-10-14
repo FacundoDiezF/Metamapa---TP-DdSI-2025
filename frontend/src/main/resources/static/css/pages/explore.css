@@ -602,5 +602,12 @@ a.btn.ghost {
   margin-left: auto;
 }
 
+.share-actions .right-actions .btn {
+  padding: .6rem 1.2rem;
+  font-size: .95rem;
+  min-width: 110px;
+  border-radius: 12px;
+}
+
 /* Botones */
 .btn.small{ padding:.45rem .9rem; font-size:.85rem; }
