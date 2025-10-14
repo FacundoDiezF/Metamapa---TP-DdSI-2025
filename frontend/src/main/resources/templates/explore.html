@@ -13,6 +13,9 @@
         ~{fragments/explore/_explore_center :: center},
         ~{layout/fragments/_sidebar_right :: right}
       )}"></section>
+    
+    <!-- Modales de eventos (reportes, multimedia, etc.) -->
+    <div th:replace="~{fragments/explore/_eventsModals :: eventsModals}"></div>
 </th:block>
 
 <th:block layout:fragment="extraScripts">
@@ -24,5 +27,7 @@
     <script th:src="@{/js/explore-map.js}"></script>
     <!-- Script pequeño que ajusta layout: margen de la primera card y altura del mapa -->
     <script th:src="@{/js/explore-layout-fix.js}"></script>
+    <!-- Script para el modal de "Comparte tus hechos" -->
+    <script th:src="@{/js/share-event-modal.js}"></script>
 </th:block>
 </html>
