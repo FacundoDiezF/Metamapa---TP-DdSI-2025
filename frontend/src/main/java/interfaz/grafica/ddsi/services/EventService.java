@@ -6,19 +6,42 @@ import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import java.time.LocalDate;
 import java.util.List;
+import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EventService {
 
+  private final ServerAdapter server;
+
+  public EventService(ServerAdapter server){
+    this.server = server;
+  }
+
   public List<EventDTO> getAll() {
-    //TODO que le pida al agregador todos los eventos
-    return mockEvents();
+    //TODO TEST
+    //!No está paginado
+    try {
+      return server.getAllEvents();
+    } catch (Exception e) { //TODO Vista de error de conexión
+
+      System.err.println("Error al conectar con el backend: " + e.getMessage());
+
+      return List.of();
+    }
   }
 
   public List<EventDTO> getAllByCollection(String handler) {
-    //TODO que le pida al agregador todos los eventos
-    return mockEvents();
+    //TODO TEST
+    //!No está paginado
+    try {
+      return server.getAllEventsByCollection(handler);
+    } catch (Exception e) { //TODO Vista de error de conexión
+
+      System.err.println("Error al conectar con el backend: " + e.getMessage());
+
+      return List.of();
+    }
   }
 
   public void postNew(EventOutputDTO newEvent) {
