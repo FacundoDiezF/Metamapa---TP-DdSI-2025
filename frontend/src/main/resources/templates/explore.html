@@ -13,19 +13,47 @@
         ~{fragments/explore/_explore_center :: center},
         ~{layout/fragments/_sidebar_right :: right}
       )}"></section>
-    
-    <!-- Modales de eventos (reportes, multimedia, etc.) -->
-    <div th:replace="~{fragments/explore/_eventsModals :: eventsModals}"></div>
-</th:block>
 
-<th:block layout:fragment="extraScripts">
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        // markers desde backend
-        const MM_MARKERS = /*[[${markers}]]*/ [];
-    </script>
-    <script th:src="@{/js/explore-map.js}"></script>
-    <!-- Script pequeño que ajusta layout: margen de la primera card y altura del mapa -->
+
+    <!-- Modal “+ Más categorías” -->
+    <div id="cat-modal" class="mm-overlay" role="dialog" aria-modal="true" aria-labelledby="cat-modal-title">
+        <a class="mm-dismiss" href="#close" aria-label="Cerrar"></a>
+        <div class="mm-modal">
+            <button class="mm-close" onclick="location.hash='close'" aria-label="Cerrar">✕</button>
+
+            <h2 id="cat-modal-title" class="mm-title">Seleccionar más categorías</h2>
+
+            <div class="mm-search">
+                <input type="search" placeholder="Buscar categoría…" />
+                <span class="mm-ok">✓</span>
+            </div>
+
+            <div class="chips-grid" style="margin-top:.5rem">
+                <span class="chip">Tsunami</span>
+                <span class="chip">Inundación</span>
+                <span class="chip">Contaminación</span>
+                <span class="chip">Derechos Humanos</span>
+            </div>
+
+            <div class="mm-actions">
+                <a class="btn" href="#close">Cerrar</a>
+                <button type="button" class="btn primary" onclick="location.hash='close'">Aplicar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales de eventos (reportes, multimedia, etc.) -->
+    <!--   <div th:replace="~{fragments/explore/_eventsModals :: eventsModals}"></div>-->
+  </th:block>
+
+  <th:block layout:fragment="extraScripts">
+      <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+      <script>
+          // markers desde backend
+          const MM_MARKERS = /*[[${markers}]]*/ [];
+      </script>
+      <script th:src="@{/js/explore-map.js}"></script>
+      <!-- Script pequeño que ajusta layout: margen de la primera card y altura del mapa -->
     <script th:src="@{/js/explore-layout-fix.js}"></script>
     <!-- Script para el modal de "Comparte tus hechos" -->
     <script th:src="@{/js/share-event-modal.js}"></script>

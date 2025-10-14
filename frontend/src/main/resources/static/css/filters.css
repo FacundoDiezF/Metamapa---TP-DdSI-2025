@@ -260,7 +260,7 @@ body {
 
 /* =========================
    Modal +Más categorías
-   ========================= */
+   =========================
 .target-modal {
   display: none;
 }
@@ -297,4 +297,63 @@ body {
   inset: 0;
   display: block;
   z-index: 0;
+}*/
+
+
+/* ===== Modal categorías (CSS-only, :target) ===== */
+.mm-overlay{
+    position:fixed; inset:0;
+    display:grid; place-items:center;
+    background:rgba(0,0,0,.55);
+    opacity:0; visibility:hidden;
+    transition:opacity .20s ease;
+    z-index:1100;
 }
+.mm-overlay:target{ opacity:1; visibility:visible; }
+
+/* capa clickeable para cerrar */
+.mm-overlay .mm-dismiss{
+    position:fixed; inset:0; z-index:1; display:block;
+}
+
+/* tarjeta */
+.mm-modal{
+    position:relative; z-index:2;
+    width:min(92vw,720px); max-width:720px;
+    background:#fff; border-radius:16px;
+    padding:1.25rem 1.25rem 1rem;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+    opacity:0; transform:translateY(12px);
+    transition:opacity .20s ease, transform .20s ease;
+}
+.mm-overlay:target .mm-modal{ opacity:1; transform:none; }
+
+/* header */
+.mm-title{
+    margin:0 0 .8rem; font-size:clamp(1.2rem,2.2vw,1.8rem);
+    font-weight:800;
+}
+
+/* buscador */
+.mm-search{
+    position:relative; display:flex; align-items:center;
+    background:#e8fbe8; border:1px solid #a7e3a7;
+    border-radius:12px; padding:.6rem .9rem; gap:.5rem;
+}
+.mm-search input{
+    flex:1; border:0; background:transparent; outline:0; font:inherit;
+}
+.mm-search .mm-ok{ font-weight:700; opacity:.8; }
+
+/* acciones */
+.mm-actions{
+    display:flex; gap:.6rem; justify-content:flex-end; margin-top:1rem;
+}
+
+/* botón cerrar */
+.mm-close{
+    position:absolute; top:10px; right:12px;
+    border:0; background:transparent; font:inherit; cursor:pointer;
+    font-size:18px; opacity:.7;
+}
+.mm-close:hover{ opacity:1; }
