@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventService {
 
+
   private final ServerAdapter server;
 
   public EventService(ServerAdapter server){
     this.server = server;
   }
 
-  public List<EventDTO> getAll() {
+  public List<EventDTO> getAll(List<Long> category_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
     //TODO TEST
     //!No está paginado
     try {
@@ -31,7 +32,7 @@ public class EventService {
     }
   }
 
-  public List<EventDTO> getAllByCollection(String handler) {
+  public List<EventDTO> getAllByCollection(String handler, List<Long> category_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
     //TODO TEST
     //!No está paginado
     try {
@@ -42,6 +43,7 @@ public class EventService {
 
       return List.of();
     }
+
   }
 
   public void postNew(EventOutputDTO newEvent) {

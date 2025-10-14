@@ -3,20 +3,21 @@ package interfaz.grafica.ddsi.controller;
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
+import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.EventService;
-
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PagesController {
@@ -46,8 +47,14 @@ public class PagesController {
   }
 
   @GetMapping("/explore")
-  public String explore(Model model) {
-    List<EventDTO> events = eventService.getAll();
+  public String explore(
+      @RequestParam(required = false, name = "category_in") List<Long> category_in,
+      @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
+      @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
+      @RequestParam(required = false, name = "source_in") List<Origin> source_in,
+      Model model) {
+
+    List<EventDTO> events = eventService.getAll(category_in, eventDate_lt, eventDate_gt, source_in);
     List<CategoryDTO> categories = categoryService.getAllCategories();
 
     // MARKERS para Leaflet (solo eventos con coords)
@@ -72,9 +79,16 @@ public class PagesController {
   }
 
   @GetMapping("/collection/{handler}")
-  public String inCollection(Model model, @PathVariable String handler) {
+  public String inCollection(
+      @PathVariable String handler,
+      @RequestParam(required = false, name = "category_in") List<Long> category_in,
+      @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
+      @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
+      @RequestParam(required = false, name = "source_in") List<Origin> source_in,
+      Model model
+  ) {
     CollectionDTO collection = collectionService.getByHandler(handler);
-    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler);
+    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, eventDate_lt, eventDate_gt, source_in);
 
     model.addAttribute("collection", collection);
     model.addAttribute("events", eventsFromCol);
@@ -91,13 +105,19 @@ public class PagesController {
     return "collections";
   }
 
-    @GetMapping("/map")
-    public String mapa(Model model){
-        List<EventDTO> allEvents = eventService.getAll();
-        model.addAttribute("events", allEvents);
-        model.addAttribute("pageTitle", "MetaMapa · Mapa");
-        return "map";
-    }
+  @GetMapping("/map")
+  public String mapa(
+      @RequestParam(required = false, name = "category_in") List<Long> category_in,
+      @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
+      @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
+      @RequestParam(required = false, name = "source_in") List<Origin> source_in,
+      Model model) {
+
+    List<EventDTO> allEvents = eventService.getAll(category_in, eventDate_lt, eventDate_gt, source_in);
+    model.addAttribute("events", allEvents);
+    model.addAttribute("pageTitle", "MetaMapa · Mapa");
+    return "map";
+  }
 
   @GetMapping("/404")
   public String notFound(Model model) {
