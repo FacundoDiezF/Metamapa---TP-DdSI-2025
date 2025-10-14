@@ -2,6 +2,10 @@
    BASE — Reset, Layout y Tipografía
 =========================== */
 
+/* ===========================
+   Reset y Variables
+=========================== */
+
 /* Reset mínimo + box model */
 * { box-sizing: border-box; }
 
@@ -27,6 +31,10 @@
     --focus-ring: 0 0 0 3px rgba(59, 130, 246, .35);
 }
 
+/* ===========================
+   Tipografía Global
+=========================== */
+
 /* Fuente global del sitio */
 html { font-size: 100%; } /* 16px por defecto */
 
@@ -43,6 +51,10 @@ body {
     background: var(--ui-bg);
 }
 
+/* ===========================
+   Estados Interactivos
+=========================== */
+
 /* Selección + focus visible */
 ::selection { background: rgba(59, 130, 246, .2); }
 :where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
@@ -51,7 +63,7 @@ body {
 }
 
 /* ===========================
-   Tipografía base (semántica)
+   Tipografía Semántica
 =========================== */
 
 h1, h2, h3, h4, h5, h6 {
@@ -86,16 +98,26 @@ body, .body {
     line-height: var(--lh-brand);
 }
 
-/* Texto genérico y utilidades */
+/* ===========================
+   Utilidades de Texto
+=========================== */
+
 p, li { font-size: 1rem; line-height: 1.55; }
 .text-muted { color: var(--DarkAccent, #64748b); }
 .fw-medium { font-weight: var(--fw-medium); }
 .fw-semibold { font-weight: var(--fw-semibold); }
 .fw-bold { font-weight: var(--fw-bold); }
 
-/* Links */
+/* ===========================
+   Links
+=========================== */
+
 a { color: var(--Accent); text-decoration: none; }
 a:hover, a:focus-visible { text-decoration: underline; }
+
+/* ===========================
+   Layout y Secciones
+=========================== */
 
 /* Contenedor de sección común */
 .section { padding: var(--sp-6) 0; }
@@ -103,8 +125,12 @@ a:hover, a:focus-visible { text-decoration: underline; }
 /* Listas limpias */
 .ul-reset { list-style: none; margin: 0; padding: 0; }
 
-/* Formularios base */
+/* ===========================
+   Formularios Base
+=========================== */
+
 input, select, textarea, button { font: inherit; }
+
 input, select, textarea {
     width: 100%;
     padding: .6rem .75rem;
@@ -112,20 +138,29 @@ input, select, textarea {
     border-radius: 10px;
     background: #fff;
 }
+
 input:focus, select:focus, textarea:focus {
     outline: none;
     box-shadow: var(--focus-ring);
     border-color: transparent;
 }
 
-/* Helper de accesibilidad */
+/* ===========================
+   Helpers de Accesibilidad
+=========================== */
+
 .visually-hidden {
     position: absolute !important;
-    height: 1px; width: 1px; overflow: hidden;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
     clip: rect(1px, 1px, 1px, 1px);
 }
 
-/* Ajuste de lectura en móviles muy pequeños */
+/* ===========================
+   Responsive
+=========================== */
+
 @media (max-width: 360px) {
-    :root { /* solo el body baja un punto si querés */ }
+    :root { /* Ajustes para pantallas muy pequeñas */ }
 }

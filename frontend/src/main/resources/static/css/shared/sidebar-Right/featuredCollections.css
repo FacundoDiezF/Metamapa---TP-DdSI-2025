@@ -1,42 +1,84 @@
-/* ===== Colecciones (shared) ===== */
-.colecciones{
-  background:var(--ui-card);
-  border:1px solid #ddd;
-  border-radius:12px;
-  padding:1rem;
+/* ===========================
+   COLECCIONES DESTACADAS — Sidebar Derecho
+=========================== */
+
+/* ===========================
+   Contenedor Principal
+=========================== */
+
+.colecciones {
+  background: var(--ui-card, #fff);
+  border: 1px solid var(--LightText, #ddd);
+  border-radius: var(--radius-12, 12px);
+  padding: 1rem;
 }
 
-.colecciones h3{ margin-bottom:1rem; }
+/* ===========================
+   Encabezado
+=========================== */
 
-.colecciones ul{
-  list-style:none;
-  margin:0 0 1rem;
-  padding:0;
+.colecciones h3 {
+  margin: 0 0 1rem;
+  font-size: var(--fs-h4, 18px);
+  font-weight: var(--fw-semibold, 600);
+  color: var(--Text);
 }
 
-.colecciones li{ margin-bottom:.5rem; }
+/* ===========================
+   Lista de Colecciones
+=========================== */
 
-.colecciones a{
-  color:var(--ui-blue);
-  font-weight:600;
-  text-decoration:none;
+.colecciones ul {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
 }
 
-.colecciones a span{
-  font-size:.75rem;
-  margin-left:.5rem;
-  color:#555;
+.colecciones li {
+  margin-bottom: .5rem;
 }
 
-.colecciones .explorar{
-  width:100%;
-  padding:.7rem;
-  border:none;
-  border-radius:8px;
-  background:var(--ui-blue);
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
+.colecciones a {
+  color: var(--Accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.colecciones .explorar:hover{ filter:brightness(.95); }
+.colecciones a:hover {
+  color: #2563EB;
+  text-decoration: underline;
+}
+
+.colecciones a span {
+  font-size: var(--fs-small, .75rem);
+  margin-left: .5rem;
+  color: var(--Muted, #555);
+  font-weight: 400;
+}
+
+/* ===========================
+   Botón de Acción
+=========================== */
+
+.colecciones .explorar {
+  width: 100%;
+  padding: .7rem;
+  border: none;
+  border-radius: var(--radius-8, 8px);
+  background: var(--Accent);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background 0.2s ease;
+}
+
+.colecciones .explorar:hover {
+  background: #2563EB;
+}
+
+.colecciones .explorar:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--Accent) 45%, #fff);
+  outline-offset: 2px;
+}

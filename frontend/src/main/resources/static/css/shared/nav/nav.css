@@ -1,6 +1,11 @@
-/* ===== NavBar unificada (con tokens) ===== */
+/* ===========================
+   NAVBAR — Navegación Principal
+=========================== */
 
-/* Contenedor */
+/* ===========================
+   Contenedor Principal
+=========================== */
+
 .navbar {
     position: sticky;
     top: 0;
@@ -8,25 +13,18 @@
     height: var(--header-h, 72px);
     padding: 0 clamp(12px, 2vw, 24px);
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: auto 1fr;
     align-items: center;
     gap: 24px;
-    background: #fff;
-    border-bottom: 1px solid var(--border, #e5e7eb);
-    box-shadow: 0 1px 0 rgba(0,0,0,.02);
-    font-family: var(--font-sans, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+    background: var(--ModuleBG, #fff);
+    border-bottom: 1px solid var(--LightText, #e5e7eb);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .02);
+    font-family: var(--font-sans);
 }
 
-/* ===== Tipografías base de la navbar ===== */
-.navbar,
-.subnav,
-.auth-actions,
-.mm-btn, .account-btn, .btn-outline {
-    font-family: var(--font-sans, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
-    color: var(--Text, #050315);
-    line-height: var(--lh-snug, 1.3);
-    font-size: var(--fs-body, 16px);
-}
+/* ===========================
+   Brand / Logo
+=========================== */
 
 .brand {
     display: flex;
@@ -53,9 +51,8 @@
 }
 
 .brand-name {
-    /* Tipografía & color */
-    font-family: var(--font-brand, 'Poppins', 'Inter', system-ui, -apple-system, sans-serif);
-    font-weight: var(--fw-medium, 500);
+    font-family: var(--font-brand);
+    font-weight: var(--fw-medium);
     font-size: var(--fs-brand, 30px);
     line-height: var(--lh-brand, 1.1);
     letter-spacing: -0.01em;
@@ -63,76 +60,172 @@
     margin: 0;
 }
 
-/* Acciones (auth) */
+/* ===========================
+   Acciones de Autenticación
+=========================== */
+
 .auth-actions {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 12px;
 }
 
-/* ====== Alias legacy → mm-btn (por compatibilidad HTML) ====== */
-/* Si tu HTML ya usa .mm-btn --primary/--ghost, podés borrar este bloque. */
+/* Botones de autenticación */
 .account-btn,
 .btn-outline {
-    /* reset mínimo para no pelear con .mm-btn */
     height: auto;
     min-width: 0;
-    padding: 0;
-    border: none;
-    background: none;
-    color: inherit;
+    padding: .5rem 1rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-/* mapear a variantes */
-/* “Registrarse” */
 .account-btn {
     border: 1px solid transparent;
-    border-radius: 9999px;
-    padding: .5rem 1rem;
     background: var(--Accent, #3B82F6);
     color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-}
-.account-btn:hover {
-    background: #2563EB;
-    border-color:#2563EB;
-}
-.account-btn:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--Accent) 45%, #fff);
-    outline-offset: 2px;
 }
 
-/* “Iniciar sesión” */
-.btn-outline {
-    border: 1px solid var(--DarkAccent, #3B82F6);
-    border-radius: 9999px;
-    padding: .5rem 1rem;
-    background: transparent;
-    color: var(--DarkAccent, #3B82F6);
-    font-weight: 600;
-    cursor: pointer;
+.account-btn:hover {
+    background: #2563EB;
+    border-color: #2563EB;
 }
+
+.btn-outline {
+    border: 1px solid var(--DarkAccent, #475265);
+    background: transparent;
+    color: var(--DarkAccent, #475265);
+}
+
 .btn-outline:hover {
     background: color-mix(in srgb, var(--Accent) 10%, transparent);
-    color: var(--AltDetails, #2563EB);
-    border-color: var(--AltDetails, #2563EB);
+    color: var(--Accent);
+    border-color: var(--Accent);
 }
+
+.account-btn:focus-visible,
 .btn-outline:focus-visible {
     outline: 2px solid color-mix(in srgb, var(--Accent) 45%, #fff);
     outline-offset: 2px;
 }
 
-/* Estado logged (mantengo pero con tokens) */
 .account-btn.logged {
     background: color-mix(in srgb, var(--Accent) 12%, #fff);
     color: var(--DarkAccent, #2563EB);
     border: 1px solid color-mix(in srgb, var(--Accent) 40%, #93c5fd);
 }
 
-/* ===== Subnav ===== */
+/* ===========================
+   Botón Modo Curado
+=========================== */
+
+.curated-toggle-wrapper {
+    position: relative;
+    display: inline-flex;
+}
+
+.curated-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--LightText, #e5e7eb);
+    border-radius: 50%;
+    background: var(--ModuleBG, #fff);
+    color: var(--Muted, #475569);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.curated-toggle svg {
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.curated-toggle:hover {
+    border-color: var(--Accent, #3B82F6);
+    color: var(--Accent, #3B82F6);
+    background: color-mix(in srgb, var(--Accent) 5%, #fff);
+    transform: scale(1.05);
+}
+
+.curated-toggle.active {
+    background: var(--Accent, #3B82F6);
+    border-color: var(--Accent, #3B82F6);
+    color: #fff;
+}
+
+.curated-toggle.active svg {
+    fill: #fff;
+}
+
+.curated-toggle:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--Accent) 45%, #fff);
+    outline-offset: 2px;
+}
+
+/* Tooltip del modo curado */
+.curated-tooltip {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--DarkAccent, #475265);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 5000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.curated-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-bottom-color: var(--DarkAccent, #475265);
+}
+
+.curated-tooltip:not([hidden]) {
+    opacity: 1;
+    animation: tooltipFadeIn 0.3s ease forwards;
+}
+
+.curated-tooltip.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* ===========================
+   Subnav (Navegación Secundaria)
+=========================== */
+
 .subnav {
-    line-height: var(--lh-snug, 1.3);
     position: sticky;
     top: var(--header-h, 72px);
     z-index: 2500;
@@ -141,9 +234,11 @@
     align-items: flex-end;
     gap: 28px;
     padding: 0 clamp(12px, 2vw, 24px);
-    background: #fff;
-    border-bottom: 1px solid var(--Border, #e5e7eb);
+    background: var(--ModuleBG, #fff);
+    border-bottom: 1px solid var(--LightText, #e5e7eb);
     overflow-x: auto;
+    font-family: var(--font-sans);
+    line-height: var(--lh-snug, 1.3);
 }
 
 .subnav a {
@@ -151,15 +246,15 @@
     display: inline-block;
     padding: 8px 0 10px;
     text-decoration: none;
-    color: #111827; /* color directo como en legacy */
-    font-weight: 600; /* más pesado, como en legacy */
+    color: var(--Text, #111827);
+    font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
 }
 
 .subnav a:hover,
 .subnav a:focus-visible {
-    color: var(--DarkAccent, #2563EB);
+    color: var(--Accent);
     background: color-mix(in srgb, var(--Accent) 6%, transparent);
     outline: 0;
 }
@@ -167,6 +262,7 @@
 .subnav a.active {
     color: var(--Accent, #3B82F6);
 }
+
 .subnav a.active::after {
     content: "";
     position: absolute;
@@ -178,8 +274,13 @@
     border-radius: 2px;
 }
 
-/* ===== Modal auth (colores/tipos con tokens) ===== */
-#authOverlay[hidden] { display: none !important; }
+/* ===========================
+   Modal de Autenticación
+=========================== */
+
+#authOverlay[hidden] {
+    display: none !important;
+}
 
 #authOverlay {
     position: fixed;
@@ -192,12 +293,12 @@
 
 .auth-modal {
     position: relative;
-    background: #fff;
-    border-radius: 12px;
+    background: var(--ModuleBG, #fff);
+    border-radius: var(--radius-12, 12px);
     padding: 24px;
     min-width: min(92vw, 420px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
-    font-family: var(--font-sans, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+    font-family: var(--font-sans);
     color: var(--Text, #111827);
 }
 
@@ -207,21 +308,27 @@
     right: 12px;
     border: 0;
     background: none;
-    font-size: var(--fs-base, 1rem);
+    font-size: 1rem;
     cursor: pointer;
     opacity: .7;
+}
+
+.auth-close:hover {
+    opacity: 1;
 }
 
 .auth-modal .field {
     display: block;
     margin: 10px 0;
 }
+
 .auth-modal .field > span {
     display: block;
-    font-size: var(--fs-sm, .875rem);
+    font-size: var(--fs-small, .875rem);
     margin-bottom: 6px;
     color: var(--Muted, #475569);
 }
+
 .auth-modal .req {
     color: var(--Danger, #ef4444);
     font-weight: var(--fw-bold, 700);
@@ -230,7 +337,7 @@
 .auth-modal input {
     width: 100%;
     padding: 10px;
-    border: 1px solid var(--Border, #ddd);
+    border: 1px solid var(--LightText, #ddd);
     border-radius: 8px;
     font: inherit;
     color: var(--Text, #111827);
@@ -241,14 +348,15 @@
     margin-top: 10px;
     padding: 10px;
     border: 0;
-    border-radius: 10px;
+    border-radius: var(--radius-10, 10px);
     background: var(--Accent, #3B82F6);
     color: #fff;
     font-weight: var(--fw-semibold, 600);
     cursor: pointer;
 }
+
 .auth-modal button[type="submit"]:hover {
-    background: var(--AltDetails, #2563EB);
+    background: #2563EB;
 }
 
 .auth-modal .grid-2 {
@@ -257,8 +365,22 @@
     gap: 10px;
 }
 
-/* ===== Responsive ===== */
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width: 768px) {
+    .curated-toggle .toggle-label {
+        display: none;
+    }
+}
+
 @media (max-width: 560px) {
-    .brand-name { font-size: var(--fs-h2, 24px); } /* baja un escalón en mobile */
-    .subnav a    { font-size: var(--fs-small, 14px); }
+    .brand-name {
+        font-size: var(--fs-h2, 24px);
+    }
+
+    .subnav a {
+        font-size: var(--fs-small, 14px);
+    }
 }
