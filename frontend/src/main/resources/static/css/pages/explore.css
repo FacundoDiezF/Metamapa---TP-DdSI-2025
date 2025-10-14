@@ -50,6 +50,14 @@
 /* ============ Share Form (details/summary) ============ */
 details.share {
   border-radius: 12px;
+  position: relative;
+  z-index: 10;
+  /* IMPORTANTE: Mantener en el flujo del documento para empujar contenido */
+  margin-bottom: 0; /* Reducido desde 1.25rem */
+}
+
+details.share[open] {
+  margin-bottom: 0; /* Reducido desde 1.5rem */
 }
 
 details.share > summary {
@@ -61,7 +69,13 @@ details.share > summary::-webkit-details-marker {
   display: none;
 }
 
-/* Cuando está abierto, el post-box pierde sus bordes inferiores redondeados */
+/* Input dentro del summary - hacer que el click pase al summary */
+details.share > summary input {
+  pointer-events: none;
+  cursor: pointer;
+}
+
+/* Cuando está abierto, el post-box pierde sus bordes inferiores redondeadas */
 details.share[open] > summary.post-box {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -69,14 +83,43 @@ details.share[open] > summary.post-box {
   border-bottom: 1px solid #e5e7eb;
 }
 
+/* Panel OCULTO por defecto */
 .share-panel {
+  display: none !important;
   background: var(--ui-card, #fff);
   border: 1px solid #e5e7eb;
   border-top: none;
   border-radius: 0 0 12px 12px;
   padding: 1rem;
-  display: grid;
   gap: 1rem;
+  /* CRITICO: position static para estar en el flujo del documento */
+  position: static; /* ← Cambiado de relative a static */
+  width: 100%;
+  box-sizing: border-box;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  overflow: visible !important;
+  margin: 0;
+  margin-bottom: 0.5rem; /* Espacio después del panel */
+}
+
+/* Cuando details ABIERTO → mostrar panel */
+details.share[open] .share-panel {
+  display: grid !important;
+  animation: slideDown 0.25s ease;
+}
+
+/* Animación suave */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Deshabilitado por defecto */
@@ -175,7 +218,6 @@ details.share[open] > summary.post-box {
 .field input, .field textarea, .field select { width:100%; padding:.7rem .95rem; border:1px solid #d1d5db; border-radius:10px; background:#f6f7f9; font:inherit; }
 .field input:focus, .field textarea:focus, .field select:focus { outline:none; border-color:#93c5fd; box-shadow:0 0 0 3px rgba(59,130,246,.15); }
 
-.share-panel { background:var(--ui-card); border:1px solid #e5e7eb; border-top:none; border-radius:0 0 12px 12px; padding:1rem; display:grid; gap:1rem; }
 .share-row { display:grid; grid-template-columns: 1fr 320px; gap:.75rem 1rem; }
 @media (max-width: 900px) { .share-row { grid-template-columns:1fr; } }
 

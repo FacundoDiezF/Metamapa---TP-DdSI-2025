@@ -2,7 +2,30 @@ document.addEventListener('DOMContentLoaded', applyExploreLayoutFix);
 window.addEventListener('load', applyExploreLayoutFix);
 window.addEventListener('resize', function () { setTimeout(applyExploreLayoutFix, 100); });
 
-0function pxToNumber(px) {
+// Observar cambios en el estado del share (abierto/cerrado)
+document.addEventListener('DOMContentLoaded', function() {
+  const share = document.querySelector('.share');
+  if (share) {
+    // Listener para cuando se abre/cierra el details
+    share.addEventListener('toggle', function() {
+      setTimeout(applyExploreLayoutFix, 50);
+    });
+
+    // Observar cambios en el DOM del share-panel por si se agrega contenido dinámicamente
+    const observer = new MutationObserver(function() {
+      applyExploreLayoutFix();
+    });
+
+    observer.observe(share, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['open', 'style']
+    });
+  }
+});
+
+function pxToNumber(px) {
   if (!px) return 0;
   const n = parseFloat(px.replace('px',''));
   return isNaN(n) ? 0 : n;
@@ -25,21 +48,29 @@ function applyExploreLayoutFix() {
           next = next.nextElementSibling;
         }
 
-        // obtener altura del post-box y su top offset (si es sticky)
-        const postBox = share.querySelector('.post-box') || share;
-        const postBoxH = (postBox && postBox.offsetHeight) ? postBox.offsetHeight : 72;
-        const computedTop = postBox ? getComputedStyle(postBox).top : '0px';
-        const topOffset = pxToNumber(computedTop);
-        const totalOffset = postBoxH + topOffset + 12; // padding extra
+        // Si el share está cerrado, no necesitamos offset extra
+        const isOpen = share.hasAttribute('open');
 
         if (firstHecho) {
-          // aplicar con prioridad para sobreescribir otras reglas
-          firstHecho.style.setProperty('margin-top', totalOffset + 'px', 'important');
-        } else {
-          // si no encontramos .hecho directo, intentar ajustar la primera .hecho dentro del feed
-          const anyHecho = feed.querySelector('.hecho');
-          if (anyHecho) {
-            anyHecho.style.setProperty('margin-top', totalOffset + 'px', 'important');
+          if (isOpen) {
+            // Cuando está abierto, calcular el espacio necesario para el panel
+            const sharePanel = share.querySelector('.share-panel');
+            if (sharePanel) {
+              // Esperar un momento para que el panel se renderice completamente
+              setTimeout(() => {
+                const panelHeight = sharePanel.offsetHeight;
+                const postBoxHeight = share.querySelector('.post-box')?.offsetHeight || 72;
+                // Agregar margen suficiente para que el primer evento esté debajo del panel
+                // Aumentamos el margen: ahora sumamos las alturas completas más un espacio adicional
+                const totalMargin = panelHeight + postBoxHeight + 20;
+                firstHecho.style.setProperty('margin-top', `${totalMargin}px`, 'important');
+              }, 10);
+            } else {
+              firstHecho.style.setProperty('margin-top', '8px', 'important');
+            }
+          } else {
+            // Cuando está cerrado, usar el margen por defecto del CSS
+            firstHecho.style.removeProperty('margin-top');
           }
         }
       }

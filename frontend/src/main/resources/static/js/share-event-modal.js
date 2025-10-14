@@ -1,51 +1,63 @@
 /**
  * Manejo del modal de "Comparte tus hechos" (NUEVO EVENTO)
+ * VERSION CON CONTROL COMPLETO DE VISUALIZACION
  */
 document.addEventListener('DOMContentLoaded', function() {
     const shareDetails = document.querySelector('.share');
     const shareSummary = document.getElementById('shareSummary');
+    const sharePanel = document.querySelector('.share-panel');
     const shareInput = shareSummary ? shareSummary.querySelector('input[readonly]') : null;
 
-    if (!shareDetails || !shareSummary) {
-        return; // no está en esta página
+    console.log('=== SHARE MODAL DEBUG ===');
+    console.log('shareDetails:', shareDetails);
+    console.log('shareSummary:', shareSummary);
+    console.log('sharePanel:', sharePanel);
+
+    if (!shareDetails || !shareSummary || !sharePanel) {
+        console.error('❌ Elementos no encontrados');
+        return;
     }
 
-    // Prevenir comportamiento por defecto del details/summary
-    shareSummary.addEventListener('click', function(e) {
-        e.preventDefault();
+    console.log('✅ Todos los elementos encontrados');
 
-        // Toggle del atributo open
-        if (shareDetails.hasAttribute('open')) {
-            shareDetails.removeAttribute('open');
+    // Verificar estilos iniciales
+    console.log('sharePanel display inicial:', window.getComputedStyle(sharePanel).display);
+
+    // FORZAR estado inicial oculto
+    sharePanel.style.display = 'none';
+    console.log('🔒 Forzado a display: none inicial');
+
+    // Manejar toggle del details
+    shareDetails.addEventListener('toggle', function() {
+        const isOpen = shareDetails.open;
+        console.log(isOpen ? '📂 Intentando ABRIR modal' : '📁 Intentando CERRAR modal');
+
+        if (isOpen) {
+            // ABRIR: forzar display grid
+            sharePanel.style.setProperty('display', 'grid', 'important');
+            console.log('✅ FORZADO: sharePanel.style.display = grid (important)');
+
+            // Verificar que se aplicó
+            setTimeout(() => {
+                const computedDisplay = window.getComputedStyle(sharePanel).display;
+                console.log('🔍 Display después de forzar:', computedDisplay);
+                console.log('🔍 sharePanel.offsetHeight:', sharePanel.offsetHeight);
+                console.log('🔍 sharePanel visible:', sharePanel.offsetHeight > 0);
+            }, 50);
         } else {
-            shareDetails.setAttribute('open', '');
+            // CERRAR: ocultar
+            sharePanel.style.setProperty('display', 'none', 'important');
+            console.log('✅ CERRADO: sharePanel.style.display = none (important)');
         }
     });
 
-    // Asegurar que el input no interfiera con el click
-    if (shareInput) {
-        shareInput.addEventListener('click', function(e) {
-            e.stopPropagation();
-            // Simular click en el summary padre
-            shareSummary.click();
-        });
-    }
-
-    // Opcional: cerrar al hacer click fuera
-    document.addEventListener('click', function(e) {
-        if (shareDetails.hasAttribute('open')) {
-            const clickedInside = shareDetails.contains(e.target);
-            if (!clickedInside) {
-                shareDetails.removeAttribute('open');
-            }
-        }
-    });
-
-    // Opcional: cerrar con tecla Escape
+    // Cerrar con Escape
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && shareDetails.hasAttribute('open')) {
+        if (e.key === 'Escape' && shareDetails.open) {
             shareDetails.removeAttribute('open');
+            console.log('⌨️ Cerrado con Escape');
         }
     });
-});
 
+    console.log('=== INICIALIZADO ===');
+});
