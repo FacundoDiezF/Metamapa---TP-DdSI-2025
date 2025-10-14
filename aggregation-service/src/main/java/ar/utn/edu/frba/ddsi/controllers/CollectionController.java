@@ -9,6 +9,10 @@ import ar.utn.edu.frba.ddsi.services.ICollectionService;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,10 +35,14 @@ public class CollectionController {
   }
 
   @GetMapping
-  public List<CollectionOutputDTO> getCollections(
-      @RequestParam (required = false) LocalDateTime fromUpdatedDate
+  public Page<CollectionOutputDTO> getCollections(
+      @RequestParam (required = false) LocalDateTime fromUpdatedDate,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size
   ) {
-    return collectionService.getCollections(fromUpdatedDate);
+    Pageable pageable = PageRequest.of(page, size, Sort.by("title").ascending());
+
+    return collectionService.getCollections(fromUpdatedDate, pageable);
   }
 
   @PostMapping

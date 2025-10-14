@@ -5,6 +5,8 @@ import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.collection.CollectionOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
 public interface ICollectionService {
   CollectionOutputDTO create(CollectionCreationDTO collectionDto);
 
-  List<CollectionOutputDTO> getCollections(LocalDateTime fromUpdateDate);
+  Page<CollectionOutputDTO> getCollections(LocalDateTime fromUpdateDate, Pageable pageable);
 
   List<EventOutputDTO> getEventsFromCollection(
       boolean curedNavigation,
