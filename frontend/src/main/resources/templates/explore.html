@@ -1,17 +1,17 @@
 <html layout:decorate="~{layout/base}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-    <th:block layout:fragment="extraStyles">
-        <link rel="stylesheet" th:href="@{/css/pages/explore.css}"/>
-        <link rel="stylesheet" th:href="@{/css/filters.css}"/>
-    </th:block>
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="@{/css/pages/explore.css}"/>
+    <link rel="stylesheet" th:href="@{/css/filters.css}"/>
+</th:block>
 
 
 <th:block th:fragment="contenido">
     <section th:replace="~{layout/grid3 :: grid3(
-        ~{layout/fragments/_sidebar_left :: filter-form(@{/explore})},
-        ~{fragments/explore/_explore_center :: center},
-        ~{layout/fragments/_sidebar_right :: right}
+        ~{fragments/grid3/_sidebar_left :: filter-form(@{/explore})},
+        ~{fragments/grid3/center/_explore_center :: center},
+        ~{fragments/grid3/_sidebar_right :: right}
       )}"></section>
 
 
@@ -24,7 +24,7 @@
             <h2 id="cat-modal-title" class="mm-title">Seleccionar más categorías</h2>
 
             <div class="mm-search">
-                <input type="search" placeholder="Buscar categoría…" />
+                <input type="search" placeholder="Buscar categoría…"/>
                 <span class="mm-ok">✓</span>
             </div>
 
@@ -44,16 +44,16 @@
 
     <!-- Modales de eventos (reportes, multimedia, etc.) -->
     <!--   <div th:replace="~{fragments/explore/_eventsModals :: eventsModals}"></div>-->
-  </th:block>
+</th:block>
 
-  <th:block layout:fragment="extraScripts">
-      <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-      <script>
-          // markers desde backend
-          const MM_MARKERS = /*[[${markers}]]*/ [];
-      </script>
-      <script th:src="@{/js/explore-map.js}"></script>
-      <!-- Script pequeño que ajusta layout: margen de la primera card y altura del mapa -->
+<th:block layout:fragment="extraScripts">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // markers desde backend
+        const MM_MARKERS = /*[[${markers}]]*/ [];
+    </script>
+    <script th:src="@{/js/explore-map.js}"></script>
+    <!-- Script pequeño que ajusta layout: margen de la primera card y altura del mapa -->
     <script th:src="@{/js/explore-layout-fix.js}"></script>
     <!-- Script para el modal de "Comparte tus hechos" -->
     <script th:src="@{/js/share-event-modal.js}"></script>
