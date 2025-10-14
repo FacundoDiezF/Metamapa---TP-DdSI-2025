@@ -9,9 +9,14 @@
     <h2 th:text="${item.title}">
         Titulo del Hecho
     </h2>
-    <p class="ubicacion"
-       th:text=" ${item.location.municipality} + ', ' + ${item.location.department} + ' - ' + ${item.location.province} + ' | ' + ${#temporals.format(item.eventDate, 'dd MMMM yyyy')}">
-        Municipalidad - Department, Provincia | dd MMMM yyyy
+    <p class="ubicacion">
+        <span th:text="${item.location.municipality}"></span><span
+            th:if="${item.location.municipality != null and item.location.department != null}">, </span><span
+            th:text="${item.location.department}"></span><span
+            th:if="${(item.location.municipality != null or item.location.department != null) and item.location.province != null}"> - </span><span
+            th:text="${item.location.province}"></span><span
+            th:if="${item.location.municipality != null or item.location.department != or and item.location.province != null}"> | </span><span
+            th:text="${#temporals.format(item.eventDate, 'dd MMMM yyyy')}"></span>
     </p>
     <p th:text="${item.description}">
         Descripción del hecho muy buena descripcion la verdad que me gusta mucho este hecho
