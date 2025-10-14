@@ -84,6 +84,12 @@
                           <label for="s-proxy" class="chip">Proxy</label>
                         </span>
 
+                        <span class="chip-toggle">
+                          <input type="checkbox" id="s-metamapa" name="source_in" value="METAMAPA"
+                                 th:checked="${param.source_in != null and param.source_in.contains('METAMAPA')}"/>
+                          <label for="s-metamapa" class="chip">Metamapa</label>
+                        </span>
+
                     </div>
                 </div>
             </details>
