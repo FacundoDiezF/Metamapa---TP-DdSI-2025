@@ -23,8 +23,7 @@ public class CategoryService {
     //TODO: Que le pida al agregador las categorias
     // GET/categories
     try {
-      //return server.getAllCategories(page, size);
-      return this.mockCategoryPage();
+      return server.getAllCategories(page, size);
     } catch (WebClientResponseException e) {
       throw new BackendException("Backend error: " + e.getStatusCode());
     } catch (Exception e) {
