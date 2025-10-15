@@ -1,6 +1,7 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventInputDTO;
+import ar.utn.edu.frba.ddsi.models.dtos.input.PageDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.Province;
@@ -9,9 +10,11 @@ import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IProvinceRepository;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -34,29 +37,42 @@ public class EventService implements IEventService {
 
   @Override
   public void fetchEvents(LocalDateTime lastUpdate) {
-
-    // Before we fetch events, we ensure that all categories and provinces are loaded
     fetchCategories();
     fetchProvinces();
 
-    // Fetch new events from Aggregator Service
-    List<EventInputDTO> eventDtos = AgregatorServiceWebClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("/events")
-            .queryParam("fromUpdatedDate", lastUpdate)
-            .build())
-        .retrieve()
-        .bodyToFlux(EventInputDTO.class)
-        .collectList()
-        .block();
+    int size = 100;
+    boolean lastPage = false;
+    List<EventInputDTO> allEvents = new ArrayList<>();
 
-    if (eventDtos == null || eventDtos.isEmpty()) return;
+    for (int page = 0; !lastPage; page++) {
+      int currentPage = page;
+      PageDTO<EventInputDTO> eventPage = AgregatorServiceWebClient.get()
+          .uri(uriBuilder -> uriBuilder
+              .path("/events")
+              .queryParam("fromUpdatedDate", lastUpdate)
+              .queryParam("page", currentPage)
+              .queryParam("size", size)
+              .build())
+          .retrieve()
+          .bodyToMono(new ParameterizedTypeReference<PageDTO<EventInputDTO>>() {
+          })
+          .block();
 
-    List<Event> finalEvents = eventDtos.stream()
-        .map(this::buildEvent)
-        .toList();
+      if (eventPage != null) {
+        allEvents.addAll(eventPage.getContent());
+      }
 
-    eventRepository.saveAll(finalEvents);
+      if (eventPage == null) throw new RuntimeException("Failed to fetch categories from Aggregator Service");
+        lastPage = eventPage.isLast();
+      }
+
+      if (!allEvents.isEmpty()) {
+        List<Event> finalEvents = allEvents.stream()
+              .map(this::buildEvent)
+              .toList();
+
+      eventRepository.saveAll(finalEvents);
+    }
   }
 
   private Event buildEvent(EventInputDTO dto) {
@@ -74,19 +90,33 @@ public class EventService implements IEventService {
   }
 
   private void fetchCategories() {
+    int size = 100;
+    boolean lastPage = false;
+    List<Category> allCategories = new ArrayList<>();
 
-    List<Category> categories = AgregatorServiceWebClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("/categories")
-            .build())
-        .retrieve()
-        .bodyToFlux(Category.class) //? A lo mejor hay que hacer un DTO (me daba bronca que el DTO y la entidad sean iguales)
-        .collectList()
-        .block();
+    for (int page = 0; !lastPage; page++) {
+      int currentPage = page;
+      PageDTO<Category> categoryPage = AgregatorServiceWebClient.get()
+          .uri(uriBuilder -> uriBuilder
+              .path("/categories")
+              .queryParam("page", currentPage)
+              .queryParam("size", size)
+              .build())
+          .retrieve()
+          .bodyToMono(new ParameterizedTypeReference<PageDTO<Category>>() {})
+          .block();
 
-    if (categories == null || categories.isEmpty()) return;
+      if (categoryPage != null) {
+        allCategories.addAll(categoryPage.getContent());
+      }
 
-    categoryRepository.saveAll(categories);
+      if (categoryPage == null) throw new RuntimeException("Failed to fetch categories from Aggregator Service");
+      lastPage = categoryPage.isLast();
+    }
+
+    if (!allCategories.isEmpty()) {
+      categoryRepository.saveAll(allCategories);
+    }
   }
 
   private void fetchProvinces() {//TODO TEST
