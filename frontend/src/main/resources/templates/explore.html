@@ -30,34 +30,7 @@
 </th:block>
 
 <th:block layout:fragment="modals">
-
-    <!-- Modal “+ Más categorías” -->
-    <div id="cat-modal" class="mm-overlay" role="dialog" aria-modal="true" aria-labelledby="cat-modal-title">
-        <a class="mm-dismiss" href="#close" aria-label="Cerrar"></a>
-        <div class="mm-modal">
-            <button class="mm-close" onclick="location.hash='close'" aria-label="Cerrar">✕</button>
-
-            <h2 id="cat-modal-title" class="mm-title">Seleccionar más categorías</h2>
-
-            <div class="mm-search">
-                <input type="search" placeholder="Buscar categoría…"/>
-                <span class="mm-ok">✓</span>
-            </div>
-
-            <div class="chips-grid" style="margin-top:.5rem">
-                <span class="chip">Tsunami</span>
-                <span class="chip">Inundación</span>
-                <span class="chip">Contaminación</span>
-                <span class="chip">Derechos Humanos</span>
-            </div>
-
-            <div class="mm-actions">
-                <a class="btn" href="#close">Cerrar</a>
-                <button type="button" class="btn primary" onclick="location.hash='close'">Aplicar</button>
-            </div>
-        </div>
-    </div>
-
+    <div th:replace="fragments/modals/_filter_moreOptions :: moreOptions(${categoryPage})"></div>
 </th:block>
 
 <th:block layout:fragment="extraScripts">

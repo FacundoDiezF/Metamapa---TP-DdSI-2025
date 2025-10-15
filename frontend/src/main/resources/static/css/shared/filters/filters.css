@@ -310,30 +310,6 @@
   font-weight: 800;
 }
 
-.mm-search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  background: #e8fbe8;
-  border: 1px solid #a7e3a7;
-  border-radius: var(--radius-12);
-  padding: .6rem .9rem;
-  gap: .5rem;
-}
-
-.mm-search input {
-  flex: 1;
-  border: 0;
-  background: transparent;
-  outline: 0;
-  font: inherit;
-}
-
-.mm-search .mm-ok {
-  font-weight: 700;
-  opacity: .8;
-}
-
 .mm-actions {
   display: flex;
   gap: .6rem;

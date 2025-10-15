@@ -9,7 +9,7 @@
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 3000; /* Aumentado para que el wrapper del curated toggle (3500) funcione correctamente */
+    z-index: 1000; /* Aumentado para que el wrapper del curated toggle (3500) funcione correctamente */
     height: var(--header-h);
     padding: 0 clamp(12px, 2vw, 24px);
     display: grid;
@@ -213,7 +213,6 @@
     font-weight: 500;
     white-space: nowrap;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 5000;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.2s ease, transform 0.2s ease;
@@ -279,7 +278,7 @@
     overflow-y: hidden;
     position: sticky;
     top: var(--header-h);
-    z-index: 2500;
+    z-index: 1000;
     height: var(--subnav-h);
     display: flex;
     align-items: flex-end;

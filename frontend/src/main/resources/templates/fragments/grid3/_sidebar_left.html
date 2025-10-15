@@ -16,7 +16,7 @@
                 <div class="flt-body">
                     <div class="chips chips-wrap">
 
-                        <span th:each="cat : ${categories}" class="chip-toggle">
+                        <span th:each="cat : ${categoryPage.content}" class="chip-toggle">
 
                               <input type="checkbox" name="category_in" th:id="'cat:' + ${cat.id}"
                                      th:value="${cat.id}"
