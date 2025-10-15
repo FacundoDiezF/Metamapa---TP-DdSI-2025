@@ -82,17 +82,30 @@
         </th:block>
     </div>
 
-    <!-- Indicador de carga (scroll infinito) -->
-    <div id="loading-indicator" class="loading-indicator" style="display: none;">
+    <!-- Trigger de infinite scroll con HTMX - Fuera del events-container para que se reemplace -->
+    <div th:if="${!#lists.isEmpty(events) && hasMorePages}"
+         id="infinite-scroll-trigger"
+         th:hx-get="@{/explore(page=${currentPage + 1},
+                               category_in=${param.category_in},
+                               province_in=${param.province_in},
+                               eventDate_lt=${param.eventDate_lt},
+                               eventDate_gt=${param.eventDate_gt},
+                               source_in=${param.source_in})}"
+         hx-trigger="intersect threshold:0.5"
+         hx-swap="beforebegin show:none"
+         hx-select="#events-container > *, #infinite-scroll-trigger"
+         hx-indicator="#loading-indicator"
+         class="htmx-scroll-trigger">
+    </div>
+
+    <!-- Indicador de carga (se muestra automáticamente por HTMX) -->
+    <div id="loading-indicator" class="loading-indicator htmx-indicator">
         <div class="spinner"></div>
         <p>Cargando más eventos...</p>
     </div>
 
-    <!-- Sentinel: elemento invisible que detecta cuando llegamos al final -->
-    <div id="scroll-sentinel" style="height: 1px;"></div>
-
     <!-- Mensaje de fin de resultados -->
-    <div id="end-message" class="end-message" style="display: none;">
+    <div th:if="${#lists.isEmpty(events) || !hasMorePages}" id="end-message" class="end-message">
         <p>✓ Has visto todos los eventos disponibles</p>
     </div>
 

@@ -15,9 +15,9 @@
 
     <!-- Cards  -->
     <link rel="stylesheet" th:href="@{/css/shared/cards/card-event.css}"/>
-
     <!-- Modal de Solicitud de Eliminación -->
     <link rel="stylesheet" th:href="@{/css/shared/modals/deletionRequest-styles.css}"/>
+
 </th:block>
 
 
@@ -70,12 +70,7 @@
 
 <th:block layout:fragment="extraScripts">
     <script th:src="@{/js/explore/explore-map.js}"></script>
-    <!-- Script pequeño que ajusta layout: margen de la primera card y altura del mapa -->
-    <script th:src="@{/js/explore-layout-fix.js}"></script>
-    <!-- Script para el modal de "Comparte tus hechos" -->
-    <script th:src="@{/js/share-event-modal.js}"></script>
-    <!-- Script para scroll infinito (paginación automática) -->
-    <script th:src="@{/js/explore/infinite-scroll.js}"></script>
+
 </th:block>
 
 </html>

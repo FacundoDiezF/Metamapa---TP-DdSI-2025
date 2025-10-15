@@ -173,8 +173,8 @@ body {
 
 /* Subtítulos (Categoría, Fecha, etc.) */
 .flt-title {
-    font-weight: 600;
-    /* antes 500 */
+    font-weight: 500;
+
     color: #111827;
 }
 
@@ -217,7 +217,7 @@ body {
 /* Título "Filtros" */
 .map-layout .sidebar h3 {
     margin: 4px 0 12px;
-    font-weight: 600;
+    font-weight: 800;
     font-size: 1.05rem;
     color: #111827;
     /* gris muy oscuro para contraste AA */

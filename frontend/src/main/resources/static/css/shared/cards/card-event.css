@@ -12,7 +12,7 @@
     display: block;
     overflow: visible;
     clear: both;
-    margin: 0 0 0.75rem;
+    margin: 0;
     box-sizing: border-box;
     transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
@@ -73,15 +73,4 @@
     background: #f1f5f9;
 }
 
-/* Ajuste de espaciado con el post-box sticky */
-.share + .hecho,
-.share ~ .hecho:first-of-type,
-.share + * .hecho,
-.share ~ * .hecho {
-    margin-top: calc(var(--post-box-h) + 0.75rem);
-}
-
-.share[open] ~ .hecho:first-of-type,
-.share + .hecho:first-of-type {
-    margin-top: 0;
-}
+/* NOTA: El espaciado entre eventos se controla desde explore.css en #events-container */

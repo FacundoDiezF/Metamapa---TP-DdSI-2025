@@ -66,6 +66,10 @@ public class PagesController {
     model.addAttribute("events", eventPage.getContent());
     model.addAttribute("newEvent", new EventOutputDTO());
 
+    // Atributos necesarios para HTMX infinite scroll
+    model.addAttribute("currentPage", page);
+    model.addAttribute("hasMorePages", !eventPage.isLast());
+
     model.addAttribute("categories", categories);
     model.addAttribute("provinces", provinces);
 

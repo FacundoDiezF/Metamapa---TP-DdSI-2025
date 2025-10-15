@@ -495,8 +495,28 @@ details.share[open] .share-panel {
   display: contents;
 }
 
+/* Espaciado entre eventos - aplicar directamente a .hecho en el feed */
+.feed > .hecho,
+.feed > div > .hecho {
+  margin: 0 0 0.75rem 0;
+}
+
+/* El primer evento no debe tener margen superior */
+.feed > .hecho:first-of-type,
+.feed > div:first-of-type > .hecho:first-of-type {
+  margin-top: 0;
+}
+
+/* Trigger invisible para HTMX */
+.htmx-scroll-trigger {
+  min-height: 20px;
+  pointer-events: none;
+  margin: 0 0 0.75rem 0;
+}
+
+/* Loading indicator - oculto por defecto, visible cuando HTMX lo activa */
 .loading-indicator {
-  display: flex !important; /* Forzar display flex incluso con display:none inline */
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -511,8 +531,9 @@ details.share[open] .share-panel {
   box-sizing: border-box;
 }
 
-.loading-indicator[style*="display: none"] {
-  display: none !important;
+/* HTMX muestra automáticamente los elementos con clase .htmx-indicator */
+.htmx-indicator.htmx-request {
+  display: flex !important;
 }
 
 .loading-indicator p {
