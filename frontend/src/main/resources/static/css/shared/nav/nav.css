@@ -232,6 +232,7 @@
 =========================== */
 
 .subnav {
+    overflow-y: hidden;
     position: sticky;
     top: var(--header-h);
     z-index: 1000;

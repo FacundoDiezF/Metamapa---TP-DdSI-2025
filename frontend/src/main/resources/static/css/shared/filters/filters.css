@@ -18,6 +18,10 @@
   overscroll-behavior: contain;
 }
 
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
 .sidebar h3 {
   margin: 0 0 1rem;
 }
