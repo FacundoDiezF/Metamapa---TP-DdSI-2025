@@ -1,10 +1,12 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
+import ar.utn.edu.frba.ddsi.models.dtos.output.category.CategoryDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.repositories.ICategoryRepository;
 import ar.utn.edu.frba.ddsi.services.ICategoryService;
-import java.util.List;
 import org.apache.commons.text.similarity.LevenshteinDistance;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,8 +32,11 @@ public class CategoryService implements ICategoryService {
   }
 
   @Override
-  public List<Category> getAll() {
-    return categoryRepository.findAll();
+  public Page<CategoryDTO> getAll(Pageable pageable) {
+
+    Page<Category>  categoryPage = categoryRepository.findAll(pageable);
+
+    return categoryPage.map(CategoryDTO::from);
   }
 
   private String findFuzzyMatch(String name) {
