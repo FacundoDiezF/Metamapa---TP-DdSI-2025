@@ -9,7 +9,7 @@
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 3000;
+    z-index: 1000;
     height: var(--header-h);
     padding: 0 clamp(12px, 2vw, 24px);
     display: grid;
@@ -234,7 +234,7 @@
 .subnav {
     position: sticky;
     top: var(--header-h);
-    z-index: 2500;
+    z-index: 1000;
     height: var(--subnav-h);
     display: flex;
     align-items: flex-end;
