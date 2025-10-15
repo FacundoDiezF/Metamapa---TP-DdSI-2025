@@ -17,7 +17,7 @@
     align-items: center;
     gap: 24px;
     background: var(--ModuleBG, #fff);
-    border-bottom: 1px solid var(--LightText, #e5e7eb);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5); /* Border con opacidad intermedia (50%) */
     box-shadow: 0 1px 0 rgba(0, 0, 0, .02);
     font-family: var(--font-sans);
 }
@@ -25,8 +25,8 @@
 .navbar-brand {
     font-family: var(--font-brand);
     font-weight: var(--fw-semibold);
-    font-size: 1.25rem; /* opcional, para que destaque un poco más */
-    color: var(--Text);
+    font-size: 1.25rem;
+    color: var(--fs-brand);
 }
 /* ===========================
    Brand / Logo
@@ -62,7 +62,7 @@
     font-size: var(--fs-brand);
     line-height: var(--lh-brand, 1.1);
     letter-spacing: -0.01em;
-    color: var(--Text);
+    color: var(--BrandText);
     margin: 0;
 }
 
@@ -129,7 +129,7 @@
 .curated-toggle-wrapper {
     position: relative;
     display: inline-flex;
-    z-index: 3500; 
+    z-index: 3500;
 }
 
 .curated-toggle {
@@ -264,7 +264,7 @@
     gap: 28px;
     padding: 0 clamp(12px, 2vw, 24px);
     background: var(--ModuleBG, #fff);
-    border-bottom: 1px solid var(--LightText, #e5e7eb);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.3);
     overflow-x: auto;
     font-family: var(--font-sans);
     line-height: var(--lh-snug, 1.3);

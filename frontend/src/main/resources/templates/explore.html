@@ -2,10 +2,19 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <th:block layout:fragment="extraStyles">
+    <!-- Layut de 3 columnas -->
     <link rel="stylesheet" th:href="@{/css/shared/grid-3col.css}"/>
+    <!-- Página Explore -->
     <link rel="stylesheet" th:href="@{/css/pages/explore.refactor.css}"/>
+
+    <!-- SideBar izquierdo: filtros -->
     <link rel="stylesheet" th:href="@{/css/shared/filters/filters.css}"/>
-    <link rel="stylesheet" th:href="@{/css/shared/sidebar-right/featured.css}"/>
+    <!-- SideBar derecho: miniMapa + colecciones destacadas -->
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar-right/miniMap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar-right/featured-collections.css}"/>
+
+    <!-- Cards  -->
+    <link rel="stylesheet" th:href="@{/css/shared/cards/card-event.css}"/>
 </th:block>
 
 

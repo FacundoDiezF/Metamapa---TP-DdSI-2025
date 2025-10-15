@@ -50,11 +50,12 @@
 
 /* Aspecto base de sidebars (reutilizado desde explore) */
 .sidebar, .sidebar-right {
-    background: #fff;
-    border: 1px solid #e5e7eb;
+    background: var(--ModuleBG, #fff);
+    border: 1px solid var(--border-subtle);
     border-radius: 12px;
     padding: 12px;
     height: fit-content;
+    box-shadow: var(--shadow-elevated);
 }
 
 /* Responsive base (mobile) */
@@ -130,4 +131,3 @@
   overflow-x: visible !important;
   overflow-y: visible !important;
 }
-

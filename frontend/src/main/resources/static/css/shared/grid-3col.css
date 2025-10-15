@@ -69,10 +69,11 @@
 /* Aspecto base de sidebars (reutilizado desde explore) */
 .sidebar, .sidebar-right {
     background: var(--ModuleBG);
-    border: 1px solid var(--LightText);
+    border: 1px solid var(--border-subtle);
     border-radius: var(--radius-12);
     padding: var(--sp-3);
     height: fit-content;
+    box-shadow: var(--shadow-elevated);
 }
 
 

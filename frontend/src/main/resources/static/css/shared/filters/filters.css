@@ -102,7 +102,7 @@
 .chip {
   display: inline-block;
   padding: .35rem .7rem;
-  border: 1px solid var(--LightText, #e5e7eb);
+  border: 1px solid var(--border-accent) !important; /* Usar variable y forzar con !important */
   border-radius: 999px;
   background: var(--Secondary, #f8fafc);
   font-size: .85rem;
