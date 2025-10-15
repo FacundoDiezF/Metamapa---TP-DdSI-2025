@@ -17,13 +17,7 @@
     }
 }
 
-
-
-.map-layout>* {
-    min-height: 0;
-}
-
-/* Sidebar de filtros → hereda filters.css */
+/* Sidebar de filtros → hereda filters.css*/
 .map-layout .sidebar {
     align-self: stretch;
     overflow: auto;
@@ -45,7 +39,7 @@
     overflow: hidden;
 }
 
-/* Responsive: en pantallas chicas, mapa debajo */
+/* Responsive: en pantallas chicas, mapa debajo*/
 @media (max-width: 900px) {
     .map-layout {
         grid-template-columns: 1fr;
@@ -112,7 +106,7 @@
    TIPOGRAFÍA Y JERARQUÍA UI
 =========================== */
 
-/* Sidebar completa */
+/* Sidebar completa*/
 .map-layout .sidebar {
     font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     font-size: 0.92rem;
@@ -203,4 +197,60 @@ body {
 #centerOnMe:hover {
     background: var(--ui-blue, #3b82f6);
     color: #fff;
+}
+
+/* ============ SIDEBAR COMO "CARD" ============ */
+.map-layout .sidebar {
+    align-self: stretch;
+    overflow: auto;
+
+    /* Card */
+    background: var(--ui-card, #fff);
+    border: 1px solid var(--ui-border, #e5e7eb);
+    border-radius: 12px;
+    padding: 16px;
+
+    /* Tipografía base coherente */
+    font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Título "Filtros" */
+.map-layout .sidebar h3 {
+    margin: 4px 0 12px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #111827;
+    /* gris muy oscuro para contraste AA */
+}
+
+/* Ajustes finos para los headers de cada bloque */
+.flt-title {
+    font-weight: 600;
+    font-size: .95rem;
+    color: #111827;
+}
+
+/* Botones dentro de la sidebar para mantener coherencia visual */
+.map-layout .sidebar .btn-clean {
+    font-family: inherit;
+    font-size: .85rem;
+}
+
+.map-layout .sidebar .btn-apply,
+.map-layout .sidebar .btn-accent {
+    font-family: inherit;
+    font-size: .95rem;
+}
+
+/* Espaciado general del formulario */
+.map-layout .sidebar .filters {
+    display: grid;
+    gap: .85rem;
+}
+
+/* Responsive: cuando se apila, separamos la card del mapa */
+@media (max-width: 900px) {
+    .map-layout .sidebar {
+        margin-bottom: 12px;
+    }
 }

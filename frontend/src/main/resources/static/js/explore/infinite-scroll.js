@@ -1,6 +1,6 @@
 /**
  * INFINITE SCROLL - Sistema de paginación automática para el feed de eventos
- * Usa Intersection Observer API para detectar cuando el usuario llega al final
+ * Usa scroll event para detectar cuando el usuario llega al final del feed
  */
 
 (function() {
@@ -12,14 +12,20 @@
     let hasMorePages = true;
 
     // Referencias a elementos del DOM
+    const feedContainer = document.querySelector('.feed');
     const eventsContainer = document.getElementById('events-container');
     const loadingIndicator = document.getElementById('loading-indicator');
     const endMessage = document.getElementById('end-message');
     const sentinel = document.getElementById('scroll-sentinel');
 
     // Verificar que todos los elementos existan
-    if (!eventsContainer || !loadingIndicator || !endMessage || !sentinel) {
+    if (!feedContainer || !eventsContainer || !loadingIndicator || !endMessage || !sentinel) {
         console.warn('Infinite scroll: Elementos DOM no encontrados');
+        console.log('feedContainer:', feedContainer);
+        console.log('eventsContainer:', eventsContainer);
+        console.log('loadingIndicator:', loadingIndicator);
+        console.log('endMessage:', endMessage);
+        console.log('sentinel:', sentinel);
         return;
     }
 
@@ -57,8 +63,8 @@
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
 
-            // Extraer solo las cards de eventos nuevas
-            const newEvents = doc.querySelectorAll('#events-container > *');
+            // Extraer solo las cards de eventos nuevas (buscar directamente las cards .hecho)
+            const newEvents = doc.querySelectorAll('.hecho.card');
 
             if (newEvents.length === 0) {
                 // No hay más eventos, mostrar mensaje final
@@ -92,33 +98,46 @@
     }
 
     /**
-     * Configurar Intersection Observer
-     * Detecta cuando el "sentinel" entra en el viewport
+     * Verifica si el usuario ha llegado cerca del final del scroll
      */
-    const observerOptions = {
-        root: null, // Usar el viewport como root
-        rootMargin: '200px', // Cargar cuando esté a 200px de ser visible
-        threshold: 0.01 // Activar cuando el 1% sea visible
-    };
+    function checkScrollPosition() {
+        if (!feedContainer || isLoading || !hasMorePages) return;
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !isLoading && hasMorePages) {
-                console.log('📍 Sentinel visible, cargando más eventos...');
-                loadNextPage();
-            }
-        });
-    }, observerOptions);
+        const scrollTop = feedContainer.scrollTop;
+        const scrollHeight = feedContainer.scrollHeight;
+        const clientHeight = feedContainer.clientHeight;
 
-    // Comenzar a observar el sentinel
-    observer.observe(sentinel);
+        // Calcular cuánto falta para llegar al final (en píxeles)
+        const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+
+        // Si está a menos de 300px del final, cargar más eventos
+        if (distanceFromBottom < 300) {
+            console.log('📍 Cerca del final del feed, cargando más eventos...');
+            console.log(`   scrollTop: ${scrollTop}, scrollHeight: ${scrollHeight}, clientHeight: ${clientHeight}`);
+            console.log(`   distancia del final: ${distanceFromBottom}px`);
+            loadNextPage();
+        }
+    }
+
+    // Usar debounce para no ejecutar la función en cada evento de scroll
+    let scrollTimeout;
+    function handleScroll() {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+        scrollTimeout = setTimeout(checkScrollPosition, 100);
+    }
+
+    // Agregar event listener al contenedor del feed
+    feedContainer.addEventListener('scroll', handleScroll);
 
     // Cleanup cuando la página se descarga
     window.addEventListener('beforeunload', () => {
-        observer.disconnect();
+        feedContainer.removeEventListener('scroll', handleScroll);
     });
 
-    console.log('✓ Infinite scroll inicializado');
+    console.log('✓ Infinite scroll inicializado con scroll event listener');
+    console.log(`   Feed container:`, feedContainer);
+    console.log(`   scrollHeight: ${feedContainer.scrollHeight}px, clientHeight: ${feedContainer.clientHeight}px`);
 
 })();
-
