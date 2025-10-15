@@ -4,6 +4,7 @@ import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
+import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
@@ -57,11 +58,11 @@ public class PagesController {
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
       Model model) {
 
-    List<EventDTO> events = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in);
+    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in);
     List<CategoryDTO> categories = categoryService.getAllCategories();
     List<ProvinceDTO> provinces = locationService.getAllProvinces();
 
-    model.addAttribute("events", events);
+    model.addAttribute("events", eventPage.getContent());
     model.addAttribute("newEvent", new EventOutputDTO());
 
     model.addAttribute("categories", categories);
@@ -87,7 +88,6 @@ public class PagesController {
 
     model.addAttribute("collection", collection);
     model.addAttribute("events", eventsFromCol);
-
     model.addAttribute("pageTitle", "MetaMapa · " + collection.getTitle());
     return "inCollection";
   }
@@ -110,8 +110,8 @@ public class PagesController {
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
       Model model) {
 
-    List<EventDTO> allEvents = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in);
-    model.addAttribute("events", allEvents);
+    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in); //? Ahora mismo el mapa solo muestra los eventos de la pagina que trae
+    model.addAttribute("events", eventPage.getContent());
     model.addAttribute("pageTitle", "MetaMapa · Mapa");
     model.addAttribute("active", "map");
     return "map";

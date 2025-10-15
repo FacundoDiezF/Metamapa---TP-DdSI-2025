@@ -1,7 +1,8 @@
 package interfaz.grafica.ddsi.models.entitites.adapters;
 import interfaz.grafica.ddsi.dtos.EventDTO;
-import jdk.jfr.Event;
+import interfaz.grafica.ddsi.dtos.PageDTO;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -18,15 +19,14 @@ public class ServerAdapter {
         .build();
   }
 
-  public List<EventDTO> getAllEvents(){
+  public PageDTO<EventDTO> getAllEvents(){
     return webClient.get()
         .uri(uriBuilder -> uriBuilder
             .path("/events")
             //.queryParam("fromUpdatedDate", lastUpdate)
             .build())
         .retrieve()
-        .bodyToFlux(EventDTO.class)
-        .collectList()
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<EventDTO>>() {})
         .block();
   }
 

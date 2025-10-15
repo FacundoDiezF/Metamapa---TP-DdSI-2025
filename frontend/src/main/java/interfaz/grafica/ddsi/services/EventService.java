@@ -3,6 +3,7 @@ package interfaz.grafica.ddsi.services;
 import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.LocationDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
+import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +20,7 @@ public class EventService {
     this.server = server;
   }
 
-  public List<EventDTO> getAll(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
+  public PageDTO<EventDTO> getAll(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in) {
     //TODO TEST
     //!No está paginado
     try {
@@ -28,7 +29,7 @@ public class EventService {
 
       System.err.println("Error al conectar con el backend: " + e.getMessage());
 
-      return mockEvents();
+      return new PageDTO<>();
     }
   }
 
@@ -40,8 +41,7 @@ public class EventService {
     } catch (Exception e) { //TODO Vista de error de conexión
 
       System.err.println("Error al conectar con el backend: " + e.getMessage());
-
-      return mockEvents();
+      return List.of();
     }
 
   }
