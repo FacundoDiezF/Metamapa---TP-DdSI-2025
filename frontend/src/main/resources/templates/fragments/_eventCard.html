@@ -1,7 +1,6 @@
 <article class="hecho card" th:fragment="cardFragment(item)">
-    <a class="flag-float" href="#report-hecho-1" aria-label="Reportar este hecho">
-    <img src="../shared/assets/icons/ci_flag.svg" alt="" class="icon-img">
-
+    <a class="flag-float" th:href="'#report-hecho-' + ${item.id}" aria-label="Reportar este hecho">
+        <img th:src="@{/shared/icons/ci_flag.svg}" alt="" class="icon-img">
     </a>
     <span class="tag" th:text="${item.category}">
         Categoria
@@ -41,3 +40,4 @@ TODO:
 - Imagen del hecho
 - Modal del reporte especifico del hecho
  -->
+
