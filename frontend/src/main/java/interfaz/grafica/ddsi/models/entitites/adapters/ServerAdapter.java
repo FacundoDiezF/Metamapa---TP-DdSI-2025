@@ -1,4 +1,5 @@
 package interfaz.grafica.ddsi.models.entitites.adapters;
+import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
@@ -72,5 +73,16 @@ public class ServerAdapter {
         .block();
   }
 
-
+  public PageDTO<CategoryDTO> getAllCategories(int page, int size) {
+    return webClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/categories")
+            .queryParam("page", page)
+            .queryParam("size", size)
+            //.queryParam("fromUpdatedDate", lastUpdate)
+            .build())
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<CategoryDTO>>() {})
+        .block();
+  }
 }

@@ -24,7 +24,6 @@ public class EventService {
   }
 
   public PageDTO<EventDTO> getAll(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page) {
-    //TODO Manejar Query Params
     try {
       return server.getAllEvents(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
     } catch (WebClientResponseException e) {
