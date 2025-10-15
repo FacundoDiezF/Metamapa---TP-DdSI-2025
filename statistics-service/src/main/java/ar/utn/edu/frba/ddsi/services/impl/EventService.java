@@ -119,18 +119,34 @@ public class EventService implements IEventService {
     }
   }
 
-  private void fetchProvinces() {//TODO TEST
-    List<Province> provinces = AgregatorServiceWebClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("/locations/provinces")
-            .build())
-        .retrieve()
-        .bodyToFlux(Province.class) //? A lo mejor hay que hacer un DTO (me daba bronca que el DTO y la entidad sean iguales)
-        .collectList()
-        .block();
+  private void fetchProvinces() {
+    int size = 100;
+    boolean lastPage = false;
+    List<Province> allProvinces = new ArrayList<>();
 
-    if (provinces == null || provinces.isEmpty()) return;
+    for (int page = 0; !lastPage; page++) {
+        int currentPage = page;
+        PageDTO<Province> provincePage = AgregatorServiceWebClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path("/locations/provinces")
+                .queryParam("page", currentPage)
+                .queryParam("size", size)
+                .build())
+            .retrieve()
+            .bodyToMono(new ParameterizedTypeReference<PageDTO<Province>>() {})
+            .block();
 
-    provinceRepository.saveAll(provinces);
+        if (provincePage != null) {
+            allProvinces.addAll(provincePage.getContent());
+        }
+
+        if (provincePage == null) throw new RuntimeException("Failed to fetch provinces from Aggregator Service");
+        lastPage = provincePage.isLast();
+    }
+
+    if (!allProvinces.isEmpty()) {
+        provinceRepository.saveAll(allProvinces);
+    }
   }
+
 }
