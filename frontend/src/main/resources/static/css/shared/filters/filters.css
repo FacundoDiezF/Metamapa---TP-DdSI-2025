@@ -37,9 +37,9 @@
 =========================== */
 
 .flt {
-  border: 1px solid var(--ui-border, #e5e7eb);
-  border-radius: var(--radius-10, 10px);
-  background: var(--ui-card, #fff);
+  border: 1px solid var(--LightText, #e5e7eb);
+  border-radius: var(--radius-10);
+  background: var(--ModuleBG, #fff);
 }
 
 .flt + .flt {
@@ -74,7 +74,7 @@
 
 .flt-body {
   padding: .6rem .75rem .8rem;
-  border-top: 1px solid var(--ui-border, #e5e7eb);
+  border-top: 1px solid var(--LightText, #e5e7eb);
 }
 
 /* ===========================
@@ -98,7 +98,7 @@
 .chip {
   display: inline-block;
   padding: .35rem .7rem;
-  border: 1px solid var(--ui-border, #e5e7eb);
+  border: 1px solid var(--LightText, #e5e7eb);
   border-radius: 999px;
   background: var(--Secondary, #f8fafc);
   font-size: .85rem;
@@ -110,8 +110,8 @@
 
 .chip:hover {
   background: var(--hero-bg, #eef6ff);
-  border-color: var(--ui-blue);
-  color: var(--ui-blue);
+  border-color: var(--Accent);
+  color: var(--Accent);
 }
 
 .chip.mas {
@@ -156,8 +156,8 @@
 .date-range input {
   width: 100%;
   padding: .6rem .75rem;
-  border: 1px solid var(--ui-border, #e5e7eb);
-  border-radius: var(--radius-10, 10px);
+  border: 1px solid var(--LightText, #e5e7eb);
+  border-radius: var(--radius-10);
   background: var(--InboxBG, #f6f7f9);
   font-size: .95rem;
   box-sizing: border-box;
@@ -187,8 +187,8 @@
 .ubic-searchbar input[type="search"] {
   flex: 1;
   padding: .6rem .75rem;
-  border: 1px solid var(--ui-border, #e5e7eb);
-  border-radius: var(--radius-10, 10px);
+  border: 1px solid var(--LightText, #e5e7eb);
+  border-radius: var(--radius-10);
   background: var(--InboxBG, #f6f7f9);
   font: inherit;
   width: 100%;
@@ -224,7 +224,7 @@
   border: 1px solid #d1d5db;
   border-radius: 8px;
   background: transparent;
-  color: var(--ui-muted, #6b7280);
+  color: var(--DarkAccent, #6b7280);
   font-size: .8rem;
   font-weight: 500;
   cursor: pointer;
@@ -243,7 +243,7 @@
   border: 1px solid var(--DarkAccent, #475265);
   font-weight: 600;
   padding: .6rem 1.2rem;
-  border-radius: var(--radius-10, 10px);
+  border-radius: var(--radius-10);
   cursor: pointer;
   font-family: var(--font-brand);
 }
@@ -312,7 +312,7 @@
   align-items: center;
   background: #e8fbe8;
   border: 1px solid #a7e3a7;
-  border-radius: var(--radius-12, 12px);
+  border-radius: var(--radius-12);
   padding: .6rem .9rem;
   gap: .5rem;
 }

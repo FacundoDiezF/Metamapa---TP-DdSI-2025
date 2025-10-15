@@ -7,9 +7,9 @@
 =========================== */
 
 .colecciones {
-  background: var(--ui-card, #fff);
+  background: var(--ModuleBG, #fff);
   border: 1px solid var(--LightText, #ddd);
-  border-radius: var(--radius-12, 12px);
+  border-radius: var(--radius-12);
   padding: 1rem;
 }
 
@@ -19,7 +19,7 @@
 
 .colecciones h3 {
   margin: 0 0 1rem;
-  font-size: var(--fs-h4, 18px);
+  font-size: var(--fs-h4);
   font-weight: var(--fw-semibold, 600);
   color: var(--Text);
 }
@@ -51,7 +51,7 @@
 }
 
 .colecciones a span {
-  font-size: var(--fs-small, .75rem);
+  font-size: var(--fs-small);
   margin-left: .5rem;
   color: var(--Muted, #555);
   font-weight: 400;
@@ -65,7 +65,7 @@
   width: 100%;
   padding: .7rem;
   border: none;
-  border-radius: var(--radius-8, 8px);
+  border-radius: var(--radius-8);
   background: var(--Accent);
   color: #fff;
   font-weight: 700;
@@ -79,6 +79,6 @@
 }
 
 .colecciones .explorar:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--Accent) 45%, #fff);
+  outline: 0; box-shadow: var(--focus-ring);
   outline-offset: 2px;
 }

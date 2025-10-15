@@ -28,7 +28,7 @@ public class EventService {
 
       System.err.println("Error al conectar con el backend: " + e.getMessage());
 
-      return List.of();
+      return mockEvents();
     }
   }
 
@@ -41,7 +41,7 @@ public class EventService {
 
       System.err.println("Error al conectar con el backend: " + e.getMessage());
 
-      return List.of();
+      return mockEvents();
     }
 
   }

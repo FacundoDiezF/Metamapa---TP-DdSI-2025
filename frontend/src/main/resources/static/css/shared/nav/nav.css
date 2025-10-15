@@ -10,7 +10,7 @@
     position: sticky;
     top: 0;
     z-index: 3000;
-    height: var(--header-h, 72px);
+    height: var(--header-h);
     padding: 0 clamp(12px, 2vw, 24px);
     display: grid;
     grid-template-columns: auto 1fr;
@@ -22,6 +22,12 @@
     font-family: var(--font-sans);
 }
 
+.navbar-brand {
+    font-family: var(--font-brand);
+    font-weight: var(--fw-semibold);
+    font-size: 1.25rem; /* opcional, para que destaque un poco más */
+    color: var(--Text);
+}
 /* ===========================
    Brand / Logo
 =========================== */
@@ -53,10 +59,10 @@
 .brand-name {
     font-family: var(--font-brand);
     font-weight: var(--fw-medium);
-    font-size: var(--fs-brand, 30px);
+    font-size: var(--fs-brand);
     line-height: var(--lh-brand, 1.1);
     letter-spacing: -0.01em;
-    color: var(--DarkAccent);
+    color: var(--Text);
     margin: 0;
 }
 
@@ -109,7 +115,7 @@
 
 .account-btn:focus-visible,
 .btn-outline:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--Accent) 45%, #fff);
+    outline: 0; box-shadow: var(--focus-ring);
     outline-offset: 2px;
 }
 
@@ -166,7 +172,7 @@
 }
 
 .curated-toggle:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--Accent) 45%, #fff);
+    outline: 0; box-shadow: var(--focus-ring);
     outline-offset: 2px;
 }
 
@@ -227,9 +233,9 @@
 
 .subnav {
     position: sticky;
-    top: var(--header-h, 72px);
+    top: var(--header-h);
     z-index: 2500;
-    height: var(--subnav-h, 44px);
+    height: var(--subnav-h);
     display: flex;
     align-items: flex-end;
     gap: 28px;
@@ -256,7 +262,7 @@
 .subnav a:focus-visible {
     color: var(--Accent);
     background: color-mix(in srgb, var(--Accent) 6%, transparent);
-    outline: 0;
+    outline: 0; box-shadow: var(--focus-ring);
 }
 
 .subnav a.active {
@@ -294,7 +300,7 @@
 .auth-modal {
     position: relative;
     background: var(--ModuleBG, #fff);
-    border-radius: var(--radius-12, 12px);
+    border-radius: var(--radius-12);
     padding: 24px;
     min-width: min(92vw, 420px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
@@ -324,7 +330,7 @@
 
 .auth-modal .field > span {
     display: block;
-    font-size: var(--fs-small, .875rem);
+    font-size: var(--fs-small);
     margin-bottom: 6px;
     color: var(--Muted, #475569);
 }
@@ -348,7 +354,7 @@
     margin-top: 10px;
     padding: 10px;
     border: 0;
-    border-radius: var(--radius-10, 10px);
+    border-radius: var(--radius-10);
     background: var(--Accent, #3B82F6);
     color: #fff;
     font-weight: var(--fw-semibold, 600);
@@ -377,10 +383,10 @@
 
 @media (max-width: 560px) {
     .brand-name {
-        font-size: var(--fs-h2, 24px);
+        font-size: var(--fs-h2);
     }
 
     .subnav a {
-        font-size: var(--fs-small, 14px);
+        font-size: var(--fs-small);
     }
 }
