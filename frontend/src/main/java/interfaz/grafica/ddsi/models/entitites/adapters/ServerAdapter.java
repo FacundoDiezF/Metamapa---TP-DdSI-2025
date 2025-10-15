@@ -71,4 +71,6 @@ public class ServerAdapter {
         .bodyToMono(new ParameterizedTypeReference<PageDTO<CollectionDTO>>() {})
         .block();
   }
+
+
 }

@@ -2,15 +2,32 @@ package interfaz.grafica.ddsi.services;
 
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import java.util.List;
+
+import interfaz.grafica.ddsi.exceptions.BackendException;
+import interfaz.grafica.ddsi.exceptions.ConnectionException;
+import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
 public class CategoryService {
 
-  public List<CategoryDTO> getAllCategories() {
+  private final ServerAdapter server;
+
+  public CategoryService(ServerAdapter server){
+    this.server = server;
+  }
+
+  public List<CategoryDTO> getAllCategories(int page, int size) {
     //TODO: Que le pida al agregador las categorias
     // GET/categories
-    return mockCategories();
+    try {
+      return server.getAllCategories(page, size);
+    } catch (WebClientResponseException e) {
+      throw new BackendException("Backend error: " + e.getStatusCode());
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
+    }
   }
 
   //! BORRAR CUANDO ESTE EL AGREGADOR
