@@ -42,7 +42,8 @@
 </main>
 
 <!-- Fragmento global de modals de autenticación -->
-<!--<div th:replace="~{fragments/modals/_authModals :: authModals}"></div>-->
+<div th:replace="~{fragments/modals/_authModals :: authModals}"></div>
+<th:block th:replace="~{${contenido} :: modals}"></th:block>
 
 <!-- Scripts globales -->
 <script th:src="@{/js/navbar/auth.js}"></script>

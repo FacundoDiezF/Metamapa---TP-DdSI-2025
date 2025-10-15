@@ -25,6 +25,11 @@
         ~{fragments/grid3/_sidebar_right :: right}
       )}"></section>
 
+    <!-- Modales de eventos (reportes, multimedia, etc.) -->
+    <!--   <div h:replace="~{fragments/explore/_eventsModals :: eventsModals}"></div>-->
+</th:block>
+
+<th:block th:fragment="modals">
 
     <!-- Modal “+ Más categorías” -->
     <div id="cat-modal" class="mm-overlay" role="dialog" aria-modal="true" aria-labelledby="cat-modal-title">
@@ -53,20 +58,15 @@
         </div>
     </div>
 
-    <!-- Modales de eventos (reportes, multimedia, etc.) -->
-    <!--   <div th:replace="~{fragments/explore/_eventsModals :: eventsModals}"></div>-->
 </th:block>
 
 <th:block layout:fragment="extraScripts">
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        // markers desde backend
-        const MM_MARKERS = /*[[${markers}]]*/ [];
-    </script>
     <script th:src="@{/js/explore-map.js}"></script>
     <!-- Script pequeño que ajusta layout: margen de la primera card y altura del mapa -->
     <script th:src="@{/js/explore-layout-fix.js}"></script>
     <!-- Script para el modal de "Comparte tus hechos" -->
     <script th:src="@{/js/share-event-modal.js}"></script>
 </th:block>
+
 </html>
