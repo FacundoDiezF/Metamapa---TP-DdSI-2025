@@ -63,13 +63,13 @@ public class PagesController {
 
     PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
     PageDTO<CategoryDTO> categoryPage = categoryService.getAllCategories(pageCat, 15);
-    List<ProvinceDTO> provinces = locationService.getAllProvinces();
+    PageDTO<ProvinceDTO> provincePage = locationService.getAllProvinces(page, size);
 
     model.addAttribute("events", eventPage.getContent());
     model.addAttribute("newEvent", new EventOutputDTO());
 
     model.addAttribute("categoryPage", categoryPage);
-    model.addAttribute("provinces", provinces);
+    model.addAttribute("provinces", provincePage.getContent());
 
     model.addAttribute("pageTitle", "MetaMapa · Explorar");
     model.addAttribute("active", "explore");
@@ -98,7 +98,7 @@ public class PagesController {
   @GetMapping("/collections")
   public String collections(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
     PageDTO<CollectionDTO> collectionPage = collectionService.getAll(page);
-    model.addAttribute("collections", collectionPage);
+    model.addAttribute("collections", collectionPage.getContent());
     model.addAttribute("pageTitle", "MetaMapa · Colecciones");
     model.addAttribute("active", "collections");
     return "collections";

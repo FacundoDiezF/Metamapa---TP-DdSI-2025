@@ -4,6 +4,7 @@ import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
+import interfaz.grafica.ddsi.dtos.ProvinceDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -79,10 +80,21 @@ public class ServerAdapter {
             .path("/categories")
             .queryParam("page", page)
             .queryParam("size", size)
-            //.queryParam("fromUpdatedDate", lastUpdate)
             .build())
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<PageDTO<CategoryDTO>>() {})
+        .block();
+  }
+
+  public PageDTO<ProvinceDTO> getAllProvinces(int page, int size) {
+    return webClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/locations/provinces")
+            .queryParam("page", page)
+            .queryParam("size", size)
+            .build())
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<ProvinceDTO>>() {})
         .block();
   }
 }

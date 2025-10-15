@@ -26,7 +26,7 @@ public class CollectionService {
   }
 
   public PageDTO<CollectionDTO> getAll(int page) {
-    //TODO que le pida al agregador todas las colecciones
+    //TODO TEST
     try {
       return server.getAllCollections(page);
     } catch (WebClientResponseException e) {
