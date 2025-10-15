@@ -1,9 +1,9 @@
 <th:block th:fragment="navbar">
     <div class="navbar" id="navbar">
-        <div class="brand">
+        <a th:href="@{/explore}" class="brand">
             <div class="brand-mark"><span class="dot"></span></div>
             <span class="brand-name">MetaMapa</span>
-        </div>
+        </a>
         <div class="auth-actions">
             <!-- Botón modo curado pequeño -->
             <div class="curated-toggle-wrapper">

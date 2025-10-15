@@ -36,6 +36,25 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.brand:hover,
+.brand:focus {
+    text-decoration: none;
+}
+
+.brand:hover .brand-name {
+    color: var(--Accent, #3B82F6);
+}
+
+.brand:hover .brand-mark {
+    border-color: var(--Accent, #3B82F6);
+}
+
+.brand:hover .brand-mark .dot {
+    background: var(--Accent, #3B82F6);
 }
 
 .brand-mark {
@@ -46,6 +65,7 @@
     place-items: center;
     border: 2px dashed var(--Accent, #3B82F6);
     position: relative;
+    transition: border-color 0.2s ease;
 }
 
 .brand-mark .dot {
@@ -54,6 +74,7 @@
     background: var(--Accent, #3B82F6);
     border-radius: 999px;
     display: block;
+    transition: background 0.2s ease;
 }
 
 .brand-name {
@@ -64,6 +85,7 @@
     letter-spacing: -0.01em;
     color: var(--BrandText);
     margin: 0;
+    transition: color 0.2s ease;
 }
 
 /* ===========================
@@ -279,13 +301,13 @@
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
+    transition: color 0.2s ease;
 }
 
 .subnav a:hover,
 .subnav a:focus-visible {
-    color: var(--Accent);
-    background: color-mix(in srgb, var(--Accent) 6%, transparent);
-    outline: 0; box-shadow: var(--focus-ring);
+    color: var(--DarkAccent);
+    outline: none;
 }
 
 .subnav a.active {
@@ -370,6 +392,61 @@
     border-radius: 8px;
     font: inherit;
     color: var(--Text, #111827);
+}
+
+/* Espaciado ajustado para inputs en el formulario de login */
+#loginForm input {
+    margin-bottom: 12px;
+}
+
+#loginForm input:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Contenedor para el campo de contraseña con botón toggle */
+.password-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-field input {
+    width: 100%;
+    padding-right: 75px !important; /* Más espacio para el ojo y la validación */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 40px; /* Posición por defecto para formulario de registro */
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--Muted, #475569);
+    transition: color 0.2s ease;
+    z-index: 10;
+}
+
+/* Posición específica para el ojo en el formulario de login (más a la derecha) */
+#loginForm .toggle-password {
+    right: 10px;
+}
+
+#loginForm .password-field input {
+    padding-right: 45px !important;
+}
+
+.toggle-password:hover {
+    color: var(--Accent, #3B82F6);
+}
+
+.toggle-password:focus-visible {
+    outline: 2px solid var(--Accent, #3B82F6);
+    outline-offset: 2px;
+    border-radius: 4px;
 }
 
 .auth-modal button[type="submit"] {

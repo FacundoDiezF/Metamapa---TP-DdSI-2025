@@ -36,8 +36,6 @@
     --shadow-md: 0 6px 16px rgba(0, 0, 0, .08);
     --border-subtle: rgba(229, 231, 235, 0.3); /* Borde sutil para efecto de elevación */
     --shadow-elevated: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06); /* Sombra de elevación */
-
-    /* —— Layout —— */
     --header-h: 72px;
     --subnav-h: 44px;
 

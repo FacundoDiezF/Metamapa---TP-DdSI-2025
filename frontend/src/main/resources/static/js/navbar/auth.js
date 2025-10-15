@@ -100,4 +100,34 @@
     closeModal();
   });
 
+  // Toggle password visibility - manejo de clicks en los botones de ojo
+  overlay.addEventListener('click', (e) => {
+    const toggleBtn = e.target.closest('.toggle-password');
+    if (!toggleBtn) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const targetId = toggleBtn.getAttribute('data-target');
+    const passwordInput = document.getElementById(targetId);
+    if (!passwordInput) return;
+
+    const eyeIcon = toggleBtn.querySelector('.eye-icon');
+    const eyeOffIcon = toggleBtn.querySelector('.eye-off-icon');
+
+    if (passwordInput.type === 'password') {
+      // Mostrar contraseña
+      passwordInput.type = 'text';
+      if (eyeIcon) eyeIcon.style.display = 'none';
+      if (eyeOffIcon) eyeOffIcon.style.display = 'block';
+      toggleBtn.setAttribute('aria-label', 'Ocultar contraseña');
+    } else {
+      // Ocultar contraseña
+      passwordInput.type = 'password';
+      if (eyeIcon) eyeIcon.style.display = 'block';
+      if (eyeOffIcon) eyeOffIcon.style.display = 'none';
+      toggleBtn.setAttribute('aria-label', 'Mostrar contraseña');
+    }
+  });
+
 })();
