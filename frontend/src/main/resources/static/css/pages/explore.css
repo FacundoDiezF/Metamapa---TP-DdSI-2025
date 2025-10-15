@@ -9,7 +9,7 @@
 .feed {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-6);
+  gap: 0;
   padding-right: .25rem;
   -webkit-overflow-scrolling: touch;
   min-height: 0;
@@ -487,51 +487,95 @@ details.share[open] .share-panel {
   }
 }
 
-/* 1) Summary prolijo + sin marcador */
-.post-box { list-style: none; margin: 0; }
-.post-box::-webkit-details-marker { display: none; }
+/* ===========================
+   Infinite Scroll - Loading Indicator & End Message
+=========================== */
 
-/* 2) Unir visualmente summary y form, evitando borde doble al abrir */
-details.share[open] > .post-box {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-bottom: 0;
-}
-details.share[open] > .share-panel {
-    margin-top: -1px;                 /* pisa el borde inferior del summary */
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+#events-container {
+  display: contents;
 }
 
-/* 3) Separación del feed (que no se meta debajo) */
-.feed { display: flex; flex-direction: column; gap: var(--sp-4); }
-
-details.share:not([open]) .post-box {
-    position: sticky;
-    top: calc(var(--header-h) + var(--subnav-h) + var(--sp-2));
-    z-index: 2;
-    background: var(--ModuleBG);
-}
-details.share[open] .post-box { position: static; }
-
-.sidebar,
-.sidebar-right {
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-6) var(--sp-4);
+  margin: var(--sp-4) 0;
+  border-radius: var(--radius-12);
   background: var(--ModuleBG);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-12);
-  padding: var(--sp-3);
-  box-shadow: var(--shadow-elevated);
+  animation: fadeIn 0.3s ease;
 }
 
-.sidebar-right .map-box {
-  margin-bottom: 1.75rem;
+.loading-indicator p {
+  margin: 0;
+  color: var(--Muted);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
 }
 
-.map-box,
-.colecciones {
+/* Spinner animado */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-light);
+  border-top-color: var(--Accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mensaje de fin de resultados */
+.end-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-5) var(--sp-4);
+  margin: var(--sp-4) 0;
   border-radius: var(--radius-12);
-  padding: 1rem;
-  border: 1px solid var(--border-accent); /* Usar variable para consistencia */
   background: var(--ModuleBG);
-  box-shadow: 0 1px 3px rgba(71, 82, 101, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border-subtle);
+  animation: fadeIn 0.3s ease;
+}
+
+.end-message p {
+  margin: 0;
+  color: var(--Success);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.no-events-msg {
+  text-align: center;
+  color: var(--Muted);
+  padding: var(--sp-6);
+  font-size: var(--fs-body);
+}
+
+/* ===========================
+   Sentinel (invisible)
+=========================== */
+
+#scroll-sentinel {
+  pointer-events: none;
+  user-select: none;
 }

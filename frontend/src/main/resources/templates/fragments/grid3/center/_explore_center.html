@@ -72,13 +72,28 @@
         </details>
 
     <!-- EVENTOS -->
+    <div id="events-container">
+        <th:block th:if="${#lists.isEmpty(events)}">
+            <p class="no-events-msg">No hay Eventos disponibles.</p>
+        </th:block>
 
-    <th:block th:if="${#lists.isEmpty(events)}">
-        <p>No hay Eventos disponibles.</p>
-    </th:block>
+        <th:block th:if="${!#lists.isEmpty(events)}" th:each="event : ${events}">
+            <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
+        </th:block>
+    </div>
 
-    <th:block th:if="${!#lists.isEmpty(events)}" th:each="event : ${events}">
-        <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
-    </th:block>
+    <!-- Indicador de carga (scroll infinito) -->
+    <div id="loading-indicator" class="loading-indicator" style="display: none;">
+        <div class="spinner"></div>
+        <p>Cargando más eventos...</p>
+    </div>
+
+    <!-- Sentinel: elemento invisible que detecta cuando llegamos al final -->
+    <div id="scroll-sentinel" style="height: 1px;"></div>
+
+    <!-- Mensaje de fin de resultados -->
+    <div id="end-message" class="end-message" style="display: none;">
+        <p>✓ Has visto todos los eventos disponibles</p>
+    </div>
 
 </section>
