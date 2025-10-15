@@ -2,21 +2,38 @@ package interfaz.grafica.ddsi.services;
 
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
+import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.SourceDTO;
 import java.util.List;
+import interfaz.grafica.ddsi.exceptions.BackendException;
+import interfaz.grafica.ddsi.exceptions.ConnectionException;
+import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
 public class CollectionService {
+
+  private final ServerAdapter server;
+
+  public CollectionService(ServerAdapter server) {
+    this.server = server;
+  }
 
   public List<CollectionDTO> getTop() {
     //TODO: Que le pida al agregador 4 collecciones
     return mockColecciones().subList(0, 4);
   }
 
-  public List<CollectionDTO> getAll() {
+  public PageDTO<CollectionDTO> getAll(int page) {
     //TODO que le pida al agregador todas las colecciones
-    return mockColecciones();
+    try {
+      return server.getAllCollections(page);
+    } catch (WebClientResponseException e) {
+      throw new BackendException("Backend error: " + e.getStatusCode());
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
+    }
   }
 
   public CollectionDTO getByHandler(String handler) {
