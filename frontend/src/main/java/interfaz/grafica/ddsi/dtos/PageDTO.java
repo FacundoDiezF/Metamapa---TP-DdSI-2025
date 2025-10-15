@@ -15,14 +15,12 @@ public class PageDTO<T> {
   private boolean first;
   private boolean last;
 
-  public static PageDTO nullPage() {
-    PageDTO page = new PageDTO<>();
-    page.setContent(List.of());
-    page.setTotalPages(0);
-    page.setTotalElements(0);
-    page.setPageNumber(0);
-    page.setFirst(true);
-    page.setLast(true);
-    return page;
+  public PageDTO(List<T> content, int totalPages, long totalElements, int pageNumber, boolean first, boolean last) {
+    this.content = content;
+    this.totalPages = totalPages;
+    this.totalElements = totalElements;
+    this.pageNumber = pageNumber;
+    this.first = first;
+    this.last = last;
   }
 }

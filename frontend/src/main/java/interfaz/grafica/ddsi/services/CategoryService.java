@@ -3,6 +3,7 @@ package interfaz.grafica.ddsi.services;
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import java.util.List;
 
+import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.exceptions.ConnectionException;
 import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
@@ -18,11 +19,12 @@ public class CategoryService {
     this.server = server;
   }
 
-  public List<CategoryDTO> getAllCategories(int page, int size) {
+  public PageDTO<CategoryDTO> getAllCategories(int page, int size) {
     //TODO: Que le pida al agregador las categorias
     // GET/categories
     try {
-      return server.getAllCategories(page, size);
+      //return server.getAllCategories(page, size);
+      return this.mockCategoryPage();
     } catch (WebClientResponseException e) {
       throw new BackendException("Backend error: " + e.getStatusCode());
     } catch (Exception e) {
@@ -31,12 +33,20 @@ public class CategoryService {
   }
 
   //! BORRAR CUANDO ESTE EL AGREGADOR
-  private List<CategoryDTO> mockCategories() {
-    return List.of(
+  private PageDTO<CategoryDTO> mockCategoryPage() {
+    List<CategoryDTO> categories = List.of(
         new CategoryDTO(1L, "Accidente"),
         new CategoryDTO(2L, "Desastre Natural"),
         new CategoryDTO(3L, "Conflicto Social"),
         new CategoryDTO(4L, "Evento Político")
+    );
+    return new PageDTO<>(
+        categories,
+        1,
+        categories.size(),
+        0,               // pageNumber
+        true,            // first
+        true             // last
     );
   }
 }

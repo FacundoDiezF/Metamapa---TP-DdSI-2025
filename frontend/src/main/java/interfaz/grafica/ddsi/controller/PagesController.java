@@ -57,16 +57,17 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
       @RequestParam(defaultValue = "0", name = "page") int page,
+      @RequestParam(defaultValue = "4", name = "page") int size,
       Model model) {
 
     PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
-    List<CategoryDTO> categories = categoryService.getAllCategories();
+    PageDTO<CategoryDTO> categoryPage = categoryService.getAllCategories(page, size);
     List<ProvinceDTO> provinces = locationService.getAllProvinces();
 
     model.addAttribute("events", eventPage.getContent());
     model.addAttribute("newEvent", new EventOutputDTO());
 
-    model.addAttribute("categories", categories);
+    model.addAttribute("categories", categoryPage);
     model.addAttribute("provinces", provinces);
 
     model.addAttribute("pageTitle", "MetaMapa · Explorar");
