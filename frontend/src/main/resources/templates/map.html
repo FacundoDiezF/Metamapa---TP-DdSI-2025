@@ -3,14 +3,14 @@
 <!-- CSS propio (se inyecta en el <head> del base) -->
 <th:block layout:fragment="extraStyles">
     <link rel="stylesheet" th:href="@{/css/pages/mapa.css}"/>
-    <link rel="stylesheet" th:href="@{/css/filters.css}"/>
+    <link rel="stylesheet" th:href="@{/css/shared/filters/filters.css}"/>
 </th:block>
 
 
 <div th:fragment="contenido" class="map-layout">
 
     <!-- Mapa -->
-    <aside th:replace="~{layout/fragments/_sidebar_left:: filter-form(@{/map})}"></aside>
+    <aside th:replace="~{fragments/grid3/_sidebar_left :: filter-form(@{/map})}"></aside>
 
     <section class="map-wrap">
         <div id="map" aria-label="Mapa de hechos"></div>

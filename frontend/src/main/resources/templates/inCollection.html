@@ -9,9 +9,9 @@
 
 <th:block th:fragment="contenido">
     <section th:replace="~{layout/grid3 :: grid3(
-        ~{layout/fragments/_sidebar_left :: filter-form(@{/collection/{handler}(handler=${collection.handler})})},
-        ~{fragments/inCollection/_inCollection_center :: center},
-        ~{layout/fragments/_sidebar_right :: right}
+        ~{fragments/grid3/_sidebar_left :: filter-form(@{/collection/{handler}(handler=${collection.handler})})},
+        ~{fragments/grid3/center/_inCollection_center :: center},
+        ~{fragments/grid3/_sidebar_right :: right}
       )}"></section>
 </th:block>
 
