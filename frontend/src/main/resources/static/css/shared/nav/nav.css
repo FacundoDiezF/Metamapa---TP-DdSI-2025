@@ -9,7 +9,7 @@
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 3000; /* Aumentado para que el wrapper del curated toggle (3500) funcione correctamente */
     height: var(--header-h);
     padding: 0 clamp(12px, 2vw, 24px);
     display: grid;
@@ -125,13 +125,11 @@
     border: 1px solid color-mix(in srgb, var(--Accent) 40%, #93c5fd);
 }
 
-/* ===========================
-   Botón Modo Curado
-=========================== */
-
+/* ===== Botón Modo Curado ===== */
 .curated-toggle-wrapper {
     position: relative;
     display: inline-flex;
+    z-index: 3500; 
 }
 
 .curated-toggle {
@@ -141,12 +139,14 @@
     padding: 6px;
     width: 32px;
     height: 32px;
-    border: 1px solid var(--LightText, #e5e7eb);
+    border: 1px solid var(--ui-border, #e5e7eb);
     border-radius: 50%;
-    background: var(--ModuleBG, #fff);
+    background: #fff;
     color: var(--Muted, #475569);
     cursor: pointer;
     transition: all 0.2s ease;
+    position: relative;
+    z-index: 1;
 }
 
 .curated-toggle svg {
@@ -155,15 +155,16 @@
 }
 
 .curated-toggle:hover {
-    border-color: var(--Accent, #3B82F6);
-    color: var(--Accent, #3B82F6);
-    background: color-mix(in srgb, var(--Accent) 5%, #fff);
+    border-color: var(--AltDetails, #3B82F6);
+    color: var(--AltDetails, #3B82F6);
+    background: color-mix(in srgb, var(--AltDetails) 5%, #fff);
     transform: scale(1.05);
 }
 
+/* Estado activo */
 .curated-toggle.active {
-    background: var(--Accent, #3B82F6);
-    border-color: var(--Accent, #3B82F6);
+    background: var(--AltDetails, #3B82F6);
+    border-color: var(--AltDetails, #3B82F6);
     color: #fff;
 }
 
@@ -172,7 +173,7 @@
 }
 
 .curated-toggle:focus-visible {
-    outline: 0; box-shadow: var(--focus-ring);
+    outline: 2px solid color-mix(in srgb, var(--AltDetails) 45%, #fff);
     outline-offset: 2px;
 }
 
@@ -227,6 +228,27 @@
     }
 }
 
+@keyframes tooltipFadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-4px);
+    }
+}
+
+/* Responsive: ocultar texto en pantallas pequeñas */
+@media (max-width: 768px) {
+    .curated-toggle .toggle-label {
+        display: none;
+    }
+    .curated-toggle {
+        padding: 8px 10px;
+    }
+}
+
 /* ===========================
    Subnav (Navegación Secundaria)
 =========================== */
@@ -235,7 +257,7 @@
     overflow-y: hidden;
     position: sticky;
     top: var(--header-h);
-    z-index: 1000;
+    z-index: 2500;
     height: var(--subnav-h);
     display: flex;
     align-items: flex-end;
