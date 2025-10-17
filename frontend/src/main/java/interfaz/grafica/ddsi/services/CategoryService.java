@@ -19,8 +19,7 @@ public class CategoryService {
     this.server = server;
   }
 
-  public PageDTO<CategoryDTO> getAllCategories(int page, int size) { //*
-    //TODO: TEST
+  public PageDTO<CategoryDTO> getAll(int page, int size) {
     try {
       return server.getAllCategories(page, size);
     } catch (WebClientResponseException e) {

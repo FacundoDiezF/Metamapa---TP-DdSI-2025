@@ -62,7 +62,7 @@ public class PagesController {
       Model model) {
 
     PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
-    PageDTO<CategoryDTO> categoryPage = categoryService.getAllCategories(pageCat, 15);
+    PageDTO<CategoryDTO> categoryPage = categoryService.getAll(pageCat, 15);
     PageDTO<ProvinceDTO> provincePage = locationService.getAllProvinces(page, size);
 
     model.addAttribute("events", eventPage.getContent());
@@ -112,7 +112,6 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
       @RequestParam(defaultValue = "0", name = "page") int page,
-
       Model model) {
 
     PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page); //? Ahora mismo el mapa solo muestra los eventos de la pagina que trae
