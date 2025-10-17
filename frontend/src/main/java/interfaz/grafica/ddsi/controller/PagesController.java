@@ -67,6 +67,10 @@ public class PagesController {
     model.addAttribute("events", eventPage.getContent());
     model.addAttribute("newEvent", new EventOutputDTO());
 
+    // Atributos necesarios para HTMX infinite scroll TODO: CAMBIAR QUE LO TOME DESDE DENTRO, estos valores los tiene la pag
+    model.addAttribute("currentPage", page);
+    model.addAttribute("hasMorePages", !eventPage.isLast());
+
     this.addFilterModels(model, pageCat, pageProv);
 
     model.addAttribute("pageTitle", "MetaMapa · Explorar");
@@ -125,6 +129,7 @@ public class PagesController {
       @RequestParam(defaultValue = "0", name = "page-cat") int pageCat,
       @RequestParam(defaultValue = "0", name = "page-prov") int pageProv,
       @RequestParam(defaultValue = "0", name = "page") int page,
+
       Model model) {
 
     PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);

@@ -6,7 +6,7 @@
                 <input type="text" placeholder="Comparte tus hechos..." readonly/>
                 <div class="post-icons" aria-hidden="true">
                     <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen" onclick="event.stopPropagation()">
-                        <img src="../shared/img/icons/imagesmode.svg" alt="">
+                        <img src="../shared/icons/imagesmode.svg" alt="">
                     </a>
                 </div>
             </summary>
@@ -72,13 +72,47 @@
         </details>
 
     <!-- EVENTOS -->
+    <div id="events-container">
+        <th:block th:if="${#lists.isEmpty(events)}">
+            <p class="no-events-msg">No hay Eventos disponibles.</p>
+        </th:block>
 
-    <th:block th:if="${#lists.isEmpty(events)}">
-        <p>No hay Eventos disponibles.</p>
-    </th:block>
+        <th:block th:if="${!#lists.isEmpty(events)}" th:each="event : ${events}">
+            <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
+        </th:block>
+    </div>
 
-    <th:block th:if="${!#lists.isEmpty(events)}" th:each="event : ${events}">
-        <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
-    </th:block>
+    <!-- Trigger de infinite scroll con HTMX - Fuera del events-container para que se reemplace -->
+    <div th:if="${!#lists.isEmpty(events) && hasMorePages}"
+         id="infinite-scroll-trigger"
+         th:hx-get="@{/explore(page=${currentPage + 1},
+                               category_in=${param.category_in},
+                               province_in=${param.province_in},
+                               eventDate_lt=${param.eventDate_lt},
+                               eventDate_gt=${param.eventDate_gt},
+                               source_in=${param.source_in})}"
+         hx-trigger="intersect threshold:0.5"
+         hx-swap="beforebegin show:none"
+         hx-select="#events-container > *, #infinite-scroll-trigger"
+         hx-indicator="#loading-indicator"
+         class="htmx-scroll-trigger">
+    </div>
+
+    <!-- Carga la siguiente página -->
+    <!-- Se activa cuando el 50% del elemento es visible en el viewport -->
+    <!-- Reemplaza el trigger por los nuevos eventos y un nuevo trigger (si hay más páginas) -->
+    <!--Del HTML recibido, solo toma esos elementos específicos-->
+    <!-- Muestra el indicador de carga mientras se realiza la petición -->
+
+    <!-- Indicador de carga (se muestra automáticamente por HTMX) -->
+    <div id="loading-indicator" class="loading-indicator htmx-indicator">
+        <div class="spinner"></div>
+        <p>Cargando más eventos...</p>
+    </div>
+
+    <!-- Mensaje de fin de resultados -->
+    <div th:if="${#lists.isEmpty(events) || !hasMorePages}" id="end-message" class="end-message">
+        <p>✓ Has visto todos los eventos disponibles</p>
+    </div>
 
 </section>

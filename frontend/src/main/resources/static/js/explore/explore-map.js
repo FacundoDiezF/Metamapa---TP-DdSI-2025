@@ -1,36 +1,37 @@
-(function(){
-    // Crear mapa
-    const mapEl = document.getElementById('map');
-    if (!mapEl || typeof L === 'undefined') return;
+(function () {
+    if (typeof L === 'undefined') return; // Leaflet ya lo carga el layout
 
-    const map = L.map(mapEl).setView([-34.6037, -58.3816], 11); // Buenos Aires por defecto
+    // Acepta ambos IDs por si tu contenedor se llama #map o #explore-map
+    const el = document.getElementById('explore-map') || document.getElementById('map');
+    if (!el) return;
+
+    // Si el contenedor no tiene alto, respetá el CSS; si no, damos un mínimo razonable
+    const frame = el.closest('.map-frame');
+    if (frame && frame.getBoundingClientRect().height < 10) frame.style.height = '300px';
+
+    const map = L.map(el, {
+        zoomControl: true,
+        attributionControl: true,
+        scrollWheelZoom: false
+    });
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '&copy; OpenStreetMap'
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    // Markers desde el backend
-    const markers = (Array.isArray(MM_MARKERS) ? MM_MARKERS : []);
-    const group = L.featureGroup();
-    markers.forEach(m => {
-        if (m.lat == null || m.lng == null) return;
-        const marker = L.marker([m.lat, m.lng]).bindPopup(`
-      <strong>${m.title ?? 'Hecho'}</strong><br/>
-      <small>${m.category ?? ''}</small>
-    `);
-        group.addLayer(marker);
-    });
-    if (group.getLayers().length) {
-        group.addTo(map);
-        map.fitBounds(group.getBounds().pad(0.15));
-    }
+    // CABA por defecto
+    map.setView([-34.6037, -58.3816], 11);
 
-    // Hook desde el feed
-    window.MM_zoomTo = (btn) => {
-        const lat = parseFloat(btn.dataset.lat);
-        const lng = parseFloat(btn.dataset.lng);
-        if (Number.isFinite(lat) && Number.isFinite(lng)) {
-            map.setView([lat, lng], 15);
-        }
-    };
+    // Recalcular tamaño si la columna cambia (collapse/tab)
+    const mmMapa = document.getElementById('mm-mapa');
+    if (mmMapa && 'ResizeObserver' in window) {
+        new ResizeObserver(() => map.invalidateSize()).observe(mmMapa);
+    }
+    document.addEventListener('shown.bs.collapse', () => map.invalidateSize());
+    document.addEventListener('shown.bs.tab', () => map.invalidateSize());
+
+    // Exponer si hace falta depurar
+    window.MetaMapa = window.MetaMapa || {};
+    window.MetaMapa.exploreMap = map;
 })();

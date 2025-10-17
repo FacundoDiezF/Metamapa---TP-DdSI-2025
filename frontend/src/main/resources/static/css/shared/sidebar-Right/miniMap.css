@@ -1,25 +1,39 @@
-/* ===========================
-   Mapa Integrado
-=========================== */
-
-.map-box,
-.colecciones {
+/* ===== Mapa (sidebar Explore) ===== */
+.map-box {
+    background: var(--ModuleBG, #fff);
+    border: 1px solid var(--border-light, #ddd);
     border-radius: var(--radius-12);
     padding: 1rem;
-    border: 1px solid rgba(71, 82, 101, 0.15); /* DarkAccent muy suave con 15% de opacidad */
-    background: var(--ModuleBG);
-    box-shadow: 0 1px 3px rgba(71, 82, 101, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03); /* Sombra con toque de DarkAccent */
+    margin-bottom: 1rem;
 }
 
+.map-box h3 {
+    margin: 0 0 0.75rem;
+    font-size: var(--fs-h4);
+    font-weight: var(--fw-semibold, 600);
+    color: var(--Text);
+}
+
+/* Marco con relación de aspecto fija */
 .map-frame {
-    border-radius: var(--radius-10);
+    position: relative;
+    border-radius: var(--radius-8);
     overflow: hidden;
-    max-height: 260px;
+    border: 1px solid var(--LightText, #ddd);
+    /* Ajustá alto según tu layout; 260–320px suele andar bien */
+    height: 300px;
 }
 
-#map {
-    width: 100%;
-    height: clamp(120px, 22vh, 200px) !important;
-    max-height: 220px;
-    min-height: 110px;
+/* Lienzo Leaflet */
+.map-canvas {
+    position: absolute;
+    inset: 0;
+}
+
+/* (Opcional) fijar la columna en desktop */
+@media (min-width: 992px) {
+    .sidebar-right {
+        position: sticky;
+        top: 1rem;
+    }
 }

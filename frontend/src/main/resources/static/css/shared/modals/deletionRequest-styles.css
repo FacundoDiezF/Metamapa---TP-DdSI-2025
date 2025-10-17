@@ -1,0 +1,219 @@
+/* ============ Modal de Solicitud de Eliminación ============ */
+
+/* Overlay del modal (fondo oscuro) */
+.modal-overlay[hidden] {
+  display: none;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, .55);
+  z-index: 9999;
+}
+
+/* Modal base */
+.auth-modal {
+  position: relative;
+  width: min(92vw, 480px);
+  background: var(--ModuleBG);
+  border-radius: var(--radius-12);
+  padding: var(--sp-6);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+}
+
+/* Botón cerrar (X) */
+.modal-close {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  font-weight: var(--fw-bold);
+  display: grid;
+  place-items: center;
+  color: var(--Muted);
+  opacity: .8;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.modal-close:hover {
+  color: var(--BrandText);
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* Modales tipo :target (CSS-only) */
+.target-modal {
+  display: none;
+}
+
+.target-modal:target {
+  display: grid;
+}
+
+/* Cerrar al clickear el fondo */
+.overlay-dismiss {
+  position: absolute;
+  inset: 0;
+  display: block;
+  z-index: 0;
+}
+
+/* Panel del modal por encima del fondo */
+.report-modal,
+.success-modal {
+  position: relative;
+  z-index: 1;
+}
+
+/* Títulos y textos */
+.report-modal h2,
+.success-modal h2 {
+  margin-bottom: var(--sp-2);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+}
+
+.muted {
+  color: var(--Muted);
+  font-size: .95rem;
+  line-height: var(--lh-normal);
+  margin: 0 0 var(--sp-4);
+}
+
+/* ============ Formulario de Reporte ============ */
+.report-form {
+  display: grid;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+}
+
+.report-form .field {
+  display: block;
+}
+
+/* Textarea del formulario */
+.report-form textarea {
+  width: 100%;
+  padding: .95rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-12);
+  background: var(--ModuleBG);
+  font: inherit;
+  resize: vertical;
+  min-height: 180px;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+
+.report-form textarea:focus {
+  outline: none;
+  border-color: var(--Accent);
+  box-shadow: var(--focus-ring);
+}
+
+/* Estados de validación */
+.report-form textarea:valid {
+  border-color: var(--Success);
+  background-color: #f0fdf4;
+}
+
+.report-form textarea:focus:invalid {
+  border-color: var(--Danger);
+  background-color: #fef2f2;
+}
+
+/* Textos de ayuda */
+.report-form .help {
+  margin-top: .35rem;
+  font-size: var(--fs-small);
+  line-height: 1.4;
+}
+
+.report-form .help.info {
+  color: var(--Muted);
+}
+
+.report-form .error-msg {
+  display: none;
+  color: #b91c1c;
+}
+
+/* Mostrar error si es inválido y está en foco */
+.report-form:has(textarea:focus:invalid) .error-msg {
+  display: block;
+}
+
+/* ============ Botones de acción ============ */
+.upload-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+
+/* Botón deshabilitado por defecto */
+.report-form .submit-report[disabled] {
+  opacity: .55;
+  cursor: not-allowed;
+  filter: saturate(.6);
+  pointer-events: none;
+}
+
+/* Habilitar cuando el textarea sea válido */
+.report-form:has(textarea:valid) .submit-report {
+  opacity: 1;
+  cursor: pointer;
+  filter: none;
+  pointer-events: auto;
+}
+
+/* ============ Modal de éxito ============ */
+.success-modal h2 {
+  margin-bottom: var(--sp-1);
+}
+
+.success-modal .muted {
+  margin: 0 0 var(--sp-3);
+}
+
+/* ============ Clase sr-only (screen reader only) ============ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============ Responsive ============ */
+@media (max-width: 600px) {
+  .auth-modal {
+    width: min(95vw, 480px);
+    padding: var(--sp-5);
+  }
+
+  .report-form textarea {
+    min-height: 150px;
+    font-size: .95rem;
+  }
+
+  .upload-actions {
+    flex-direction: column-reverse;
+    gap: var(--sp-2);
+  }
+
+  .upload-actions .btn {
+    width: 100%;
+  }
+}
