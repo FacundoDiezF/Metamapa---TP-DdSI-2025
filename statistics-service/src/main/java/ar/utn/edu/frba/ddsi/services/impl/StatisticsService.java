@@ -33,13 +33,17 @@ public class StatisticsService implements IStatisticsService {
 
   @Override
   public void refreshStatistics(LocalDateTime lastUpdate) {
+    try {
+      eventService.fetchEvents(lastUpdate);
+    } catch (Exception e) {
+      throw new RuntimeException("Error fetching events", e);
+    }
 
-    // Fetch events since last update
-    eventService.fetchEvents(lastUpdate);
-
-    //Fetch Collections since last update
-    collectionService.fetchCollections(lastUpdate);
-
+    try {
+      collectionService.fetchCollections(lastUpdate);
+    } catch (Exception e) {
+      throw new RuntimeException("Error fetching collections", e);
+    }
   }
 
   //----- Statistics methods (maybe move to their oun service)

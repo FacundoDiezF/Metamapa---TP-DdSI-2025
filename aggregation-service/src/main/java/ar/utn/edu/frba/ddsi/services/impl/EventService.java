@@ -6,17 +6,19 @@ import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
+import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ICategoryService;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import ar.utn.edu.frba.ddsi.services.ILocationService;
+import ar.utn.edu.frba.ddsi.services.INormalizationService;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import ar.utn.edu.frba.ddsi.services.INormalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,14 +49,19 @@ public class EventService implements IEventService {
   }
 
   @Override
-  public List<EventOutputDTO> getEvents(
-      String category,
-      LocalDateTime untilUploadDate,
-      LocalDateTime fromUploadDate,
-      LocalDateTime untilEventDate,
-      LocalDateTime fromEventDate,
-      LocalDateTime fromUpdatedDate) {
-    return eventRepository.findFiltered(category, untilUploadDate, fromUploadDate, untilEventDate, fromEventDate, fromUpdatedDate).stream().map(EventOutputDTO::from).toList();
+  public Page<EventOutputDTO> getEvents(
+      List<Long> category_in,
+      List<Long> province_in,
+      List<Origin> source_in,
+      LocalDateTime uploadDate_lt,
+      LocalDateTime uploadDate_gt,
+      LocalDateTime eventDate_lt,
+      LocalDateTime eventDate_gt,
+      LocalDateTime fromUpdatedDate,
+      Pageable pageable
+  ) {
+    Page<Event> eventsPage = eventRepository.findFiltered(category_in, province_in, source_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt, fromUpdatedDate, pageable);
+    return eventsPage.map(EventOutputDTO::from);
   }
 
   @Override

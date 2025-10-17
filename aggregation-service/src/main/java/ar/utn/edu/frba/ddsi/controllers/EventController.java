@@ -2,9 +2,14 @@ package ar.utn.edu.frba.ddsi.controllers;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
+import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,15 +30,21 @@ public class EventController {
 
 
   @GetMapping
-  public List<EventOutputDTO> getEvents(
-      @RequestParam(required = false) String category,
-      @RequestParam(required = false) LocalDateTime untilUploadDate,
-      @RequestParam(required = false) LocalDateTime fromUploadDate,
-      @RequestParam(required = false) LocalDateTime untilEventDate,
-      @RequestParam(required = false) LocalDateTime fromEventDate,
-      @RequestParam(required = false) LocalDateTime fromUpdatedDate
+  public Page<EventOutputDTO> getEvents(
+      @RequestParam(required = false) List<Long> category_in,
+      @RequestParam(required = false) List<Long> province_in,
+      @RequestParam(required = false) List<Origin> source_in,
+      @RequestParam(required = false) LocalDateTime uploadDate_lt,
+      @RequestParam(required = false) LocalDateTime uploadDate_gt,
+      @RequestParam(required = false) LocalDateTime eventDate_lt,
+      @RequestParam(required = false) LocalDateTime eventDate_gt,
+      @RequestParam(required = false) LocalDateTime fromUpdatedDate, //TODO: Cambiar nomenclatura, pero esto afecta al modulo de estadisticas
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size
   ) {
-    return eventService.getEvents(category, untilUploadDate, fromUploadDate, untilEventDate, fromEventDate, fromUpdatedDate);
+    Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+
+    return eventService.getEvents(category_in, province_in, source_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt, fromUpdatedDate, pageable);
   }
 
   @PostMapping

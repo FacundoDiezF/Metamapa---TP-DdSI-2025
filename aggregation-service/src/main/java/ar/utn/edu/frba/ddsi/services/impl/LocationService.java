@@ -1,5 +1,6 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
+import ar.utn.edu.frba.ddsi.models.dtos.output.event.ProvinceDTO;
 import ar.utn.edu.frba.ddsi.models.entities.adapters.LocationAPI;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Coordinate;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Department;
@@ -10,8 +11,9 @@ import ar.utn.edu.frba.ddsi.models.repositories.IDepartmentRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IMunicipalityRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IProvinceRepository;
 import ar.utn.edu.frba.ddsi.services.ILocationService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -167,7 +169,8 @@ public class LocationService implements ILocationService {
   }
 
   @Override
-  public List<Province> getAllProvinces() {
-    return provinceRepository.findAll();
+  public Page<ProvinceDTO> getAllProvinces(Pageable pageable) {
+    Page<Province> page = provinceRepository.findAll(pageable);
+    return page.map(ProvinceDTO::from);
   }
 }

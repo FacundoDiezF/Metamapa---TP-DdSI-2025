@@ -19,8 +19,9 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -67,12 +68,11 @@ public class CollectionService implements ICollectionService {
   }
 
   @Override
-  public List<CollectionOutputDTO> getCollections(LocalDateTime fromUpdateDate) {
-    List<Collection> collections =
-        fromUpdateDate != null
-            ? collectionRepository.findAllByUpdatedDateAfter(fromUpdateDate)
-            : collectionRepository.findAll();
-    return collections.stream().map(CollectionOutputDTO::from).toList();
+  public Page<CollectionOutputDTO> getCollections(LocalDateTime fromUpdateDate, Pageable pageable) {
+    Page<Collection> collections = fromUpdateDate != null
+        ? collectionRepository.findAllByUpdatedDateAfter(fromUpdateDate, pageable)
+        : collectionRepository.findAll(pageable);
+    return collections.map(CollectionOutputDTO::from);
   }
 
   @Override
