@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ar.utn.edu.frba.ddsi</groupId>
-    <artifactId>metamapa</artifactId>
+    <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>MetaMapa</name>
-    <description>MetaMapa</description>
+    <name>Backend-MetaMapa</name>
+    <description>Modulos backend MetaMapa</description>
     <url/>
     <licenses>
         <license/>

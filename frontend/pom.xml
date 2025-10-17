@@ -6,13 +6,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.10</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>interfaz.grafica.ddsi</groupId>
     <artifactId>interfaz</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>interfaz</name>
-    <description>Interfaz grafica para unir front y back</description>
+    <name>Frontend MetaMapa</name>
+    <description>Interfaz grafica MetaMapa, cliente liviano</description>
     <url/>
     <licenses>
         <license/>
