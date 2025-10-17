@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>MetaMapa · Administración · Fuentes</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Basics -->
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../shared/components.css">
+    <link rel="stylesheet" href="../shared/utilities.css">
+
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/nav.css">
+    <link rel="stylesheet" href="../shared/icons.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+<!-- Header -->
+<header class="navbar" id="navbar">
+    <div class="brand">
+        <div class="brand-mark"><span class="dot"></span></div>
+        <span class="brand-name">MetaMapa</span>
+    </div>
+
+    <div class="auth-actions">
+        <!-- 1) Píldora Admin -->
+        <a href="admin.html" class="pill-admin" role="button" aria-label="Panel de Administración">
+            Administrador
+        </a>
+
+        <!-- 2) Píldora de usuario Abby con dropdown -->
+        <details class="user-menu">
+            <summary class="user-pill" aria-haspopup="menu" aria-expanded="false">
+          <span class="avatar" aria-hidden="true">
+            <img src="../shared/Assets/pics/avatar.png" alt="">
+          </span>
+                <span class="user-name">Abby</span>
+                <span class="caret" aria-hidden="true">▾</span>
+            </summary>
+
+            <ul class="user-dropdown" role="menu" aria-label="Menú de usuario">
+                <li role="none"><a role="menuitem" href="#">Mi cuenta</a></li>
+                <li role="none"><a role="menuitem" href="#">Mis aportes</a></li>
+                <li role="none"><a role="menuitem" href="#">Preferencias</a></li>
+                <li role="none">
+                    <hr>
+                </li>
+                <li role="none"><a role="menuitem" href="#">Cerrar sesión</a></li>
+            </ul>
+        </details>
+    </div>
+</header>
+
+
+<!-- Subnav -->
+<nav class="subnav">
+    <a href="../Index/index.html">Explorar</a>
+    <a href="../Collections/collections.html">Colecciones</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="admin.html" class="active">Panel de Control</a>
+</nav>
+
+<main class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <h3>Panel de Administración</h3>
+        <nav class="admin-menu">
+            <a href="admin.html" class="nav-link">
+                <span class="nav-icon"><img src="../shared/assets/Icons/stats1-svgrepo-com.svg" alt=""></span>
+                <span class="nav-label">Resumen</span>
+            </a>
+            <a href="stats.html" class="nav-link">
+          <span class="nav-icon">
+            <img src="../shared/assets/icons/insight-svgrepo-com.svg" alt="Estadísticas">
+          </span>
+                <span class="nav-label">Estadísticas</span>
+            </a>
+            <a href="collecionsSection.html" class="nav-link">
+                <span class="nav-icon"><img src="../shared/assets/icons/Group.svg" alt=""></span>
+                <span class="nav-label">Colecciones</span>
+            </a>
+            <a href="delete-requests.html" class="nav-link">
+                <span class="nav-icon"><img src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg" alt=""></span>
+                <span class="nav-label">Solicitudes de Eliminación</span>
+            </a>
+            <a href="admin-hechos.html" class="nav-link">
+                <span class="nav-icon"><img src="../shared/assets/icons/sand-clock-svgrepo-com.svg" alt=""></span>
+                <span class="nav-label">Hechos pendientes</span>
+            </a>
+            <a href="sources.html" class="nav-link is-active">
+                <span class="nav-icon"><img src="../shared/assets/icons/material-symbols_database-outline.svg"
+                                            alt=""></span>
+                <span class="nav-label">Fuentes</span>
+            </a>
+            <a href="import-csv.html" class="nav-link">
+                <span class="nav-icon"><img src="../shared/assets/icons/uil_import.svg" alt=""></span>
+                <span class="nav-label">Importar CSV</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Contenido -->
+    <section class="admin-content">
+        <header class="page-head">
+            <div class="page-head-text">
+                <h1 class="page-title">Configuración de Fuentes</h1>
+                <p class="page-subtitle">Gestiona las fuentes de datos para cada colección</p>
+            </div>
+            <div class="page-actions">
+                <a href="#modal-nueva-fuente" class="btn btn-primary">
+                    <img class="icon" src="../shared/assets/icons/plus.svg" alt="">
+                    Nueva Fuente
+                </a>
+            </div>
+
+        </header>
+
+        <div class="source-list">
+            <!-- 1) API Ministerio Ambiente -->
+            <article class="source-card">
+                <header class="source-head">
+                    <div class="title-wrap">
+                        <img class="i32" src="../shared/assets/icons/API.svg" alt="">
+                        <h3 class="card-title">API Ministerio Ambiente</h3>
+                        <span class="pill pill-ok">Activa</span>
+                        <span class="pill">Dinámica</span>
+                    </div>
+                    <div class="action-pills">
+                        <button class="pill" title="Editar">
+                            <img src="../shared/assets/icons/edit.svg" alt="">
+                        </button>
+                        <button class="pill" title="Eliminar">
+                            <img src="../shared/assets/icons/trash.svg" alt="">
+                        </button>
+                    </div>
+                </header>
+
+                <p class="source-desc">
+                    API oficial del Ministerio de Ambiente para datos de contaminación
+                </p>
+
+                <div class="source-meta">
+                    <div class="meta">
+                        <img class="icon" src="../shared/assets/icons/material-symbols_database-outline.svg" alt="">
+                        <span><strong>Colección:</strong> Contaminación Hídrica</span>
+                    </div>
+                    <div class="meta">
+                        <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt="">
+                        <span>89 registros</span>
+                    </div>
+                    <div class="meta">
+                        <img class="icon" src="../shared/assets/icons/clock-two-thirty-svgrepo-com.svg" alt="">
+                        <span>Última sync: 2024-03-10 14:30</span>
+                    </div>
+                </div>
+
+                <div class="source-config">
+                    <div class="config-label">Configuración:</div>
+                    <div class="config-box">
+                        <div>URL: https://api.ambiente.gob.ar/contaminacion</div>
+                        <div>Intervalo: 3600s</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 2) BD CONADEP -->
+            <article class="source-card">
+                <header class="source-head">
+                    <div class="title-wrap">
+                        <img class="i32" src="../shared/assets/icons/material-symbols_database-outline.svg" alt="">
+                        <h3 class="card-title">Base de Datos CONADEP</h3>
+                        <span class="pill pill-ok">Activa</span>
+                        <span class="pill">Estática</span>
+                    </div>
+                    <div class="action-pills">
+                        <button class="pill" title="Editar">
+                            <img src="../shared/assets/icons/edit.svg" alt="">
+                        </button>
+                        <button class="pill" title="Eliminar">
+                            <img src="../shared/assets/icons/trash.svg" alt="">
+                        </button>
+                    </div>
+                </header>
+
+                <p class="source-desc">Datos históricos de la CONADEP</p>
+
+                <div class="source-meta">
+                    <div class="meta">
+                        <img class="icon" src="../shared/assets/icons/material-symbols_database-outline.svg" alt="">
+                        <span><strong>Colección:</strong> Desapariciones Forzadas</span>
+                    </div>
+                    <div class="meta">
+                        <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt="">
+                        <span>234 registros</span>
+                    </div>
+                </div>
+
+                <div class="source-config">
+                    <div class="config-label">Configuración:</div>
+                    <div class="config-box">
+                        <div>Datos importados manualmente desde archivos históricos</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 3) Proxy Bomberos Córdoba (Error) -->
+            <article class="source-card">
+                <header class="source-head">
+                    <div class="title-wrap">
+                        <img class="i32" src="../shared/assets/icons/shuffle-svgrepo-com.svg" alt="">
+                        <h3 class="card-title">Proxy Bomberos Córdoba</h3>
+                        <span class="pill pill-error">Error</span>
+                        <span class="pill">Proxy</span>
+                    </div>
+                    <div class="action-pills">
+                        <button class="pill" title="Editar">
+                            <img src="../shared/assets/icons/edit.svg" alt="">
+                        </button>
+                        <button class="pill" title="Eliminar">
+                            <img src="../shared/assets/icons/trash.svg" alt="">
+                        </button>
+                    </div>
+                </header>
+
+                <p class="source-desc">Proxy hacia sistema de bomberos de Córdoba</p>
+
+                <div class="source-meta">
+                    <div class="meta">
+                        <img class="icon" src="../shared/assets/icons/material-symbols_database-outline.svg" alt="">
+                        <span><strong>Colección:</strong> Incendios Forestales 2024</span>
+                    </div>
+                    <div class="meta">
+                        <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt="">
+                        <span>45 registros</span>
+                    </div>
+                    <div class="meta">
+                        <img class="icon" src="../shared/assets/icons/clock-two-thirty-svgrepo-com.svg" alt="">
+                        <span>Última sync: 2024-03-09 10:15</span>
+                    </div>
+                </div>
+
+                <div class="source-config">
+                    <div class="config-label">Configuración:</div>
+                    <div class="config-box">
+                        <div>Destino: https://bomberos.cordoba.gob.ar/api</div>
+                        <div>Sincronización: 1800s</div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Ancla inerte para cerrar modales sin mover el scroll -->
+    <div id="close" style="position:fixed; inset:auto;"></div>
+
+</main>
+
+<!-- ===== Modal Nueva Fuente (CSS-only con :target) ===== -->
+<div id="modal-nueva-fuente" class="modal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <!-- Overlay clickeable para cerrar -->
+    <a href="#close" class="modal-overlay" aria-label="Cerrar"></a>
+
+
+    <section class="modal-dialog">
+        <header class="modal-head">
+            <h2 id="modal-title">Crear Nueva Fuente</h2>
+            <a href="#" class="modal-close" aria-label="Cerrar">×</a>
+        </header>
+
+        <!-- ===== Tabs (radios + labels) CORREGIDOS ===== -->
+        <div class="tabs">
+            <!-- radios: hermanos de .tabs-panels -->
+            <input type="radio" name="tipoFuente" id="tab-estatica" checked>
+            <input type="radio" name="tipoFuente" id="tab-dinamica">
+            <input type="radio" name="tipoFuente" id="tab-proxy">
+
+            <!-- labels: sólo labels, sin inputs adentro -->
+            <div class="tabs-tabs">
+                <label for="tab-estatica">Estática</label>
+                <label for="tab-dinamica">Dinámica</label>
+                <label for="tab-proxy">Proxy</label>
+            </div>
+
+            <!-- Panels -->
+            <div class="tabs-panels">
+                <!-- Estática -->
+                <form class="panel" data-panel="estatica" action="#" method="get">
+                    <div class="field">
+                        <label>Nombre de la Fuente</label>
+                        <input type="text" placeholder="Nombre descriptivo de la fuente" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Descripción</label>
+                        <textarea rows="3" placeholder="Descripción de la fuente de datos" required></textarea>
+                    </div>
+
+                    <!-- Nuevo: vincular CSV ya cargado en el sistema -->
+                    <div class="field">
+                        <label for="csv-existente">Archivo CSV</label>
+                        <input id="csv-existente" name="csv-existente" type="text" list="csv-list"
+                               placeholder="Buscar o seleccionar…" required aria-describedby="csv-existente-help">
+                        <datalist id="csv-list">
+                            <!-- Ejemplos; reemplazá por tus nombres reales -->
+                            <option value="incendios_cordoba_2024.csv">
+                            <option value="contaminacion_riachuelo_marzo.csv">
+                            <option value="hechos_ambiente_2023_parte1.csv">
+                            <option value="hechos_ambiente_2023_parte2.csv">
+                        </datalist>
+                        <p id="csv-existente-help" class="help info"
+                           data-tip="Los CSV deben haberse cargado desde Importar CSV. Este selector no sube archivos; solo vincula uno existente.">
+                            Seleccioná un CSV ya cargado en el sistema.
+                        </p>
+                    </div>
+
+
+                    <footer class="modal-actions">
+                        <button class="btn btn-primary" type="submit">Crear</button>
+                        <a class="btn" href="#close">Cancelar</a>
+                    </footer>
+                </form>
+
+                <!-- Dinámica -->
+                <form class="panel" data-panel="dinamica" action="#" method="get">
+                    <div class="field">
+                        <label>Nombre de la Fuente</label>
+                        <input type="text" placeholder="Nombre descriptivo de la fuente" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Descripción</label>
+                        <textarea rows="3" placeholder="Descripción de la fuente de datos" required></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label>URL de la API</label>
+                        <input type="url" placeholder="https://api.ejemplo.com/datos" required>
+                    </div>
+
+                    <div class="field">
+                        <label>API Key <span class="muted">(opcional)</span></label>
+                        <input id="apiKey" type="text" placeholder="Clave de API (opcional)"
+                               aria-describedby="apiKeyHelp">
+                        <p id="apiKeyHelp" class="help info"
+                           data-tip="No guardes claves reales en esta demo. Usa valores de ejemplo hasta tener backend y almacenamiento seguro (env/kv).">
+                            ⚠️ No guardes claves reales en esta demo
+                        </p>
+                    </div>
+
+                    <div class="field">
+                        <label>Intervalo de Actualización (segundos)</label>
+                        <input type="number" inputmode="numeric" value="3600" min="60" step="60" required>
+                    </div>
+
+                    <footer class="modal-actions">
+                        <button class="btn btn-primary" type="submit">Crear</button>
+                        <a class="btn" href="#close">Cancelar</a>
+                    </footer>
+                </form>
+
+                <!-- Proxy -->
+                <form class="panel" data-panel="proxy" action="#" method="get">
+                    <div class="field">
+                        <label>Nombre de la Fuente</label>
+                        <input type="text" placeholder="Nombre descriptivo de la fuente" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Descripción</label>
+                        <textarea rows="3" placeholder="Descripción de la fuente de datos" required></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label>URL de Destino</label>
+                        <input type="url" placeholder="https://sistema-externo.com/api" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Intervalo de Sincronización (segundos)</label>
+                        <input type="number" inputmode="numeric" value="3600" min="60" step="60" required>
+                    </div>
+
+                    <footer class="modal-actions">
+                        <button class="btn btn-primary" type="submit">Crear</button>
+                        <a class="btn" href="#close">Cancelar</a>
+                    </footer>
+                </form>
+            </div>
+        </div>
+
+</body>
+
+</html>

@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MetaMapa · Landing</title>
+
+    <!-- Fuente -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Basics -->
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../shared/components.css">
+    <link rel="stylesheet" href="../shared/utilities.css">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="landing.css">
+    <link rel="stylesheet" href="../shared/nav.css" />
+</head>
+
+<body>
+    <!-- ======= NAVBAR ======= -->
+    <header class="mm-nav" role="banner" aria-label="MetaMapa">
+        <div class="mm-nav__inner">
+            <div class="mm-brand">
+                <span class="mm-mark" aria-hidden="true"><span class="dot"></span></span>
+                <span class="mm-name">MetaMapa</span>
+            </div>
+
+            <div class="mm-actions">
+                <a href="#" class="mm-btn mm-btn--primary" data-auth="open" data-panel="register">Registrarse</a>
+                <a href="#" class="mm-btn mm-btn--ghost" data-auth="open" data-panel="login">Iniciar Sesión</a>
+            </div>
+
+        </div>
+
+        <!-- opcional -->
+        <div class="mm-center-badge" aria-hidden="true">
+            <span class="mm-logo-badge"><span class="dot"></span></span>
+        </div>
+    </header>
+
+    <!-- ================== HERO ================== -->
+    <section class="section">
+        <div class="container hero">
+            <div class="hero__image">
+                <img class="hero__img" src="../shared/Assets/pics/landing_metamapa.png"
+                    alt="Ilustración de personas mapeando el mundo">
+            </div>
+
+            <div class="hero__text">
+                <h1 class="brand">MetaMapa</h1>
+                <p class="tagline">Plataforma de Mapeo Colaborativo</p>
+
+                <div class="hero__actions">
+                    <a href="../Index/index.html" class="btn btn--primary">Explorar Mas</a>
+                    <a href="#" id="loginBtnHero" class="btn btn--secondary" data-auth="open" data-panel="login">Iniciar
+                        Sesión</a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================== PROPÓSITO ================== -->
+    <section class="section">
+        <div class="container purpose">
+            <h2 class="title">Propósito y Objetivos de MetaMapa</h2>
+            <p class="subtitle">
+                MetaMapa es una plataforma colaborativa que permite a las comunidades organizar, visualizar y compartir
+                información de manera interactiva, creando mapas de conocimiento colectivo que fortalecen la
+                participación ciudadana.
+            </p>
+
+            <div class="purpose__grid">
+                <article class="purpose__item">
+                    <div class="icon-bubble">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7" stroke="var(--Accent)" stroke-width="2" />
+                            <path d="M21 21L16.65 16.65" stroke="var(--Accent)" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>Colaboración</h4>
+                        <p>Conectamos comunidades para crear conocimiento colectivo</p>
+                    </div>
+                </article>
+
+                <article class="purpose__item">
+                    <div class="icon-bubble">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path
+                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"
+                                fill="var(--Accent)" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>Mapeo</h4>
+                        <p>Visualizamos información de manera geográfica e interactiva</p>
+                    </div>
+                </article>
+
+                <article class="purpose__item">
+                    <div class="icon-bubble">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M16 11a4 4 0 1 0-8 0v2H5a3 3 0 0 0-3 3v2h20v-2a3 3 0 0 0-3-3h-3v-2Z"
+                                fill="var(--Accent)" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>Comunidad</h4>
+                        <p>Fomentamos la participación ciudadana y el intercambio</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================== COLECCIONES DESTACADAS ================== -->
+    <section class="section featured">
+        <div class="container">
+            <h2 class="title">Colecciones Destacadas</h2>
+            <p class="subtitle">Explora nuestras colecciones más populares y descubre información valiosa</p>
+
+            <div class="cards" role="list">
+                <article class="card" role="listitem">
+                    <h5>Eventos Comunitarios</h5>
+                    <div class="card__body">
+                        <p>Actividades y Encuentros organizados por la comunidad</p>
+                        <span class="pill">128 elementos</span>
+                    </div>
+                    <a href="#" class="btn-outline">Ver colección</a>
+                    <div class="meta">🛈 Última actualización: 8 días</div>
+                </article>
+
+                <article class="card" role="listitem">
+                    <h5>Eventos Comunitarios</h5>
+                    <div class="card__body">
+                        <p>Actividades y Encuentros organizados por la comunidad</p>
+                        <span class="pill">128 elementos</span>
+                    </div>
+                    <a href="#" class="btn-outline">Ver colección</a>
+                    <div class="meta">🛈 Última actualización: 8 días</div>
+                </article>
+
+                <article class="card" role="listitem">
+                    <h5>Eventos Comunitarios</h5>
+                    <div class="card__body">
+                        <p>Actividades y Encuentros organizados por la comunidad</p>
+                        <span class="pill">128 elementos</span>
+                    </div>
+                    <a href="#" class="btn-outline">Ver colección</a>
+                    <div class="meta">🛈 Última actualización: 8 días</div>
+                </article>
+
+                <article class="card" role="listitem">
+                    <h5>Eventos Comunitarios</h5>
+                    <div class="card__body">
+                        <p>Actividades y Encuentros organizados por la comunidad</p>
+                        <span class="pill">128 elementos</span>
+                    </div>
+                    <a href="#" class="btn-outline">Ver colección</a>
+                    <div class="meta">🛈 Última actualización: 8 días</div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================== HECHOS DESTACADOS ================== -->
+    <section class="section facts">
+        <div class="container">
+            <h2 class="title">Hechos Destacados</h2>
+            <p class="subtitle">Explora los hechos más relevantes reportados por nuestra comunidad en el mapa</p>
+
+            <div class="events__wrap">
+                <div class="map-box">
+                    <div class="map" aria-label="Mapa de hechos">
+                        <img class="map__img" src="../shared/Assets/pics/landing_map.png" alt="">
+                        <div class="legend" aria-label="Leyenda del mapa">
+                            <h6>Leyenda</h6>
+                            <div class="row"><span class="dot dot--seek"></span> <span>Se busca</span></div>
+                            <div class="row"><span class="dot dot--fire"></span> <span>Incendios</span></div>
+                            <div class="row"><span class="dot dot--event"></span> <span>Eventos</span></div>
+                        </div>
+                    </div>
+                    <a class="facts__cta" href="../Index/index.html">¡Subí tu hecho!</a>
+                </div>
+
+                <aside class="facts__panel">
+                    <div class="facts__lead">
+                        <img src="../shared/Assets/Icons/location-pin-svgrepo-com.svg" alt="location"
+                             class="facts__icon" />
+                        <p class="lead-title">Selecciona un hecho en el mapa</p>
+                        <p class="lead-desc">Haz clic en cualquier marcador del mapa para ver los detalles del hecho
+                            reportado</p>
+                    </div>
+
+                    <div class="facts__list">
+                        <a href="#" class="facts__all">Todos los hechos</a>
+
+                        <!-- Event Card 1 -->
+                        <a href="#" class="fact-link">
+                            <span class="facts__badge facts__badge--fire">
+                                <img src="../shared/Assets/Icons/Events_cat/mdi_fire.svg" alt="Incendio" />
+                            </span>
+                            <div>
+                                <p class="facts__title">Incendio en Córdoba</p>
+                                <p class="facts__place">Sierras de Córdoba</p>
+                            </div>
+                        </a>
+
+                        <!-- Event Card 2 -->
+                        <a href="#" class="fact-link">
+                            <span class="facts__badge facts__badge--spill">
+                                <img src="../shared/Assets/Icons/Events_cat/water.svg" alt="Derrame" />
+                            </span>
+                            <div>
+                                <p class="facts__title">Derrame en Río Paraná</p>
+                                <p class="facts__place">Puerto de Rosario</p>
+                            </div>
+                        </a>
+
+                        <!-- Event Card 3 -->
+                        <a href="#" class="fact-link">
+                            <span class="facts__badge facts__badge--protest">
+                                <img src="../shared/Assets/Icons/Events_cat/streamline-sharp_sign-hashtag-remix.svg"
+                                    alt="Protesta" />
+                            </span>
+                            <div>
+                                <p class="facts__title">Protesta pacífica en CABA</p>
+                                <p class="facts__place">Plaza de Mayo</p>
+                            </div>
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================== FOOTER ================== -->
+    <footer class="section">
+        <div class="container footer">
+            <div class="footer__grid">
+                <div class="footer__brand">
+                    <h3>MetaMapa</h3>
+                    <p>
+                        Plataforma colaborativa para el mapeo transparente de hechos. Diseñada para ONGs e instituciones
+                        que buscan generar conocimiento colectivo.
+                    </p>
+                </div>
+
+                <div class="footer__col">
+                    <h4>Privacidad y Legal</h4>
+                    <a href="#">Términos y condiciones</a>
+                    <a href="#">Política de privacidad</a>
+                    <a href="#">Aviso legal</a>
+                    <a href="#">Cookies</a>
+                </div>
+
+                <div class="footer__col">
+                    <h4>Contacto</h4>
+                    <a href="#">Soporte técnico</a>
+                    <a href="#">Reportar problema</a>
+                    <a href="#">Sugerencias</a>
+                    <a href="#">Prensa</a>
+                </div>
+
+                <div class="footer__col">
+                    <h4>Recursos para ONGs</h4>
+                    <a href="#">Guía de uso</a>
+                    <a href="#">Capacitaciones</a>
+                    <a href="#">API para organizaciones</a>
+                    <a href="#">Casos de éxito</a>
+                </div>
+            </div>
+
+            <div class="footer__copy">© 2025 MetaMapa. Todos los derechos reservados.</div>
+        </div>
+    </footer>
+
+    <!-- Overlay Modal -->
+    <div id="authOverlay" hidden>
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+            <button id="authClose" class="auth-close" aria-label="Cerrar">✕</button>
+
+            <!-- Login -->
+            <section id="loginPanel">
+                <h3 id="authTitle">Iniciar sesión</h3>
+                <form id="loginForm" novalidate>
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Contraseña" required>
+                    <button type="submit">Entrar</button>
+                </form>
+                <p>¿No tenés cuenta? <a href="#" id="toggleRegister">Crear una</a></p>
+            </section>
+
+            <!-- Registro -->
+            <section id="registerPanel" hidden>
+                <h3>Crear cuenta</h3>
+                <form id="registerForm" novalidate>
+                    <div class="grid-2">
+                        <label class="field">
+                            <span>Primer nombre <b class="req">*</b></span>
+                            <input id="firstName" name="firstName" type="text" placeholder="Tu primer nombre"
+                                autocomplete="given-name" required minlength="2">
+                        </label>
+                        <label class="field">
+                            <span>Apellido <b class="req">*</b></span>
+                            <input id="lastName" name="lastName" type="text" placeholder="Tu apellido"
+                                autocomplete="family-name" required minlength="2">
+                        </label>
+                    </div>
+
+                    <label class="field">
+                        <span>Email <b class="req">*</b></span>
+                        <input id="regEmail" name="email" type="email" placeholder="nombre@ejemplo.com" required
+                            autocomplete="email">
+                    </label>
+
+                    <label class="field">
+                        <span>Contraseña <b class="req">*</b></span>
+                        <input id="regPass" name="password" type="password" placeholder="••••••••" required
+                            autocomplete="new-password" minlength="6">
+                    </label>
+
+                    <button type="submit">Registrarme</button>
+                </form>
+                <p>¿Ya tenés cuenta? <a href="#" id="toggleLogin">Iniciar sesión</a></p>
+            </section>
+        </div>
+    </div>
+
+    <!-- Script de auth compartido -->
+    <script src="../Index/auth.js"></script>
+
+</body>
+
+</html>

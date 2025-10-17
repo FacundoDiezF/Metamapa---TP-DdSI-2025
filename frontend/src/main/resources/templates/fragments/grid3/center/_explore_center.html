@@ -1,0 +1,118 @@
+<section th:fragment="center" class="feed">
+
+    <!-- NUEVO EVENTO -->
+        <details class="share">
+            <summary id="shareSummary" class="card post-box" role="button" aria-controls="sharePanel">
+                <input type="text" placeholder="Comparte tus hechos..." readonly/>
+                <div class="post-icons" aria-hidden="true">
+                    <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen">
+                        <img src="../shared/icons/imagesmode.svg" alt="">
+                    </a>
+                </div>
+            </summary>
+
+            <form id="sharePanel" class="share-panel" method="post" novalidate
+                  th:object="${newEvent}" th:action="@{/share/event}">
+                <div class="share-row">
+
+                    <div class="field">
+                        <label for="titulo">Título del Hecho</label>
+                        <input id="titulo" name="titulo" type="text" placeholder="Título del Hecho" required
+                               th:field="*{title}"/>
+                        <p class="help error-msg">El título es obligatorio.</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="fecha">Fecha</label>
+                        <input id="fecha" name="fecha" type="date" required th:field="*{eventDate}"/>
+                        <p class="help error-msg">Seleccioná una fecha válida.</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="descripcion">Descripción</label>
+                        <div class="textarea-wrap">
+                            <textarea id="descripcion" name="descripcion" rows="5" placeholder="Describe lo ocurrido…"
+                                      required th:field="*{description}"></textarea>
+                        </div>
+                        <p class="help error-msg">La descripción es obligatoria.</p>
+                        <p class="help info">Evitá datos personales. Sé claro y específico.</p>
+                    </div>
+
+                    <div class="share-actions">
+                        <div class="left-actions">
+                            <div class="field field-inline">
+                                <label for="sh-categoria">Categoría</label>
+                                <div class="select select-share">
+                                    <select id="sh-categoria" name="categoria" required aria-label="Categoría"
+                                            th:field="*{category}">
+                                        <option value="">Selecciona una categoría</option>
+                                        <option th:each="cat : ${categoryPage.content}" th:value="${cat.name}"
+                                                th:text="${cat.name}"></option>
+                                    </select>
+                                    <img src="../shared/img/icons/chevron-down.svg" alt="" class="select-caret"
+                                         aria-hidden="true">
+                                </div>
+                                <p class="help error-msg">Elegí una categoría.</p>
+                            </div>
+
+                            <a class="btn chip icon-left" href="#modal-ubicacion">
+                                <img class="icon" src="../shared/img/icons/location-pin-svgrepo-com.svg" alt=""
+                                     aria-hidden="true"/>
+                                Ubicación
+                            </a>
+                        </div>
+
+                        <div class="right-actions">
+                            <button type="reset" class="btn ghost small">Limpiar</button>
+                            <button type="submit" class="btn primary small submit-btn">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </details>
+
+    <!-- EVENTOS -->
+    <div id="events-container">
+        <th:block th:if="${#lists.isEmpty(eventsPage.content)}">
+            <p class="no-events-msg">No hay Eventos disponibles.</p>
+        </th:block>
+
+        <th:block th:if="${!#lists.isEmpty(eventsPage.content)}" th:each="event : ${eventsPage.content}">
+            <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
+        </th:block>
+    </div>
+
+    <!-- Trigger de infinite scroll con HTMX - Fuera del events-container para que se reemplace -->
+    <div th:if="${!#lists.isEmpty(eventsPage.content) && !eventsPage.last}"
+         id="infinite-scroll-trigger"
+         th:hx-get="@{/explore(page=${eventsPage.pageNumber + 1},
+                               category_in=${param.category_in},
+                               province_in=${param.province_in},
+                               eventDate_lt=${param.eventDate_lt},
+                               eventDate_gt=${param.eventDate_gt},
+                               source_in=${param.source_in})}"
+         hx-trigger="intersect threshold:0.5"
+         hx-swap="beforebegin show:none"
+         hx-select="#events-container > *, #infinite-scroll-trigger"
+         hx-indicator="#loading-indicator"
+         class="htmx-scroll-trigger">
+    </div>
+
+    <!-- Carga la siguiente página -->
+    <!-- Se activa cuando el 50% del elemento es visible en el viewport -->
+    <!-- Reemplaza el trigger por los nuevos eventos y un nuevo trigger (si hay más páginas) -->
+    <!--Del HTML recibido, solo toma esos elementos específicos-->
+    <!-- Muestra el indicador de carga mientras se realiza la petición -->
+
+    <!-- Indicador de carga (se muestra automáticamente por HTMX) -->
+    <div id="loading-indicator" class="loading-indicator htmx-indicator">
+        <div class="spinner"></div>
+        <p>Cargando más eventos...</p>
+    </div>
+
+    <!-- Mensaje de fin de resultados -->
+    <div th:if="${#lists.isEmpty(eventsPage.content) || eventsPage.last}" id="end-message" class="end-message">
+        <p>✓ Has visto todos los eventos disponibles</p>
+    </div>
+
+</section>

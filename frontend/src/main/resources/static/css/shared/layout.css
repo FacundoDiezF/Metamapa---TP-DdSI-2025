@@ -1,0 +1,133 @@
+/*!* ===========================*/
+/*   GRID LAYOUTS COMPARTIDOS*/
+/*   Consolidado para grid3 / explore*/
+/*=========================== *!*/
+
+/*:root {*/
+/*  --header-h: 72px;*/
+/*  --subnav-h: 44px;*/
+/*}*/
+
+/*.layout {*/
+/*    display: grid;*/
+/*    grid-template-columns: minmax(240px, 280px) minmax(320px, 1fr) minmax(260px, 360px);*/
+/*    gap: 16px;*/
+/*    padding: 16px 24px;*/
+/*    !* altura calculada para que la columna central utilice el alto disponible *!*/
+/*    height: calc(100svh - var(--header-h) - var(--subnav-h));*/
+/*    height: calc(100dvh - var(--header-h) - var(--subnav-h));*/
+/*    overflow: visible; !* permitir que el scroll vaya en las columnas internas *!*/
+/*}*/
+
+/*.layout .layout {*/
+/*    display: contents;*/
+/*}*/
+
+/*.left-slot, .center-slot, .right-slot, .left-slot *, .center-slot *, .right-slot * {*/
+/*    min-height: 0;*/
+/*    min-width: 0;*/
+/*}*/
+
+/*.left-slot { !* alias visual para sidebar izquierdo *!*/
+/*}*/
+
+/*.center-slot {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    gap: 0.75rem;*/
+/*    min-width: 0;*/
+/*    min-height: 0;*/
+/*}*/
+
+/*.center-slot > .feed {*/
+/*    flex: 1 1 auto;*/
+/*    min-height: 0;*/
+/*    overflow-y: auto;*/
+/*    overflow-x: hidden;*/
+/*}*/
+
+/*.right-slot { !* alias para sidebar derecho; estilos de aspecto en .sidebar-right *! }*/
+
+/*!* Aspecto base de sidebars (reutilizado desde explore) *!*/
+/*.sidebar, .sidebar-right {*/
+/*    background: var(--ModuleBG, #fff);*/
+/*    border: 1px solid var(--border-subtle);*/
+/*    border-radius: 12px;*/
+/*    padding: 12px;*/
+/*    height: fit-content;*/
+/*    box-shadow: var(--shadow-elevated);*/
+/*}*/
+
+/*!* Responsive base (mobile) *!*/
+/*@media (max-width: 991.98px) {*/
+/*    .layout {*/
+/*        grid-template-columns: 1fr;*/
+/*    }*/
+/*    .left-slot, .right-slot {*/
+/*        margin-bottom: 12px;*/
+/*    }*/
+/*}*/
+
+/*.layout > .center-slot {*/
+/*  display: flex !important;*/
+/*  flex-direction: column !important;*/
+/*  min-width: 320px !important; !* evita colapso a una línea *!*/
+/*  min-height: 0 !important;*/
+/*}*/
+
+/*.layout > .center-slot > .feed {*/
+/*  flex: 1 1 auto !important;*/
+/*  min-height: 0 !important;*/
+/*  overflow-y: auto !important;*/
+/*  overflow-x: hidden !important;*/
+/*  padding-right: .25rem !important;*/
+/*}*/
+
+/*.layout > aside.layout, .layout > .sidebar > .sidebar {*/
+/*  display: block !important;*/
+/*}*/
+
+/*.layout > .sidebar,*/
+/*.layout > aside.sidebar {*/
+/*  grid-column: 1 / 2;*/
+/*}*/
+
+/*.layout > .center-slot,*/
+/*.layout > main.center-slot {*/
+/*  grid-column: 2 / 3;*/
+/*}*/
+
+/*.layout > .sidebar-right,*/
+/*.layout > aside.sidebar-right {*/
+/*  grid-column: 3 / 4;*/
+/*}*/
+
+/*.layout > * {*/
+/*  min-width: 0;*/
+/*  min-height: 0;*/
+/*  display: block;*/
+/*}*/
+
+/*.layout {*/
+/*  width: 100% !important;*/
+/*  box-sizing: border-box !important;*/
+/*}*/
+
+/*.center-slot {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  min-width: 320px;*/
+/*  min-height: 0;*/
+/*}*/
+
+/*.center-slot > .feed {*/
+/*  flex: 1 1 auto;*/
+/*  overflow-y: auto;*/
+/*  overflow-x: hidden;*/
+/*}*/
+
+/*!* Override final: evitar que otras hojas pongan overflow-x: hidden y recorten las columnas *!*/
+/*.layout {*/
+/*  overflow-x: visible !important;*/
+/*  overflow-y: visible !important;*/
+/*}*/

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>MetaMapa — Solicitudes de eliminación</title>
+
+    <!-- base/tokens compartidos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Basics -->
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../shared/components.css">
+    <link rel="stylesheet" href="../shared/utilities.css">
+
+    <link rel="stylesheet" href="../shared/tokens.css"/>
+    <link rel="stylesheet" href="../shared/nav.css"/>
+    <link rel="stylesheet" href="../shared/icons.css"/>
+
+    <!-- estilos del panel -->
+    <link rel="stylesheet" href="admin.css"/>
+</head>
+
+<body>
+<!-- Header pegajoso -->
+<header class="navbar" id="navbar">
+    <div class="brand">
+        <div class="brand-mark"><span class="dot"></span></div>
+        <span class="brand-name">MetaMapa</span>
+    </div>
+
+    <div class="auth-actions">
+        <!-- 1) Píldora Admin -->
+        <a href="admin.html" class="pill-admin" role="button" aria-label="Panel de Administración">
+            Administrador
+        </a>
+
+        <!-- 2) Píldora de usuario Abby con dropdown -->
+        <details class="user-menu">
+            <summary class="user-pill" aria-haspopup="menu" aria-expanded="false">
+                    <span class="avatar" aria-hidden="true">
+                        <img src="../shared/Assets/pics/avatar.png" alt="">
+                    </span>
+                <span class="user-name">Abby</span>
+                <span class="caret" aria-hidden="true">▾</span>
+            </summary>
+
+            <ul class="user-dropdown" role="menu" aria-label="Menú de usuario">
+                <li role="none"><a role="menuitem" href="#">Mi cuenta</a></li>
+                <li role="none"><a role="menuitem" href="#">Mis aportes</a></li>
+                <li role="none"><a role="menuitem" href="#">Preferencias</a></li>
+                <li role="none">
+                    <hr>
+                </li>
+                <li role="none"><a role="menuitem" href="#">Cerrar sesión</a></li>
+            </ul>
+        </details>
+    </div>
+</header>
+
+
+<!-- Subnav del sitio -->
+<nav class="subnav">
+    <a href="../Index/index.html">Explorar</a>
+    <a href="../Collections/collections.html">Colecciones</a>
+    <a href="#">Mapa</a>
+    <a href="admin.html" class="active">Panel de Control</a>
+</nav>
+
+<!-- Layout -->
+<main class="admin-layout">
+    <!-- Lateral -->
+    <aside class="admin-sidebar">
+        <h3>Panel de Administración</h3>
+        <nav class="admin-menu" class="nav-link">
+            <a href="admin.html">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/Icons/stats1-svgrepo-com.svg" alt="Resumen">
+                    </span>
+                <span class="nav-label">Resumen</span>
+            </a>
+
+            <a href="stats.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/insight-svgrepo-com.svg" alt="Estadísticas">
+                    </span>
+                <span class="nav-label">Estadísticas</span>
+            </a>
+
+            <a href="collecionsSection.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/Group.svg" alt="Colecciones">
+                    </span>
+                <span class="nav-label">Colecciones</span>
+            </a>
+
+            <a href="delete-requests.html" class="nav-link is-active">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg"
+                             alt="Solicitudes de Eliminación">
+                    </span>
+                <span class="nav-label">Solicitudes de Eliminación</span>
+            </a>
+
+            <a href="admin-hechos.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/sand-clock-svgrepo-com.svg" alt="Hechos pendientes">
+                    </span>
+                <span class="nav-label">Hechos pendientes</span>
+            </a>
+
+            <a href="sources.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/material-symbols_database-outline.svg" alt="Fuentes">
+                    </span>
+                <span class="nav-label">Fuentes</span>
+            </a>
+
+            <a href="import-csv.html" class="nav-link">
+                    <span class="nav-icon">
+                        <img src="../shared/assets/icons/uil_import.svg" alt="Importar CSV">
+                    </span>
+                <span class="nav-label">Importar CSV</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Contenido -->
+    <section class="admin-content">
+        <header class="admin-header">
+            <h1>Solicitudes de Eliminacion</h1>
+            <p class="muted">Revisa y decide sobre solicitudes de eliminación enviadas por los usuarios.</p>
+        </header>
+
+        <!-- Solicitud #1 -->
+        <article class="mod-card">
+            <header class="mod-head">
+                <h3 class="mod-title">Eliminación del hecho: “Incendio forestal en Parque Nacional Nahuel Huapi”
+                </h3>
+                <div class="chips">
+                    <span class="chip chip-warn">Motivo: Información incorrecta</span>
+                    <span class="chip">ID Hecho: #18754</span>
+                </div>
+                <p class="mod-meta">
+                    <span>Solicitada por: <strong>Cecilia Duarte</strong></span> ·
+                    <span>2025-03-10 14:30</span> ·
+                    <span>Contacto: cecilia@mail.com</span>
+                </p>
+            </header>
+
+            <div class="mod-body">
+                <div class="mod-col">
+                    <h4>Descripción del pedido</h4>
+                    <p>Se solicita la eliminación porque el hecho fue duplicado y la información de ubicación no
+                        coincide con la fuente oficial.</p>
+                </div>
+
+                <aside class="mod-aside">
+                    <div class="fact-summary">
+                        <h5>Resumen del hecho</h5>
+                        <p><strong>Categoría:</strong> Desastre Natural</p>
+                        <p><strong>Ubicación:</strong> Bariloche, Río Negro</p>
+                        <p><strong>Publicado por:</strong> Ana García</p>
+                        <a class="btn-link" href="#">Ver hecho completo</a>
+                    </div>
+                </aside>
+            </div>
+
+            <footer class="mod-actions">
+                <a href="#" class="btn success">
+                    <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Aprobar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/edit.svg" alt="" aria-hidden="true">
+                    Modificar
+                </a>
+                <a href="#" class="btn danger">
+                    <img class="icon" src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Rechazar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                    Ver Detalles
+                </a>
+            </footer>
+        </article>
+
+
+        <!-- Solicitud #2 -->
+        <article class="mod-card">
+            <header class="mod-head">
+                <h3 class="mod-title">Eliminación del hecho: “Contaminación en Río Reconquista”</h3>
+                <div class="chips">
+                    <span class="chip chip-privacy">Motivo: Privacidad</span>
+                    <span class="chip">ID Hecho: #19012</span>
+                </div>
+                <p class="mod-meta">
+                    <span>Solicitada por: <strong>Mariano Pérez</strong></span> ·
+                    <span>2025-03-09 09:10</span>
+                </p>
+            </header>
+
+            <div class="mod-body">
+                <div class="mod-col">
+                    <h4>Descripción del pedido</h4>
+                    <p>El hecho contiene imágenes donde se identifica a menores de edad sin consentimiento
+                        explícito.</p>
+                </div>
+
+                <aside class="mod-aside">
+                    <div class="fact-summary">
+                        <h5>Resumen del hecho</h5>
+                        <p><strong>Categoría:</strong> Medio Ambiente</p>
+                        <p><strong>Ubicación:</strong> San Martín, Buenos Aires</p>
+                        <p><strong>Publicado por:</strong> Carlos Méndez</p>
+                        <a class="btn-link" href="#">Ver hecho completo</a>
+                    </div>
+                </aside>
+            </div>
+
+            <footer class="mod-actions">
+                <a href="#" class="btn success">
+                    <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Aprobar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/edit.svg" alt="" aria-hidden="true">
+                    Modificar
+                </a>
+                <a href="#" class="btn danger">
+                    <img class="icon" src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Rechazar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                    Ver Detalles
+                </a>
+            </footer>
+
+        </article>
+    </section>
+</main>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<article class="hecho card" th:fragment="cardFragment(item)">
+    <a class="flag-float" th:href="'#report-hecho-' + ${item.id}" aria-label="Reportar este hecho">
+        <img th:src="@{/shared/icons/ci_flag.svg}" alt="" class="icon-img">
+    </a>
+    <span class="tag" th:text="${item.category}">
+        Categoria
+    </span>
+    <h2 th:text="${item.title}">
+        Titulo del Hecho
+    </h2>
+    <p class="ubicacion">
+        <span th:text="${item.location.municipality}"></span><span
+            th:if="${item.location.municipality != null and item.location.department != null}">, </span><span
+            th:text="${item.location.department}"></span><span
+            th:if="${(item.location.municipality != null or item.location.department != null) and item.location.province != null}"> - </span><span
+            th:text="${item.location.province}"></span><span
+            th:if="${item.location.municipality != null or item.location.department != or and item.location.province != null}"> | </span><span
+            th:text="${#temporals.format(item.eventDate, 'dd MMMM yyyy')}"></span>
+    </p>
+    <p th:text="${item.description}">
+        Descripción del hecho muy buena descripcion la verdad que me gusta mucho este hecho
+        que paso y que es muy interesante y que deberian saber todos los usuarios de
+    </p>
+
+<!--    <img th:if="${item.image}" th:src="${item.image}" alt="Imagen del hecho"/>-->
+
+<!--    <img-->
+<!--            src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1400&auto=format&fit=crop"-->
+<!--            alt="Incidente"-->
+<!--    />-->
+    <p class="fuente" th:text="${item.Origin} + ' • ' + ${item.sourceId}">
+        Static • Nombre de la fuente
+    </p>
+</article>
+
+<!--
+TODO:
+- Nombres de fuentes?
+- Remplazar Localidad
+- Imagen del hecho
+- Modal del reporte especifico del hecho
+ -->
+

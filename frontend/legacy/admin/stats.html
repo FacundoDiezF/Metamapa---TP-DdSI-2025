@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>MetaMapa · Administración · Estadísticas</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- Base del proyecto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Basics -->
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../shared/components.css">
+    <link rel="stylesheet" href="../shared/utilities.css">
+
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/nav.css">
+    <link rel="stylesheet" href="../shared/icons.css">
+    <link rel="stylesheet" href="admin.css">
+
+    <!-- Estilos puntuales de Estadísticas (sin JS) -->
+    <style>
+        /* Page head — botón principal en azul institucional */
+        .page-actions .btn-primary,
+        .btn-primary.brand {
+            background: var(--ui-blue);
+            border-color: var(--ui-blue);
+            color: #fff;
+        }
+
+        .page-actions .btn-primary:hover,
+        .btn-primary.brand:hover {
+            filter: brightness(.95);
+        }
+
+        /* Filtros */
+        .stats-filters {
+            display: grid;
+            gap: .75rem;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            align-items: end;
+            background: var(--ui-card, #fff);
+            border: 1px solid var(--ui-border, #e5e7eb);
+            border-radius: 12px;
+            padding: .9rem;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+        }
+
+        .stats-filters .field {
+            gap: .35rem;
+        }
+
+        .stats-filters .field label {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .stats-filters .control,
+        .stats-filters input[type="date"],
+        .stats-filters select {
+            width: 100%;
+            background: #fff;
+            color: #0f172a;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            padding: .65rem .8rem;
+            font: 400 1rem/1.3 Poppins, system-ui, sans-serif;
+        }
+
+        .stats-filter-actions {
+            display: flex;
+            gap: .5rem;
+            grid-column: 1 / -1;
+        }
+
+        /* Rejilla de tarjetas/gráficos */
+        .stats-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (max-width: 980px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-filters {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats-filters {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: var(--ui-card, #fff);
+            border: 1px solid var(--ui-border, #e5e7eb);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+            display: grid;
+            gap: .75rem;
+        }
+
+        .stat-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+        }
+
+        .stat-title {
+            margin: 0;
+            font-size: 1.05rem;
+            line-height: 1.35;
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .5rem .75rem;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #0f172a;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .btn-ghost:hover {
+            background: #f8fafc;
+        }
+
+        .stats-filter-actions .btn-primary {
+            background: var(--ui-dark-accent, #475265);
+            border-color: var(--ui-dark-accent, #475265);
+            color: #fff;
+        }
+
+        .stats-filter-actions .btn-primary:hover {
+            background: #374151;
+            /* hover más oscuro */
+        }
+
+        .stats-filter-actions .btn {
+            font: 600 1rem/1.3 "Poppins", sans-serif;
+        }
+
+
+
+        /* Lista + barras */
+        .bars {
+            display: grid;
+            gap: .5rem;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: .75rem;
+        }
+
+        .row .label {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .row .value {
+            color: #475569;
+            font-weight: 700;
+            min-width: 2.5rem;
+            text-align: right;
+        }
+
+        .track {
+            position: relative;
+            height: 10px;
+            border-radius: 999px;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+
+        .bar {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            /* inicia desde la izquierda */
+            right: auto;
+            /* libera el borde derecho */
+            width: var(--w, 0%);
+            background: var(--ui-blue);
+            border-radius: 999px;
+        }
+
+        /* barras secundarias (comparativas) */
+        .bar.alt {
+            background: #c7dcff;
+        }
+
+        /* Tarjeta “¿a qué hora…?” en 24 franjas */
+        .hours {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: .4rem .5rem;
+            align-items: end;
+        }
+
+        @media (max-width: 760px) {
+            .hours {
+                grid-template-columns: repeat(8, 1fr);
+            }
+        }
+
+        .hcol {
+            display: grid;
+            gap: .35rem;
+        }
+
+        .hcol .htrack {
+            width: 100%;
+            height: 52px;
+            border-radius: 8px;
+            background: #e5eefb;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hcol .hbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--h, 0%);
+            background: var(--ui-blue);
+        }
+
+        .hcol .hlabel {
+            font-size: .8rem;
+            color: #475569;
+            text-align: center;
+        }
+
+        /* Mini “leyenda” */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem 1rem;
+            color: #475569;
+        }
+
+        .legend .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: var(--ui-blue);
+            display: inline-block;
+        }
+
+        .legend .dot.alt {
+            background: #c7dcff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar unificada (como en “imagen 1”) -->
+    <header class="navbar" id="navbar">
+        <div class="brand">
+            <div class="brand-mark"><span class="dot"></span></div>
+            <span class="brand-name">MetaMapa</span>
+        </div>
+
+        <div class="auth-actions">
+            <!-- Píldora Admin -->
+            <a href="admin.html" class="pill-admin" role="button" aria-label="Panel de Administración">Administrador</a>
+
+            <!-- Píldora Usuario -->
+            <details class="user-menu">
+                <summary class="user-pill" aria-haspopup="menu" aria-expanded="false">
+                    <span class="avatar" aria-hidden="true">
+                        <img src="../shared/Assets/pics/avatar.png" alt="">
+                    </span>
+                    <span class="user-name">Abby</span>
+                    <span class="caret" aria-hidden="true">▾</span>
+                </summary>
+                <ul class="user-dropdown" role="menu" aria-label="Menú de usuario">
+                    <li role="none"><a role="menuitem" href="#">Mi cuenta</a></li>
+                    <li role="none"><a role="menuitem" href="#">Mis aportes</a></li>
+                    <li role="none"><a role="menuitem" href="#">Preferencias</a></li>
+                    <li role="none">
+                        <hr>
+                    </li>
+                    <li role="none"><a role="menuitem" href="#">Cerrar sesión</a></li>
+                </ul>
+            </details>
+        </div>
+    </header>
+
+    <!-- Subnav -->
+    <nav class="subnav">
+        <a href="../Index/index.html">Explorar</a>
+        <a href="../Collections/collections.html">Colecciones</a>
+        <a href="../map/mapa.html">Mapa</a>
+        <a href="admin.html" class="active">Panel de Control</a>
+    </nav>
+
+    <main class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <h3>Panel de Administración</h3>
+            <nav class="admin-menu">
+                <a href="admin.html" class="nav-link">
+                    <span class="nav-icon"><img src="../shared/assets/Icons/stats1-svgrepo-com.svg" alt=""></span>
+                    <span class="nav-label">Resumen</span>
+                </a>
+                <a href="stats.html" class="nav-link is-active">
+                    <span class="nav-icon"><img src="../shared/assets/icons/insight-svgrepo-com.svg" alt=""></span>
+                    <span class="nav-label">Estadísticas</span>
+                </a>
+                <a href="collecionsSection.html" class="nav-link">
+                    <span class="nav-icon"><img src="../shared/assets/icons/Group.svg" alt=""></span>
+                    <span class="nav-label">Colecciones</span>
+                </a>
+                <a href="delete-requests.html" class="nav-link">
+                    <span class="nav-icon"><img src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg"
+                            alt=""></span>
+                    <span class="nav-label">Solicitudes de Eliminación</span>
+                </a>
+                <a href="admin-hechos.html" class="nav-link">
+                    <span class="nav-icon"><img src="../shared/assets/icons/sand-clock-svgrepo-com.svg" alt=""></span>
+                    <span class="nav-label">Hechos pendientes</span>
+                </a>
+                <a href="sources.html" class="nav-link">
+                    <span class="nav-icon"><img src="../shared/assets/icons/material-symbols_database-outline.svg"
+                            alt=""></span>
+                    <span class="nav-label">Fuentes</span>
+                </a>
+                <a href="import-csv.html" class="nav-link">
+                    <span class="nav-icon"><img src="../shared/assets/icons/uil_import.svg" alt=""></span>
+                    <span class="nav-label">Importar CSV</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Contenido -->
+        <section class="admin-content">
+            <header class="page-head">
+                <div class="page-head-text">
+                    <h1 class="page-title">Estadísticas</h1>
+                    <p class="page-subtitle">Visualización y análisis agregado del uso del sistema</p>
+                </div>
+                <div class="page-actions">
+                    <a href="#" class="btn btn-primary">
+                        <img class="icon" src="../shared/assets/icons/download.svg" alt="" aria-hidden="true">
+                        Exportar todo (CSV)
+                    </a>
+                </div>
+            </header>
+
+            <!-- Filtros (sin JS) -->
+            <form class="stats-filters" action="#" method="get" aria-label="Filtros de estadísticas">
+                <div class="field">
+                    <label for="f-col">Colección</label>
+                    <select id="f-col" name="coleccion" class="control">
+                        <option value="">Todas</option>
+                        <option>Incendios Forestales 2024</option>
+                        <option>Contaminación Hídrica</option>
+                        <option>Desapariciones Forzadas</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="f-cat">Categoría</label>
+                    <select id="f-cat" name="categoria" class="control">
+                        <option value="">Todas</option>
+                        <option>Incendio</option>
+                        <option>Contaminación</option>
+                        <option>Terremoto</option>
+                        <option>Inundación</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="f-desde">Desde</label>
+                    <input id="f-desde" class="control" type="date" name="desde">
+                </div>
+                <div class="field">
+                    <label for="f-hasta">Hasta</label>
+                    <input id="f-hasta" class="control" type="date" name="hasta">
+                </div>
+
+                <div class="stats-filter-actions">
+                    <button class="btn btn-primary brand" type="submit">Aplicar filtros</button>
+                    <button class="btn" type="reset">Limpiar</button>
+                </div>
+            </form>
+
+            <!-- Grid de estadísticas -->
+            <div class="stats-grid">
+                <!-- 1) Provincia con más hechos (por colección) -->
+                <article class="stat-card">
+                    <header class="stat-head">
+                        <h3 class="stat-title">¿En qué provincia se agrupa la mayor cantidad de hechos?</h3>
+                        <a class="btn-ghost" href="#">CSV</a>
+                    </header>
+                    <div class="bars" role="list">
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Buenos Aires</div>
+                                <div class="track"><span class="bar" style="--w: 92%;"></span></div>
+                            </div>
+                            <div class="value">320</div>
+                        </div>
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Córdoba</div>
+                                <div class="track"><span class="bar" style="--w: 60%;"></span></div>
+                            </div>
+                            <div class="value">210</div>
+                        </div>
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Santa Fe</div>
+                                <div class="track"><span class="bar" style="--w: 52%;"></span></div>
+                            </div>
+                            <div class="value">180</div>
+                        </div>
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Mendoza</div>
+                                <div class="track"><span class="bar" style="--w: 35%;"></span></div>
+                            </div>
+                            <div class="value">120</div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 2) Categoría con más hechos -->
+                <article class="stat-card">
+                    <header class="stat-head">
+                        <h3 class="stat-title">¿Cuál es la categoría con mayor cantidad de hechos?</h3>
+                        <a class="btn-ghost" href="#">CSV</a>
+                    </header>
+                    <div class="bars" role="list">
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Incendio</div>
+                                <div class="track">
+                                    <span class="bar" style="--w: 90%;"></span>
+                                </div>
+                            </div>
+                            <div class="value">156</div>
+                        </div>
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Contaminación</div>
+                                <div class="track">
+                                    <span class="bar" style="--w: 76%;"></span>
+                                </div>
+                            </div>
+                            <div class="value">132</div>
+                        </div>
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Terremoto</div>
+                                <div class="track">
+                                    <span class="bar alt" style="--w: 45%;"></span>
+                                </div>
+                            </div>
+                            <div class="value">78</div>
+                        </div>
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Inundación</div>
+                                <div class="track">
+                                    <span class="bar alt" style="--w: 38%;"></span>
+                                </div>
+                            </div>
+                            <div class="value">66</div>
+                        </div>
+                    </div>
+                    <div class="legend"><span class="dot"></span> Mayor volumen</div>
+                </article>
+
+                <!-- 3) Provincia con más hechos de cierta categoría -->
+                <article class="stat-card">
+                    <header class="stat-head">
+                        <h3 class="stat-title">¿En qué provincia hay más hechos de una categoría dada?</h3>
+                        <a class="btn-ghost" href="#">CSV</a>
+                    </header>
+                    <div class="bars" role="list">
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Córdoba</div>
+                                <div class="track"><span class="bar" style="--w: 80%;"></span></div>
+                            </div>
+                            <div class="value">112</div>
+                        </div>
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Buenos Aires</div>
+                                <div class="track"><span class="bar" style="--w: 68%;"></span></div>
+                            </div>
+                            <div class="value">95</div>
+                        </div>
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Mendoza</div>
+                                <div class="track"><span class="bar" style="--w: 40%;"></span></div>
+                            </div>
+                            <div class="value">57</div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 4) ¿A qué hora del día ocurren más hechos de una categoría? -->
+                <article class="stat-card">
+                    <header class="stat-head">
+                        <h3 class="stat-title">¿A qué hora del día ocurren más hechos de una categoría?</h3>
+                        <a class="btn-ghost" href="#">CSV</a>
+                    </header>
+                    <div class="hours" aria-label="Distribución horaria (0–23)">
+                        <!-- 0–11 -->
+                        <div class="hcol" style="--h:20%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">0</div>
+                        </div>
+                        <div class="hcol" style="--h:18%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">1</div>
+                        </div>
+                        <div class="hcol" style="--h:22%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">2</div>
+                        </div>
+                        <div class="hcol" style="--h:30%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">3</div>
+                        </div>
+                        <div class="hcol" style="--h:42%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">4</div>
+                        </div>
+                        <div class="hcol" style="--h:55%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">5</div>
+                        </div>
+                        <div class="hcol" style="--h:70%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">6</div>
+                        </div>
+                        <div class="hcol" style="--h:85%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">7</div>
+                        </div>
+                        <div class="hcol" style="--h:95%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">8</div>
+                        </div>
+                        <div class="hcol" style="--h:88%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">9</div>
+                        </div>
+                        <div class="hcol" style="--h:72%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">10</div>
+                        </div>
+                        <div class="hcol" style="--h:60%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">11</div>
+                        </div>
+                        <!-- 12–23 -->
+                        <div class="hcol" style="--h:48%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">12</div>
+                        </div>
+                        <div class="hcol" style="--h:40%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">13</div>
+                        </div>
+                        <div class="hcol" style="--h:36%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">14</div>
+                        </div>
+                        <div class="hcol" style="--h:28%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">15</div>
+                        </div>
+                        <div class="hcol" style="--h:24%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">16</div>
+                        </div>
+                        <div class="hcol" style="--h:22%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">17</div>
+                        </div>
+                        <div class="hcol" style="--h:26%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">18</div>
+                        </div>
+                        <div class="hcol" style="--h:34%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">19</div>
+                        </div>
+                        <div class="hcol" style="--h:42%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">20</div>
+                        </div>
+                        <div class="hcol" style="--h:38%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">21</div>
+                        </div>
+                        <div class="hcol" style="--h:30%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">22</div>
+                        </div>
+                        <div class="hcol" style="--h:24%">
+                            <div class="htrack"><span class="hbar"></span></div>
+                            <div class="hlabel">23</div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 5) ¿Cuántas solicitudes de eliminación son spam? -->
+                <article class="stat-card">
+                    <header class="stat-head">
+                        <h3 class="stat-title">¿Cuántas solicitudes de eliminación son spam?</h3>
+                        <a class="btn-ghost" href="#">CSV</a>
+                    </header>
+                    <div class="bars" role="list" aria-describedby="spam-nota">
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Spam detectado</div>
+                                <div class="track"><span class="bar" style="--w: 64%;"></span></div>
+                            </div>
+                            <div class="value">64</div>
+                        </div>
+                        <div class="row" role="listitem">
+                            <div>
+                                <div class="label">Válidas</div>
+                                <div class="track"><span class="bar alt" style="--w: 36%;"></span></div>
+                            </div>
+                            <div class="value">36</div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Ancla inerte para cierre de modales en otras páginas -->
+    <div id="close" style="position:fixed;inset:auto;"></div>
+</body>
+
+</html>

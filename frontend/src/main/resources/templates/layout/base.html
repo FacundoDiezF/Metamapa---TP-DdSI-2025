@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${pageTitle} ?: 'MetaMapa'"></title>
+
+    <!-- Base font (Poppins) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <!-- HTMX para interactividad sin JavaScript -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <!-- Tokens + Base + Shared -->
+    <link rel="stylesheet" th:href="@{/css/global/main.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/nav/nav.css}">
+
+
+    <!-- Estílos específicos -->
+    <th:block layout:fragment="extraStyles"></th:block>
+
+</head>
+<body>
+
+<!-- Header (fragment) -->
+<header>
+    <th:block layout:fragment="navbar">
+        <div th:replace="~{fragments/_navbar :: navbar}"></div>
+    </th:block>
+</header>
+
+<!-- Contenido principal -->
+<main>
+    <th:block th:replace="~{${contenido} :: contenido}"></th:block>
+</main>
+
+<!-- Fragmento global de modals de autenticación -->
+<div th:replace="~{fragments/modals/_authModals :: authModals}"></div>
+<th:block layout:fragment="modals"></th:block>
+
+<!-- Scripts globales -->
+<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+
+
+
+<script th:src="@{/js/navbar/auth.js}"></script>
+<script th:src="@{/js/navbar/curated-mode.js}"></script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+<!-- Scripts específicos de página -->
+<th:block layout:fragment="extraScripts"></th:block>
+
+</body>
+</html>

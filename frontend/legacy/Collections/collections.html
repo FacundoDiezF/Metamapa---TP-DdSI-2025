@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>MetaMapa — Colecciones</title>
+
+    <!-- Fuente Poppins (como en Figma) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Basics -->
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../shared/components.css">
+    <link rel="stylesheet" href="../shared/utilities.css">
+
+    <!-- CSS de esta página -->
+    <link rel="stylesheet" href="../shared/tokens.css"/>
+    <link rel="stylesheet" href="../shared/nav.css"/>
+    <link rel="stylesheet" href="collections.css"/>
+    <link rel="stylesheet" href="../shared/icons.css"/>
+
+
+</head>
+
+<body>
+<!-- Header -->
+<header class="navbar" id="navbar">
+    <div class="brand">
+        <div class="brand-mark"><span class="dot"></span></div>
+        <span class="brand-name">MetaMapa</span>
+    </div>
+
+    <div class="auth-actions">
+        <button id="accountBtn" class="account-btn" type="button" data-auth="open"
+                data-panel="register">Registrarse
+        </button>
+
+        <button id="loginBtn" class="btn-outline" type="button" data-auth="open" data-panel="login">Iniciar
+            Sesión
+        </button>
+
+    </div>
+</header>
+
+<nav class="subnav" id="subnav">
+    <a href="../Index/index.html">Explorar</a>
+    <a href="collections.html" class="active">Colecciones</a>
+    <a href="../map/mapa.html">Mapa</a>
+</nav>
+
+
+<!-- Contenido -->
+<main class="collections-page">
+
+    <!-- Encabezado del main con switch (sticky) -->
+    <header class="page-head container" aria-label="Opciones de Colecciones">
+        <h1 class="page-title">Colecciones</h1>
+
+        <!-- Switch de modo -->
+        <nav class="mode-switch" aria-label="Modo de navegación">
+            <a class="mode" data-mode="curado" href="#curado" aria-current="page">Curado</a>
+            <a class="mode" data-mode="no-curado" href="#no-curado">No curado</a>
+        </nav>
+    </header>
+
+    <!-- PANEL: Curado (default si no hay hash) -->
+    <section id="curado" class="list-vertical container" role="region" aria-label="Colecciones curadas">
+        <article class="collection-card">
+            <div class="card-header">
+                <h2>Desastres Naturales</h2>
+                <p>Colección moderada por la comunidad y ONGs asociadas.</p>
+            </div>
+            <div class="card-actions"><a class="btn btn-outline" href="inCollection/inCollection.html">Ver
+                Colección</a></div>
+        </article>
+
+        <article class="collection-card">
+            <div class="card-header">
+                <h2>San Juan</h2>
+                <p>Casos priorizados y verificados por revisores.</p>
+            </div>
+            <div class="card-actions"><a class="btn btn-outline" href="#">Ver Colección</a></div>
+        </article>
+    </section>
+
+    <!-- PANEL: No curado -->
+    <section id="no-curado" class="list-vertical container" role="region" aria-label="Colecciones no curadas">
+        <article class="collection-card">
+            <div class="card-header">
+                <h2>Caridad</h2>
+                <p>Contenido cargado por la comunidad. Aún sin revisión.</p>
+            </div>
+            <div class="card-actions"><a class="btn btn-outline" href="#">Ver Colección</a></div>
+        </article>
+    </section>
+
+</main>
+
+<!-- Overlay Modal -->
+<div id="authOverlay" hidden>
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <button id="authClose" class="auth-close" aria-label="Cerrar">✕</button>
+
+        <!-- Login -->
+        <section id="loginPanel">
+            <h3 id="authTitle">Iniciar sesión</h3>
+            <form id="loginForm" novalidate>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Contraseña" required>
+                <button type="submit">Entrar</button>
+            </form>
+            <p>¿No tenés cuenta? <a href="#" id="toggleRegister">Crear una</a></p>
+        </section>
+
+        <!-- Registro -->
+        <section id="registerPanel" hidden>
+            <h3>Crear cuenta</h3>
+            <form id="registerForm" novalidate>
+                <div class="grid-2">
+                    <label class="field">
+                        <span>Primer nombre <b class="req">*</b></span>
+                        <input id="firstName" name="firstName" type="text" placeholder="Tu primer nombre"
+                               autocomplete="given-name" required minlength="2">
+                    </label>
+                    <label class="field">
+                        <span>Apellido <b class="req">*</b></span>
+                        <input id="lastName" name="lastName" type="text" placeholder="Tu apellido"
+                               autocomplete="family-name"
+                               required minlength="2">
+                    </label>
+                </div>
+
+                <label class="field">
+                    <span>Email <b class="req">*</b></span>
+                    <input id="regEmail" name="email" type="email" placeholder="nombre@ejemplo.com" required
+                           autocomplete="email">
+                </label>
+
+                <label class="field">
+                    <span>Contraseña <b class="req">*</b></span>
+                    <input id="regPass" name="password" type="password" placeholder="••••••••" required
+                           autocomplete="new-password" minlength="6">
+                </label>
+
+                <button type="submit">Registrarme</button>
+            </form>
+            <p>¿Ya tenés cuenta? <a href="#" id="toggleLogin">Iniciar sesión</a></p>
+        </section>
+    </div>
+</div>
+
+<!-- Script compartido (mismo que usa la landing) -->
+<script src="../Index/auth.js"></script>
+
+
+</body>
+
+</html>

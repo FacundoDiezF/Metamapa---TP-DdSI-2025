@@ -1,0 +1,35 @@
+<th:block th:fragment="navbar">
+    <div class="navbar" id="navbar">
+        <a th:href="@{/explore}" class="brand">
+            <div class="brand-mark"><span class="dot"></span></div>
+            <span class="brand-name">MetaMapa</span>
+        </a>
+        <div class="auth-actions">
+            <!-- Botón modo curado pequeño -->
+            <div class="curated-toggle-wrapper">
+                <button id="curatedModeBtn" class="curated-toggle" type="button" title="Activar/Desactivar Modo Curado">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                    </svg>
+                </button>
+                <div id="curatedModeTooltip" class="curated-tooltip" hidden>
+                    <span class="tooltip-text">Modo Normal</span>
+                </div>
+            </div>
+            <!-- Botones de registro e inicio de sesión -->
+            <button id="accountBtn" class="account-btn" type="button" data-auth="open" data-panel="register">
+                Registrarse
+            </button>
+            <button id="loginBtn" class="btn-outline" type="button" data-auth="open" data-panel="login">
+                Iniciar Sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- Barra de navegación secundaria -->
+    <nav class="subnav" id="subnav">
+        <a th:href="@{/explore}" th:classappend="${active}=='explore' ? ' active'">Explorar</a>
+        <a th:href="@{/collections}" th:classappend="${active}=='collections' ? ' active'">Colecciones</a>
+        <a th:href="@{/map}" th:classappend="${active}=='map' ? ' active'">Mapa</a>
+    </nav>
+</th:block>

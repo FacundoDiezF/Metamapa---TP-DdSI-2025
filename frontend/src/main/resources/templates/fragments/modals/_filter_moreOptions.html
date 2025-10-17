@@ -1,0 +1,49 @@
+<!-- Modal “+ Más categorías” -->
+<div th:fragment="categoriesModal(categoriesPage)" id="cat-modal" class="mm-overlay" role="dialog" aria-modal="true">
+    <a class="mm-dismiss" href="#close" aria-label="Cerrar"></a>
+    <div class="mm-modal">
+        <button class="mm-close" onclick="location.hash='close'" aria-label="Cerrar">✕</button>
+
+        <h2 id="cat-modal-title" class="mm-title">Seleccionar más categorías</h2>
+
+        <div class="chips chips-wrap">
+
+            <span th:each="cat : ${categoriesPage.content}" class="chip-toggle">
+
+                  <input type="checkbox" name="category_in" th:id="'cat-modal:' + ${cat.id}"
+                         th:value="${cat.id}"
+                         th:checked="${param.category_in != null and param.category_in.contains(cat.id.toString())}"
+                  />
+                  <label th:for="'cat-modal:' + ${cat.id}" class="chip" th:text="${cat.name}">
+                      Nombre Tag Categoria
+                  </label>
+            </span>
+
+        </div>
+        <p class="help info">Seleccioná una o varias categorías.</p>
+
+        <div class="pagination"
+             hx-target="#cat-modal"
+             hx-swap="outerHTML">
+            <button th:if="${!categoriesPage.first}"
+                    th:hx-get="@{/categories/modal(page-cat=${categoriesPage.pageNumber - 1})}"
+                    class="btn small">
+                Anterior
+            </button>
+
+            <span th:text="'Página ' + ${categoriesPage.pageNumber + 1} + ' de ' + ${categoriesPage.totalPages}"></span>
+
+            <button th:if="${!categoriesPage.last}"
+                    th:hx-get="@{/categories/modal(page-cat=${categoriesPage.pageNumber + 1})}"
+                    class="btn small">
+                Siguiente
+            </button>
+        </div>
+
+        <div class="mm-actions">
+            <a class="btn" href="#close">Cerrar</a>
+            <button id="apply-modal" type="button" class="btn primary">Aplicar</button>
+        </div>
+
+    </div>
+</div>

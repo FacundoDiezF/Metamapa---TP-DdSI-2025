@@ -1,0 +1,256 @@
+/* ===========================
+   LAYOUT MAPA
+=========================== */
+.map-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    height: calc(100dvh - var(--header-h, 72px) - var(--subnav-h, 0px));
+}
+
+@media (max-width: 900px) {
+    .map-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: calc(100dvh - var(--header-h, 72px) - var(--subnav-h, 0px));
+    }
+}
+
+/* Sidebar de filtros → hereda filters.css*/
+.map-layout .sidebar {
+    align-self: stretch;
+    overflow: auto;
+}
+
+/* ===========================
+   MAPA
+=========================== */
+.map-wrap {
+    position: relative;
+    min-height: 600px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    min-height: 600px;   /* por si el padre no toma el alto */
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Responsive: en pantallas chicas, mapa debajo*/
+@media (max-width: 900px) {
+    .map-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: calc(100dvh - var(--header-h) - var(--subnav-h));
+    }
+
+    .map-wrap {
+        min-height: 50vh;
+    }
+}
+
+/* ===========================
+   LEAFLET POPUP
+=========================== */
+.leaflet-popup-content-wrapper {
+    border-radius: 10px;
+    border: 1px solid var(--ui-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+}
+
+.leaflet-popup-content h4 {
+    margin: .25rem 0 .35rem;
+}
+
+.leaflet-popup-content .meta {
+    color: #64748b;
+    font-size: .9rem;
+    margin-bottom: .35rem;
+}
+
+.leaflet-popup-content a.btn-link {
+    display: inline-block;
+    margin-top: .35rem;
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--ui-blue);
+}
+
+/* ===========================
+   BOTONES
+=========================== */
+.btn-accent {
+    background: #475265;
+    border: 1px solid #475265;
+    color: #fff;
+    font-weight: 600;
+    padding: .6rem 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.btn-accent:hover {
+    background: #5a6476;
+    border-color: #5a6476;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+/* ===========================
+   TIPOGRAFÍA Y JERARQUÍA UI
+=========================== */
+
+/* Sidebar completa*/
+.map-layout .sidebar {
+    font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-size: 0.92rem;
+    /* más compacto */
+    color: #1f2937;
+    /* gris neutro oscuro */
+    line-height: 1.45;
+}
+
+/* Título general "Filtros" */
+.map-layout .sidebar h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    margin-bottom: 1rem;
+    color: #111827;
+}
+
+/* Headers de cada bloque (Categoría, Fecha, etc.) */
+.flt-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* Texto de ayuda (p. ej. “Seleccioná una o varias categorías”) */
+.sidebar .help.info {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+/* Chips → tipografía más consistente */
+.chip {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Inputs de fecha y búsqueda */
+.date-range input,
+.ubic-searchbar input[type="search"] {
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: #111827;
+}
+
+/* Botones */
+.map-layout .sidebar .btn-clean {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.map-layout .sidebar .btn-apply,
+.map-layout .sidebar .btn-accent {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* mapa.css */
+html,
+body {
+    font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Subtítulos (Categoría, Fecha, etc.) */
+.flt-title {
+    font-weight: 500;
+
+    color: #111827;
+}
+
+/* Chips más legibles */
+.chip {
+    font-weight: 600;
+    /* más marcados */
+}
+
+/* Botón "Centrar en mi ubicación" */
+#centerOnMe {
+    background: transparent;
+    border: 2px dashed var(--ui-blue, #3b82f6);
+    color: var(--ui-blue, #3b82f6);
+    font-weight: 600;
+    transition: background .2s ease, color .2s ease;
+}
+
+/* Hover → con fondo sólido */
+#centerOnMe:hover {
+    background: var(--ui-blue, #3b82f6);
+    color: #fff;
+}
+
+/* ============ SIDEBAR COMO "CARD" ============ */
+.map-layout .sidebar {
+    align-self: stretch;
+    overflow: auto;
+
+    /* Card */
+    background: var(--ui-card, #fff);
+    border: 1px solid var(--ui-border, #e5e7eb);
+    border-radius: 12px;
+    padding: 16px;
+
+    /* Tipografía base coherente */
+    font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Título "Filtros" */
+.map-layout .sidebar h3 {
+    margin: 4px 0 12px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: #111827;
+    /* gris muy oscuro para contraste AA */
+}
+
+/* Ajustes finos para los headers de cada bloque */
+.flt-title {
+    font-weight: 600;
+    font-size: .95rem;
+    color: #111827;
+}
+
+/* Botones dentro de la sidebar para mantener coherencia visual */
+.map-layout .sidebar .btn-clean {
+    font-family: inherit;
+    font-size: .85rem;
+}
+
+.map-layout .sidebar .btn-apply,
+.map-layout .sidebar .btn-accent {
+    font-family: inherit;
+    font-size: .95rem;
+}
+
+/* Espaciado general del formulario */
+.map-layout .sidebar .filters {
+    display: grid;
+    gap: .85rem;
+}
+
+/* Responsive: cuando se apila, separamos la card del mapa */
+@media (max-width: 900px) {
+    .map-layout .sidebar {
+        margin-bottom: 12px;
+    }
+}

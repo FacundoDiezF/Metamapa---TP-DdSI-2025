@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>MetaMapa — Desastres Naturales</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Basics -->
+    <link rel="stylesheet" href="../../shared/tokens.css">
+    <link rel="stylesheet" href="../../shared/base.css">
+    <link rel="stylesheet" href="../../shared/components.css">
+    <link rel="stylesheet" href="../../shared/utilities.css">
+
+    <link rel="stylesheet" href="../../shared/tokens.css">
+    <link rel="stylesheet" href="../../shared/nav.css">
+    <link rel="stylesheet" href="../../shared/icons.css">
+    <link rel="stylesheet" href="../../shared/filters.css"/>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="../../shared/Map/map.css"/>
+    <link rel="stylesheet" href="../../shared/featuredCollections.css"/>
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="inCollection.css">
+
+</head>
+
+<body>
+
+<!-- Header -->
+<header class="navbar" id="navbar">
+    <div class="brand">
+        <div class="brand-mark"><span class="dot"></span></div>
+        <span class="brand-name">MetaMapa</span>
+    </div>
+
+    <div class="auth-actions">
+        <button id="accountBtn" class="account-btn" type="button" data-auth="open"
+                data-panel="register">Registrarse
+        </button>
+        <button id="loginBtn" class="btn-outline" type="button" data-auth="open" data-panel="login">Iniciar
+            Sesión
+        </button>
+    </div>
+
+</header>
+
+
+<!-- Subnav -->
+<nav class="subnav" id="subnav">
+    <a href="../../Index/index.html">Explorar</a>
+    <a href="../collections.html" class="active">Colecciones</a>
+    <a href="#">Mapa</a>
+</nav>
+
+<!-- Breadcrumb -->
+<nav class="incol-breadcrumb">
+    <a href="../collections.html">Colecciones</a>
+    <span class="sep">›</span>
+    <span class="current">Desastres Naturales</span>
+</nav>
+
+
+<!-- Layout 3 columnas -->
+<main class="layout">
+    <!-- Izquierda: filtros -->
+    <aside class="sidebar">
+        <h3>Filtros</h3>
+
+        <!-- Form GET para que el backend aplique filtros -->
+        <form class="filters" method="get" action="">
+            <!-- CATEGORÍA (cerrada por defecto) -->
+            <details class="flt">
+                <summary class="flt-head">
+                    <span class="flt-title">Categoría</span>
+                    <span class="caret" aria-hidden="true">▾</span>
+                </summary>
+                <div class="flt-body">
+                    <div class="chips chips-wrap">
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="cat-derrumbe" name="categoria[]" value="Derrumbe de cerro">
+                                <label for="cat-derrumbe" class="chip">Derrumbe de cerro</label>
+                            </span>
+                        <span class="chip-toggle">
+                                <input type="checkbox" id="cat-terremoto" name="categoria[]" value="Terremoto">
+                                <label for="cat-terremoto" class="chip">Terremoto</label>
+                            </span>
+                        <span class="chip-toggle">
+                                <input type="checkbox" id="cat-tsunami" name="categoria[]" value="Tsunami">
+                                <label for="cat-tsunami" class="chip">Tsunami</label>
+                            </span>
+                        <a class="chip mas" href="#cat-modal">+ Más</a>
+                    </div>
+                    <p class="help info">Seleccioná una o varias categorías.</p>
+                </div>
+            </details>
+
+            <!-- FECHA -->
+            <details class="flt">
+                <summary class="flt-head">
+                    <span class="flt-title">Fecha</span>
+                    <span class="caret" aria-hidden="true">▾</span>
+                </summary>
+                <div class="flt-body">
+                    <div class="date-range">
+                        <div>
+                            <span>Desde</span>
+                            <input type="date" name="fecha_desde">
+                        </div>
+                        <div>
+                            <span>Hasta</span>
+                            <input type="date" name="fecha_hasta">
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- UBICACIÓN -->
+            <details class="flt">
+                <summary class="flt-head">
+                    <span class="flt-title">Ubicación</span>
+                    <span class="caret" aria-hidden="true">▾</span>
+                </summary>
+                <div class="flt-body">
+                    <div class="ubic-searchbar">
+                        <input id="ubic-search" name="ubicacion_text" type="search" placeholder="Buscar ubicación…"
+                               list="ubic-sugeridas" autocomplete="off">
+                        <datalist id="ubic-sugeridas">
+                            <option value="CABA">
+                            <option value="Ciudad de Córdoba">
+                            <option value="Rosario">
+                            <option value="Paraná, Entre Ríos">
+                            <option value="Mendoza">
+                            <option value="San Juan">
+                            <option value="Neuquén">
+                        </datalist>
+                    </div>
+
+                    <div class="chips chips-wrap">
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="u-caba" name="ubicacion[]" value="CABA">
+                                <label for="u-caba" class="chip">CABA</label>
+                            </span>
+                        <span class="chip-toggle">
+                                <input type="checkbox" id="u-parana" name="ubicacion[]" value="Paraná, Entre Ríos">
+                                <label for="u-parana" class="chip">Paraná, Entre Ríos</label>
+                            </span>
+                        <span class="chip-toggle">
+                                <input type="checkbox" id="u-rosario" name="ubicacion[]" value="Rosario">
+                                <label for="u-rosario" class="chip">Rosario</label>
+                            </span>
+                        <span class="chip-toggle">
+                                <input type="checkbox" id="u-mendoza" name="ubicacion[]" value="Mendoza">
+                                <label for="u-mendoza" class="chip">Mendoza</label>
+                            </span>
+                    </div>
+
+                    <p class="help info">Escribí para sugerencias; tildá/destildá chips para sumar o quitar.</p>
+                </div>
+            </details>
+
+            <!-- FUENTE -->
+            <details class="flt">
+                <summary class="flt-head">
+                    <span class="flt-title">Fuente</span>
+                    <span class="caret" aria-hidden="true">▾</span>
+                </summary>
+                <div class="flt-body">
+                    <div class="chips chips-wrap">
+                            <span class="chip-toggle">
+                                <input type="checkbox" id="f-estatica" name="fuente[]" value="estatica">
+                                <label for="f-estatica" class="chip">Estática</label>
+                            </span>
+                        <span class="chip-toggle">
+                                <input type="checkbox" id="f-dinamica" name="fuente[]" value="dinamica">
+                                <label for="f-dinamica" class="chip">Dinámica</label>
+                            </span>
+                        <span class="chip-toggle">
+                                <input type="checkbox" id="f-proxy" name="fuente[]" value="proxy">
+                                <label for="f-proxy" class="chip">Proxy</label>
+                            </span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Acciones -->
+            <div class="filters-actions">
+                <button type="reset" class="btn-clean">Limpiar filtros</button>
+                <button type="submit" class="btn-apply">Aplicar</button>
+            </div>
+        </form>
+    </aside>
+
+
+    <!-- Centro: detalle colección + feed -->
+    <section class="feed">
+        <div id="inicio-feed"></div>
+        <!-- Header de la colección -->
+        <header class="collection-header">
+            <h1>Desastres Naturales</h1>
+            <p class="collection-desc">
+                Esto es la desc de la colección desastres naturales; se encuentran los desastres
+                naturales más desastrosos y naturales así como <strong>esqueciabule</strong> ESPECTACULAR.
+            </p>
+        </header>
+
+        <!-- Hecho 1 -->
+        <article class="hecho">
+            <button class="flag-float" aria-label="Reportar hecho">
+                <img src="../../shared/Assets/Icons/ci_flag.svg" alt="" class="icon-img">
+            </button>
+            <span class="tag">Categoría</span>
+            <h2>Orto evento</h2>
+            <p class="ubicacion">Ubicación | 5 May 2025</p>
+            <p>
+                Hi, there! This is an app that allows users to search for recipes while keeping their
+                health in check. The design of this app makes it easy for everyone to find different
+                recipes of their choice along with…
+                <a class="vermas" href="#">ver más</a>
+            </p>
+            <p class="fuente">Origen • Nombre de la fuente</p>
+        </article>
+
+        <!-- Hecho 2 con imagen -->
+        <article class="hecho">
+            <button class="flag-float" aria-label="Reportar hecho">
+                <img src="../../shared/Assets/Icons/ci_flag.svg" alt="" class="icon-img">
+            </button>
+            <span class="tag">Categoría</span>
+            <h2>Título del evento</h2>
+            <p class="ubicacion">Ubicación | 5 May 2025</p>
+            <p>
+                Hi, there! This is an app that allows users to search for recipes while keeping their health
+                in check. The design of this app makes it easy for everyone to find different recipes of
+                their choice along with…
+                <a class="vermas" href="#">ver más</a>
+            </p>
+            <img src="https://images.unsplash.com/photo-1520975922284-7b683d5a5f0d?q=80&w=1400&auto=format&fit=crop"
+                 alt="Evento"/>
+            <p class="fuente">Static • Nombre de la fuente</p>
+        </article>
+    </section>
+
+    <!-- Derecha: mapa + colecciones -->
+    <aside class="sidebar-right">
+        <div class="map-box">
+            <h3>Mapa</h3>
+            <div class="map-frame">
+                <div id="map" data-mm-map data-center-lat="-31.744" data-center-lng="-60.490" data-zoom="12"
+                     data-popup="Paraná, Entre Ríos"></div>
+            </div>
+        </div> <!-- ← cierre map-box -->
+
+        <div class="colecciones">
+            <h3>Colecciones</h3>
+            <ul>
+                <li><a href="inCollection.html#inicio-feed">Desastres naturales <span>CURADO</span></a></li>
+                <li><a href="inCollection.html#inicio-feed">Caridad <span>NO CURADO</span></a></li>
+                <li><a href="inCollection.html#inicio-feed">San Juan <span>CURADO</span></a></li>
+            </ul>
+            <button class="explorar">Explorar Mas</button>
+        </div>
+
+    </aside>
+
+</main>
+
+<!-- Overlay Modal -->
+<div id="authOverlay" hidden>
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <button id="authClose" class="auth-close" aria-label="Cerrar">✕</button>
+
+        <!-- Login -->
+        <section id="loginPanel">
+            <h3 id="authTitle">Iniciar sesión</h3>
+            <form id="loginForm" novalidate>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Contraseña" required>
+                <button type="submit">Entrar</button>
+            </form>
+            <p>¿No tenés cuenta? <a href="#" id="toggleRegister">Crear una</a></p>
+        </section>
+
+        <!-- Registro -->
+        <section id="registerPanel" hidden>
+            <h3>Crear cuenta</h3>
+            <form id="registerForm" novalidate>
+                <div class="grid-2">
+                    <label class="field">
+                        <span>Primer nombre <b class="req">*</b></span>
+                        <input id="firstName" name="firstName" type="text" placeholder="Tu primer nombre"
+                               autocomplete="given-name" required minlength="2">
+                    </label>
+                    <label class="field">
+                        <span>Apellido <b class="req">*</b></span>
+                        <input id="lastName" name="lastName" type="text" placeholder="Tu apellido"
+                               autocomplete="family-name" required minlength="2">
+                    </label>
+                </div>
+
+                <label class="field">
+                    <span>Email <b class="req">*</b></span>
+                    <input id="regEmail" name="email" type="email" placeholder="nombre@ejemplo.com" required
+                           autocomplete="email">
+                </label>
+
+                <label class="field">
+                    <span>Contraseña <b class="req">*</b></span>
+                    <input id="regPass" name="password" type="password" placeholder="••••••••" required
+                           autocomplete="new-password" minlength="6">
+                </label>
+
+                <button type="submit">Registrarme</button>
+            </form>
+            <p>¿Ya tenés cuenta? <a href="#" id="toggleLogin">Iniciar sesión</a></p>
+        </section>
+    </div>
+</div>
+
+<!-- Modal +Más categorías (CSS-only con :target) -->
+<div id="cat-modal" class="modal-overlay target-modal">
+    <a href="#" class="overlay-dismiss" aria-label="Cerrar"></a>
+    <div class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="catModalTitle">
+        <a href="#" class="modal-close" aria-label="Cerrar">×</a>
+        <h2 id="catModalTitle">Seleccionar más categorías</h2>
+
+        <label class="field" style="margin-bottom:.5rem;">
+            <span class="sr-only">Buscar categoría</span>
+            <input type="search" name="cat_q" placeholder="Buscar categoría…">
+        </label>
+
+        <div class="chips chips-grid" style="margin-bottom:.75rem;">
+                <span class="chip-toggle">
+                    <input type="checkbox" id="cat-inundacion" name="categoria[]" value="Inundación">
+                    <label for="cat-inundacion" class="chip">Inundación</label>
+                </span>
+            <span class="chip-toggle">
+                    <input type="checkbox" id="cat-contaminacion" name="categoria[]" value="Contaminación">
+                    <label for="cat-contaminacion" class="chip">Contaminación</label>
+                </span>
+            <span class="chip-toggle">
+                    <input type="checkbox" id="cat-ddhh" name="categoria[]" value="Derechos Humanos">
+                    <label for="cat-ddhh" class="chip">Derechos Humanos</label>
+                </span>
+            <!-- agrega más si hace falta -->
+        </div>
+
+        <div class="upload-actions">
+            <a href="#" class="btn ghost">Cerrar</a>
+            <!-- Si querés que “Aplicar” NO recargue esta vista, dejalo como botón sin submit. -->
+            <button type="submit" class="btn primary">Aplicar</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Script compartido -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="../../shared/Map/map.js"></script>
+<script src="../../Index/auth.js"></script>
+
+
+</body>
+
+</html>

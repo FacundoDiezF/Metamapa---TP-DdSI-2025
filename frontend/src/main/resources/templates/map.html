@@ -1,0 +1,33 @@
+<html layout:decorate="~{layout/base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- CSS propio (se inyecta en el <head> del base) -->
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="@{/css/shared/filters/filters.css}"/>
+    <link rel="stylesheet" th:href="@{/css/pages/mapa.css}"/>
+
+</th:block>
+
+
+<div th:fragment="contenido" class="map-layout">
+
+    <!-- Mapa -->
+    <aside th:replace="~{fragments/grid3/_sidebar_left :: filter-form(@{/map})}"></aside>
+
+    <section class="map-wrap">
+        <div id="map" aria-label="Mapa de hechos"></div>
+    </section>
+
+    </div>
+
+<th:block layout:fragment="extraScripts">
+    <!-- 1) Inyecta los datos del modelo en JS -->
+    <script th:inline="javascript">
+        window.events = [[${events}]];
+    </script>
+
+    <!-- 2) Librerías y tu JS que usa window.eventos -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script th:src="@{/js/map/page-map.js}"></script>
+</th:block>
+</html>
