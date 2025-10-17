@@ -49,6 +49,7 @@ public class PagesController {
     return "landing";
   }
 
+  //TODO: Query params con nombres correctos
   @GetMapping("/explore")
   public String explore(
       @RequestParam(required = false, name = "category_in") List<Long> category_in,
@@ -57,19 +58,16 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
       @RequestParam(defaultValue = "0", name = "page-cat") int pageCat,
+      @RequestParam(defaultValue = "0", name = "page-prov") int pageProv,
       @RequestParam(defaultValue = "0", name = "page") int page,
-      @RequestParam(defaultValue = "4", name = "size") int size,
       Model model) {
 
     PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
-    PageDTO<CategoryDTO> categoryPage = categoryService.getAll(pageCat, 15);
-    PageDTO<ProvinceDTO> provincePage = locationService.getAllProvinces(page, size);
 
     model.addAttribute("events", eventPage.getContent());
     model.addAttribute("newEvent", new EventOutputDTO());
 
-    model.addAttribute("categoryPage", categoryPage);
-    model.addAttribute("provinces", provincePage.getContent());
+    this.addFilterModels(model, pageCat, pageProv);
 
     model.addAttribute("pageTitle", "MetaMapa · Explorar");
     model.addAttribute("active", "explore");
@@ -84,23 +82,36 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
-      Model model
-  ) {
+      @RequestParam(defaultValue = "0", name = "page-cat") int pageCat,
+      @RequestParam(defaultValue = "0", name = "page-prov") int pageProv,
+      @RequestParam(defaultValue = "0", name = "page") int page,
+      Model model) {
+
     CollectionDTO collection = collectionService.getByHandler(handler);
     List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in);
 
+
     model.addAttribute("collection", collection);
+
     model.addAttribute("events", eventsFromCol);
+
+    this.addFilterModels(model, pageCat, pageProv);
+
     model.addAttribute("pageTitle", "MetaMapa · " + collection.getTitle());
+    model.addAttribute("active", "collections");
     return "inCollection";
   }
 
   @GetMapping("/collections")
   public String collections(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+
     PageDTO<CollectionDTO> collectionPage = collectionService.getAll(page);
+
     model.addAttribute("collections", collectionPage.getContent());
+
     model.addAttribute("pageTitle", "MetaMapa · Colecciones");
     model.addAttribute("active", "collections");
+
     return "collections";
   }
 
@@ -111,11 +122,17 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
+      @RequestParam(defaultValue = "0", name = "page-cat") int pageCat,
+      @RequestParam(defaultValue = "0", name = "page-prov") int pageProv,
       @RequestParam(defaultValue = "0", name = "page") int page,
       Model model) {
 
-    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page); //? Ahora mismo el mapa solo muestra los eventos de la pagina que trae
+    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
+
     model.addAttribute("events", eventPage.getContent());
+
+    this.addFilterModels(model, pageCat, pageProv);
+
     model.addAttribute("pageTitle", "MetaMapa · Mapa");
     model.addAttribute("active", "map");
     return "map";
@@ -125,5 +142,16 @@ public class PagesController {
   public String notFound(Model model) {
     model.addAttribute("titulo", "No encontrado");
     return "error/404";
+  }
+
+  private void addFilterModels(Model model, int pageCat, int pageProv) {
+
+    int size = 15;
+
+    PageDTO<CategoryDTO> categoryPage = categoryService.getAll(pageCat, size);
+    PageDTO<ProvinceDTO> provincePage = locationService.getAllProvinces(pageProv, size);
+
+    model.addAttribute("categoryPage", categoryPage);
+    model.addAttribute("provinces", provincePage.getContent());
   }
 }
