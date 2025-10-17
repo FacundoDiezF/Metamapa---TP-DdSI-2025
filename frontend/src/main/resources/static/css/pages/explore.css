@@ -1,0 +1,608 @@
+/* ===========================
+   EXPLORE — Página de Feed Principal
+=========================== */
+
+/* ===========================
+   Layout del Feed
+=========================== */
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-right: .25rem;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+  align-items: stretch;
+  padding-top: 0.5rem;
+}
+
+.center-slot > .feed {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ===========================
+   Post Box (Compartir Nuevo Hecho)
+=========================== */
+
+.post-box {
+  --post-box-h: 72px;
+  position: sticky;
+  top: calc(var(--header-h) + var(--subnav-h) + var(--sp-2));
+  z-index: 3;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-12);
+  padding: var(--sp-3);
+  background: var(--ModuleBG);
+  display: flex !important;
+  flex-direction: row !important;
+  gap: .75rem;
+  align-items: center;
+  flex-wrap: nowrap !important;
+  justify-content: space-between;
+  box-sizing: border-box;
+  margin-bottom: var(--sp-4);
+  box-shadow: var(--shadow-elevated);
+}
+
+.card.post-box,
+summary.post-box {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+}
+
+.post-box input {
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  padding: .7rem;
+  border: 1px solid var(--LightText);
+  background: var(--InboxBG);
+  border-radius: var(--radius-8);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.post-box .post-icons {
+  display: flex !important;
+  gap: .4rem;
+  align-items: center;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+  flex-basis: auto !important;
+  min-width: 40px;
+  width: auto !important;
+}
+
+.post-icons {
+  display: flex;
+  gap: .4rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.post-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.post-icon img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.post-icon:hover,
+.post-icon:focus-visible {
+  background: #eef2f7;
+  outline: 0; box-shadow: var(--focus-ring);
+}
+
+/* ===========================
+   Details Share (Formulario Expandible)
+=========================== */
+
+details.share {
+  border-radius: var(--radius-12);
+  position: relative;
+  z-index: 10;
+  margin-bottom: 0;
+}
+
+details.share[open] {
+  margin-bottom: 0;
+}
+
+details.share > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+details.share > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.share > summary input {
+  pointer-events: none;
+  cursor: pointer;
+}
+
+details.share[open] > summary.post-box {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid var(--LightText);
+}
+
+.share-panel {
+  display: none !important;
+  background: var(--ModuleBG);
+  border: 1px solid var(--border-subtle);
+  border-top: none;
+  border-radius: 0 0 var(--radius-12) var(--radius-12);
+  padding: 1rem;
+  gap: 1rem;
+  position: static;
+  width: 100%;
+  box-sizing: border-box;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  overflow: visible !important;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  box-shadow: var(--shadow-elevated);
+}
+
+details.share[open] .share-panel {
+  display: grid !important;
+  animation: slideDown 0.25s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.share-panel .submit-btn {
+  pointer-events: none;
+  opacity: .55;
+  cursor: not-allowed;
+  filter: saturate(.7);
+}
+
+.share-panel:not(:has(:required:invalid)) .submit-btn {
+  pointer-events: auto;
+  opacity: 1;
+  cursor: pointer;
+  filter: none;
+}
+
+/* ===========================
+   Share Form Layout
+=========================== */
+
+.share-row {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: .75rem 1rem;
+}
+
+.share-row .field:has(textarea) {
+  grid-column: 1 / -1;
+}
+
+.share-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .75rem;
+  grid-column: 1 / -1;
+  margin-top: .5rem;
+}
+
+.share-actions .left-actions {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-right: auto;
+}
+
+.share-actions .right-actions {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-left: auto;
+}
+
+.share-actions .right-actions .btn {
+  padding: .6rem 1.2rem;
+  font-size: .95rem;
+  min-width: 110px;
+  border-radius: var(--radius-12);
+}
+
+/* ===========================
+   Campos de Formulario (Específicos de Explore)
+=========================== */
+
+.field label {
+  font-size: .9rem;
+  font-weight: 600;
+  margin-bottom: .25rem;
+  display: block;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: .7rem .95rem;
+  border: 1px solid var(--LightText);
+  border-radius: var(--radius-10);
+  background: var(--InboxBG);
+  font: inherit;
+  background-repeat: no-repeat;
+  background-position: right .6rem center;
+  background-size: 18px 18px;
+  padding-right: 2.2rem;
+  transition: border-color .15s, box-shadow .15s, background-color .15s;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: var(--focus-ring, 0 0 0 3px rgba(59, 130, 246, .15));
+}
+
+.field input:valid,
+.field textarea:valid,
+.field select:valid {
+  border-color: var(--Success);
+  background-color: #f0fdf4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2322c55e' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+
+.field input:focus:invalid,
+.field textarea:focus:invalid,
+.field select:focus:invalid {
+  border-color: var(--Danger);
+  background-color: #fef2f2;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E");
+}
+
+.field .help {
+  margin: .3rem 0 0;
+  font-size: .8rem;
+}
+
+.field .help.info {
+  color: var(--Muted);
+}
+
+.field .error-msg {
+  display: none;
+  color: #b91c1c;
+}
+
+.field:has(input:focus:invalid) .error-msg,
+.field:has(textarea:focus:invalid) .error-msg,
+.field:has(select:focus:invalid) .error-msg {
+  display: block;
+}
+
+#descripcion {
+  resize: none;
+  min-height: 180px;
+}
+
+/* ===========================
+   Modal de Reportar
+=========================== */
+
+.report-modal {
+  position: relative;
+  z-index: 1;
+}
+
+.report-form textarea {
+  width: 100%;
+  padding: .95rem 1rem;
+  border: 1px solid var(--LightText);
+  border-radius: var(--radius-12);
+  background: var(--InboxBG);
+  font: inherit;
+  resize: vertical;
+  min-height: 180px;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+  padding-right: 1rem;
+  background-image: none !important;
+  background-repeat: no-repeat;
+}
+
+.report-form textarea:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: var(--focus-ring, 0 0 0 3px rgba(59, 130, 246, .15));
+}
+
+.report-form textarea:valid {
+  border-color: var(--Success);
+  background-color: #f0fdf4;
+}
+
+.report-form textarea:focus:invalid {
+  border-color: var(--Danger);
+  background-color: #fef2f2;
+}
+
+.report-form textarea:valid,
+.report-form textarea:focus:invalid {
+  background-image: none !important;
+  background-color: #fff;
+}
+
+.report-form .help {
+  margin-top: .35rem;
+  font-size: .85rem;
+}
+
+.report-form .help.info {
+  color: var(--DarkAccent);
+}
+
+.report-form .error-msg {
+  display: none;
+  color: #b91c1c;
+}
+
+.report-form:has(textarea:focus:invalid) .error-msg {
+  display: block;
+}
+
+.report-form .submit-report[disabled] {
+  opacity: .55;
+  cursor: not-allowed;
+  filter: saturate(.6);
+}
+
+.report-form:has(textarea:valid) .submit-report {
+  opacity: 1;
+  cursor: pointer;
+  filter: none;
+}
+
+/* ===========================
+   Modal de Subir Imagen
+=========================== */
+
+.upload-modal {
+  position: relative;
+  z-index: 1;
+}
+
+.upload-form {
+  display: grid;
+  gap: .8rem;
+}
+
+.dropzone {
+  position: relative;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: .25rem;
+  padding: 1.25rem;
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--radius-12);
+  background: #f8fafc;
+  cursor: pointer;
+  color: var(--Text);
+}
+
+.dropzone:hover {
+  background: var(--Background);
+}
+
+.dropzone:focus-within {
+  outline: 3px solid rgba(59, 130, 246, .25);
+  outline-offset: 2px;
+}
+
+.dropzone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+
+/* ===========================
+   Modal de Éxito
+=========================== */
+
+.success-modal {
+  position: relative;
+  z-index: 1;
+}
+
+.success-modal h2 {
+  margin-bottom: .25rem;
+}
+
+.success-modal .muted {
+  margin: 0 0 .75rem;
+}
+
+/* ===========================
+   Overlay Dismiss (Compartido por modales)
+=========================== */
+
+.overlay-dismiss {
+  position: fixed;
+  inset: 0;
+  display: block;
+  z-index: 0;
+}
+
+/* ===========================
+   Botones Auxiliares
+=========================== */
+
+.btn.small {
+  padding: .45rem .9rem;
+  font-size: .85rem;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width: 900px) {
+  .share-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================
+   Infinite Scroll - Loading Indicator & End Message
+=========================== */
+
+#events-container {
+  display: contents;
+}
+
+/* Espaciado entre eventos - aplicar directamente a .hecho en el feed */
+.feed > .hecho,
+.feed > div > .hecho {
+  margin: 0 0 0.75rem 0;
+}
+
+/* El primer evento no debe tener margen superior */
+.feed > .hecho:first-of-type,
+.feed > div:first-of-type > .hecho:first-of-type {
+  margin-top: 0;
+}
+
+/* Trigger invisible para HTMX */
+.htmx-scroll-trigger {
+  min-height: 20px;
+  pointer-events: none;
+  margin: 0 0 0.75rem 0;
+}
+
+/* Loading indicator - oculto por defecto, visible cuando HTMX lo activa */
+.loading-indicator {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-6) var(--sp-4);
+  margin: var(--sp-4) 0;
+  border-radius: var(--radius-12);
+  background: var(--ModuleBG);
+  border: 1px solid var(--border-subtle);
+  animation: fadeIn 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* HTMX muestra automáticamente los elementos con clase .htmx-indicator */
+.htmx-indicator.htmx-request {
+  display: flex !important;
+}
+
+.loading-indicator p {
+  margin: 0;
+  color: var(--Muted);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+}
+
+/* Spinner animado */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e2e8f0;
+  border-top-color: var(--Accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mensaje de fin de resultados */
+.end-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-5) var(--sp-4);
+  margin: var(--sp-4) 0;
+  border-radius: var(--radius-12);
+  background: var(--ModuleBG);
+  border: 1px solid var(--border-subtle);
+  animation: fadeIn 0.3s ease;
+}
+
+.end-message p {
+  margin: 0;
+  color: var(--Success);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.no-events-msg {
+  text-align: center;
+  color: var(--Muted);
+  padding: var(--sp-6);
+  font-size: var(--fs-body);
+}
+
+/* ===========================
+   Sentinel (invisible)
+=========================== */
+
+#scroll-sentinel {
+  pointer-events: none;
+  user-select: none;
+}

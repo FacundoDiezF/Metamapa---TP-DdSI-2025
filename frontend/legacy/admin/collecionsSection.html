@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>MetaMapa — Gestión de Colecciones</title>
+
+    <!-- Base compartida -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Basics -->
+    <link rel="stylesheet" href="../shared/tokens.css">
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../shared/components.css">
+    <link rel="stylesheet" href="../shared/utilities.css">
+
+    <!-- Tokens + navbar + iconos -->
+    <link rel="stylesheet" href="../shared/tokens.css"/>
+    <link rel="stylesheet" href="../shared/nav.css"/>
+    <link rel="stylesheet" href="../shared/icons.css"/>
+
+    <!-- Estilos del panel -->
+    <link rel="stylesheet" href="admin.css"/>
+</head>
+
+<body>
+
+<!-- Header global (reutilizado) -->
+<!-- Header global (reutilizado) -->
+<header class="navbar" id="navbar">
+    <div class="brand">
+        <div class="brand-mark"><span class="dot"></span></div>
+        <span class="brand-name">MetaMapa</span>
+    </div>
+
+    <div class="auth-actions">
+        <!-- 1) Píldora Admin -->
+        <a href="admin.html" class="pill-admin" role="button" aria-label="Panel de Administración">
+            Administrador
+        </a>
+
+        <!-- 2) Píldora de usuario Abby con dropdown -->
+        <details class="user-menu">
+            <summary class="user-pill" aria-haspopup="menu" aria-expanded="false">
+          <span class="avatar" aria-hidden="true">
+            <img src="../shared/Assets/pics/avatar.png" alt="">
+          </span>
+                <span class="user-name">Abby</span>
+                <span class="caret" aria-hidden="true">▾</span>
+            </summary>
+
+            <ul class="user-dropdown" role="menu" aria-label="Menú de usuario">
+                <li role="none"><a role="menuitem" href="#">Mi cuenta</a></li>
+                <li role="none"><a role="menuitem" href="#">Mis aportes</a></li>
+                <li role="none"><a role="menuitem" href="#">Preferencias</a></li>
+                <li role="none">
+                    <hr>
+                </li>
+                <li role="none"><a role="menuitem" href="#">Cerrar sesión</a></li>
+            </ul>
+        </details>
+    </div>
+</header>
+
+
+<!-- Subnav (reutilizado) -->
+<nav class="subnav">
+    <a href="../Index/index.html">Explorar</a>
+    <a href="../Collections/collections.html">Colecciones</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="admin.html" class="active">Panel de Control</a>
+</nav>
+
+<!-- Layout del panel -->
+<main class="admin-layout">
+    <!-- Lateral -->
+    <aside class="admin-sidebar">
+        <h3>Panel de Administración</h3>
+        <nav class="admin-menu" class="nav-link">
+            <a href="admin.html">
+          <span class="nav-icon">
+            <img src="../shared/assets/Icons/stats1-svgrepo-com.svg" alt="Resumen">
+          </span>
+                <span class="nav-label">Resumen</span>
+            </a>
+
+            <a href="stats.html" class="nav-link">
+          <span class="nav-icon">
+            <img src="../shared/assets/icons/insight-svgrepo-com.svg" alt="Estadísticas">
+          </span>
+                <span class="nav-label">Estadísticas</span>
+            </a>
+
+            <a href="collecionsSection.html" class="nav-link is-active">
+          <span class="nav-icon">
+            <img src="../shared/assets/icons/Group.svg" alt="Colecciones">
+          </span>
+                <span class="nav-label">Colecciones</span>
+            </a>
+
+            <a href="delete-requests.html" class="nav-link">
+          <span class="nav-icon">
+            <img src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg" alt="Solicitudes de Eliminación">
+          </span>
+                <span class="nav-label">Solicitudes de Eliminación</span>
+            </a>
+
+            <a href="admin-hechos.html" class="nav-link">
+          <span class="nav-icon">
+            <img src="../shared/assets/icons/sand-clock-svgrepo-com.svg" alt="Hechos pendientes">
+          </span>
+                <span class="nav-label">Hechos pendientes</span>
+            </a>
+
+            <a href="sources.html" class="nav-link">
+          <span class="nav-icon">
+            <img src="../shared/assets/icons/material-symbols_database-outline.svg" alt="Fuentes">
+          </span>
+                <span class="nav-label">Fuentes</span>
+            </a>
+
+            <a href="import-csv.html" class="nav-link">
+          <span class="nav-icon">
+            <img src="../shared/assets/icons/uil_import.svg" alt="Importar CSV">
+          </span>
+                <span class="nav-label">Importar CSV</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Contenido -->
+    <section class="admin-content">
+        <!-- Barra de título + acción principal -->
+        <header class="page-head">
+            <div class="page-head-text">
+                <h1 class="page-title">Colecciones</h1>
+                <p class="page-subtitle">Conjuntos de hechos organizados con un título y descripción</p>
+            </div>
+
+            <div class="page-actions">
+                <a href="#modal-nueva-coleccion" class="btn btn-primary">
+                    <img src="../shared/assets/icons/plus.svg" alt="" aria-hidden="true" class="icon"/>
+                    Nueva Colección
+                </a>
+            </div>
+        </header>
+
+
+        <!-- Lista de colecciones -->
+        <section class="collections-list">
+
+            <!-- Card 1 -->
+            <article class="collection-card">
+                <!-- Encabezado -->
+                <div class="card-head">
+                    <div class="title-wrap">
+                        <h3 class="card-title">Incendios Forestales 2024</h3>
+                        <span class="badge badge-good">Activa</span>
+                    </div>
+
+                    <div class="action-pills">
+                        <button class="pill" aria-label="Ver">
+                            <img src="../shared/assets/Icons/eye.svg" alt="">
+                        </button>
+                        <button class="pill" aria-label="Editar">
+                            <img src="../shared/assets/Icons/edit.svg" alt="">
+                        </button>
+                        <a class="pill" href="#confirm-del-incendios-2024" aria-label="Eliminar">
+                            <img src="../shared/assets/Icons/trash.svg" alt="">
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Descripción -->
+                <p class="summary">
+                    Registro de incendios forestales ocurridos durante el año 2024 en Argentina
+                </p>
+
+                <!-- Metadatos -->
+                <div class="meta-row">
+            <span class="meta-item">
+              <img src="../shared/assets/Icons/location-pin-svgrepo-com.svg" alt="">156 hechos
+            </span>
+                    <span class="meta-item">
+              <img src="../shared/assets/Icons/calendar-lines-alt-svgrepo-com.svg" alt="">Actualizado: 2024-03-10
+            </span>
+                </div>
+            </article>
+
+            <!-- Modal confirmación eliminación -->
+            <div id="confirm-del-incendios-2024" class="modal" role="dialog" aria-modal="true"
+                 aria-labelledby="confirm-title-incendios">
+                <a class="modal-overlay" href="#close" aria-label="Cerrar"></a>
+
+                <section class="modal-dialog confirm-danger">
+                    <header class="modal-head">
+                        <h2 id="confirm-title-incendios">Eliminar colección</h2>
+                        <a href="#close" class="modal-close" aria-label="Cerrar">×</a>
+                    </header>
+
+                    <div class="modal-body" style="display:grid; gap:.6rem;">
+                        <p style="margin:0; font-weight:600; color:#111827;">
+                            ¿Estás seguro que querés eliminar esta colección?
+                        </p>
+                        <p class="muted" style="margin:0;">
+                            <strong>La acción no será reversible.</strong> Se perderán los vínculos con fuentes y la
+                            colección
+                            dejará de estar disponible.
+                        </p>
+                    </div>
+
+                    <footer class="modal-actions">
+                        <a href="#close" class="btn">Cancelar</a>
+                        <!-- En la demo cierra el modal; en backend, apuntará a la URL/acción que borra -->
+                        <a href="#close" class="btn danger">
+                            <img class="icon" src="../shared/assets/Icons/trash.svg" alt="" aria-hidden="true">
+                            Eliminar definitivamente
+                        </a>
+                    </footer>
+                </section>
+            </div>
+
+
+            <!-- Card 2 -->
+            <article class="collection-card">
+                <!-- Encabezado -->
+                <div class="card-head">
+                    <div class="title-wrap">
+                        <h3 class="card-title">Contaminación Hídrica</h3>
+                        <span class="badge badge-good">Activa</span>
+                    </div>
+
+                    <div class="action-pills">
+                        <button class="pill" aria-label="Ver">
+                            <img src="../shared/assets/Icons/eye.svg" alt="">
+                        </button>
+                        <button class="pill" aria-label="Editar">
+                            <img src="../shared/assets/Icons/edit.svg" alt="">
+                        </button>
+                        <a class="pill" href="#confirm-del-contaminacion-hidrica" aria-label="Eliminar">
+                            <img src="../shared/assets/Icons/trash.svg" alt="">
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Descripción -->
+                <p class="summary">
+                    Casos documentados de contaminación en ríos y lagos
+                </p>
+
+                <!-- Metadatos -->
+                <div class="meta-row">
+            <span class="meta-item">
+              <img src="../shared/assets/Icons/location-pin-svgrepo-com.svg" alt="">89 hechos
+            </span>
+                    <span class="meta-item">
+              <img src="../shared/assets/Icons/calendar-lines-alt-svgrepo-com.svg" alt="">Actualizado: 2024-03-08
+            </span>
+                </div>
+            </article>
+
+            <!-- Modal confirmación eliminación -->
+            <div id="confirm-del-contaminacion-hidrica" class="modal" role="dialog" aria-modal="true"
+                 aria-labelledby="confirm-title-contaminacion">
+                <a class="modal-overlay" href="#close" aria-label="Cerrar"></a>
+
+                <section class="modal-dialog confirm-danger">
+                    <header class="modal-head">
+                        <h2 id="confirm-title-contaminacion">Eliminar colección</h2>
+                        <a href="#close" class="modal-close" aria-label="Cerrar">×</a>
+                    </header>
+
+                    <div class="modal-body" style="display:grid; gap:.6rem;">
+                        <p style="margin:0; font-weight:600; color:#111827;">
+                            ¿Estás seguro que querés eliminar esta colección?
+                        </p>
+                        <p class="muted" style="margin:0;">
+                            <strong>La acción no será reversible.</strong> Se perderán los vínculos con fuentes y la
+                            colección
+                            dejará de estar disponible.
+                        </p>
+                    </div>
+
+                    <footer class="modal-actions">
+                        <a href="#close" class="btn">Cancelar</a>
+                        <!-- En la demo cierra el modal; en backend, apuntará a la URL/acción que borra -->
+                        <a href="#close" class="btn danger">
+                            <img class="icon" src="../shared/assets/Icons/trash.svg" alt="" aria-hidden="true">
+                            Eliminar definitivamente
+                        </a>
+                    </footer>
+                </section>
+            </div>
+
+
+        </section>
+    </section>
+</main>
+
+<!-- ===== Modal Nueva Colección (CSS-only con :target) ===== -->
+<div id="modal-nueva-coleccion" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-col-title">
+    <!-- Overlay para cerrar -->
+    <a href="#close" class="modal-overlay" aria-label="Cerrar"></a>
+
+    <section class="modal-dialog">
+        <header class="modal-head">
+            <h2 id="modal-col-title">Crear Nueva Colección</h2>
+            <a href="#close" class="modal-close" aria-label="Cerrar">×</a>
+        </header>
+
+        <form action="#" method="get" class="modal-body" novalidate>
+            <div class="field">
+                <label for="col-nombre">Nombre</label>
+                <input id="col-nombre" type="text" placeholder="Nombre de la colección" required>
+            </div>
+
+            <div class="field">
+                <label for="col-desc">Descripción</label>
+                <textarea id="col-desc" rows="4" placeholder="Descripción de la colección" required></textarea>
+            </div>
+
+            <!-- Fuentes asociadas (escala 1k+) -->
+            <div class="field">
+                <label>Fuentes asociadas <span class="muted"></span></label>
+
+                <!-- Toggle/plegable para buscar y elegir -->
+                <details class="sources-picker">
+                    <summary>Buscar y agregar fuentes</summary>
+
+                    <div class="picker-bar">
+                        <input id="fuentesSearch" type="search" placeholder="Buscar fuente por nombre…"
+                               aria-label="Buscar fuente"/>
+                    </div>
+
+                    <!-- Lista grande nativa con multiselección -->
+                    <select id="fuentesList" name="fuentes[]" multiple size="8" aria-label="Fuentes disponibles">
+                        <!-- Ejemplos: reemplazar por la lista real -->
+                        <option value="api_ministerio_ambiente">API Ministerio Ambiente</option>
+                        <option value="bd_conadep">Base de Datos CONADEP</option>
+                        <option value="proxy_bomberos_cba">Proxy Bomberos Córdoba</option>
+                        <option value="csv_incendios_2024">CSV Incendios 2024</option>
+                        <!-- … 1000+ options OK -->
+                    </select>
+                </details>
+
+                <!-- Seleccionadas siempre visible -->
+                <div class="selected-chips" id="fuentesSelected" aria-live="polite" aria-label="Fuentes seleccionadas">
+                    <!-- se rellenan dinámicamente; fallback sin JS: vacío -->
+                </div>
+
+                <p class="help info"
+                   data-tip="Podés escribir para buscar y seleccionar con Ctrl/Cmd o Shift. Las elegidas quedan abajo como chips; podés quitarlas desde allí.">
+                    Elegí una o más fuentes.
+                </p>
+            </div>
+
+
+            <div class="field">
+                <label for="col-categoria">Categoría</label>
+                <div class="select">
+                    <select id="col-categoria" required aria-label="Categoría">
+                        <option value="">Selecciona una categoría</option>
+                        <option>Desastre Natural</option>
+                        <option>Medio Ambiente</option>
+                        <option>Derechos Humanos</option>
+                    </select>
+                    <img src="../shared/assets/icons/chevron-down.svg" alt="" class="select-caret" aria-hidden="true">
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="col-estado">Estado</label>
+                <div class="select">
+                    <select id="col-estado" required aria-label="Estado">
+                        <option>Borrador</option>
+                        <option>Activa</option>
+                    </select>
+                    <img src="../shared/assets/icons/chevron-down.svg" alt="" class="select-caret" aria-hidden="true">
+                </div>
+            </div>
+
+            <!-- Algoritmo de Consenso -->
+            <div class="field">
+                <label>Algoritmo de consenso <span class="muted"></span></label>
+
+                <!-- Radios accesibles + estilo pill (toggle) -->
+                <div class="segmented" role="radiogroup" aria-label="Algoritmo de consenso">
+                    <input type="radio" name="consenso" id="c-none" value="none" checked>
+                    <label for="c-none"
+                           title="Todos los hechos se consideran consensuados y aparecen en navegación curada.">
+                        Sin consenso
+                    </label>
+
+                    <input type="radio" name="consenso" id="c-multi" value="multiples_menciones">
+                    <label for="c-multi"
+                           title="Si ≥2 fuentes contienen el mismo hecho y no hay otra con igual título pero distintos atributos.">
+                        Múltiples menciones
+                    </label>
+
+                    <input type="radio" name="consenso" id="c-mayoria" value="mayoria_simple">
+                    <label for="c-mayoria" title="Si al menos la mitad de las fuentes coinciden.">
+                        Mayoría simple
+                    </label>
+
+                    <input type="radio" name="consenso" id="c-abs" value="absoluta">
+                    <label for="c-abs" title="Si todas las fuentes coinciden.">
+                        Absoluta
+                    </label>
+                </div>
+
+                <p class="help info"
+                   data-tip="Si no elegís un algoritmo, todos los hechos se considerarán consensuados para la navegación curada.">
+                    ⚙️ Se ejecuta en ventanas de baja carga (batch).
+                </p>
+            </div>
+
+
+            <footer class="modal-actions">
+                <button class="btn btn-primary" type="submit">Crear</button>
+                <a class="btn" href="#close">Cancelar</a>
+            </footer>
+        </form>
+    </section>
+</div>
+
+<!-- Ancla inerte para cerrar sin mover el scroll (como en sources.html) -->
+<div id="close" style="position:fixed;inset:auto;"></div>
+
+<script>
+    (function () {
+        const list = document.getElementById('fuentesList');
+        const chips = document.getElementById('fuentesSelected');
+        const search = document.getElementById('fuentesSearch');
+
+        function renderChips() {
+            chips.innerHTML = '';
+            [...list.options].filter(o => o.selected).forEach(o => {
+                const c = document.createElement('span');
+                c.className = 'chip';
+                c.dataset.value = o.value;
+                c.innerHTML = `<span>${o.text}</span>
+                     <button type="button" class="remove" aria-label="Quitar ${o.text}">×</button>`;
+                chips.appendChild(c);
+            });
+        }
+
+        // Quitar desde chip
+        chips.addEventListener('click', e => {
+            if (!e.target.classList.contains('remove')) return;
+            const chip = e.target.closest('.chip');
+            const opt = [...list.options].find(o => o.value === chip.dataset.value);
+            if (opt) {
+                opt.selected = false;
+                renderChips();
+            }
+        });
+
+        // Cambios en la lista nativa
+        list.addEventListener('change', renderChips);
+
+        // Búsqueda: filtra visible en la lista (sin tocar opciones)
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            [...list.options].forEach(o => {
+                const show = !q || o.text.toLowerCase().includes(q);
+                o.hidden = !show;
+            });
+        });
+
+        // Render inicial por si vienen preseleccionadas desde el backend
+        renderChips();
+    })();
+</script>
+
+
+</body>
+
+</html>

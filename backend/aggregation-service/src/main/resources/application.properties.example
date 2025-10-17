@@ -1,0 +1,28 @@
+spring.application.name=metamapa
+# Agregation service port
+server.port=8080
+# CronJob for collection refresh (every hour)
+collection.refresh.cron=0 0 * * * *
+#CornJob for reevaluate consensus (every day at 3am)
+reevaluate.consensus.cron=0 0 3 * * *
+# Agregation service URL
+aggregation-service.url=http://localhost:8080
+
+# LocationAPI
+geo-ref.url=https://apis.datos.gob.ar/georef/api
+thread.count=4
+batch.size=1000
+response.byte.size=1048576
+
+# Database configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/metamapa_aggregator?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# Hibernate configuration
+spring.jpa.hibernate.ddl-auto=create-drop
+# Possible values: validate | update | create | create-drop | none
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect

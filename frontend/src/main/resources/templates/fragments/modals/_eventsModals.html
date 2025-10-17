@@ -1,0 +1,135 @@
+<div th:fragment="eventsModals">
+
+    <div id="shareSuccess" class="modal-overlay target-modal">
+        <div class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="shareSuccessTitle">
+            <a href="#" class="modal-close" aria-label="Cerrar">×</a>
+            <h2 id="shareSuccessTitle">¡Tu hecho se subió correctamente!</h2>
+            <p class="muted">Recuerda que tienes <strong>7 días</strong> para editarlo en caso de quererlo.</p>
+            <a class="primary" href="#"
+               style="display:inline-block; margin-top:.5rem; padding:.6rem 1rem; border-radius:10px; text-decoration:none; background:var(--ui-blue); color:#fff; font-weight:600;">
+                Cerrar
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal: Subir multimedia (CSS-only con :target) -->
+    <div id="modal-media" class="modal-overlay target-modal">
+        <a href="#close" class="overlay-dismiss" aria-label="Cerrar"></a>
+        <div class="modal auth-modal upload-modal" role="dialog" aria-modal="true" aria-labelledby="mediaTitle">
+
+            <h2 id="mediaTitle">Adjuntar imagen</h2>
+            <p class="muted">Podés arrastrar una imagen aquí o seleccionarla desde tu dispositivo. Formatos: JPG,
+                PNG, WebP.
+            </p>
+
+            <form class="upload-form" action="#" method="get" novalidate>
+                <label for="mediaFile" class="dropzone" aria-describedby="mediaHelp">
+                    <span class="dz-icon" aria-hidden="true">🖼️</span>
+                    <span class="dz-title">Arrastrá y soltá la imagen</span>
+                    <span class="dz-sub">o haz clic para explorar…</span>
+                    <input id="mediaFile" name="mediaFile" type="file" accept="image/*" required>
+                </label>
+                <p id="mediaHelp" class="help info">Tamaño recomendado &lt; 5 MB. Evitá datos personales o
+                    sensibles.</p>
+
+                <div class="upload-actions">
+                    <a href="#close" class="btn ghost">Cancelar</a>
+                    <!-- Sin JS: este “Adjuntar” cierra el modal. Queda visualmente deshabilitado hasta que haya archivo -->
+                    <a href="#" class="btn primary submit-link">Adjuntar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Solicitud de eliminación (CSS-only con :target) -->
+    <div id="report-hecho-1" class="modal-overlay target-modal">
+        <!-- Click en el fondo cierra -->
+        <a href="#close" class="overlay-dismiss" aria-label="Cerrar"></a>
+
+        <div class="modal auth-modal report-modal" role="dialog" aria-modal="true" aria-labelledby="reportTitle-1">
+            <a href="#close" class="modal-close" aria-label="Cerrar">×</a>
+
+            <h2 id="reportTitle-1">Solicitud de eliminación</h2>
+            <p class="muted">
+                Explicá por qué este contenido debería eliminarse.
+                <strong>Mínimo 500 caracteres.</strong> No incluyas datos personales.
+            </p>
+
+            <form class="report-form" action="#" method="post" novalidate>
+                <label class="field">
+                    <span class="sr-only">Justificación</span>
+                    <textarea id="justificacion-1" name="justificacion"
+                              placeholder="Justificación (mín. 500 caracteres)" minlength="500" required
+                              rows="8"></textarea>
+                    <p class="help info">Escribe una justificación clara y verificable. Evitá datos sensibles.</p>
+                    <p class="help error-msg">La justificación debe tener al menos 500 caracteres.</p>
+                </label>
+
+                <div class="upload-actions">
+                    <a href="#close" class="btn ghost">Cancelar</a>
+                    <!-- Deshabilitado visualmente hasta que textarea sea válido (CSS-only) -->
+                    <button type="submit" class="btn primary submit-report" formaction="#reportSuccess" formmethod="get"
+                            disabled>
+                        Enviar solicitud
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación DR-->
+    <div id="reportSuccess" class="modal-overlay target-modal">
+        <a href="#close" class="overlay-dismiss" aria-label="Cerrar"></a>
+
+        <div class="modal auth-modal success-modal" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+            <a href="#close" class="modal-close" aria-label="Cerrar">×</a>
+
+            <h2 id="successTitle">Solicitud en revisión</h2>
+            <p class="muted">
+                ¡Gracias por colaborar con la comunidad! Revisaremos tu solicitud y
+                actuaremos de acuerdo con las normas de convivencia para mantener MetaMapa
+                útil, seguro y respetuoso para todas las personas.
+            </p>
+
+            <a href="#close" class="btn primary" style="margin-top:.5rem;">Entendido</a>
+        </div>
+    </div>
+
+    <!-- Modal +Más categorías (CSS-only con :target) -->
+    <div id="cat-modal" class="modal-overlay target-modal">
+        <a href="#" class="overlay-dismiss" aria-label="Cerrar"></a>
+        <div class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="catModalTitle">
+            <a href="#" class="modal-close" aria-label="Cerrar">×</a>
+            <h2 id="catModalTitle">Seleccionar más categorías</h2>
+
+            <label class="field" style="margin-bottom:.5rem;">
+                <span class="sr-only">Buscar categoría</span>
+                <input type="search" name="cat_q" placeholder="Buscar categoría…">
+            </label>
+
+            <div class="chips chips-grid" style="margin-bottom:.75rem;">
+                <span class="chip-toggle">
+                    <input type="checkbox" id="cat-inundacion" name="categoria[]" value="Inundación">
+                    <label for="cat-inundacion" class="chip">Inundación</label>
+                </span>
+                <span class="chip-toggle">
+                    <input type="checkbox" id="cat-contaminacion" name="categoria[]" value="Contaminación">
+                    <label for="cat-contaminacion" class="chip">Contaminación</label>
+                </span>
+                <span class="chip-toggle">
+                    <input type="checkbox" id="cat-ddhh" name="categoria[]" value="Derechos Humanos">
+                    <label for="cat-ddhh" class="chip">Derechos Humanos</label>
+                </span>
+                <!-- agrega más si hace falta -->
+            </div>
+
+            <div class="upload-actions">
+                <a href="#" class="btn ghost">Cerrar</a>
+                <!-- Si querés que “Aplicar” NO recargue esta vista, dejalo como botón sin submit. -->
+                <button type="submit" class="btn primary">Aplicar</button>
+            </div>
+        </div>
+    </div>
+
+</div>

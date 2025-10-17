@@ -1,0 +1,47 @@
+<html layout:decorate="~{layout/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block layout:fragment="extraStyles">
+    <!-- Layut de 3 columnas -->
+    <link rel="stylesheet" th:href="@{/css/shared/grid-3col.css}"/>
+    <!-- Página Explore -->
+    <link rel="stylesheet" th:href="@{/css/pages/explore.css}"/>
+
+    <!-- SideBar izquierdo: filtros -->
+    <link rel="stylesheet" th:href="@{/css/shared/filters/filters.css}"/>
+    <!-- SideBar derecho: miniMapa + colecciones destacadas -->
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar-right/miniMap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar-right/featured-collections.css}"/>
+
+    <!-- Cards  -->
+    <link rel="stylesheet" th:href="@{/css/shared/cards/card-event.css}"/>
+    <!-- Modal de Solicitud de Eliminación -->
+    <link rel="stylesheet" th:href="@{/css/shared/modals/deletionRequest-styles.css}"/>
+
+</th:block>
+
+
+<th:block th:fragment="contenido">
+    <section th:replace="~{layout/grid3 :: grid3(
+        ~{fragments/grid3/_sidebar_left :: filter-form(@{/explore})},
+        ~{fragments/grid3/center/_explore_center :: center},
+        ~{fragments/grid3/_sidebar_right :: right}
+      )}"></section>
+</th:block>
+
+<!-- Modales de Solicitud de Eliminación (uno por cada evento) -->
+<th:block th:each="event : ${eventsPage.content}">
+    <th:block th:replace="~{fragments/modals/_deletionRequest-modal :: deletionRequestModal(${event.id})}"></th:block>
+</th:block>
+
+<!-- Modales -->
+<th:block layout:fragment="modals">
+    <div th:replace="fragments/modals/_filter_moreOptions :: categoriesModal(${categoryPage})"></div>
+</th:block>
+
+<th:block layout:fragment="extraScripts">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script th:src="@{/js/map/explore-map.js}"></script>
+</th:block>
+
+</html>

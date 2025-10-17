@@ -1,0 +1,125 @@
+<html layout:decorate="~{layout/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- Inserta tu CSS propio -->
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="@{/css/pages/landing.css}"/>
+</th:block>
+
+
+<!-- Remplaza navbar ℹ️ Esto solo lo hace la landing -->
+<div layout:fragment="navbar">
+    <div th:replace="fragments/landing/_navbar_landing :: navbar "></div>
+</div>
+
+<div th:fragment="contenido" class="landing-page">
+
+    <!-- Hero -->
+    <section class="section hero-wrap">
+        <div class="container hero">
+            <div class="hero__image">
+                <img class="hero__img"
+                     th:src="@{/shared/img/landing_metamapa.png}"
+                     alt="Ilustración del mapa colaborativo MetaMapa">
+            </div>
+
+            <div class="hero__text">
+                <h1 class="brand">MetaMapa</h1>
+                <p class="tagline">Plataforma de Mapeo Colaborativo</p>
+
+                <!-- TODO modals funcionales-->
+                <div class="hero__actions">
+                    <a th:href="@{/explore}" class="mm-btn mm-btn--primary">Explorar Más</a>
+
+                    <a href="#" id="loginBtnHero"
+                       class="mm-btn mm-btn--primary mm-btn--pill mm-btn--blue"
+                       data-auth="open" data-panel="login">Iniciar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proposito -->
+    <section th:replace="~{fragments/landing/_proposito :: proposito}"></section>
+
+    <!-- Colecciones Destacadas -->
+    <section th:replace="~{fragments/landing/_collecciones_destacadas :: colecciones}"></section>
+
+    <!-- Hechos destacados -->
+    <section id="hechos" class="section facts">
+        <div class="container">
+            <h2 class="title">Hechos Destacados</h2>
+            <p class="subtitle">Explora los hechos más relevantes reportados por nuestra comunidad en el mapa</p>
+
+            <div class="events__wrap">
+                <div class="map-box">
+                    <div class="map" aria-label="Mapa de hechos">
+                        <img class="map__img" th:src="@{/shared/img/landing_map.png}" alt="Mapa de hechos">
+                        <div class="legend" aria-label="Leyenda del mapa">
+                            <h6>Leyenda</h6>
+                            <div class="legend-row"><span class="dot dot--seek"></span> <span>Se busca</span></div>
+                            <div class="legend-row"><span class="dot dot--fire"></span> <span>Incendios</span></div>
+                            <div class="legend-row"><span class="dot dot--event"></span> <span>Eventos</span></div>
+                        </div>
+                    </div>
+                    <a class="facts__cta" th:href="@{/hechos/nuevo}">¡Subí tu hecho!</a>
+                </div>
+
+                <aside class="facts__panel">
+                    <div class="facts__lead">
+                        <img th:src="@{/shared/icons/location-pin-svgrepo-com.svg}" alt="Ubicación"
+                             class="facts__icon"/>
+                        <p class="lead-title">Selecciona un hecho en el mapa</p>
+                        <p class="lead-desc">Haz clic en cualquier marcador del mapa para ver los detalles del hecho
+                            reportado</p>
+                    </div>
+
+                    <div class="facts__list">
+                        <a href="#" class="facts__all">Todos los hechos</a>
+
+                        <!-- Event Card 1 -->
+                        <a href="#" class="fact-link">
+                            <span class="facts__badge facts__badge--fire">
+                                <img th:src="@{/shared/icons/Events_cat/mdi_fire.svg}" alt="Incendio"/>
+                            </span>
+                            <div>
+                                <p class="facts__title">Incendio en Córdoba</p>
+                                <p class="facts__place">Sierras de Córdoba</p>
+                            </div>
+                        </a>
+
+                        <!-- Event Card 2 -->
+                        <a href="#" class="fact-link">
+                            <span class="facts__badge facts__badge--spill">
+                                <img th:src="@{/shared/icons/Events_cat/water.svg}" alt="Derrame"/>
+                            </span>
+                            <div>
+                                <p class="facts__title">Derrame en Río Paraná</p>
+                                <p class="facts__place">Puerto de Rosario</p>
+                            </div>
+                        </a>
+
+                        <!-- Event Card 3 -->
+                        <a href="#" class="fact-link">
+                            <span class="facts__badge facts__badge--protest">
+                                <img th:src="@{/shared/icons/Events_cat/streamline-sharp_sign-hashtag-remix.svg}"
+                                     alt="Protesta"/>
+                            </span>
+                            <div>
+                                <p class="facts__title">Protesta pacífica en CABA</p>
+                                <p class="facts__place">Plaza de Mayo</p>
+                            </div>
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (fragment) -->
+    <footer>
+        <div th:replace="~{fragments/landing/_footer_landing :: footer}"></div>
+    </footer>
+</div>
+
+</html>

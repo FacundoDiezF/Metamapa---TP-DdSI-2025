@@ -1,0 +1,26 @@
+<!--Plantilla base-->
+
+<html layout:decorate="~{layout/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- Styleshets -->
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="@{/css/pages/ESTOesEJEMPLO.css}"/>
+</th:block>
+
+<th:block layout:fragment="extraScripts">
+    <script th:src="@{/js/ESTOesEJEMPLO.js}"></script>
+</th:block>
+
+<div th:fragment="contenido">
+    <h1>Aca va el contendo principal de la pagina</h1>
+</div>
+
+<th:block layout:fragment="modals">
+
+    <div th:replace="~{fragments/modals/EstoEsUnEjemplo :: eventsModals}"></div>
+
+</th:block>
+
+
+</html>

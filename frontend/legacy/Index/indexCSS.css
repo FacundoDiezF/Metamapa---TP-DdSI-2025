@@ -1,0 +1,793 @@
+/* ============ Layout ============ */
+.layout {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  grid-template-columns: 280px 1fr 300px;
+  height: calc(100vh - var(--header-h) - var(--subnav-h));
+  overflow: hidden;
+}
+
+.sidebar {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+  padding: 1.2rem;
+}
+
+/* ============ Feed central ============ */
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: .25rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-box {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.post-box input {
+  width: 100%;
+  padding: .7rem;
+  border: 1px solid #e5e7eb;
+  background: #f6f7f9;
+  border-radius: 8px;
+}
+
+.post-icons {
+  display: flex;
+  gap: .4rem;
+  color: #6b7280;
+}
+
+/* ============ Hechos ============ */
+.hecho {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+}
+
+.hecho h2 {
+  margin: .5rem 0;
+  font-size: 1.1rem;
+}
+
+.hecho .ubicacion {
+  color: var(--ui-blue);
+  font-size: .85rem;
+  margin-bottom: .5rem;
+}
+
+.hecho p {
+  font-size: .9rem;
+  margin-bottom: .7rem;
+}
+
+.hecho img {
+  width: 100%;
+  border-radius: 8px;
+  margin: .5rem 0;
+}
+
+.hecho .fuente {
+  font-size: .75rem;
+  color: #777;
+}
+
+.tag {
+  display: inline-block;
+  background: #BDFFDB;
+  color: #000;
+  padding: .2rem .5rem;
+  border-radius: 0 0 15px 15px;
+  font-size: .8rem;
+}
+
+/* Botón denuncia */
+.flag-float {
+  position: absolute;
+  top: 15px;
+  right: 19px;
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.flag-float:hover,
+.flag-float:focus {
+  background: #f1f5f9;
+}
+
+.flag-float:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+}
+
+/* ============ Sidebar derecha ============ */
+.sidebar-right {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-rows: auto auto;
+  align-content: start;
+}
+
+.map-box,
+.colecciones {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.map-frame {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#map {
+  width: 100%;
+  height: clamp(220px, 35vh, 320px);
+}
+
+.colecciones ul {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.colecciones a {
+  color: var(--ui-blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.colecciones a span {
+  font-size: .75rem;
+  margin-left: .5rem;
+  color: #555;
+}
+
+.explorar {
+  width: 100%;
+  padding: .7rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--ui-blue);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.explorar:hover {
+  filter: brightness(.95);
+}
+
+/* ============ Botones ============ */
+.btn.small {
+  padding: .45rem .9rem;
+  font-size: .85rem;
+}
+
+.btn.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .55rem .9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+}
+
+/* Normaliza todos los botones que son enlaces (<a>) */
+.btn,
+.btn:link,
+.btn:visited {
+  text-decoration: none;
+  /* quita subrayado */
+  color: inherit;
+  /* hereda el color según la clase (primary, ghost, etc.) */
+}
+
+/* ============ Share Form ============ */
+details.share {
+  border-radius: 12px;
+}
+
+details.share>summary {
+  list-style: none;
+}
+
+details.share>summary::-webkit-details-marker {
+  display: none;
+}
+
+details.share[open]>summary.post-box {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.share-panel {
+  background: var(--ui-card);
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+/* Deshabilitado por defecto */
+.share-panel .submit-btn {
+  pointer-events: none;
+  opacity: .55;
+  cursor: not-allowed;
+  filter: saturate(.7);
+}
+
+/* Cuando NO hay requeridos inválidos -> habilitar */
+.share-panel:not(:has(:required:invalid)) .submit-btn {
+  pointer-events: auto;
+  opacity: 1;
+  cursor: pointer;
+  filter: none;
+}
+
+
+.share-row {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: .75rem 1rem;
+  align-items: start;
+}
+
+.share-row .field:has(textarea) {
+  grid-column: 1 / -1;
+}
+
+/* --- Ajustes específicos de la botonera del share --- */
+.share-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .75rem;
+  margin-top: .5rem;
+}
+
+.share-actions .left-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem .6rem;
+  align-items: center;
+}
+
+.share-actions .right-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: .6rem;
+  align-items: center;
+}
+
+.share-actions .right-actions .btn {
+  padding: .6rem 1.2rem;
+  font-size: .95rem;
+  min-width: 110px;
+  border-radius: 12px;
+}
+
+
+@media (max-width: 900px) {
+  .share-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.share-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .75rem;
+}
+
+.share-actions .left-actions {
+  display: flex;
+  gap: .6rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.share-actions .right-actions {
+  display: flex;
+  gap: .6rem;
+  flex-wrap: nowrap;
+}
+
+.share-actions .right-actions .btn {
+  padding: .6rem 1.15rem;
+  font-size: .95rem;
+  min-width: 112px;
+  border-radius: 12px;
+}
+
+/* ============ Fields & Validación ============ */
+.field {
+  display: block;
+}
+
+.field label {
+  font-size: .9rem;
+  font-weight: 600;
+  margin-bottom: .25rem;
+  display: block;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: .7rem .95rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #f6f7f9;
+  font: inherit;
+  background-repeat: no-repeat;
+  background-position: right .6rem center;
+  background-size: 18px 18px;
+  padding-right: 2.2rem;
+  transition: border-color .15s, box-shadow .15s, background-color .15s;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .15);
+}
+
+/* Validación */
+.field input:valid,
+.field textarea:valid,
+.field select:valid {
+  border-color: #22c55e;
+  background-color: #f0fdf4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2322c55e' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+
+.field input:focus:invalid,
+.field textarea:focus:invalid,
+.field select:focus:invalid {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E");
+}
+
+.field .help {
+  margin: .3rem 0 0;
+  font-size: .8rem;
+}
+
+.field .help.info {
+  color: #6b7280;
+}
+
+.field .error-msg {
+  display: none;
+  color: #b91c1c;
+}
+
+.field:has(input:focus:invalid) .error-msg,
+.field:has(textarea:focus:invalid) .error-msg,
+.field:has(select:focus:invalid) .error-msg {
+  display: block;
+}
+
+/* Extra */
+#descripcion {
+  resize: none;
+  min-height: 180px;
+}
+
+/* ============ Modal ============ */
+.modal-overlay[hidden] {
+  display: none;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, .55);
+  z-index: 9999;
+}
+
+.auth-modal {
+  position: relative;
+  width: min(92vw, 480px);
+  background: #f6f7f9;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+}
+
+.modal-close {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  color: #6b7280;
+  opacity: .8;
+  cursor: pointer;
+}
+
+.modal-close,
+.modal-close:link,
+.modal-close:visited {
+  text-decoration: none;
+  /* quita subrayado */
+  color: inherit;
+  /* mantiene color definido */
+}
+
+.modal-close:hover {
+  color: #374151;
+  opacity: 1;
+  text-decoration: none;
+}
+
+a.btn,
+a.modal-close {
+  text-decoration: none !important;
+}
+
+.btn.primary,
+a.btn.primary {
+  background: var(--ui-blue);
+  color: #fff !important;
+  /* fuerza blanco en texto */
+  border: 1px solid transparent;
+  font-weight: 600;
+  text-decoration: none;
+  /* quita subrayado de links */
+}
+
+/* Unifica tipografía en todos los botones */
+.btn,
+.btn.primary,
+.btn.ghost,
+a.btn,
+a.btn.primary,
+a.btn.ghost {
+  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 600;
+}
+
+
+.target-modal {
+  display: none;
+}
+
+.target-modal:target {
+  display: grid;
+}
+
+/* Upload form */
+.upload-form {
+  display: grid;
+  gap: .8rem;
+}
+
+.dropzone {
+  position: relative;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: .25rem;
+  padding: 1.25rem;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  cursor: pointer;
+  color: #0f172a;
+}
+
+.dropzone:hover {
+  background: #f3f4f6;
+}
+
+.dropzone:focus-within {
+  outline: 3px solid rgba(59, 130, 246, .25);
+  outline-offset: 2px;
+}
+
+.dropzone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+
+/* Íconos en el bloque "Comparte tus hechos" */
+.post-icons {
+  display: flex;
+  gap: .4rem;
+  align-items: center;
+}
+
+.post-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.post-icon img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.post-icon:hover,
+.post-icon:focus-visible {
+  background: #eef2f7;
+  outline: none;
+}
+
+/* Cerrar al clickear el fondo (sin JS) */
+.overlay-dismiss {
+  position: fixed;
+  inset: 0;
+  position: absolute;
+  inset: 0;
+  display: block;
+  z-index: 0;
+}
+
+.success-modal {
+  position: relative;
+  z-index: 1;
+}
+
+.success-modal h2 {
+  margin-bottom: .25rem;
+}
+
+.success-modal .muted {
+  margin: 0 0 .75rem;
+}
+
+/* Asegura que el panel quede arriba del fondo clickeable */
+.upload-modal {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fondo clickeable que cierra */
+.overlay-dismiss {
+  position: absolute;
+  inset: 0;
+  display: block;
+  z-index: 0;
+}
+
+/* El panel por encima del fondo */
+.report-modal {
+  position: relative;
+  z-index: 1;
+}
+
+/* Textarea y ayudas (reusa tus tokens) */
+.report-form textarea {
+  width: 100%;
+  padding: .95rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background: #f6f7f9;
+  font: inherit;
+  resize: vertical;
+  min-height: 180px;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+  padding-right: 1rem;
+  background-image: none !important;
+  background-repeat: no-repeat;
+}
+
+.report-form textarea:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .15);
+}
+
+/* Estados de validación */
+.report-form textarea:valid {
+  border-color: #22c55e;
+  background-color: #f0fdf4;
+}
+
+.report-form textarea:focus:invalid {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.report-form textarea:valid,
+.report-form textarea:focus:invalid {
+  background-image: none !important;
+  /* quita ✔/✖ */
+  /* mantenemos solo colores suaves */
+  background-color: #fff;
+  /* o #f6f7f9 si prefieres */
+}
+
+.report-form .help {
+  margin-top: .35rem;
+  font-size: .85rem;
+}
+
+.report-form .help.info {
+  color: var(--ui-muted);
+}
+
+.report-form .error-msg {
+  display: none;
+  color: #b91c1c;
+}
+
+/* Mostrar error si es inválido y está en foco */
+.report-form:has(textarea:focus:invalid) .error-msg {
+  display: block;
+}
+
+/* Botón Enviar: deshabilitado por defecto, habilita cuando válido */
+.report-form .submit-report[disabled] {
+  opacity: .55;
+  cursor: not-allowed;
+  filter: saturate(.6);
+}
+
+.report-form:has(textarea:valid) .submit-report {
+  opacity: 1;
+  cursor: pointer;
+  filter: none;
+}
+
+/* Quita subrayado/azul en botones ancla (si usás <a>) */
+.btn,
+.btn:link,
+.btn:visited {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ====== Alturas fiables del viewport ====== */
+.layout {
+  /* usa small-view-height (svh) para que no se pase por barras UI */
+  height: calc(100svh - var(--header-h) - var(--subnav-h));
+  /* si tu navegador soporta dvh, actívalo como fallback preferente */
+  height: calc(100dvh - var(--header-h) - var(--subnav-h));
+  /* previene overflow horizontal por contenidos largos */
+  grid-template-columns: minmax(240px, 280px) minmax(0, 1fr) minmax(260px, 300px);
+}
+
+/* Asegura que los hijos no estiren la fila del grid */
+.sidebar,
+.sidebar-right,
+.feed {
+  min-height: 0;
+}
+
+/* ====== Modo compacto por altura (sin scroll de página) ====== */
+@media (max-height: 860px) {
+  :root {
+    /* bajamos un poco las alturas del header/subnav */
+    --header-h: 64px;
+    --subnav-h: 40px;
+  }
+
+  .layout {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .sidebar,
+  .sidebar-right {
+    padding: .9rem;
+  }
+
+  .post-box {
+    padding: .8rem;
+  }
+
+  .hecho {
+    padding: 1rem;
+  }
+
+  #map {
+    height: clamp(200px, 30vh, 280px);
+  }
+}
+
+/* Ultra compacto para pantallas muy bajas (p.ej. 720px) */
+@media (max-height: 740px) {
+  :root {
+    --header-h: 56px;
+    --subnav-h: 36px;
+  }
+
+  .layout {
+    padding: .75rem;
+    gap: .75rem;
+  }
+
+  .sidebar,
+  .sidebar-right {
+    padding: .75rem;
+  }
+
+  .post-box {
+    padding: .7rem;
+  }
+
+  .hecho {
+    padding: .85rem;
+  }
+
+  .share-actions .right-actions .btn {
+    min-width: 100px;
+    padding: .5rem 1rem;
+  }
+
+  #map {
+    height: 220px;
+  }
+
+  /* fija segura en modo compacto */
+}
+
+/* Extra: evita que algo fuerce ancho/alto accidentalmente */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}

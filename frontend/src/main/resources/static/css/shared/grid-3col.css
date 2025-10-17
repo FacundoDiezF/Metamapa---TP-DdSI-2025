@@ -1,0 +1,165 @@
+/* ===========================
+   GRID DE 3 COLUMNAS — Estándar reutilizable
+   - Usa tokens de main.css (no redefine :root)
+   - Estructura: .grid-3col con slots .left-slot / .center-slot / .right-slot
+   - Las páginas pueden ajustar --header-h / --subnav-h en su propio scope
+=========================== */
+
+/* ===========================
+   GRID LAYOUTS COMPARTIDOS
+   Consolidado para grid3 / explore
+=========================== */
+
+
+
+.grid-3col {
+    display: grid;
+    grid-template-columns: minmax(240px, 280px) minmax(320px, 1fr) minmax(260px, 360px);
+    gap: var(--sp-4);
+    padding: var(--sp-4) var(--sp-6);
+    /* altura calculada para que la columna central utilice el alto disponible */
+    height: calc(100svh - var(--header-h) - var(--subnav-h));
+    height: calc(100dvh - var(--header-h) - var(--subnav-h));
+    overflow: visible; /* permitir que el scroll vaya en las columnas internas */
+}
+
+
+
+.grid-3col .grid-3col {
+    display: contents;
+}
+
+
+
+.left-slot, .center-slot, .right-slot, .left-slot *, .center-slot *, .right-slot * {
+    min-height: 0;
+    min-width: 0;
+}
+
+
+
+.left-slot { /* alias visual para sidebar izquierdo */
+}
+
+
+
+.center-slot {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
+    min-height: 0;
+}
+
+
+
+.center-slot > .feed {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+
+.right-slot { /* alias para sidebar derecho; estilos de aspecto en .sidebar-right */ }
+
+
+
+/* Aspecto base de sidebars (reutilizado desde explore) */
+.sidebar, .sidebar-right {
+    background: var(--ModuleBG);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-12);
+    padding: var(--sp-3);
+    height: fit-content;
+    box-shadow: var(--shadow-elevated);
+}
+
+
+
+/* Responsive base (mobile) */
+@media (max-width: 991.98px) {
+    .grid-3col {
+        grid-template-columns: 1fr;
+    }
+
+
+    .left-slot, .right-slot {
+        margin-bottom: var(--sp-3);
+    }
+}
+
+    .grid-3col > .center-slot {
+        display: flex;
+        flex-direction: column;
+        min-width: 320px; /* evita colapso a una línea */
+        min-height: 0;
+    }
+
+
+    .grid-3col > .center-slot > .feed {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: .25rem;
+    }
+
+
+    .grid-3col > aside.grid-3col, .grid-3col > .sidebar > .sidebar {
+        display: block;
+    }
+
+
+    .grid-3col > .sidebar,
+    .grid-3col > aside.sidebar {
+        grid-column: 1 / 2;
+    }
+
+
+    .grid-3col > .center-slot,
+    .grid-3col > main.center-slot {
+        grid-column: 2 / 3;
+    }
+
+
+    .grid-3col > .sidebar-right,
+    .grid-3col > aside.sidebar-right {
+        grid-column: 3 / 4;
+    }
+
+
+    .grid-3col > * {
+        min-width: 0;
+        min-height: 0;
+        display: block;
+    }
+
+
+    .grid-3col {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    .center-slot {
+        display: flex;
+        flex-direction: column;
+        min-width: 320px;
+        min-height: 0;
+    }
+
+
+    .center-slot > .feed {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+
+    /* Override final: evitar que otras hojas pongan overflow-x: hidden y recorten las columnas */
+    .grid-3col {
+        overflow-x: visible;
+        overflow-y: visible;
+    }

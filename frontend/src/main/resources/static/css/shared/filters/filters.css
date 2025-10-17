@@ -1,0 +1,348 @@
+/* ===========================
+   FILTROS — Sidebar de Filtrado
+=========================== */
+
+/* ===========================
+   Layout del Sidebar
+=========================== */
+
+.layout {
+  overflow-x: hidden;
+}
+
+.sidebar {
+  min-width: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar h3 {
+  margin: 0 0 1rem;
+}
+
+.filters {
+  display: grid;
+  gap: 1rem;
+}
+
+.filters,
+.filters * {
+  min-width: 0;
+}
+
+/* ===========================
+   Bloques Plegables (Details)
+=========================== */
+
+.flt {
+  border: 1px solid var(--LightText, #e5e7eb);
+  border-radius: var(--radius-10);
+  background: var(--ModuleBG, #fff);
+}
+
+.flt + .flt {
+  margin-top: .6rem;
+}
+
+.flt-head {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .6rem .75rem;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+}
+
+.flt-head::-webkit-details-marker {
+  display: none;
+}
+
+.caret {
+  color: var(--Muted, #667085);
+  font-size: .9rem;
+  transition: transform .18s ease;
+}
+
+.flt[open] .caret {
+  transform: rotate(180deg);
+}
+
+.flt-body {
+  padding: .6rem .75rem .8rem;
+  border-top: 1px solid var(--LightText, #e5e7eb);
+}
+
+/* ===========================
+   Chips de Filtro
+=========================== */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.chips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: .5rem;
+}
+
+.chip {
+  display: inline-block;
+  padding: .35rem .7rem;
+  border: 1px solid var(--border-accent) !important; /* Usar variable y forzar con !important */
+  border-radius: 999px;
+  background: var(--Secondary, #f8fafc);
+  font-size: .85rem;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.chip:hover {
+  background: var(--hero-bg, #eef6ff);
+  border-color: var(--Accent);
+  color: var(--Accent);
+}
+
+.chip.mas {
+  background: #e8f0fe;
+  border-color: #4285f4;
+  color: #1d4ed8;
+}
+
+.chip-toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip-toggle input:focus + .chip {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .22) inset;
+  outline: 0;
+}
+
+.chip-toggle input:checked + .chip {
+  background: var(--Accent);
+  border-color: var(--Accent);
+  color: #fff;
+}
+
+/* ===========================
+   Filtro de Fecha
+=========================== */
+
+.date-range {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+.date-range span {
+  font-size: .8rem;
+  color: var(--Muted, #555);
+  margin-right: .4rem;
+}
+
+.date-range input {
+  width: 100%;
+  padding: .6rem .75rem;
+  border: 1px solid var(--LightText, #e5e7eb);
+  border-radius: var(--radius-10);
+  background: var(--InboxBG, #f6f7f9);
+  font-size: .95rem;
+  box-sizing: border-box;
+}
+
+.date-range input:focus {
+  outline: 0;
+  border-color: #93c5fd;
+  box-shadow: var(--focus-ring, 0 0 0 3px rgba(59, 130, 246, .15));
+}
+
+.date-range input[type="date"] {
+  overflow: hidden;
+}
+
+/* ===========================
+   Filtro de Ubicación
+=========================== */
+
+.ubic-searchbar {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .6rem;
+}
+
+.ubic-searchbar input[type="search"] {
+  flex: 1;
+  padding: .6rem .75rem;
+  border: 1px solid var(--LightText, #e5e7eb);
+  border-radius: var(--radius-10);
+  background: var(--InboxBG, #f6f7f9);
+  font: inherit;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===========================
+   Textos de Ayuda
+=========================== */
+
+.help {
+  margin: .35rem 0 0;
+  font-size: .8rem;
+  color: var(--Muted, #6b7280);
+}
+
+/* ===========================
+   Acciones de Filtros
+=========================== */
+
+.filters-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+  margin-top: .5rem;
+}
+
+.btn-clean {
+  display: inline-block;
+  padding: .3rem .6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--DarkAccent, #6b7280);
+  font-size: .8rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-brand);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.btn-clean:hover {
+  background: var(--Background, #f3f4f6);
+}
+
+.btn-apply {
+  background: var(--DarkAccent, #475265);
+  color: #fff;
+  border: 1px solid var(--DarkAccent, #475265);
+  font-weight: 600;
+  padding: .6rem 1.2rem;
+  border-radius: var(--radius-10);
+  cursor: pointer;
+  font-family: var(--font-brand);
+}
+
+.btn-apply:hover {
+  background: #5a6476;
+  border-color: #5a6476;
+}
+
+/* ===========================
+   Modal de Categorías
+=========================== */
+
+.mm-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, .55);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .20s ease;
+  z-index: 1100;
+}
+
+.mm-overlay:target {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mm-overlay .mm-dismiss {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: block;
+}
+
+.mm-modal {
+  position: relative;
+  z-index: 2;
+  width: min(92vw, 720px);
+  max-width: 720px;
+  background: var(--ModuleBG, #fff);
+  border-radius: 16px;
+  padding: 1.25rem 1.25rem 1rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .20s ease, transform .20s ease;
+}
+
+.mm-overlay:target .mm-modal {
+  opacity: 1;
+  transform: none;
+}
+
+.mm-title {
+  margin: 0 0 .8rem;
+  font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+  font-weight: 800;
+}
+
+.mm-actions {
+  display: flex;
+  gap: .6rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.mm-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  font-size: 18px;
+  opacity: .7;
+}
+
+.mm-close:hover {
+  opacity: 1;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-height: 760px), (max-width: 920px) {
+  .flt-head {
+    padding: .5rem .65rem;
+  }
+
+  .flt-body {
+    padding: .5rem .65rem .7rem;
+  }
+}

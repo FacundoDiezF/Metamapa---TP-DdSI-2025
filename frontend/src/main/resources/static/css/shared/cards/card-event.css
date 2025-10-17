@@ -1,0 +1,76 @@
+/* ===========================
+   Hechos (Event Cards)
+=========================== */
+
+.hecho {
+    position: relative;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-12);
+    padding: 1.2rem;
+    box-shadow: var(--shadow-elevated);
+    background: var(--ModuleBG);
+    display: block;
+    overflow: visible;
+    clear: both;
+    margin: 0;
+    box-sizing: border-box;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.feed .hecho {
+    flex: 0 0 auto;
+    min-height: 84px;
+    width: 100%;
+    align-self: stretch;
+}
+
+.hecho:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08); /* Más elevación en hover */
+    transform: translateY(-2px); /* Efecto de levantamiento */
+}
+
+.hecho h2 {
+    margin: .2rem 0 .45rem;
+    font-size: 1.1rem;
+    line-height: 1.25;
+}
+
+.hecho p {
+    font-size: .9rem;
+    margin: 0 0 .6rem;
+    line-height: 1.4;
+}
+
+.hecho img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: .5rem 0;
+}
+
+.tag {
+    display: inline-block;
+    background: var(--Details);
+    color: var(--Text);
+    padding: .2rem .5rem;
+    border-radius: 0 0 15px 15px;
+    font-size: .8rem;
+}
+
+.flag-float {
+    position: absolute;
+    top: 15px;
+    right: 19px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-8);
+    z-index: 5;
+}
+
+.flag-float:hover {
+    background: #f1f5f9;
+}
+
+/* NOTA: El espaciado entre eventos se controla desde explore.css en #events-container */

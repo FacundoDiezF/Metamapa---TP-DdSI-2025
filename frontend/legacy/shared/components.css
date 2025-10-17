@@ -1,0 +1,109 @@
+/* Focus visible coherente para todo lo interactivo */
+:where(a, button, input, select, textarea, [tabindex])::selection {
+    background: rgba(59, 130, 246, .2)
+}
+
+:where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+/* Tarjetas */
+.card {
+    background: var(--ui-card);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--radius);
+    padding: var(--sp-5);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Botones */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .6rem .9rem;
+    border-radius: 10px;
+    border: 1px solid var(--ui-border);
+    background: #fff;
+    color: var(--ui-ink);
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s ease background, .2s ease border-color, .06s ease transform;
+}
+
+.btn:hover {
+    background: #f9fafb
+}
+
+.btn:active {
+    transform: translateY(0)
+}
+
+.btn-primary {
+    background: var(--ui-blue);
+    color: #fff;
+    border-color: transparent;
+}
+
+.btn-primary:hover {
+    filter: brightness(.95)
+}
+
+.btn-ghost {
+    background: transparent;
+    border-color: transparent;
+}
+
+.btn-ghost:hover {
+    background: #f3f4f6;
+}
+
+/* Badges/Pills */
+.badge {
+    display: inline-block;
+    padding: .25rem .5rem;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #3730a3;
+    font-weight: 600;
+    font-size: var(--fs-sm)
+}
+
+.badge.warn {
+    background: #fef3c7;
+    color: #b45309
+}
+
+.badge.error {
+    background: #fee2e2;
+    color: #991b1b
+}
+
+/* Grillas comunes */
+.grid-2 {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns:1fr 1fr
+}
+
+.grid-3 {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns:repeat(3, 1fr)
+}
+
+@media (max-width: 900px) {
+    .grid-2, .grid-3 {
+        grid-template-columns:1fr
+    }
+}
+
+/* Cards variantes (opcionales por tamaño) */
+.card.sm {
+    padding: var(--sp-4)
+}
+
+.card.lg {
+    padding: var(--sp-6)
+}

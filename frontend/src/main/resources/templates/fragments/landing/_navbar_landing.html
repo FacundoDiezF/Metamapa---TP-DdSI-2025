@@ -1,0 +1,29 @@
+<th:block th:fragment="navbar" >
+    <nav class="mm-nav mm-nav--landing navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand mm-brand d-flex align-items-center gap-3" th:href="@{/static}">
+                <span class="mm-mark position-relative d-inline-block" aria-hidden="true"></span>
+                <span class="mm-name">MetaMapa</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#landingNav"
+                    aria-controls="landingNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div id="landingNav" class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/static}">Colecciones</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/static}">Hechos</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/static}">Acerca</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <a class="mm-btn mm-btn--primary mm-btn--pill" href="#" data-auth="open" data-panel="register">Registrarse</a>
+                    <a href="#" class="mm-btn mm-btn--ghost mm-btn--pill"
+                       data-bs-toggle="modal" data-bs-target="#authLoginModal">Iniciar sesión</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</th:block>

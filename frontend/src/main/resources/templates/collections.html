@@ -1,0 +1,41 @@
+<html layout:decorate="~{layout/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <!-- Styleshets -->
+    <th:block layout:fragment="extraStyles">
+        <link rel="stylesheet" th:href="@{/css/pages/collections.css}"/>
+    </th:block>
+</head>
+
+<!-- Contenido principal -->
+<div th:fragment="contenido" class="collections-page">
+
+    <header class="page-head container" aria-label="Opciones de Colecciones">
+        <h1 class="page-title">Colecciones</h1>
+    </header>
+
+
+    <section class="list-vertical container" role="region" aria-label="Colecciones">
+
+        <th:block th:if="${#lists.isEmpty(collections)}">
+            <p>No hay colecciones disponibles.</p>
+        </th:block>
+
+        <!-- Grid de colecciones -->
+        <th:block th:if="${!#lists.isEmpty(collections)}">
+            <article class="collection-card" th:each="col : ${collections}">
+                <div class="card-header">
+                    <h2 th:text="${col.title}">Titulo</h2>
+                    <p th:text="${col.description}">Descripcion.</p>
+                </div>
+
+                <div class="card-actions"><a class="btn btn-outline"
+                                             th:href="@{/collection/{handler}(handler=${col.handler})}">Ver
+                    Colección</a></div>
+            </article>
+        </th:block>
+    </section>
+
+</div>
+</html>
