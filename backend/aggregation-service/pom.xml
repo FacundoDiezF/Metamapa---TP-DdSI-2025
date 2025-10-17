@@ -5,11 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>ar.utn.edu.frba.ddsi</groupId>
-        <artifactId>metamapa</artifactId>
+        <artifactId>backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>agregation-service</artifactId>
+    <artifactId>aggregation-service</artifactId>
 
     <properties>
         <maven.compiler.source>24</maven.compiler.source>
