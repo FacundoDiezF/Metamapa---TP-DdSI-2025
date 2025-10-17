@@ -5,7 +5,7 @@
             <summary id="shareSummary" class="card post-box" role="button" aria-controls="sharePanel">
                 <input type="text" placeholder="Comparte tus hechos..." readonly/>
                 <div class="post-icons" aria-hidden="true">
-                    <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen" onclick="event.stopPropagation()">
+                    <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen">
                         <img src="../shared/icons/imagesmode.svg" alt="">
                     </a>
                 </div>
@@ -46,7 +46,7 @@
                                     <select id="sh-categoria" name="categoria" required aria-label="Categoría"
                                             th:field="*{category}">
                                         <option value="">Selecciona una categoría</option>
-                                        <option th:each="cat : ${categories}" th:value="${cat.name}"
+                                        <option th:each="cat : ${categoryPage.content}" th:value="${cat.name}"
                                                 th:text="${cat.name}"></option>
                                     </select>
                                     <img src="../shared/img/icons/chevron-down.svg" alt="" class="select-caret"
@@ -73,19 +73,19 @@
 
     <!-- EVENTOS -->
     <div id="events-container">
-        <th:block th:if="${#lists.isEmpty(events)}">
+        <th:block th:if="${#lists.isEmpty(eventsPage.content)}">
             <p class="no-events-msg">No hay Eventos disponibles.</p>
         </th:block>
 
-        <th:block th:if="${!#lists.isEmpty(events)}" th:each="event : ${events}">
+        <th:block th:if="${!#lists.isEmpty(eventsPage.content)}" th:each="event : ${eventsPage.content}">
             <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
         </th:block>
     </div>
 
     <!-- Trigger de infinite scroll con HTMX - Fuera del events-container para que se reemplace -->
-    <div th:if="${!#lists.isEmpty(events) && hasMorePages}"
+    <div th:if="${!#lists.isEmpty(eventsPage.content) && !eventsPage.last}"
          id="infinite-scroll-trigger"
-         th:hx-get="@{/explore(page=${currentPage + 1},
+         th:hx-get="@{/explore(page=${eventsPage.pageNumber + 1},
                                category_in=${param.category_in},
                                province_in=${param.province_in},
                                eventDate_lt=${param.eventDate_lt},
@@ -111,7 +111,7 @@
     </div>
 
     <!-- Mensaje de fin de resultados -->
-    <div th:if="${#lists.isEmpty(events) || !hasMorePages}" id="end-message" class="end-message">
+    <div th:if="${#lists.isEmpty(eventsPage.content) || eventsPage.last}" id="end-message" class="end-message">
         <p>✓ Has visto todos los eventos disponibles</p>
     </div>
 
