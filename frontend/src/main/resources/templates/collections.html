@@ -27,12 +27,14 @@
             <article class="collection-card" th:each="col : ${collections}">
                 <div class="card-header">
                     <h2 th:text="${col.title}">Titulo</h2>
-                    <p th:text="${col.description}">Descripcion.</p>
+                    <p th:text="${col.description}">Descripcion</p>
                 </div>
 
-                <div class="card-actions"><a class="btn btn-outline"
-                                             th:href="@{/collection/{handler}(handler=${col.handler})}">Ver
-                    Colección</a></div>
+                <div class="card-actions">
+                    <a class="btn btn-outline" th:href="@{/collection/{handler}(handler=${col.handler})}">
+                        Ver Colección
+                    </a>
+                </div>
             </article>
         </th:block>
     </section>

@@ -1,10 +1,6 @@
-package ar.utn.edu.frba.ddsi.models.entities.event.values.Location;
+package ar.utn.edu.frba.ddsi.models.entities.event.values.location;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.api.APILocationInputDTO;
-import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Province;
-import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Municipality;
-import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Department;
-import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Coordinate;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
