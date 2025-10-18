@@ -2,8 +2,20 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <th:block layout:fragment="extraStyles">
-    <link rel="stylesheet" th:href="@{/css/pages/explore.css}"/>
-    <link rel="stylesheet" th:href="@{/css/filters.css}"/>
+    <link rel="stylesheet" th:href="@{/css/shared/grid-3col.css}"/>
+
+    <!-- Página inCollection -->
+    <link rel="stylesheet" th:href="@{/css/pages/inCollection.css}"/>
+
+    <!-- SideBar izquierdo: filtros -->
+    <link rel="stylesheet" th:href="@{/css/shared/filters/filters.css}"/>
+
+    <!-- SideBar derecho: miniMapa + colecciones destacadas -->
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar-right/miniMap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar-right/featured-collections.css}"/>
+
+    <!-- Cards  -->
+    <link rel="stylesheet" th:href="@{/css/shared/cards/card-event.css}"/>
 </th:block>
 
 
@@ -15,4 +27,23 @@
       )}"></section>
 </th:block>
 
+
+<!-- Modales -->
+<th:block layout:fragment="modals">
+    <div th:replace="fragments/modals/_filter_moreOptions :: categoriesModal(${categoryPage})"></div>
+</th:block>
+
+
+<th:block layout:fragment="extraScripts">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script th:src="@{/js/map/mini-map.js}"></script>
+</th:block>
+
 </html>
+
+
+
+
+
+
+
