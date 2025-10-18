@@ -41,11 +41,24 @@
     line-height: 1.4;
 }
 
+.hecho .ubicacion {
+    color: var(--ui-blue);
+    font-size: .80rem;
+    margin-bottom: .45rem;
+}
+
+.hecho .fuente {
+    font-size: .80rem;
+    color: var(--ui-muted);
+}
+
 .hecho img {
     display: block;
+
     max-width: 100%;
     height: auto;
-    margin: .5rem 0;
+    margin: .5rem auto;
+    border-radius: var(--radius-8)
 }
 
 .tag {
@@ -71,6 +84,38 @@
 
 .flag-float:hover {
     background: #f1f5f9;
+}
+
+/* ===========================
+   Mensaje fin de resultados
+=========================== */
+.end-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sp-5) var(--sp-4);
+    margin: var(--sp-4) 0;
+    border-radius: var(--radius-12);
+    background: var(--ModuleBG);
+    border: 1px solid var(--border-subtle);
+    animation: fadeIn 0.3s ease;
+}
+
+.end-message p {
+    margin: 0;
+    color: var(--Success);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+}
+
+.no-events-msg {
+    text-align: center;
+    color: var(--Muted);
+    padding: var(--sp-6);
+    font-size: var(--fs-body);
 }
 
 /* NOTA: El espaciado entre eventos se controla desde explore.css en #events-container */
