@@ -48,12 +48,12 @@ public class EventController {
   }
 
   @PostMapping
-  public void createEvents(@RequestBody List<EventInputDTO> dtos) {
-    eventService.createAll(dtos);
+  public void createEvent(@RequestBody List<EventInputDTO> dtos) {
+    // TODO: Redireccionar a la fuente dinamica
   }
 
   @PutMapping
-  public void updateEvents(@RequestBody List<EventInputDTO> dtos) {
-    eventService.updateAll(dtos);
+  public void updateEvent(@RequestBody List<EventInputDTO> dtos) {
+    // TODO: Redireccionar a la fuente dinamica
   }
 }
