@@ -58,7 +58,7 @@ body {
 }
 
 .collection-card .card-header {
-  max-width: 68ch;
+  max-width: 65ch;
 }
 
 .collection-card h2 {
@@ -97,9 +97,11 @@ body {
 
 /* ===== Sticky + switch Curado/No curado ===== */
 .container {
-  max-width: 906px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 1.5rem 1.5rem;
+  max-height: calc(100vh - var(--header-h, 0px) - var(--subnav-h, 0px) - 3rem);
+  overflow-y: auto;
 }
 
 .collections-page .list-vertical {
