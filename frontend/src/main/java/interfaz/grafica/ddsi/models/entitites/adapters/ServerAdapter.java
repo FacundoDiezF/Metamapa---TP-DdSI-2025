@@ -1,16 +1,19 @@
 package interfaz.grafica.ddsi.models.entitites.adapters;
+
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
+import java.net.URI;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import java.time.LocalDate;
-import java.util.List;
+import org.springframework.web.util.UriBuilder;
 
 @Component
 public class ServerAdapter {
@@ -27,39 +30,44 @@ public class ServerAdapter {
     return webClient.get()
         .uri(uriBuilder -> {
           uriBuilder.path("/events");
-          if (category_in != null && !category_in.isEmpty()) {
-            category_in.forEach(cat -> uriBuilder.queryParam("category_in", cat));
-          }
-          if (province_in != null && !province_in.isEmpty()) {
-            province_in.forEach(prov -> uriBuilder.queryParam("province_in", prov));
-          }
-          if (eventDate_lt != null) {
-            uriBuilder.queryParam("eventDate_lt", eventDate_lt.atStartOfDay());
-          }
-          if (eventDate_gt != null) {
-            uriBuilder.queryParam("eventDate_gt", eventDate_gt.atStartOfDay());
-          }
-          if (source_in != null && !source_in.isEmpty()) {
-            source_in.forEach(src -> uriBuilder.queryParam("source_in", src));
-          }
-          uriBuilder.queryParam("page", page);
-          return uriBuilder.build();
+          return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, uriBuilder);
         })
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<PageDTO<EventDTO>>() {})
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<EventDTO>>() {
+        })
         .block();
   }
 
-  public List<EventDTO> getAllEventsByCollection(String handler) {
+  public List<EventDTO> getAllEventsByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page) {
     return webClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("collections/"+ handler + "/events")
-            //.queryParam("fromUpdatedDate", lastUpdate)
-            .build())
+        .uri(uriBuilder -> {
+          uriBuilder.path("collections/" + handler + "/events");
+          return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, uriBuilder);
+        })
         .retrieve()
-        .bodyToFlux(EventDTO.class)
-        .collectList()
+        .bodyToMono(new ParameterizedTypeReference<List<EventDTO>>() {
+        })
         .block();
+  }
+
+  private URI getEventsUri(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page, UriBuilder uriBuilder) {
+    if (category_in != null && !category_in.isEmpty()) {
+      uriBuilder.queryParam("category_in", category_in.toArray());
+    }
+    if (province_in != null && !province_in.isEmpty()) {
+      uriBuilder.queryParam("province_in", province_in.toArray());
+    }
+    if (eventDate_lt != null) {
+      uriBuilder.queryParam("eventDate_lt", eventDate_lt.atStartOfDay());
+    }
+    if (eventDate_gt != null) {
+      uriBuilder.queryParam("eventDate_gt", eventDate_gt.atStartOfDay());
+    }
+    if (source_in != null && !source_in.isEmpty()) {
+      uriBuilder.queryParam("source_in", source_in.toArray());
+    }
+    uriBuilder.queryParam("page", page);
+    return uriBuilder.build();
   }
 
   public PageDTO<CollectionDTO> getAllCollections(int page) {
@@ -70,7 +78,16 @@ public class ServerAdapter {
             //.queryParam("fromUpdatedDate", lastUpdate)
             .build())
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<PageDTO<CollectionDTO>>() {})
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<CollectionDTO>>() {
+        })
+        .block();
+  }
+
+  public CollectionDTO getCollection(String handler) {
+    return webClient.get()
+        .uri("/collections/{handler}", handler)
+        .retrieve()
+        .bodyToMono(CollectionDTO.class)
         .block();
   }
 
@@ -82,7 +99,8 @@ public class ServerAdapter {
             .queryParam("size", size)
             .build())
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<PageDTO<CategoryDTO>>() {})
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<CategoryDTO>>() {
+        })
         .block();
   }
 
@@ -94,7 +112,8 @@ public class ServerAdapter {
             .queryParam("size", size)
             .build())
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<PageDTO<ProvinceDTO>>() {})
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<ProvinceDTO>>() {
+        })
         .block();
   }
 }

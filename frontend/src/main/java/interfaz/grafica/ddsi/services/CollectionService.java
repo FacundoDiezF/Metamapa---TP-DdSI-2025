@@ -26,7 +26,6 @@ public class CollectionService {
   }
 
   public PageDTO<CollectionDTO> getAll(int page) {
-    //TODO TEST
     try {
       return server.getAllCollections(page);
     } catch (WebClientResponseException e) {
@@ -37,8 +36,13 @@ public class CollectionService {
   }
 
   public CollectionDTO getByHandler(String handler) {
-    //TODO que le pida al agregador la coleccion por handler
-    return mockColecciones().get(0);
+    try {
+      return server.getCollection(handler);
+    } catch (WebClientResponseException e) {
+      throw new BackendException("Backend error: " + e.getStatusCode());
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
+    }
   }
 
   //! BORRAR CUANDO ESTE EL AGREGADOR

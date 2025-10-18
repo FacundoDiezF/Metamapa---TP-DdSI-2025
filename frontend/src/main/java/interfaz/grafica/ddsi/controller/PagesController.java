@@ -59,17 +59,13 @@ public class PagesController {
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
       @RequestParam(defaultValue = "0", name = "page-cat") int pageCat,
       @RequestParam(defaultValue = "0", name = "page-prov") int pageProv,
-      @RequestParam(defaultValue = "0", name = "page") int page,
+      @RequestParam(defaultValue = "0", name = "page") int pageEvent,
       Model model) {
 
-    PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
+    PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent);
 
     model.addAttribute("eventsPage", eventsPage);
     model.addAttribute("newEvent", new EventOutputDTO());
-
-    // Atributos necesarios para HTMX infinite scroll TODO: CAMBIAR QUE LO TOME DESDE DENTRO, estos valores los tiene la pag
-    model.addAttribute("currentPage", page);
-    model.addAttribute("hasMorePages", !eventsPage.isLast());
 
     this.addFilterModels(model, pageCat, pageProv);
 
@@ -88,11 +84,11 @@ public class PagesController {
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
       @RequestParam(defaultValue = "0", name = "page-cat") int pageCat,
       @RequestParam(defaultValue = "0", name = "page-prov") int pageProv,
-      @RequestParam(defaultValue = "0", name = "page") int page,
+      @RequestParam(defaultValue = "0", name = "page") int pageEvent,
       Model model) {
 
     CollectionDTO collection = collectionService.getByHandler(handler);
-    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in);
+    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent);
 
 
     model.addAttribute("collection", collection);
