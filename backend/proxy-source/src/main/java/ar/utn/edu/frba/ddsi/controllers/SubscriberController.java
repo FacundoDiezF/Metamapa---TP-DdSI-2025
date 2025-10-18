@@ -16,7 +16,7 @@ public class SubscriberController {
   ISubscriberService subscriberService;
 
   @PostMapping()
-  public void subscribe(@RequestBody SubscriberInputDTO dto) {
-    subscriberService.subscribe(dto);
+  public void subscribe(@RequestBody String callbackUrl) {
+    subscriberService.subscribe(callbackUrl);
   }
 }

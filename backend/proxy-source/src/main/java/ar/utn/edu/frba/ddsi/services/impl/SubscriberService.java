@@ -27,9 +27,9 @@ public class SubscriberService implements ISubscriberService {
   }
 
   @Override
-  public void subscribe(SubscriberInputDTO dto) {
+  public void subscribe(String callbackUrl) {
     //A futuro necesitariamos un builder si hay otros tipos de suscribers
-    ISubscriber subscriber = Aggregator.from(dto);
+    ISubscriber subscriber = Aggregator.from(callbackUrl);
 
     publisher.subscribe(subscriber);
 
