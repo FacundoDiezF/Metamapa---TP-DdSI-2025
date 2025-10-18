@@ -10,6 +10,7 @@ import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.Collec
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
+import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.ICollectionRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
@@ -18,6 +19,7 @@ import ar.utn.edu.frba.ddsi.services.ICollectionService;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -77,13 +79,15 @@ public class CollectionService implements ICollectionService {
 
   @Override
   public List<EventOutputDTO> getEventsFromCollection(
-      boolean curedNavigation,
       String handler,
-      String category,
-      LocalDateTime untilUploadDate,
-      LocalDateTime fromUploadDate,
-      LocalDateTime untilEventDate,
-      LocalDateTime fromEventDate
+      boolean curedNavigation,
+      List<Long> category_in,
+      List<Long> province_in,
+      List<Origin> source_in,
+      LocalDateTime uploadDate_lt,
+      LocalDateTime uploadDate_gt,
+      LocalDateTime eventDate_lt,
+      LocalDateTime eventDate_gt
   ) {
 
     Collection collection = collectionRepository.findByHandler(handler);
@@ -92,11 +96,13 @@ public class CollectionService implements ICollectionService {
 
     List<Event> finalEvents = collection.getEvents().stream()
         .filter(e -> (!curedNavigation || e.meetsAlgorithmConsensus(collection.getConsensusType())))
-        .filter(e -> (category == null || e.getCategory().equals(new Category(category))))
-        .filter(e -> (untilUploadDate == null || e.getUploadDate().isBefore(untilUploadDate)))
-        .filter(e -> (fromUploadDate == null || e.getUploadDate().isAfter(fromUploadDate)))
-        .filter(e -> (untilEventDate == null || e.getEventDate().isBefore(untilEventDate)))
-        .filter(e -> (fromEventDate == null || e.getEventDate().isAfter(fromEventDate)))
+        .filter(e -> category_in == null || category_in.isEmpty() || category_in.contains(e.getCategory().getId()))
+        .filter(e -> province_in == null || province_in.isEmpty() || province_in.contains(e.getLocation().getProvince().getId()))
+        .filter(e -> source_in == null || source_in.isEmpty() || source_in.contains(e.getSource().getType()))
+        .filter(e -> uploadDate_lt == null || e.getUploadDate().isBefore(uploadDate_lt))
+        .filter(e -> uploadDate_gt == null || e.getUploadDate().isAfter(uploadDate_gt))
+        .filter(e -> eventDate_lt == null || e.getEventDate().isBefore(eventDate_lt))
+        .filter(e -> eventDate_gt == null || e.getEventDate().isAfter(eventDate_gt))
         .toList();
 
     return finalEvents.stream().map(EventOutputDTO::from).toList();
