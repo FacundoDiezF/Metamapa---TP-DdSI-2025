@@ -1,6 +1,5 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
-import ar.utn.edu.frba.ddsi.models.dtos.input.SubscriberInputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.observer.Aggregator;
 import ar.utn.edu.frba.ddsi.models.entities.observer.ISubscriber;
 import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
@@ -27,8 +26,8 @@ public class SubscriberService implements ISubscriberService {
   }
 
   @Override
-  public void subscribe(SubscriberInputDTO dto) {
-    ISubscriber subscriber = Aggregator.from(dto);
+  public void subscribe(String callbackUrl) {
+    ISubscriber subscriber = Aggregator.from(callbackUrl);
 
     publisher.subscribe(subscriber);
 

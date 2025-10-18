@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class SourceOutputDTO {
-  Long sourceClientId;
   Long inClientId;
   Origin type;
 

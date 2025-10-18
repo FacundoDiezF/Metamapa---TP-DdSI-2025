@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 public class EventOutputDTO {
   Long id;
-  Long sourceClientId;
   Long sourceId;
   Origin origin;
   String title;

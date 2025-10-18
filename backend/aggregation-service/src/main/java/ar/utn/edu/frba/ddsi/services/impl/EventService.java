@@ -65,12 +65,15 @@ public class EventService implements IEventService {
   }
 
   @Override
-  public void createAll(List<EventInputDTO> dtos) {
+  public void createAll(List<EventInputDTO> dtos, Long sourceClientId) {
     // TODO: Validar que la peticion venga de un modulo-fuente registrado (SEGURIDAD)
     //1. Build events from dtos
     List<Event> events = dtos
         .stream()
-        .map(this::buildEventFromDTO)
+        .map(dto -> {
+          dto.setSourceClientId(sourceClientId);
+          return buildEventFromDTO(dto);
+        })
         .toList();
 
     //2. Normalize locations
@@ -82,9 +85,9 @@ public class EventService implements IEventService {
   }
 
   @Override
-  public void updateAll(List<EventInputDTO> dtos) {
+  public void updateAll(List<EventInputDTO> dtos, Long sourceClientId) {
     // TODO: Validar que la peticion venga de un modulo-fuente registrado (SEGURIDAD)
-    dtos.forEach(this::update);
+    dtos.forEach(dto -> { dto.setSourceClientId(sourceClientId); this.update(dto);});
   }
 
   private void update(EventInputDTO dto) {

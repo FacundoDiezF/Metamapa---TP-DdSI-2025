@@ -6,9 +6,6 @@ import lombok.Data;
 
 @Data
 public class SourceOutputDTO {
-  //Need it for the comunication with the agregationService
-  Long sourceClientId;
-
   Long inClientId;
   Origin type;
 
