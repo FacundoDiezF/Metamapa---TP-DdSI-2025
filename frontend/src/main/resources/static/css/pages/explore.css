@@ -108,10 +108,7 @@ details.share > summary input {
 }
 
 details.share[open] > summary.post-box {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    box-shadow: none;
-    border-bottom: 1px solid var(--LightText);
+    display: none;
 }
 
 .share-panel {
@@ -119,7 +116,7 @@ details.share[open] > summary.post-box {
     background: var(--ModuleBG);
     border: 1px solid var(--border-subtle);
     border-top: none;
-    border-radius: 0 0 var(--radius-12) var(--radius-12);
+    border-radius: var(--radius-12);
     padding: 1rem;
     gap: 1rem;
     position: static;

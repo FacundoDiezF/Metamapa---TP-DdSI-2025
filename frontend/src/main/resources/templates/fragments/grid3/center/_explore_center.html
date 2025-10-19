@@ -64,8 +64,13 @@
                         </div>
 
                         <div class="right-actions">
-                            <button type="reset" class="btn ghost small">Limpiar</button>
-                            <button type="submit" class="btn primary small submit-btn">Enviar</button>
+                            <a type="reset"
+                                    class="btn-clean"
+                                    onclick="this.closest('details').removeAttribute('open')">
+                                Cerrar
+                            </a>
+
+                            <button type="submit" class="btn-apply">Enviar</button>
                         </div>
                     </div>
                 </div>
