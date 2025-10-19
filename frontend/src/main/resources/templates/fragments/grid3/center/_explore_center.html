@@ -1,6 +1,7 @@
 <section th:fragment="center" class="feed">
 
     <!-- NUEVO EVENTO -->
+    <header class="new-event-header">
         <details class="share">
             <summary id="shareSummary" class="card post-box" role="button" aria-controls="sharePanel">
                 <input type="text" placeholder="Comparte tus hechos..." readonly/>
@@ -70,8 +71,10 @@
                 </div>
             </form>
         </details>
+    </header>
 
     <!-- EVENTOS -->
+
     <div id="events-container">
         <th:block th:if="${#lists.isEmpty(eventsPage.content)}">
             <p class="no-events-msg">No hay Eventos disponibles.</p>
