@@ -1,6 +1,7 @@
 <section th:fragment="center" class="feed">
 
     <!-- NUEVO EVENTO -->
+    <header class="new-event-header">
         <details class="share">
             <summary id="shareSummary" class="card post-box" role="button" aria-controls="sharePanel">
                 <input type="text" placeholder="Comparte tus hechos..." readonly/>
@@ -63,15 +64,22 @@
                         </div>
 
                         <div class="right-actions">
-                            <button type="reset" class="btn ghost small">Limpiar</button>
-                            <button type="submit" class="btn primary small submit-btn">Enviar</button>
+                            <a type="reset"
+                                    class="btn-clean"
+                                    onclick="this.closest('details').removeAttribute('open')">
+                                Cerrar
+                            </a>
+
+                            <button type="submit" class="btn-apply">Enviar</button>
                         </div>
                     </div>
                 </div>
             </form>
         </details>
+    </header>
 
     <!-- EVENTOS -->
+
     <div id="events-container">
         <th:block th:if="${#lists.isEmpty(eventsPage.content)}">
             <p class="no-events-msg">No hay Eventos disponibles.</p>

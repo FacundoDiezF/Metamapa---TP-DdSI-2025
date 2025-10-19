@@ -223,18 +223,14 @@
 }
 
 .btn-clean {
-  display: inline-block;
-  padding: .3rem .6rem;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
   background: transparent;
   color: var(--DarkAccent, #6b7280);
-  font-size: .8rem;
-  font-weight: 500;
+  font-weight: 400;
+  padding: .3rem .6rem;
+  border-radius: var(--radius-10);
   cursor: pointer;
   font-family: var(--font-brand);
-  line-height: 1.2;
-  white-space: nowrap;
+  font-size: .9rem;
 }
 
 .btn-clean:hover {
@@ -246,7 +242,7 @@
   color: #fff;
   border: 1px solid var(--DarkAccent, #475265);
   font-weight: 600;
-  padding: .6rem 1.2rem;
+  padding: .3rem .6rem;
   border-radius: var(--radius-10);
   cursor: pointer;
   font-family: var(--font-brand);

@@ -118,4 +118,159 @@
     font-size: var(--fs-body);
 }
 
-/* NOTA: El espaciado entre eventos se controla desde explore.css en #events-container */
+/* =========================== MODALES =========================== */
+
+/* ===========================
+   Modal de Reportar
+=========================== */
+
+.report-modal {
+    position: relative;
+    z-index: 1;
+}
+
+.report-form textarea {
+    width: 100%;
+    padding: .95rem 1rem;
+    border: 1px solid var(--LightText);
+    border-radius: var(--radius-12);
+    background: var(--InboxBG);
+    font: inherit;
+    resize: vertical;
+    min-height: 180px;
+    transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+    padding-right: 1rem;
+    background-image: none !important;
+    background-repeat: no-repeat;
+}
+
+.report-form textarea:focus {
+    outline: none;
+    border-color: #93c5fd;
+    box-shadow: var(--focus-ring, 0 0 0 3px rgba(59, 130, 246, .15));
+}
+
+.report-form textarea:valid {
+    border-color: var(--Success);
+    background-color: #f0fdf4;
+}
+
+.report-form textarea:focus:invalid {
+    border-color: var(--Danger);
+    background-color: #fef2f2;
+}
+
+.report-form textarea:valid,
+
+.report-form textarea:focus:invalid {
+    background-image: none !important;
+    background-color: #fff;
+}
+
+.report-form .help {
+    margin-top: .35rem;
+    font-size: .85rem;
+}
+
+.report-form .help.info {
+    color: var(--DarkAccent);
+}
+
+.report-form .error-msg {
+    display: none;
+    color: #b91c1c;
+}
+
+.report-form:has(textarea:focus:invalid) .error-msg {
+    display: block;
+}
+
+.report-form .submit-report[disabled] {
+    opacity: .55;
+    cursor: not-allowed;
+    filter: saturate(.6);
+}
+
+.report-form:has(textarea:valid) .submit-report {
+    opacity: 1;
+    cursor: pointer;
+    filter: none;
+}
+
+/* ===========================
+   Modal de Subir Imagen
+=========================== */
+
+.upload-modal {
+    position: relative;
+    z-index: 1;
+}
+
+.upload-form {
+    display: grid;
+    gap: .8rem;
+}
+
+.dropzone {
+    position: relative;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    gap: .25rem;
+    padding: 1.25rem;
+    border: 2px dashed #cbd5e1;
+    border-radius: var(--radius-12);
+    background: #f8fafc;
+    cursor: pointer;
+    color: var(--Text);
+}
+
+.dropzone:hover {
+    background: var(--Background);
+}
+
+.dropzone:focus-within {
+    outline: 3px solid rgba(59, 130, 246, .25);
+    outline-offset: 2px;
+}
+
+.dropzone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+
+/* ===========================
+   Modal de Éxito
+=========================== */
+
+.success-modal {
+    position: relative;
+    z-index: 1;
+}
+
+.success-modal h2 {
+    margin-bottom: .25rem;
+}
+
+.success-modal .muted {
+    margin: 0 0 .75rem;
+}
+
+/* ===========================
+   Overlay Dismiss (Compartido por modales)
+=========================== */
+
+.overlay-dismiss {
+    position: fixed;
+    inset: 0;
+    display: block;
+    z-index: 0;
+}
