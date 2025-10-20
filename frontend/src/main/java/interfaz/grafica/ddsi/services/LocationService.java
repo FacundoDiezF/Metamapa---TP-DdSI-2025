@@ -19,7 +19,6 @@ public class LocationService {
   }
 
   public PageDTO<ProvinceDTO> getAllProvinces(int page, int size) {
-    //TODO: TEST && Revisar si size es necesario
     try {
       return server.getAllProvinces(page, size);
     } catch (WebClientResponseException e) {
@@ -29,16 +28,8 @@ public class LocationService {
     }
   }
 
-  private List<ProvinceDTO>  mockProvinces() {
-    return List.of(
-        new ProvinceDTO(1L, "Buenos Aires"),
-        new ProvinceDTO(2L, "Catamarca"),
-        new ProvinceDTO(3L, "Chaco"),
-        new ProvinceDTO(4L, "Chubut"),
-        new ProvinceDTO(5L, "Córdoba"),
-        new ProvinceDTO(6L, "Corrientes"),
-        new ProvinceDTO(7L, "Entre Ríos")
-    );
+  public List<ProvinceDTO> getProvincesByIds(List<Long> provincesIds){
+    return server.getProvincesByIds(provincesIds);
   }
 
 }

@@ -47,7 +47,7 @@
                                     <select id="sh-categoria" name="categoria" required aria-label="Categoría"
                                             th:field="*{category}">
                                         <option value="">Selecciona una categoría</option>
-                                        <option th:each="cat : ${categoryPage.content}" th:value="${cat.name}"
+                                        <option th:each="cat : ${selectedCategories}" th:value="${cat.name}"
                                                 th:text="${cat.name}"></option>
                                     </select>
                                     <img src="../shared/img/icons/chevron-down.svg" alt="" class="select-caret"

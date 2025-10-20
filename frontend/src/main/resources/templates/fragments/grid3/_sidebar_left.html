@@ -14,9 +14,9 @@
                 </summary>
 
                 <div class="flt-body">
-                    <div class="chips chips-wrap">
+                    <div class="chips chips-wrap" id="category-filter-section">
 
-                        <span th:each="cat : ${categoryPage.content}" class="chip-toggle">
+                        <span th:each="cat : ${selectedCategories}" class="chip-toggle">
 
                               <input type="checkbox" name="category_in" th:id="'cat:' + ${cat.id}"
                                      th:value="${cat.id}"
@@ -28,7 +28,12 @@
                         </span>
 
                         <!-- Modal -->
-                        <a href="#cat-modal" class="chip mas">+ Más</a>
+                        <a class="chip mas"
+                           hx-get="/modals/more-categories"
+                           hx-target="#modals-here" hx-swap="innerHTML"
+                           hx-include="#category-filter-section">
+                            + Más
+                        </a>
 
                     </div>
                     <p class="help info">Seleccioná una o varias categorías.</p>
@@ -66,7 +71,7 @@
                 <div class="flt-body">
                     <div class="chips chips-wrap">
 
-                        <span th:each="prov : ${provinces}" class="chip-toggle">
+                        <span th:each="prov : ${selectedProvinces}" class="chip-toggle">
 
                               <input type="checkbox" name="province_in" th:id="'prov:' + ${prov.id}"
                                      th:value="${prov.id}"
