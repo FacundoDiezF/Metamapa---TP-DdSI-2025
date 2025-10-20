@@ -1,0 +1,2239 @@
+/* ===== Panel de Administración =====
+   Respeta tokens/colores/typography existentes
+   Requiere: tokens.css, nav.css, icons.css
+*/
+
+/* El body de index bloquea el scroll (overflow:hidden).
+   Para este panel, dejamos scroll en toda la página. */
+html,
+body {
+  height: 100%
+}
+
+body {
+  overflow: auto;
+  background: var(--ui-bg);
+  color: var(--ui-ink)
+}
+
+/* Layout de dos columnas: sidebar + contenido */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  min-height: calc(100vh - var(--header-h) - var(--subnav-h));
+}
+
+/* Sidebar izquierda */
+.admin-sidebar {
+  background: var(--ui-card);
+  border: 1px solid var(--ui-border, #e5e7eb);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+}
+
+.admin-sidebar h3 {
+  margin: .25rem 0 1rem;
+}
+
+.admin-menu {
+  display: grid;
+  gap: .35rem;
+  margin: .5rem 0 0;
+}
+
+.admin-menu a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: .6rem .75rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #111827;
+  font-weight: 600;
+}
+
+.admin-menu a .icon {
+  width: 18px;
+  height: 18px;
+  opacity: .75;
+}
+
+.admin-menu a:hover {
+  background: #f1f5f9;
+}
+
+.admin-menu a.is-active {
+  color: var(--ui-blue);
+  background: #e0f2ff;
+  border: 1px solid #bfdbfe;
+}
+
+.admin-menu .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: .55rem .75rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--ui-ink);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Estado hover/active consistente con tu paleta */
+.admin-menu .nav-link:hover {
+  background: #f1f5f9;
+}
+
+.admin-menu .nav-link.is-active {
+  background: #e8f0fe;
+  border: 1px solid #bfdbfe;
+  color: var(--ui-blue);
+}
+
+/* Contenedor del icono */
+.admin-menu .nav-icon {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+}
+
+/* Iconos: sin fondo blanco y tamaño consistente */
+.admin-menu .nav-icon img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  background: transparent !important;
+  border: none;
+  padding: 0;
+  opacity: .9;
+}
+
+/* Tint opcional: el activo azul como el texto */
+.admin-menu .nav-link.is-active .nav-icon img {
+  /* filtro para aproximar azul var(--ui-blue) a un SVG negro */
+  filter: invert(30%) sepia(67%) saturate(2721%) hue-rotate(206deg) brightness(94%) contrast(95%);
+}
+
+/* Etiqueta */
+.admin-menu .nav-label {
+  white-space: nowrap;
+}
+
+/* Área de contenido */
+.admin-content {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.admin-header .muted {
+  color: var(--ui-muted);
+  margin: .15rem 0 0;
+}
+
+/* KPIs (cards pequeñas) */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.kpi {
+  background: var(--ui-card);
+  border: 1px solid var(--ui-border, #e5e7eb);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+}
+
+.kpi-title {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.kpi-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: .2rem 0 .35rem;
+}
+
+.kpi-foot {
+  font-size: .875rem;
+  color: #64748b;
+}
+
+.kpi-foot.good {
+  color: #16a34a;
+}
+
+.kpi-foot.warn {
+  color: #a16207;
+}
+
+.kpi-foot.danger {
+  color: #dc2626;
+}
+
+/* Dos columnas principales */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1rem;
+}
+
+/* Tarjetas */
+.card {
+  background: var(--ui-card);
+  border: 1px solid var(--ui-border, #e5e7eb);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+}
+
+.card-title {
+  margin: .25rem 0 1rem;
+}
+
+/* Lista de actividad */
+.activity {
+  display: grid;
+  gap: .75rem;
+}
+
+.activity .item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: .75rem;
+  padding: .6rem .5rem;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+  background: #fff;
+}
+
+.activity .info .title {
+  margin: .1rem 0;
+  font-weight: 600;
+}
+
+.activity .meta {
+  margin: 0;
+  color: #64748b;
+  font-size: .875rem;
+}
+
+/* Badges reutilizando paleta */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .75rem;
+  font-weight: 600;
+  padding: .25rem .6rem;
+  border-radius: 999px;
+}
+
+.badge-good {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.badge-warn {
+  background: #fef9c3;
+  color: #854d0e;
+  border-color: #fde68a;
+}
+
+.badge-info {
+  background: #e0f2ff;
+  /* azul claro */
+  color: var(--ui-blue);
+  /* texto azul institucional */
+  border: 1px solid #bfdbfe;
+  /* borde a juego */
+}
+
+
+/* Resumen moderación */
+.mod-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: .5rem;
+}
+
+.mod-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .7rem .9rem;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+  background: #fff;
+  font-weight: 600;
+}
+
+.mod-list li.ok {
+  background: #ecfdf5;
+  border-color: #d1fae5;
+}
+
+.mod-list li.pending {
+  background: #fefce8;
+  border-color: #fde68a;
+}
+
+.mod-list li.rejected {
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+.mod-list strong {
+  font-size: 1.25rem;
+}
+
+/* Responsivo */
+@media (max-width: 1100px) {
+  .kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    position: sticky;
+    top: calc(var(--header-h) + var(--subnav-h));
+    z-index: 20;
+  }
+}
+
+/* ======= Colecciones (lista) ======= */
+
+.page-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: .5rem;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.page-bar .muted {
+  margin: .25rem 0 0;
+  color: var(--ui-muted);
+}
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.page-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.75rem;
+  /* H1 */
+  font-weight: 700;
+  color: var(--ui-ink);
+}
+
+.page-subtitle {
+  margin: 0;
+  font-size: 1rem;
+  /* Body */
+  font-weight: 400;
+  color: var(--ui-muted);
+  /* gris secundario */
+}
+
+
+/* Botones reutilizables en admin */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: .65rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--ui-border);
+  background: #fff;
+  color: #0f172a;
+}
+
+.btn .icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Botón primario (panel) — versión única */
+.btn-primary {
+  background: var(--ui-dark-accent, #475265);
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 10px 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 16px/1 "Poppins", sans-serif;
+  cursor: pointer;
+  transition: background .2s ease, transform .06s ease;
+}
+
+.btn-primary:hover {
+  background: #374151;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary .icon {
+  filter: invert(1);
+}
+
+/* ===== Acciones de moderación (pill + iconos) ===== */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 9999px;
+  font: 700 0.95rem/1 "Poppins", sans-serif;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #0f172a;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s ease, border-color .15s ease, transform .06s ease;
+}
+
+.btn-action .icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+}
+
+/* Outline (Modificar / Ver Detalles) */
+.btn-outline {
+  background: #fff;
+  color: #0f172a;
+  border-color: #e5e7eb;
+}
+
+.btn-outline:hover {
+  background: #f8fafc;
+}
+
+/* Aprobación (verde) */
+.btn-approve {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+
+.btn-approve:hover {
+  background: #15803d;
+  border-color: #15803d;
+}
+
+.btn-approve .icon {
+  filter: invert(1);
+}
+
+/* Rechazo (rojo) */
+.btn-reject {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #fff;
+}
+
+.btn-reject:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.btn-reject .icon {
+  filter: invert(1);
+}
+
+/* Espaciado y wrap lindo en footers */
+.mod-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding-top: .25rem;
+}
+
+
+/* Lista / cards */
+.collections-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.collection-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius);
+  padding: 1rem 1rem 1rem 1.1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+  display: grid;
+  gap: .6rem;
+}
+
+.collection-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+}
+
+.collection-head h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.pill {
+  display: inline-block;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+  border: 1px solid #cbd5e1;
+  background: #e2e8f0;
+}
+
+.pill-ok {
+  background: #dcfce7;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.collection-desc {
+  margin: 0;
+  color: var(--ui-ink);
+}
+
+.collection-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem 1rem;
+  align-items: center;
+  color: #475569;
+  font-weight: 500;
+}
+
+.collection-meta .meta {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.collection-meta .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Acciones a la derecha */
+.collection-actions {
+  position: absolute;
+  right: .75rem;
+  top: .85rem;
+  display: flex;
+  gap: .5rem;
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  cursor: pointer;
+}
+
+.icon-btn .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.icon-btn:hover {
+  background: #f8fafc;
+}
+
+.icon-btn.danger:hover {
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+/* Fix: Botón "Nueva Colección" como antes (pill sólido y más cuadrado) */
+.page-actions .btn-primary {
+  background: var(--ui-dark-accent, #475265);
+  /* tu Dark Accent */
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  /* más cuadrado pero redondeado */
+  padding: 10px 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 16px/1 "Poppins", sans-serif;
+  transition: background .2s ease, transform .06s ease;
+}
+
+.page-actions .btn-primary:hover {
+  background: #374151;
+}
+
+.page-actions .btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Aseguramos que el ícono se vea blanco en el botón sólido */
+.page-actions .btn-primary .i,
+.page-actions .btn-primary .icon {
+  filter: invert(1);
+}
+
+
+/* ==== Cards de colecciones ==== */
+.collection-card {
+  background: #fff;
+  border: 1px solid var(--ui-border, #e5e7eb);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: grid;
+  gap: .75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+  padding: 1.25rem 1.25rem 1rem;
+}
+
+/* Header de la card */
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.title-wrap {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+/* Botones de acción */
+.action-pills {
+  display: flex;
+  gap: .5rem;
+}
+
+.action-pills .pill {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d5dbe6;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: background .2s ease;
+  padding: 0;
+  /* evita que el contenido se expanda */
+}
+
+.action-pills .pill img,
+.action-pills .pill svg {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  /* asegura que se ajuste */
+}
+
+.action-pills .pill:hover {
+  background: #f1f5f9;
+}
+
+/* Metadatos */
+.meta-row {
+  display: flex;
+  gap: 1.5rem;
+  color: var(--ui-muted);
+  font-size: .9rem;
+}
+
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.meta-item img {
+  width: 16px;
+  height: 16px;
+  opacity: .7;
+}
+
+.card-title {
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* --- Alineación perfecta de los botones del header (incluye "Mi cuenta") --- */
+.navbar .auth-actions {
+  display: flex;
+  align-items: center;
+  /* centra verticalmente a TODOS los hijos */
+  gap: 12px;
+}
+
+
+/* ======= Admin · Fuentes ======= */
+
+.source-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.source-card {
+  background: var(--ui-card, #fff);
+  border: 1px solid var(--ui-border, #e5e7eb);
+  border-radius: 12px;
+  padding: 1rem 1rem 1.1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+  display: grid;
+  gap: .75rem;
+}
+
+.source-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+}
+
+.source-head .title-wrap {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.source-head .card-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ui-ink);
+}
+
+.i32 {
+  width: 24px;
+  height: 24px;
+  opacity: .9;
+}
+
+.pill {
+  display: inline-block;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+  border: 1px solid #cbd5e1;
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.pill-ok {
+  background: #dcfce7;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.pill-error {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.action-pills {
+  display: flex;
+  gap: .5rem;
+}
+
+.action-pills .pill {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #d5dbe6;
+}
+
+.action-pills .pill:hover {
+  background: #f1f5f9;
+}
+
+.action-pills .pill img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Descripción y metadatos */
+.source-desc {
+  margin: 0;
+  color: var(--ui-ink);
+}
+
+.source-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem 1rem;
+  align-items: center;
+  color: #475569;
+  font-weight: 500;
+  font-size: .95rem;
+}
+
+.source-meta .meta {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.source-meta .icon {
+  width: 16px;
+  height: 16px;
+  opacity: .7;
+}
+
+/* Bloque de configuración */
+.source-config {
+  display: grid;
+  gap: .4rem;
+}
+
+.config-label {
+  font-weight: 600;
+  color: #111827;
+}
+
+.config-box {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: .75rem .9rem;
+  color: #334155;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: .9rem;
+  line-height: 1.4;
+}
+
+/* ===== Modal CSS-only (con :target) — limpio y sin duplicados ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: start center;
+  padding: clamp(16px, 8vh, 96px) 16px 16px;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+}
+
+.modal:target {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+  backdrop-filter: blur(1.5px);
+  z-index: 0;
+  touch-action: none;
+  /* evita scroll en fondo táctil */
+}
+
+.modal-dialog {
+  position: relative;
+  width: min(760px, 100%);
+  max-height: calc(100vh - clamp(16px, 8vh, 96px) - 24px);
+  overflow: auto;
+  background: #fff;
+  border: 1px solid var(--ui-border, #e5e7eb);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, .18);
+  padding: 1rem 1rem .75rem;
+  display: grid;
+  gap: .9rem;
+  z-index: 1;
+  overflow-wrap: anywhere;
+}
+
+.modal-head {
+  top: 0;
+  z-index: 2;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .25rem .25rem .5rem;
+}
+
+.modal-head h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.modal-close {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #0f172a;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: #f3f4f6;
+}
+
+.modal a:focus-visible,
+.modal button:focus-visible,
+.modal input:focus-visible,
+.modal textarea:focus-visible,
+.modal select:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ui-blue) 60%, white);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Lock de scroll cuando cualquier modal esté abierto */
+html:has(.modal:target),
+body:has(.modal:target) {
+  overflow: hidden;
+  height: 100%;
+}
+
+
+/* ===== Tabs del MODAL (aisladas para no chocar con otras) ===== */
+.modal-dialog .tabs {
+  display: block;
+  gap: .75rem;
+  margin: .25rem 0 .5rem;
+}
+
+.modal-dialog .tabs>input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-dialog .tabs-tabs {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  background: #f8fafc;
+  padding: .35rem;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.modal-dialog .tabs-tabs label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 .9rem;
+  height: 38px;
+  min-width: 120px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #111827;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+#tab-estatica:checked~.tabs-tabs label[for="tab-estatica"],
+#tab-dinamica:checked~.tabs-tabs label[for="tab-dinamica"],
+#tab-proxy:checked~.tabs-tabs label[for="tab-proxy"] {
+  background: #fff;
+  border-color: #dbeafe;
+  color: var(--ui-blue, #3B82F6);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+}
+
+.modal-dialog .tabs-panels {
+  position: relative;
+}
+
+.modal-dialog .panel {
+  display: none;
+}
+
+#tab-estatica:checked~.tabs-panels .panel[data-panel="estatica"],
+#tab-dinamica:checked~.tabs-panels .panel[data-panel="dinamica"],
+#tab-proxy:checked~.tabs-panels .panel[data-panel="proxy"] {
+  display: grid;
+  gap: .75rem;
+}
+
+/* Campos y acciones (comparten estilo) */
+.field {
+  display: grid;
+  gap: .35rem;
+}
+
+.field label {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.field input[type="text"],
+.field input[type="url"],
+.field input[type="number"],
+.field textarea,
+.select select {
+  width: 100%;
+  background: #fff;
+  color: #0f172a;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: .65rem .8rem;
+  font: 400 1rem/1.3 Poppins, system-ui, sans-serif;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.select {
+  position: relative;
+}
+
+.select-caret {
+  position: absolute;
+  right: .7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  opacity: .6;
+  pointer-events: none;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: .5rem;
+  margin-top: .25rem;
+}
+
+.modal-actions .btn {
+  min-width: 120px;
+}
+
+.modal-actions .btn.btn-primary {
+  background: var(--ui-dark-accent, #475265);
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+.modal-actions .btn.btn-primary:hover {
+  background: #374151;
+}
+
+/* Tooltips y validación */
+.help {
+  margin: .25rem 0 0;
+  font-size: .875rem;
+  line-height: 1.3;
+}
+
+.help.info {
+  color: #475569;
+  position: relative;
+  display: inline-block;
+}
+
+.help.info[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 0;
+  top: calc(100% + 6px);
+  width: min(320px, 80vw);
+  background: #111827;
+  color: #fff;
+  padding: .5rem .6rem;
+  border-radius: 8px;
+  font-size: .8rem;
+  line-height: 1.3;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity .15s ease, transform .15s ease;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, .25);
+  z-index: 5;
+}
+
+.help.info:hover::after,
+.help.info:focus-within::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.field input:required:invalid,
+.field textarea:required:invalid,
+.field select:required:invalid {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, .08);
+}
+
+.field input:valid,
+.field textarea:valid,
+.field select:valid {
+  border-color: #16a34a;
+}
+
+::placeholder {
+  color: #94a3b8;
+}
+
+@media (max-width:540px) {
+  .modal-dialog .tabs-tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-dialog .tabs-tabs label {
+    width: 100%;
+  }
+}
+
+/* ===== Moderación — tabs con scope para no interferir ===== */
+.mod-card .tabs {
+  display: flex;
+  gap: .5rem;
+  margin: .25rem 0 1rem;
+}
+
+.mod-card .tab {
+  display: inline-block;
+  padding: .5rem .9rem;
+  border-radius: 999px;
+  background: #eef2f7;
+  border: 1px solid #e5e7eb;
+  font-weight: 600;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.mod-card .tab.is-active {
+  background: #e0f2ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+/* === FIX DEFINITIVO DE Z-INDEX + POSICIÓN DEL MODAL === */
+
+/* 1) El modal por encima de TODO */
+.modal {
+  z-index: 2147483647 !important;
+  /* máximo seguro */
+  place-items: start center;
+  /* centrado horizontal, tirando hacia arriba */
+  padding: clamp(16px, 8vh, 96px) 16px 16px;
+  /* margen superior */
+  isolation: isolate;
+  /* fuerza stacking context propio */
+}
+
+.modal-overlay {
+  z-index: 0;
+}
+
+.modal-dialog {
+  z-index: 1;
+  max-height: calc(100vh - clamp(16px, 8vh, 96px) - 24px);
+  overflow: auto;
+}
+
+/* ====== Modal · Espaciado cómodo (solo dentro del modal) ====== */
+.modal-dialog {
+  /* un toque más de padding general */
+  padding: 1.25rem 1.25rem 1rem;
+  gap: 1.1rem;
+  /* respiración entre bloques internos */
+}
+
+.modal-head {
+  padding: .25rem 0 .75rem;
+  /* separa el título del primer field */
+}
+
+.modal-body {
+  display: grid;
+  gap: 1rem;
+  /* aire entre cada .field */
+}
+
+.modal-dialog .field {
+  gap: .5rem;
+  /* aire entre label y control */
+}
+
+.modal-dialog .field+.field {
+  margin-top: .15rem;
+  /* micro-separación adicional entre fields seguidos */
+}
+
+.modal-dialog .field input[type="text"],
+.modal-dialog .field input[type="url"],
+.modal-dialog .field input[type="number"],
+.modal-dialog .select select,
+.modal-dialog .field textarea {
+  padding: .85rem 1rem;
+  /* controles más “altos” y cómodos */
+  border-radius: 12px;
+  /* consistente con el resto de UI */
+}
+
+/* textarea más alto por defecto */
+.modal-dialog .field textarea {
+  min-height: 120px;
+}
+
+/* acciones con respiro */
+.modal-actions {
+  margin-top: .9rem;
+  gap: .75rem;
+}
+
+/* responsive: en móviles, más colchón lateral */
+@media (max-width: 540px) {
+  .modal-dialog {
+    padding: 1.1rem;
+  }
+
+  .modal-body {
+    gap: .9rem;
+  }
+}
+
+
+/* 2) Mientras el modal esté abierto, bloquea scroll y evita “elementos que flotan arriba” */
+html:has(#modal-nueva-fuente:target),
+body:has(#modal-nueva-fuente:target) {
+  overflow: hidden;
+  height: 100%;
+}
+
+/* 3) (Opcional defensivo) Si algún header/subnav tuviera un z-index extremo,
+      el overlay igualmente los tapa; pero por las dudas reducimos su stacking mientras el modal esté abierto */
+html:has(#modal-nueva-fuente:target) .navbar,
+html:has(#modal-nueva-fuente:target) .subnav {
+  z-index: 0 !important;
+}
+
+
+/* ====== Solicitudes de Eliminación / Moderación ====== */
+.tabs {
+  display: flex;
+  gap: .5rem;
+  margin: .25rem 0 1rem
+}
+
+.tab {
+  display: inline-block;
+  padding: .5rem .9rem;
+  border-radius: 999px;
+  background: #eef2f7;
+  border: 1px solid #e5e7eb;
+  font-weight: 600;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.tab.is-active {
+  background: #e0f2ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8
+}
+
+.mod-card {
+  background: var(--ui-card);
+  border: 1px solid var(--ui-border, #e5e7eb);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+  padding: 1rem;
+  display: grid;
+  gap: .9rem;
+}
+
+.mod-head .mod-title {
+  margin: .25rem 0
+}
+
+.mod-meta {
+  margin: .25rem 0 0;
+  color: #64748b;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: .25rem 0
+}
+
+.chip {
+  display: inline-block;
+  padding: .25rem .6rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+  background: #e2e8f0;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+}
+
+.chip-warn {
+  background: #fef9c3;
+  border-color: #fde68a;
+  color: #854d0e
+}
+
+.chip-privacy {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #b91c1c
+}
+
+/* --- Moderación: layout adaptable sin espacios en blanco --- */
+
+/* Reemplaza el bloque viejo:
+.mod-body{ display:grid; grid-template-columns: 1fr 340px; gap:1rem; }
+*/
+.mod-body {
+  display: flex;
+  /* antes: grid */
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.mod-col {
+  flex: 1;
+  /* ocupa todo el ancho disponible */
+}
+
+.mod-aside {
+  flex: 0 0 340px;
+  /* sidebar fijo (igual que antes) */
+}
+
+/* Bordes de la tarjeta lateral (lo que ya tenías) */
+.mod-aside .fact-summary {
+  border: 1px solid #eef2f7;
+  border-radius: 10px;
+  padding: .75rem;
+  background: #fff;
+}
+
+/* En mobile: apilar, sin “huecos” */
+@media (max-width: 980px) {
+  .mod-body {
+    flex-direction: column;
+    /* antes: grid-template-columns:1fr */
+  }
+
+  .mod-aside {
+    flex: 0 0 auto;
+    /* que no reserve ancho fijo */
+    width: 100%;
+  }
+}
+
+/* Detalle: evita margen extra al final si el último nodo es un párrafo/lista */
+.mod-col> :last-child {
+  margin-bottom: 0;
+}
+
+
+.btn-link {
+  display: inline-block;
+  margin-top: .35rem;
+  text-decoration: none;
+  color: var(--ui-blue);
+  font-weight: 600
+}
+
+.mod-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #0f172a;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn.success {
+  background: #16a34a;
+  color: #fff;
+  border-color: #15803d
+}
+
+.btn.danger {
+  background: #ef4444;
+  color: #fff;
+  border-color: #b91c1c
+}
+
+.btn.ghost {
+  background: #fff;
+  color: #0f172a
+}
+
+.mod-actions .btn {
+  appearance: none;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #0f172a;
+  padding: .65rem 1rem;
+  border-radius: 10px;
+  /* 👈 cuadrado con 8–12px */
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  min-width: 120px;
+  /* coherente con Sources modal */
+  transition: background .2s ease, transform .06s ease;
+}
+
+.mod-actions .btn.success {
+  background: #16a34a;
+  border-color: #15803d;
+  color: #fff;
+}
+
+.mod-actions .btn.danger {
+  background: #ef4444;
+  border-color: #b91c1c;
+  color: #fff;
+}
+
+.mod-actions .btn.ghost {
+  background: #fff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.mod-actions .btn:hover {
+  background: #f8fafc;
+}
+
+.mod-actions .btn.success:hover {
+  background: #15803d;
+}
+
+.mod-actions .btn.danger:hover {
+  background: #b91c1c;
+}
+
+/* === Íconos en botones con fondo sólido → SIEMPRE blancos === */
+/* Cubre: .btn-action.btn-approve / .btn-action.btn-reject / .mod-actions .btn.success / .mod-actions .btn.danger */
+/* Cubre íconos como <img class="icon" ...> y también <svg> inline */
+.btn-action.btn-approve img.icon,
+.btn-action.btn-reject img.icon,
+.mod-actions .btn.success img.icon,
+.mod-actions .btn.danger img.icon,
+.btn-action.btn-approve>img,
+.btn-action.btn-reject>img,
+.mod-actions .btn.success>img,
+.mod-actions .btn.danger>img {
+  /* fuerza blanco incluso si el svg es negro, gris o tiene stroke */
+  filter: brightness(0) invert(1) contrast(100%) !important;
+}
+
+/* Si en algún caso usás <svg> inline en lugar de <img> */
+.btn-action.btn-approve .icon svg,
+.btn-action.btn-reject .icon svg,
+.mod-actions .btn.success svg,
+.mod-actions .btn.danger svg {
+  fill: #fff !important;
+  stroke: #fff !important;
+}
+
+/* En botones outline o ghost, íconos “normales” */
+.btn-action.btn-outline img.icon,
+.mod-actions .btn.ghost img.icon {
+  filter: none !important;
+}
+
+/* === Importar CSV · Botones de acciones consistentes === */
+.import-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+/* Asegura misma caja y tipografía (también para <button>) */
+.import-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .65rem 1rem;
+  border-radius: 10px;
+  /* mismo rounding cuadrado */
+  font: 700 0.95rem/1 "Poppins", sans-serif;
+}
+
+/* Normaliza iconos (evita que “tiren” del baseline) */
+.import-actions .btn .icon,
+.import-actions .btn>img.icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* Outline (Ver / Descargar log) */
+.import-actions .btn.ghost {
+  background: #fff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+.import-actions .btn.ghost:hover {
+  background: #f8fafc;
+}
+
+/* Sólidos: blanco en iconos */
+.import-actions .btn.success .icon,
+.import-actions .btn.danger .icon {
+  filter: brightness(0) invert(1) contrast(100%) !important;
+}
+
+
+
+@media (max-width: 980px) {
+  .mod-body {
+    grid-template-columns: 1fr
+  }
+}
+
+/* Chips nuevas para Hechos pendientes */
+.chip-prio-alta {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.chip-prio-media {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.chip-cat {
+  background: #DBEAFE;
+  color: #1e40af;
+  border-color: #BFDBFE;
+}
+
+/* ====== Sidebar: ítems con icono + texto (alineados y centrados) ====== */
+.admin-layout {
+  /* evita que la columna izquierda colapse y permite a la derecha crecer */
+  grid-template-columns: 260px minmax(0, 1fr);
+}
+
+.admin-sidebar {
+  background: var(--ui-card, #fff);
+  border: 1px solid var(--ui-border, #e5e7eb);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+}
+
+.admin-sidebar h3 {
+  margin: 4px 0 12px;
+  line-height: 1.3;
+}
+
+.admin-menu {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-menu .nav-link {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  /* icono + etiqueta */
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 12px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: var(--ui-ink, #0f172a);
+  font-weight: 700;
+  /* mismo peso que el resto del sidebar */
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-menu .nav-link:hover {
+  background: #f8fafc;
+  border-color: #e5e7eb;
+}
+
+.admin-menu .nav-link.is-active {
+  background: #e9f0ff;
+  /* pill activo azul suave */
+  border-color: #cfe0ff;
+  /* borde acorde */
+  color: var(--ui-blue, #3B82F6);
+  /* texto azul como en tus mockups */
+}
+
+/* Iconos consistentes */
+.admin-menu .nav-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-grid;
+  place-items: center;
+}
+
+.admin-menu .nav-icon img,
+.admin-menu .nav-icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  filter: none;
+  /* evita que quede descolorido */
+  opacity: .95;
+}
+
+/* Cuando el item está activo, no “desaparecen” los iconos */
+.admin-menu .nav-link.is-active .nav-icon img,
+.admin-menu .nav-link.is-active .nav-icon svg {
+  opacity: 1;
+}
+
+/* Etiqueta siempre en una línea sin sobresalir */
+.admin-menu .nav-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Evita que el sidebar “se salga” en pantallas chicas */
+@media (max-width: 760px) {
+  .admin-sidebar {
+    position: sticky;
+    top: calc(var(--header-h, 72px) + var(--subnav-h, 44px));
+    z-index: 20;
+  }
+}
+
+.admin-menu {
+  display: grid;
+  gap: .25rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: flex-start;
+  /* permite que el texto crezca en altura */
+  gap: .75rem;
+  padding: .6rem .75rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #111827;
+  font-weight: 600;
+  background: var(--ui-card, #fff);
+  border: 1px solid var(--ui-border, #e5e7eb);
+  line-height: 1.4;
+  /* mejora legibilidad */
+  white-space: normal;
+  /* 👈 permite saltos de línea */
+}
+
+.nav-link:hover {
+  background: #f1f5f9;
+}
+
+.nav-link.is-active {
+  background: #e0f2ff;
+  color: var(--ui-blue);
+  border: 1px solid #bfdbfe;
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.nav-label {
+  flex: 1;
+  white-space: normal;
+  /* 👈 deja que el texto baje a otra línea */
+  overflow: visible;
+  /* 👈 no recorta */
+  text-overflow: unset;
+  /* 👈 elimina los "..." */
+  word-break: break-word;
+  /* 👈 permite cortar palabras largas si hiciera falta */
+}
+
+/* Sidebar compacta y consistente */
+.admin-menu {
+  display: grid;
+  gap: .35rem;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-menu .nav-link {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: .6rem .75rem;
+  border-radius: 10px;
+  text-decoration: none;
+  border: 1px solid var(--ui-border, #e5e7eb);
+  background: var(--ui-card, #fff);
+  color: var(--ui-ink);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.admin-menu .nav-link:hover {
+  background: #f1f5f9;
+}
+
+.admin-menu .nav-link.is-active {
+  background: #e9f0ff;
+  border-color: #cfe0ff;
+  color: var(--ui-blue);
+}
+
+.admin-menu .nav-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-grid;
+  place-items: center;
+}
+
+.admin-menu .nav-icon img,
+.admin-menu .nav-icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  opacity: .95;
+}
+
+.admin-menu .nav-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== Consenso: toggle pill dentro del modal ===== */
+.modal-dialog .segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: .35rem;
+}
+
+.modal-dialog .segmented input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-dialog .segmented label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .5rem .8rem;
+  border-radius: 10px;
+  /* cuadrado 8–12px */
+  border: 1px solid transparent;
+  background: transparent;
+  font-weight: 700;
+  color: #0f172a;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.modal-dialog .segmented input[type="radio"]:checked+label {
+  background: #fff;
+  border-color: #dbeafe;
+  color: var(--ui-blue, #3B82F6);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+}
+
+.modal-dialog .segmented label:hover {
+  background: #eef2f7;
+}
+
+/* Accesibilidad foco teclado */
+.modal-dialog .segmented label:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ui-blue) 60%, white);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+@media (max-width: 540px) {
+  .modal-dialog .segmented {
+    gap: .4rem;
+  }
+
+  .modal-dialog .segmented label {
+    flex: 1 1 auto;
+  }
+}
+
+/* ===== Multi-select de Fuentes (chips) ===== */
+.modal-dialog .chips-multi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  max-height: 220px;
+  /* por si hay muchas fuentes */
+  overflow: auto;
+  /* scroll interno si se excede */
+  padding: .35rem;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.modal-dialog .chips-multi input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-dialog .chips-multi label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .45rem .7rem;
+  border-radius: 10px;
+  /* 8–12px como pediste */
+  border: 1px solid #d5dbe6;
+  background: #fff;
+  color: #0f172a;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.modal-dialog .chips-multi input[type="checkbox"]:checked+label {
+  background: #e8f0fe;
+  border-color: #bfdbfe;
+  color: var(--ui-blue, #3B82F6);
+}
+
+.modal-dialog .chips-multi label:hover {
+  background: #f1f5f9;
+}
+
+.modal-dialog .chips-multi label:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ui-blue) 60%, white);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+@media (max-width: 540px) {
+  .modal-dialog .chips-multi {
+    max-height: 180px;
+  }
+
+  .modal-dialog .chips-multi label {
+    flex: 0 1 auto;
+  }
+}
+
+/* ===== Picker de fuentes (escalable) ===== */
+.sources-picker {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f8fafc;
+  padding: .5rem .6rem;
+}
+
+.sources-picker>summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: #0f172a;
+  list-style: none;
+  outline: none;
+}
+
+.sources-picker[open] {
+  background: #f3f4f6;
+}
+
+.sources-picker>summary::-webkit-details-marker {
+  display: none;
+}
+
+.picker-bar {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin: .6rem 0;
+}
+
+.picker-bar input[type="search"] {
+  flex: 1;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: .55rem .75rem;
+  font: 400 1rem/1.3 Poppins, sans-serif;
+  background: #fff;
+  color: #0f172a;
+}
+
+#fuentesList {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: .25rem;
+  background: #fff;
+  font: 500 .95rem/1.25 Poppins, sans-serif;
+  color: #0f172a;
+}
+
+.selected-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .6rem;
+}
+
+.selected-chips .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .4rem .6rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
+  font-weight: 700;
+}
+
+.selected-chips .chip .remove {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.selected-chips .chip .remove:hover {
+  background: #eef2f7;
+}
+
+/* Modal de confirmación peligrosa */
+.confirm-danger {
+  border-top: 4px solid #ef4444;
+}
+
+.confirm-danger .modal-head h2 {
+  color: #b91c1c;
+}
+
+/* Botón peligro: icono blanco */
+.btn.danger .icon {
+  filter: brightness(0) invert(1) contrast(100%);
+}
+
+/* Botones del modal: mismo look cuadrado */
+.modal-actions .btn {
+  border-radius: 10px;
+}
+
+/* ===== Navbar · Auth actions unificadas (Admin + Usuario) ===== */
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Píldora azul "Administrador" */
+/* ✔️ misma que inCollectionA */
+.pill-admin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  min-width: 128px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  background: var(--ui-blue);
+  color: #fff;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+}
+
+/* Usuario */
+.user-pill {
+  height: 40px;
+  padding: 6px 12px;
+}
+
+.user-pill .avatar {
+  width: 36px;
+  height: 36px;
+}
+
+.user-pill .avatar img {
+  width: 32px;
+  height: 32px;
+  left: 2px;
+  top: 2px;
+  position: relative;
+}
+
+
+.pill-admin:hover {
+  filter: brightness(.96);
+}
+
+.pill-admin:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ui-blue) 55%, white);
+  outline-offset: 2px;
+}
+
+/* Píldora de usuario (avatar + nombre) con dropdown */
+.user-menu {
+  position: relative;
+  z-index: 2000;
+}
+
+.user-menu>summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.user-menu>summary::-webkit-details-marker {
+  display: none;
+}
+
+.user-menu[open]>summary.user-pill {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .18);
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  border: 1px solid #A7A7A7;
+  background: #EFF6FF;
+  color: #050315;
+  text-decoration: none;
+  outline: none;
+}
+
+.user-pill .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 36px;
+}
+
+.user-pill .avatar img {
+  width: 32px;
+  height: 32px;
+  position: relative;
+  left: 2px;
+  top: 2px;
+  object-fit: cover;
+}
+
+.user-pill .user-name {
+  font-size: 16px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.user-pill .caret {
+  font-size: 14px;
+  opacity: .6;
+}
+
+/* Dropdown */
+.user-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 220px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(2, 8, 20, .12), 0 2px 6px rgba(2, 8, 20, .08);
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  z-index: 3000;
+}
+
+.user-dropdown a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #111827;
+  font-weight: 500;
+}
+
+.user-dropdown a:hover,
+.user-dropdown a:focus-visible {
+  background: #F3F4F6;
+  outline: none;
+}
+
+.user-dropdown hr {
+  border: 0;
+  height: 1px;
+  background: #e5e7eb;
+  margin: 6px;
+}
+
+/* Responsive: ocultar nombre/caret en móvil estrecho */
+@media (max-width:768px) {
+  .user-pill {
+    height: 44px;
+    padding: 4px 8px;
+    gap: 0;
+  }
+
+  .user-pill .avatar {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .user-pill .avatar img {
+    width: 28px;
+    height: 28px;
+    left: 2px;
+    top: 2px;
+  }
+
+  .user-pill .user-name,
+  .user-pill .caret {
+    display: none;
+  }
+
+  .user-dropdown {
+    min-width: 180px;
+  }
+}

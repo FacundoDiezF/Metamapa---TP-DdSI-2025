@@ -1,0 +1,154 @@
+<html layout:decorate="~{layout/base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- CSS propio (se inyecta en el <head> del base) -->
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="aca iria el css de _admin_sidebar.html"/>
+    <link rel="stylesheet" th:href="@{/css/pages/admin.css}"/>
+
+</th:block>
+
+
+<th:block th:fragment="contenido">
+    <section th:replace="~{fragments/admin/_admin_sidebar :: filter-form(??}"></section>
+
+    <!-- este es el contenido de la pagina original -->
+    <section class="admin-content">
+        <header class="admin-header">
+            <h1>Hechos pendientes</h1>
+            <p class="muted">Revisa y modera hechos enviados por contribuyentes antes de publicarlos.</p>
+        </header>
+
+        <!-- Hecho #1 -->
+        <article class="mod-card">
+            <header class="mod-head">
+                <h3 class="mod-title">Incendio forestal en Parque Nacional Nahuel Huapi</h3>
+                <div class="chips">
+                    <span class="chip chip-prio-alta">Prioridad: Alta</span>
+                    <span class="chip chip-cat">Desastre Natural</span>
+                </div>
+                <p class="mod-meta">
+                    <span>Por: <strong>Ana García</strong></span> ·
+                    <span>2025-03-10 14:30</span> ·
+                    <span>Ubicación: Parque Nacional Nahuel Huapi, Río Negro</span>
+                </p>
+            </header>
+
+            <div class="mod-body">
+                <div class="mod-col">
+                    <h4>Descripción</h4>
+                    <p>Se reporta un incendio de gran magnitud en el sector norte del parque nacional, con foco
+                        activo y propagación a sotobosque.</p>
+
+                    <div class="grid-2">
+                        <div>
+                            <h4>Multimedia</h4>
+                            <ul class="evidence">
+                                <li><a href="#">foto_incendio_1.jpg</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="mod-aside">
+                    <div class="fact-summary">
+                        <h5>Resumen</h5>
+                        <p><strong>Impacto:</strong> Alto</p>
+                        <p><strong>Reportes:</strong> 12</p>
+                        <a class="btn-link" href="#">Ver detalles</a>
+                    </div>
+                </aside>
+            </div>
+
+            <footer class="mod-actions">
+                <a href="#" class="btn success">
+                    <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Aprobar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/edit.svg" alt="" aria-hidden="true">
+                    Modificar
+                </a>
+                <a href="#" class="btn danger">
+                    <img class="icon" src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Rechazar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                    Ver historial
+                </a>
+            </footer>
+
+        </article>
+
+        <!-- Hecho #2 -->
+        <article class="mod-card">
+            <header class="mod-head">
+                <h3 class="mod-title">Contaminación en Río Reconquista</h3>
+                <div class="chips">
+                    <span class="chip chip-prio-media">Prioridad: Media</span>
+                    <span class="chip chip-cat">Medio Ambiente</span>
+                </div>
+                <p class="mod-meta">
+                    <span>Por: <strong>Carlos Méndez</strong></span> ·
+                    <span>2025-03-09 16:45</span> ·
+                    <span>Ubicación: Río Reconquista, San Martín, Buenos Aires</span>
+                </p>
+            </header>
+
+            <div class="mod-body">
+                <div class="mod-col">
+                    <h4>Descripción</h4>
+                    <p>Vertido de sustancias químicas no identificadas en el río, con mortandad de peces y mal olor
+                        en la zona.</p>
+
+                    <div class="grid-2">
+                        <div>
+                            <h4>Multimedia</h4>
+                            <ul class="evidence">
+                                <li><a href="#">foto_contaminacion.jpg</a></li>
+                                <li><a href="#">foto_alrededores.jpg</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="mod-aside">
+                    <div class="fact-summary">
+                        <h5>Resumen</h5>
+                        <p><strong>Impacto:</strong> Medio</p>
+                        <p><strong>Reportes:</strong> 5</p>
+                        <a class="btn-link" href="#">Ver detalles</a>
+                    </div>
+                </aside>
+            </div>
+
+            <footer class="mod-actions">
+                <a href="#" class="btn success">
+                    <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Aprobar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/edit.svg" alt="" aria-hidden="true">
+                    Modificar
+                </a>
+                <a href="#" class="btn danger">
+                    <img class="icon" src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Rechazar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                    Ver historial
+                </a>
+            </footer>
+
+        </article>
+    </section>
+
+</th:block>
+
+
+</html>

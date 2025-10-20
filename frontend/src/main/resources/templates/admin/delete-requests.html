@@ -1,0 +1,137 @@
+<html layout:decorate="~{layout/base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- CSS propio (se inyecta en el <head> del base) -->
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="aca iria el css de _admin_sidebar.html"/>
+    <link rel="stylesheet" th:href="@{/css/pages/admin.css}"/>
+
+</th:block>
+
+
+<th:block th:fragment="contenido">
+    <section th:replace="~{fragments/admin/_admin_sidebar :: filter-form(??}"></section>
+
+    <!-- este es el contenido de la pagina original -->
+    <section class="admin-content">
+        <header class="admin-header">
+            <h1>Solicitudes de Eliminacion</h1>
+            <p class="muted">Revisa y decide sobre solicitudes de eliminación enviadas por los usuarios.</p>
+        </header>
+
+        <!-- Solicitud #1 -->
+        <article class="mod-card">
+            <header class="mod-head">
+                <h3 class="mod-title">Eliminación del hecho: “Incendio forestal en Parque Nacional Nahuel Huapi”
+                </h3>
+                <div class="chips">
+                    <span class="chip chip-warn">Motivo: Información incorrecta</span>
+                    <span class="chip">ID Hecho: #18754</span>
+                </div>
+                <p class="mod-meta">
+                    <span>Solicitada por: <strong>Cecilia Duarte</strong></span> ·
+                    <span>2025-03-10 14:30</span> ·
+                    <span>Contacto: cecilia@mail.com</span>
+                </p>
+            </header>
+
+            <div class="mod-body">
+                <div class="mod-col">
+                    <h4>Descripción del pedido</h4>
+                    <p>Se solicita la eliminación porque el hecho fue duplicado y la información de ubicación no
+                        coincide con la fuente oficial.</p>
+                </div>
+
+                <aside class="mod-aside">
+                    <div class="fact-summary">
+                        <h5>Resumen del hecho</h5>
+                        <p><strong>Categoría:</strong> Desastre Natural</p>
+                        <p><strong>Ubicación:</strong> Bariloche, Río Negro</p>
+                        <p><strong>Publicado por:</strong> Ana García</p>
+                        <a class="btn-link" href="#">Ver hecho completo</a>
+                    </div>
+                </aside>
+            </div>
+
+            <footer class="mod-actions">
+                <a href="#" class="btn success">
+                    <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Aprobar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/edit.svg" alt="" aria-hidden="true">
+                    Modificar
+                </a>
+                <a href="#" class="btn danger">
+                    <img class="icon" src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Rechazar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                    Ver Detalles
+                </a>
+            </footer>
+        </article>
+
+
+        <!-- Solicitud #2 -->
+        <article class="mod-card">
+            <header class="mod-head">
+                <h3 class="mod-title">Eliminación del hecho: “Contaminación en Río Reconquista”</h3>
+                <div class="chips">
+                    <span class="chip chip-privacy">Motivo: Privacidad</span>
+                    <span class="chip">ID Hecho: #19012</span>
+                </div>
+                <p class="mod-meta">
+                    <span>Solicitada por: <strong>Mariano Pérez</strong></span> ·
+                    <span>2025-03-09 09:10</span>
+                </p>
+            </header>
+
+            <div class="mod-body">
+                <div class="mod-col">
+                    <h4>Descripción del pedido</h4>
+                    <p>El hecho contiene imágenes donde se identifica a menores de edad sin consentimiento
+                        explícito.</p>
+                </div>
+
+                <aside class="mod-aside">
+                    <div class="fact-summary">
+                        <h5>Resumen del hecho</h5>
+                        <p><strong>Categoría:</strong> Medio Ambiente</p>
+                        <p><strong>Ubicación:</strong> San Martín, Buenos Aires</p>
+                        <p><strong>Publicado por:</strong> Carlos Méndez</p>
+                        <a class="btn-link" href="#">Ver hecho completo</a>
+                    </div>
+                </aside>
+            </div>
+
+            <footer class="mod-actions">
+                <a href="#" class="btn success">
+                    <img class="icon" src="../shared/assets/icons/check-circle-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Aprobar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/edit.svg" alt="" aria-hidden="true">
+                    Modificar
+                </a>
+                <a href="#" class="btn danger">
+                    <img class="icon" src="../shared/assets/icons/file-xmark-alt-svgrepo-com.svg" alt=""
+                         aria-hidden="true">
+                    Rechazar
+                </a>
+                <a href="#" class="btn ghost">
+                    <img class="icon" src="../shared/assets/icons/eye.svg" alt="" aria-hidden="true">
+                    Ver Detalles
+                </a>
+            </footer>
+
+        </article>
+    </section>
+
+</th:block>
+
+
+</html>

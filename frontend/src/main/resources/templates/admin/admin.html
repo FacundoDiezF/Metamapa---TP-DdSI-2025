@@ -1,0 +1,113 @@
+<html layout:decorate="~{layout/base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- CSS propio (se inyecta en el <head> del base) -->
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="aca iria el css de _admin_sidebar.html"/>
+    <link rel="stylesheet" th:href="@{/css/pages/admin.css}"/>
+
+</th:block>
+
+
+<th:block th:fragment="contenido">
+    <section th:replace="~{fragments/admin/_admin_sidebar :: filter-form(??}"></section>
+
+    <!-- este es el contenido de la pagina original -->
+    <section class="admin-content">
+        <header class="admin-header">
+            <h1>Resumen de Actividad</h1>
+            <p class="muted">Resumen de actividad y gestión de contenido</p>
+        </header>
+
+        <!-- KPIs -->
+        <div class="kpis">
+            <article class="kpi">
+                <div class="kpi-title">Total Hechos</div>
+                <div class="kpi-value">1.247</div>
+                <div class="kpi-foot good">+12% desde el mes pasado</div>
+            </article>
+
+            <article class="kpi">
+                <div class="kpi-title">Hechos Pendientes</div>
+                <div class="kpi-value">23</div>
+                <div class="kpi-foot warn">Requieren moderación</div>
+            </article>
+
+            <article class="kpi">
+                <div class="kpi-title">Fuentes Activas</div>
+                <div class="kpi-value">76</div>
+                <div class="kpi-foot">de 89 totales</div>
+            </article>
+
+            <article class="kpi">
+                <div class="kpi-title">Solicitudes Eliminación</div>
+                <div class="kpi-value">8</div>
+                <div class="kpi-foot danger">Pendientes de revisión</div>
+            </article>
+        </div>
+
+        <!-- Dos columnas: actividad + resumen moderación -->
+        <div class="grid-2">
+            <section class="card">
+                <h3 class="card-title">Actividad Reciente</h3>
+
+                <div class="activity">
+                    <div class="item">
+                        <div class="badge badge-warn">Pendiente</div>
+                        <div class="info">
+                            <p class="title">Nuevo hecho reportado: Incendio en Córdoba</p>
+                            <p class="meta">Hace 2 horas</p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="badge badge-good">Aprobado</div>
+                        <div class="info">
+                            <p class="title">Hecho aprobado: Contaminación en Río de la Plata</p>
+                            <p class="meta">Hace 4 horas</p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="badge badge-warn">Pendiente</div>
+                        <div class="info">
+                            <p class="title">Solicitud de eliminación para hecho #1234</p>
+                            <p class="meta">Hace 6 horas</p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="badge badge-info">Activo</div>
+                        <div class="info">
+                            <p class="title">Nueva fuente agregada: Ministerio de Ambiente</p>
+                            <p class="meta">Hace 1 día</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="card">
+                <h3 class="card-title">Resumen de Moderación</h3>
+
+                <ul class="mod-list">
+                    <li class="ok">
+                        <span>Hechos Aprobados</span>
+                        <strong>1.198</strong>
+                    </li>
+                    <li class="pending">
+                        <span>Pendientes</span>
+                        <strong>23</strong>
+                    </li>
+                    <li class="rejected">
+                        <span>Rechazados</span>
+                        <strong>26</strong>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </section>
+
+</th:block>
+
+
+</html>
