@@ -14,5 +14,5 @@ public interface IProvinceRepository extends JpaRepository<Province, Long> {
 
   List<Province> findByNameIn(List<String> names);
 
-  Page<Province> findAll(@NonNull Pageable pageable);
+  Page<Province> findAllByIdIn(List<Long> ids, Pageable pageable);
 }

@@ -15,4 +15,6 @@ public interface ILocationService {
   List<Location> findOrCreateLocationByCoordinates(Set<Coordinate> coordinates);
 
   Page<ProvinceDTO> getAllProvinces(Pageable pageable);
+
+  Page<ProvinceDTO> getAllProvincesByIds(List<Long> provincesIds, Pageable pageable);
 }

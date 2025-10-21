@@ -97,7 +97,7 @@ public class CollectionService implements ICollectionService {
     List<Event> finalEvents = collection.getEvents().stream()
         .filter(e -> (!curedNavigation || e.meetsAlgorithmConsensus(collection.getConsensusType())))
         .filter(e -> category_in == null || category_in.isEmpty() || category_in.contains(e.getCategory().getId()))
-        .filter(e -> province_in == null || province_in.isEmpty() || province_in.contains(e.getLocation().getProvince().getId()))
+        .filter(e -> province_in == null || province_in.isEmpty() || province_in.contains(e.getLocation().getProvince() != null ? e.getLocation().getProvince().getId() : null))
         .filter(e -> source_in == null || source_in.isEmpty() || source_in.contains(e.getSource().getType()))
         .filter(e -> uploadDate_lt == null || e.getUploadDate().isBefore(uploadDate_lt))
         .filter(e -> uploadDate_gt == null || e.getUploadDate().isAfter(uploadDate_gt))

@@ -69,7 +69,7 @@
                 </summary>
 
                 <div class="flt-body">
-                    <div class="chips chips-wrap">
+                    <div class="chips chips-wrap" id="province-filter-section">
 
                         <span th:each="prov : ${selectedProvinces}" class="chip-toggle">
 
@@ -83,7 +83,12 @@
                         </span>
 
                         <!-- Modal -->
-                        <a class="chip mas" href="#cat-modal">+ Más</a>
+                        <a class="chip mas"
+                           hx-get="/modals/more-provinces"
+                           hx-target="#modals-here" hx-swap="innerHTML"
+                           hx-include="#province-filter-section">
+                            + Más
+                        </a>
 
                     </div>
                     <p class="help info">Seleccioná una o varias provincias.</p>

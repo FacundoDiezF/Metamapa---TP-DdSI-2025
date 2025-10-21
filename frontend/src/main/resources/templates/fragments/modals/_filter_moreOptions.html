@@ -80,7 +80,8 @@
             </div>
 
             <!--    Parte funcional, inputs invisibles para no perder los seleccionados tras la paginacion        -->
-            <form id="category-filter-form" class="mm-actions-buttons" method="get">
+            <form id="category-filter-form" class="mm-actions-buttons"
+                  method="get">
 
                 <div id="selected-categories-state">
                     <input type="hidden"
@@ -88,6 +89,109 @@
                            name="category_in"
                            th:value="${id}"
                            th:id="'hidden-cat:' + ${id}"
+                    />
+                </div>
+
+                <button type="submit"
+                        class="btn-apply"
+                >Aplicar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal “+ Más Provincias” -->
+<div th:fragment="provincesModal"
+     class="mm-overlay"
+     role="dialog"
+     aria-modal="true"
+     hx-on:click="if(event.target.classList.contains('mm-overlay')) { this.closest('#modals-here').innerHTML = '' }">
+
+    <div class="mm-modal">
+        <button
+                class="mm-close"
+                aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''"
+        >
+            ✕
+        </button>
+
+        <h2 class="mm-title">Seleccionar provincas</h2>
+
+        <div class="chips-box">
+            <div class="chips">
+                        <span th:each="prov : ${provincePage.content}" class="chip-toggle">
+
+                            <input type="checkbox"
+                                   th:id="'prov-modal:' + ${prov.id}"
+                                   th:value="${prov.id}"
+
+                                   th:checked="${provincesSelected != null and provincesSelected.contains(prov.id)}"
+
+                                   hx-on:change="  var id = event.target.value;
+                                                   var hiddenId = 'hidden-prov:' + id;
+                                                   var container = document.getElementById('selected-provinces-state');
+                                                   var existing = document.getElementById(hiddenId);
+
+                                                   if (event.target.checked) {
+                                                       // Agregar campo oculto (solo si no existe)
+                                                       if (!existing) {
+                                                           var input = document.createElement('input');
+                                                           input.type = 'hidden';
+                                                           input.name = 'province_in';
+                                                           input.value = id;
+                                                           input.id = hiddenId;
+                                                           container.appendChild(input);
+                                                       }
+                                                   } else {
+                                                       // Eliminar campo oculto
+                                                       if (existing) {
+                                                           existing.remove();
+                                                       }
+                                                   }
+                                               "
+                            />
+                            <label th:for="'prov-modal:' + ${prov.id}" class="chip" th:text="${prov.name}">
+                                Nombre Tag Provincia
+                            </label>
+                        </span>
+            </div>
+        </div>
+        <p class="help info">Seleccioná una o varias provincias.</p>
+
+        <div class="mm-actions">
+
+            <div class="pagination"
+                 hx-target="#modals-here"
+                 hx-swap="innerHTML">
+                <button th:if="${!provincePage.first}"
+                        th:hx-get="@{/modals/more-provinces(page-prov=${provincePage.pageNumber - 1})}"
+                        hx-include="#province-filter-form"
+                        class="btn small">
+                    Anterior
+                </button>
+
+                <span th:text="'Página ' + ${provincePage.pageNumber + 1} + ' de ' + ${provincePage.totalPages}"></span>
+
+                <button th:if="${!provincePage.last}"
+                        th:hx-get="@{/modals/more-provinces(page-prov=${provincePage.pageNumber + 1})}"
+                        hx-include="#province-filter-form"
+                        class="btn small">
+                    Siguiente
+                </button>
+            </div>
+
+            <!--    Parte funcional, inputs invisibles para no perder los seleccionados tras la paginacion        -->
+            <form id="province-filter-form" class="mm-actions-buttons" method="get">
+
+                <div id="selected-provinces-state">
+                    <input type="hidden"
+                           th:each="id : ${provincesSelected}"
+                           name="province_in"
+                           th:value="${id}"
+                           th:id="'hidden-prov:' + ${id}"
                     />
                 </div>
 
