@@ -206,7 +206,7 @@
     padding: .3rem .6rem;
     border-radius: var(--radius-10);
     cursor: pointer;
-    font-family: var(--font-brand);
+    font-family: var(--font-brand), sans-serif;
     font-size: .9rem;
 }
 
@@ -222,7 +222,7 @@
     padding: .3rem .6rem;
     border-radius: var(--radius-10);
     cursor: pointer;
-    font-family: var(--font-brand);
+    font-family: var(--font-brand), sans-serif;
 }
 
 .btn-apply:hover {

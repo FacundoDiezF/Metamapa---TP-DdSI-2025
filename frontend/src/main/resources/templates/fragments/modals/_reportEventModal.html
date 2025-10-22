@@ -18,9 +18,13 @@
             Evitá datos sensibles.
         </p>
 
-        <form class="report-form">
+        <form class="report-form"
+              th:object="${newDeletionRequest}"
+              th:hx-post="@{/share/deletion-request}"
+              hx-target="#modals-here"
+              hx-swap="innerHTML">
 
-            <input type="hidden" name="eventId" th:value="${eventId}"/>
+            <input type="hidden" th:field="*{eventId}"/>
 
             <label class="field">
 
@@ -28,7 +32,7 @@
                         Justificación
                     </span>
 
-                <textarea name="justificacion"
+                <textarea th:field="*{argument}"
                           placeholder="Justificación (mín. 500 caracteres)"
                           minlength="500"
                           required
@@ -39,8 +43,7 @@
             </label>
 
             <button type="submit"
-                    class="submit-report"
-                    disabled>
+                    class="submit-report">
                 Enviar solicitud
             </button>
         </form>
@@ -48,22 +51,30 @@
 </div>
 
 
-<!--    &lt;!&ndash; Modal de confirmación &ndash;&gt;-->
-<!--    <div th:id="'reportSuccess-' + ${eventId}" class="modal-overlay target-modal">-->
-<!--        <a href="#close" class="overlay-dismiss" aria-label="Cerrar"></a>-->
+<!-- Modal de confirmación -->
+<div th:fragment="deletionRequestSuccesseModal" class="modal-overlay"
+     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
 
-<!--        <div class="auth-modal success-modal" role="dialog" aria-modal="true" th:aria-labelledby="'successTitle-' + ${eventId}">-->
-<!--            <a href="#close" class="modal-close" aria-label="Cerrar">×</a>-->
+    <div class="auth-modal success-modal" role="dialog" aria-modal="true">
 
-<!--            <h2 th:id="'successTitle-' + ${eventId}">Solicitud en revisión</h2>-->
-<!--            <p class="muted">-->
-<!--                ¡Gracias por colaborar con la comunidad! Revisaremos tu solicitud y-->
-<!--                actuaremos de acuerdo con las normas de convivencia para mantener MetaMapa-->
-<!--                útil, seguro y respetuoso para todas las personas.-->
-<!--            </p>-->
+        <button type="button"
+                class="modal-close"
+                aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''">
+            ✕
+        </button>
 
-<!--            <a href="#close" class="btn primary" style="margin-top:.5rem;">Entendido</a>-->
-<!--        </div>-->
-<!--    </div>-->
+        <h2>Solicitud en revisión</h2>
+        <p class="muted">
+            ¡Gracias por colaborar con la comunidad! Revisaremos tu solicitud y
+            actuaremos de acuerdo con las normas de convivencia para mantener MetaMapa
+            útil, seguro y respetuoso para todas las personas.
+        </p>
 
-<!--</th:block>-->
+        <a class="btn-apply" style="margin-top:.5rem;"
+           hx-on:click="this.closest('#modals-here').innerHTML = '' ">
+            Entendido
+        </a>
+    </div>
+</div>
+
