@@ -3,12 +3,14 @@ package interfaz.grafica.ddsi.controller;
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.LocationService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -46,5 +48,16 @@ public class ModalsController {
     model.addAttribute("provincesSelected", provincesSelected);
     model.addAttribute("provincePage", provincePage);
     return "fragments/modals/_filter_moreOptions :: provincesModal";
+  }
+
+  @GetMapping("/report-event/{id}")
+  public String getReportEventModal(
+      @PathVariable Long id,
+      Model model) {
+
+    model.addAttribute("eventId", id);
+    model.addAttribute("newDeletionRequest", new DeletionRequestDTO());
+
+    return "fragments/modals/_reportEventModal :: deletionRequestModal";
   }
 }

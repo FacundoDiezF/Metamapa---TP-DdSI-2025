@@ -1,0 +1,69 @@
+<!-- Fragment: Modal de Solicitud de Eliminación -->
+<div th:fragment="deletionRequestModal" class="modal-overlay"
+     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
+
+    <div class="auth-modal report-modal" role="dialog" aria-modal="true">
+
+        <button type="button"
+                class="modal-close"
+                aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''">
+            ✕
+        </button>
+
+        <h2>Reportar Evento</h2>
+        <p class="muted">
+            Explicá por qué este contenido debería eliminarse.
+            <strong>Mínimo 500 caracteres.</strong>
+            Evitá datos sensibles.
+        </p>
+
+        <form class="report-form">
+
+            <input type="hidden" name="eventId" th:value="${eventId}"/>
+
+            <label class="field">
+
+                    <span class="sr-only">
+                        Justificación
+                    </span>
+
+                <textarea name="justificacion"
+                          placeholder="Justificación (mín. 500 caracteres)"
+                          minlength="500"
+                          required
+                          rows="8"></textarea>
+                <p class="help error-msg">
+                    La justificación debe tener al menos 500 caracteres.
+                </p>
+            </label>
+
+            <button type="submit"
+                    class="submit-report"
+                    disabled>
+                Enviar solicitud
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<!--    &lt;!&ndash; Modal de confirmación &ndash;&gt;-->
+<!--    <div th:id="'reportSuccess-' + ${eventId}" class="modal-overlay target-modal">-->
+<!--        <a href="#close" class="overlay-dismiss" aria-label="Cerrar"></a>-->
+
+<!--        <div class="auth-modal success-modal" role="dialog" aria-modal="true" th:aria-labelledby="'successTitle-' + ${eventId}">-->
+<!--            <a href="#close" class="modal-close" aria-label="Cerrar">×</a>-->
+
+<!--            <h2 th:id="'successTitle-' + ${eventId}">Solicitud en revisión</h2>-->
+<!--            <p class="muted">-->
+<!--                ¡Gracias por colaborar con la comunidad! Revisaremos tu solicitud y-->
+<!--                actuaremos de acuerdo con las normas de convivencia para mantener MetaMapa-->
+<!--                útil, seguro y respetuoso para todas las personas.-->
+<!--            </p>-->
+
+<!--            <a href="#close" class="btn primary" style="margin-top:.5rem;">Entendido</a>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</th:block>-->

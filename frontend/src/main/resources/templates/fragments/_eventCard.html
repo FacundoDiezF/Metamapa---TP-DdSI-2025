@@ -1,5 +1,8 @@
 <article class="hecho card" th:fragment="cardFragment(item)">
-    <a class="flag-float" th:href="'#report-hecho-' + ${item.id}" aria-label="Reportar este hecho">
+    <a class="flag-float" aria-label="Reportar este hecho"
+       th:hx-get="@{/modals/report-event/{id}(id=${item.id})}"
+       hx-target="#modals-here" hx-swap="innerHTML"
+       hx-include="#category-filter-section">
         <img th:src="@{/shared/icons/ci_flag.svg}" alt="" class="icon-img">
     </a>
     <span class="tag" th:text="${item.category}">
