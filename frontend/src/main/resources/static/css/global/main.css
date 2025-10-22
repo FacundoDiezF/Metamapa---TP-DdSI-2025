@@ -151,7 +151,7 @@
 html { font-size: 100%; } /* 16px por defecto */
 
 html, body {
-    font-family: var(--font-sans);
+    font-family: var(--font-brand), serif;
     font-weight: var(--fw-regular);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -179,7 +179,7 @@ body {
 =========================== */
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-brand);
+    font-family: var(--font-brand), sans-serif;
     font-weight: var(--fw-semibold);
     line-height: var(--lh-tight);
     margin: 0 0 .5em;
@@ -204,7 +204,7 @@ body, .body {
 
 /* Marca (solo logo MetaMapa) */
 .mm-name {
-    font-family: var(--font-brand);
+    font-family: var(--font-brand), sans-serif;
     font-weight: var(--fw-medium);
     font-size: var(--fs-brand);
     line-height: var(--lh-brand);
@@ -241,7 +241,7 @@ a:hover, a:focus-visible { text-decoration: underline; }
    Formularios Base
 =========================== */
 
-input, select, textarea, button { font: inherit; }
+input, select, textarea, button { font-family: var(--font-brand), sans-serif; }
 
 input, select, textarea {
     width: 100%;
