@@ -113,7 +113,7 @@ public class Collection {
   public Set<Event> getEvents() {
     Set<Event> allEvents = new HashSet<>(events);
     allEvents.addAll(getMetamapaEvents());
-    return allEvents;
+    return allEvents.stream().filter(e -> !e.isDeleted()).collect(Collectors.toSet());
   }
 
   public List<Long> getEventsIds() {
