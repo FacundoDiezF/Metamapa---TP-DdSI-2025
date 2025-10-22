@@ -1,4 +1,4 @@
-<aside th:fragment="filter-form(actionUrl)" class="sidebar card">
+<aside th:fragment="filter-form(actionUrl)" class="sidebar">
     <!-- Collapse visible en mobile; en desktop queda siempre abierto -->
     <div id="mm-filtros">
         <h3>Filtros</h3>
@@ -9,12 +9,12 @@
             <!-- CATEGORÍA -->
             <details class="flt">
                 <summary class="flt-head">
-                    <span class="flt-title">Categoría</span>
+                    <span >Categoría</span>
                     <span class="caret" aria-hidden="true">▾</span>
                 </summary>
 
                 <div class="flt-body">
-                    <div class="chips chips-wrap" id="category-filter-section">
+                    <div class="chips" id="category-filter-section">
 
                         <span th:each="cat : ${selectedCategories}" class="chip-toggle">
 

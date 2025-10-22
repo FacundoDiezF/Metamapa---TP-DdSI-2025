@@ -178,29 +178,6 @@
 }
 
 /* ===========================
-   Filtro de Ubicación
-=========================== */
-
-.ubic-searchbar {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    margin-bottom: .6rem;
-}
-
-.ubic-searchbar input[type="search"] {
-    flex: 1;
-    padding: .6rem .75rem;
-    border: 1px solid var(--LightText, #e5e7eb);
-    border-radius: var(--radius-10);
-    background: var(--InboxBG, #f6f7f9);
-    font: inherit;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-/* ===========================
    Textos de Ayuda
 =========================== */
 
