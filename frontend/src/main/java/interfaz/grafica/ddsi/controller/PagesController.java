@@ -57,8 +57,6 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
-      @RequestParam(defaultValue = "0", name = "page-cat") int pageCat,
-      @RequestParam(defaultValue = "0", name = "page-prov") int pageProv,
       @RequestParam(defaultValue = "0", name = "page") int pageEvent,
       Model model) {
 
@@ -67,7 +65,7 @@ public class PagesController {
     model.addAttribute("eventsPage", eventsPage);
     model.addAttribute("newEvent", new EventOutputDTO());
 
-    this.addFilterModels(model, pageCat, pageProv);
+    this.addFilterModels(model, category_in, province_in);
 
     model.addAttribute("pageTitle", "MetaMapa · Explorar");
     model.addAttribute("active", "explore");
@@ -82,8 +80,6 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
-      @RequestParam(defaultValue = "0", name = "page-cat") int pageCat,
-      @RequestParam(defaultValue = "0", name = "page-prov") int pageProv,
       @RequestParam(defaultValue = "0", name = "page") int pageEvent,
       Model model) {
 
@@ -95,7 +91,7 @@ public class PagesController {
 
     model.addAttribute("events", eventsFromCol);
 
-    this.addFilterModels(model, pageCat, pageProv);
+    this.addFilterModels(model, category_in, province_in);
 
     model.addAttribute("pageTitle", "MetaMapa · " + collection.getTitle());
     model.addAttribute("active", "collections");
@@ -122,8 +118,6 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
-      @RequestParam(defaultValue = "0", name = "page-cat") int pageCat,
-      @RequestParam(defaultValue = "0", name = "page-prov") int pageProv,
       @RequestParam(defaultValue = "0", name = "page") int page,
 
       Model model) {
@@ -132,7 +126,7 @@ public class PagesController {
 
     model.addAttribute("events", eventPage.getContent());
 
-    this.addFilterModels(model, pageCat, pageProv);
+    this.addFilterModels(model, category_in, province_in);
 
     model.addAttribute("pageTitle", "MetaMapa · Mapa");
     model.addAttribute("active", "map");
@@ -145,14 +139,12 @@ public class PagesController {
     return "error/404";
   }
 
-  private void addFilterModels(Model model, int pageCat, int pageProv) {
+  private void addFilterModels(Model model, List<Long> category_in, List<Long> province_in) {
 
-    int size = 15;
+    List<CategoryDTO> selectedCategories = categoryService.getByIds(category_in);
+    List<ProvinceDTO> selectedProvinces = locationService.getProvincesByIds(province_in);
 
-    PageDTO<CategoryDTO> categoryPage = categoryService.getAll(pageCat, size);
-    PageDTO<ProvinceDTO> provincePage = locationService.getAllProvinces(pageProv, size);
-
-    model.addAttribute("categoryPage", categoryPage);
-    model.addAttribute("provinces", provincePage.getContent());
+    model.addAttribute("selectedCategories", selectedCategories);
+    model.addAttribute("selectedProvinces", selectedProvinces);
   }
 }

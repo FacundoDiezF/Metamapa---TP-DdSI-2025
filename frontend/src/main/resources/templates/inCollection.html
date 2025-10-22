@@ -6,6 +6,7 @@
 
     <!-- Página inCollection -->
     <link rel="stylesheet" th:href="@{/css/pages/inCollection.css}"/>
+    <link rel="stylesheet" th:href="@{/css/modals/deletion}"/>
 
     <!-- SideBar izquierdo: filtros -->
     <link rel="stylesheet" th:href="@{/css/shared/filters/filters.css}"/>
@@ -26,13 +27,6 @@
         ~{fragments/grid3/_sidebar_right :: right}
       )}"></section>
 </th:block>
-
-
-<!-- Modales -->
-<th:block layout:fragment="modals">
-    <div th:replace="fragments/modals/_filter_moreOptions :: categoriesModal(${categoryPage})"></div>
-</th:block>
-
 
 <th:block layout:fragment="extraScripts">
     <script th:src="@{/js/map/mini-map.js}"></script>

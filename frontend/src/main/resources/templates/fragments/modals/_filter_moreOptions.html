@@ -1,49 +1,205 @@
 <!-- Modal “+ Más categorías” -->
-<div th:fragment="categoriesModal(categoriesPage)" id="cat-modal" class="mm-overlay" role="dialog" aria-modal="true">
-    <a class="mm-dismiss" href="#close" aria-label="Cerrar"></a>
+<div th:fragment="categoriesModal"
+     class="mm-overlay"
+     role="dialog"
+     aria-modal="true"
+     hx-on:click="if(event.target.classList.contains('mm-overlay')) { this.closest('#modals-here').innerHTML = '' }">
+
     <div class="mm-modal">
-        <button class="mm-close" onclick="location.hash='close'" aria-label="Cerrar">✕</button>
+        <button
+                class="mm-close"
+                aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''"
+        >
+            ✕
+        </button>
 
-        <h2 id="cat-modal-title" class="mm-title">Seleccionar más categorías</h2>
+        <h2 class="mm-title">Seleccionar categorías</h2>
 
-        <div class="chips chips-wrap">
+        <div class="chips-box">
+            <div class="chips">
+                        <span th:each="cat : ${categoriesPage.content}" class="chip-toggle">
 
-            <span th:each="cat : ${categoriesPage.content}" class="chip-toggle">
+                            <input type="checkbox"
+                                   th:id="'cat-modal:' + ${cat.id}"
+                                   th:value="${cat.id}"
 
-                  <input type="checkbox" name="category_in" th:id="'cat-modal:' + ${cat.id}"
-                         th:value="${cat.id}"
-                         th:checked="${param.category_in != null and param.category_in.contains(cat.id.toString())}"
-                  />
-                  <label th:for="'cat-modal:' + ${cat.id}" class="chip" th:text="${cat.name}">
-                      Nombre Tag Categoria
-                  </label>
-            </span>
+                                   th:checked="${categoriesSelected != null and categoriesSelected.contains(cat.id)}"
 
+                                   hx-on:change="  var id = event.target.value;
+                                                   var hiddenId = 'hidden-cat:' + id;
+                                                   var container = document.getElementById('selected-categories-state');
+                                                   var existing = document.getElementById(hiddenId);
+
+                                                   if (event.target.checked) {
+                                                       // Agregar campo oculto (solo si no existe)
+                                                       if (!existing) {
+                                                           var input = document.createElement('input');
+                                                           input.type = 'hidden';
+                                                           input.name = 'category_in';
+                                                           input.value = id;
+                                                           input.id = hiddenId;
+                                                           container.appendChild(input);
+                                                       }
+                                                   } else {
+                                                       // Eliminar campo oculto
+                                                       if (existing) {
+                                                           existing.remove();
+                                                       }
+                                                   }
+                                               "
+                            />
+                            <label th:for="'cat-modal:' + ${cat.id}" class="chip" th:text="${cat.name}">
+                                Nombre Tag Categoria
+                            </label>
+                        </span>
+            </div>
         </div>
         <p class="help info">Seleccioná una o varias categorías.</p>
 
-        <div class="pagination"
-             hx-target="#cat-modal"
-             hx-swap="outerHTML">
-            <button th:if="${!categoriesPage.first}"
-                    th:hx-get="@{/categories/modal(page-cat=${categoriesPage.pageNumber - 1})}"
-                    class="btn small">
-                Anterior
-            </button>
+        <div class="mm-actions">
 
-            <span th:text="'Página ' + ${categoriesPage.pageNumber + 1} + ' de ' + ${categoriesPage.totalPages}"></span>
+            <div class="pagination"
+                 hx-target="#modals-here"
+                 hx-swap="innerHTML">
+                <button th:if="${!categoriesPage.first}"
+                        th:hx-get="@{/modals/more-categories(page-cat=${categoriesPage.pageNumber - 1})}"
+                        hx-include="#category-filter-form"
+                        class="btn small">
+                    Anterior
+                </button>
 
-            <button th:if="${!categoriesPage.last}"
-                    th:hx-get="@{/categories/modal(page-cat=${categoriesPage.pageNumber + 1})}"
-                    class="btn small">
-                Siguiente
-            </button>
+                <span th:text="'Página ' + ${categoriesPage.pageNumber + 1} + ' de ' + ${categoriesPage.totalPages}"></span>
+
+                <button th:if="${!categoriesPage.last}"
+                        th:hx-get="@{/modals/more-categories(page-cat=${categoriesPage.pageNumber + 1})}"
+                        hx-include="#category-filter-form"
+                        class="btn small">
+                    Siguiente
+                </button>
+            </div>
+
+            <!--    Parte funcional, inputs invisibles para no perder los seleccionados tras la paginacion        -->
+            <form id="category-filter-form" class="mm-actions-buttons"
+                  method="get">
+
+                <div id="selected-categories-state">
+                    <input type="hidden"
+                           th:each="id : ${categoriesSelected}"
+                           name="category_in"
+                           th:value="${id}"
+                           th:id="'hidden-cat:' + ${id}"
+                    />
+                </div>
+
+                <button type="submit"
+                        class="btn-apply"
+                >Aplicar
+                </button>
+            </form>
         </div>
+    </div>
+</div>
+
+
+<!-- Modal “+ Más Provincias” -->
+<div th:fragment="provincesModal"
+     class="mm-overlay"
+     role="dialog"
+     aria-modal="true"
+     hx-on:click="if(event.target.classList.contains('mm-overlay')) { this.closest('#modals-here').innerHTML = '' }">
+
+    <div class="mm-modal">
+        <button
+                class="mm-close"
+                aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''"
+        >
+            ✕
+        </button>
+
+        <h2 class="mm-title">Seleccionar provincas</h2>
+
+        <div class="chips-box">
+            <div class="chips">
+                        <span th:each="prov : ${provincePage.content}" class="chip-toggle">
+
+                            <input type="checkbox"
+                                   th:id="'prov-modal:' + ${prov.id}"
+                                   th:value="${prov.id}"
+
+                                   th:checked="${provincesSelected != null and provincesSelected.contains(prov.id)}"
+
+                                   hx-on:change="  var id = event.target.value;
+                                                   var hiddenId = 'hidden-prov:' + id;
+                                                   var container = document.getElementById('selected-provinces-state');
+                                                   var existing = document.getElementById(hiddenId);
+
+                                                   if (event.target.checked) {
+                                                       // Agregar campo oculto (solo si no existe)
+                                                       if (!existing) {
+                                                           var input = document.createElement('input');
+                                                           input.type = 'hidden';
+                                                           input.name = 'province_in';
+                                                           input.value = id;
+                                                           input.id = hiddenId;
+                                                           container.appendChild(input);
+                                                       }
+                                                   } else {
+                                                       // Eliminar campo oculto
+                                                       if (existing) {
+                                                           existing.remove();
+                                                       }
+                                                   }
+                                               "
+                            />
+                            <label th:for="'prov-modal:' + ${prov.id}" class="chip" th:text="${prov.name}">
+                                Nombre Tag Provincia
+                            </label>
+                        </span>
+            </div>
+        </div>
+        <p class="help info">Seleccioná una o varias provincias.</p>
 
         <div class="mm-actions">
-            <a class="btn" href="#close">Cerrar</a>
-            <button id="apply-modal" type="button" class="btn primary">Aplicar</button>
-        </div>
 
+            <div class="pagination"
+                 hx-target="#modals-here"
+                 hx-swap="innerHTML">
+                <button th:if="${!provincePage.first}"
+                        th:hx-get="@{/modals/more-provinces(page-prov=${provincePage.pageNumber - 1})}"
+                        hx-include="#province-filter-form"
+                        class="btn small">
+                    Anterior
+                </button>
+
+                <span th:text="'Página ' + ${provincePage.pageNumber + 1} + ' de ' + ${provincePage.totalPages}"></span>
+
+                <button th:if="${!provincePage.last}"
+                        th:hx-get="@{/modals/more-provinces(page-prov=${provincePage.pageNumber + 1})}"
+                        hx-include="#province-filter-form"
+                        class="btn small">
+                    Siguiente
+                </button>
+            </div>
+
+            <!--    Parte funcional, inputs invisibles para no perder los seleccionados tras la paginacion        -->
+            <form id="province-filter-form" class="mm-actions-buttons" method="get">
+
+                <div id="selected-provinces-state">
+                    <input type="hidden"
+                           th:each="id : ${provincesSelected}"
+                           name="province_in"
+                           th:value="${id}"
+                           th:id="'hidden-prov:' + ${id}"
+                    />
+                </div>
+
+                <button type="submit"
+                        class="btn-apply"
+                >Aplicar
+                </button>
+            </form>
+        </div>
     </div>
 </div>
