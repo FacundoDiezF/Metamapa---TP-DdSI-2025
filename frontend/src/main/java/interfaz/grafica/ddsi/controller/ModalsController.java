@@ -55,8 +55,10 @@ public class ModalsController {
       @PathVariable Long id,
       Model model) {
 
-    model.addAttribute("eventId", id);
-    model.addAttribute("newDeletionRequest", new DeletionRequestDTO());
+    DeletionRequestDTO deletionRequestDTO = new DeletionRequestDTO();
+    deletionRequestDTO.setEventId(id);
+
+    model.addAttribute("newDeletionRequest", deletionRequestDTO);
 
     return "fragments/modals/_reportEventModal :: deletionRequestModal";
   }

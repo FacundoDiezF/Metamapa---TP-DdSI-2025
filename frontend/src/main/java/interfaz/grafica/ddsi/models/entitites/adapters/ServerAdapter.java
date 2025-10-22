@@ -6,6 +6,7 @@ import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -155,5 +156,15 @@ public class ServerAdapter {
     }
 
     return getAllProvinces(0, provinceIds.size(), provinceIds).getContent();
+  }
+
+  //--------------- DELETION REQUESTS ----------------//
+  public void postNewDeletionRequest(DeletionRequestDTO deletionRequestDTO) {
+    webClient.post()
+        .uri("/deletion-request")
+        .bodyValue(deletionRequestDTO)
+        .retrieve()
+        .bodyToMono(Void.class)
+        .block();
   }
 }
