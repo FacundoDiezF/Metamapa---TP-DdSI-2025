@@ -324,6 +324,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .mm-btn:disabled,
+.mm-btn--primary:disabled,
 .mm-btn[aria-disabled="true"] {
     opacity: .6;
     pointer-events: none;

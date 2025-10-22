@@ -1,0 +1,68 @@
+/* ===========================
+   Campos de Formulario
+=========================== */
+
+.field label {
+    font-size: .9rem;
+    font-weight: 600;
+    margin-bottom: .25rem;
+    display: block;
+}
+
+.field input,
+.field textarea,
+.field select {
+    width: 100%;
+    padding: .7rem .95rem;
+    border: 1px solid var(--LightText);
+    border-radius: var(--radius-10);
+    background: var(--InboxBG);
+    font: inherit;
+    background-repeat: no-repeat;
+    background-position: right .6rem center;
+    background-size: 18px 18px;
+    padding-right: 2.2rem;
+    transition: border-color .15s, box-shadow .15s, background-color .15s;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+    outline: none;
+    border-color: #93c5fd;
+    box-shadow: var(--focus-ring, 0 0 0 3px rgba(59, 130, 246, .15));
+}
+
+.field input:valid,
+.field textarea:valid,
+.field select:valid {
+    border-color: var(--Success);
+    background-color: #f0fdf4;
+}
+
+.field input:focus:invalid,
+.field textarea:focus:invalid,
+.field select:focus:invalid {
+    border-color: var(--Danger);
+    background-color: #fef2f2;
+}
+
+.field .help {
+    margin: .3rem 0 0;
+    font-size: .8rem;
+}
+
+.field .help.info {
+    color: var(--Muted);
+}
+
+.field .error-msg {
+    display: none;
+    color: #b91c1c;
+}
+
+.field:has(input:focus:invalid) .error-msg,
+.field:has(textarea:focus:invalid) .error-msg,
+.field:has(select:focus:invalid) .error-msg {
+    display: block;
+}

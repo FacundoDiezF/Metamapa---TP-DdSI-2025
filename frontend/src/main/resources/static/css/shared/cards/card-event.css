@@ -192,80 +192,11 @@
     margin-top: var(--sp-4);
 }
 
-.report-form .field {
-    display: block;
-}
-
-.report-form textarea {
-    width: 100%;
-    padding: .95rem 1rem;
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-12);
-    background: var(--ModuleBG);
-    font: inherit;
-    resize: vertical;
-    min-height: 180px;
-    transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
-}
-
-.report-form textarea:focus {
-    outline: none;
-    border-color: var(--Accent);
-    box-shadow: var(--focus-ring);
-}
-
-.report-form textarea:valid {
-    border-color: var(--Success);
-    background-color: #f0fff4;
-}
-
-.report-form textarea:focus:invalid {
-    border-color: var(--Danger);
-    background-color: #ffecec;
-}
-
-.report-form .help {
-    margin-top: .35rem;
-    font-size: var(--fs-small);
-    line-height: 1.4;
-}
-
-.report-form .help.info {
-    color: var(--Muted);
-}
-
-.report-form .error-msg {
-    color: #b91c1c;
-    display: none;
-}
-
-.report-form:has(textarea:focus:invalid) .error-msg {
-    display: block;
-}
-
-.report-modal .report-form:has(textarea:valid) .error-msg {
-    display: none;
-}
-
 .upload-actions {
     display: flex;
     justify-content: flex-end;
     gap: var(--sp-3);
     margin-top: var(--sp-2);
-}
-
-.report-form .submit-report[disabled] {
-    opacity: .55;
-    cursor: not-allowed;
-    filter: saturate(.6);
-    pointer-events: none;
-}
-
-.report-form:has(textarea:valid) .submit-report {
-    opacity: 1;
-    cursor: pointer;
-    filter: none;
-    pointer-events: auto;
 }
 
 .sr-only {
