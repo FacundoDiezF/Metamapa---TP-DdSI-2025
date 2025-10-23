@@ -33,7 +33,10 @@ public class ModalsController {
 
     PageDTO<CategoryDTO> categoriesPage = categoryService.getAll(page, 20);
     model.addAttribute("categoriesPage", categoriesPage);
-    return "fragments/modals/_filter_moreOptions :: categoriesModal";
+    model.addAttribute("elementName", "categorias");
+    model.addAttribute("filterKey", "category_in");
+    model.addAttribute("modalPagePath", "/modals/more-categories");
+    return "fragments/modals/_filter_moreOptions :: moreOptionsFilterModal(itemsPage=${categoriesPage}, elementName=${elementName}, filterKey=${filterKey}, modalPagePath=${modalPagePath})";
   }
 
   @GetMapping("/more-provinces")
@@ -43,7 +46,10 @@ public class ModalsController {
 
     PageDTO<ProvinceDTO> provincePage = locationService.getAllProvinces(page, 24);
     model.addAttribute("provincePage", provincePage);
-    return "fragments/modals/_filter_moreOptions :: provincesModal";
+    model.addAttribute("elementName", "provincias");
+    model.addAttribute("filterKey", "province_in");
+    model.addAttribute("modalPagePath", "/modals/more-provinces");
+    return "fragments/modals/_filter_moreOptions :: moreOptionsFilterModal(itemsPage=${provincePage}, elementName=${elementName}, filterKey=${filterKey}, modalPagePath=${modalPagePath})";
   }
 
   @GetMapping("/report-event/{id}")
