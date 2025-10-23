@@ -1,10 +1,12 @@
-<!-- Modal “+ Más categorías” -->
-<div th:fragment="categoriesModal"
+<!-- Modal “+ Más Elementos de filtro” -->
+<div th:fragment="moreOptionsFilterModal(itemsPage, elementName, filterKey)"
      class="modal-overlay"
      role="dialog"
      aria-modal="true"
      hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }"
-     hx-on:htmx:load="initializeModalChips('category_in');">
+
+     th:data-filter-key="${filterKey}"
+     hx-on:htmx:load="initializeModalChips(this.getAttribute('data-filter-key'));">
 
     <div class="modal-body">
         <button
@@ -15,17 +17,17 @@
             ✕
         </button>
 
-        <h2>Seleccionar categorías</h2>
+        <h2 th:text="'Seleccionar ' + ${elementName}" > Seleccionar elementName </h2>
 
         <div class="chips-box">
             <div class="chips" id="chips-container">
-                        <span th:each="cat : ${categoriesPage.content}" class="chip-toggle">
+                        <span th:each="cat : ${itemsPage.content}" class="chip-toggle">
 
                             <input type="checkbox"
                                    th:id="'cat-modal:' + ${cat.id}"
                                    th:value="${cat.id}"
 
-                                   hx-on:change="FilterManager.toggleArrayFilterValue('category_in', event.target.value, event.target.checked);"
+                                   hx-on:change="FilterManager.toggleArrayFilterValue(this.closest('[data-filter-key]').getAttribute('data-filter-key'), event.target.value, event.target.checked);"
                             />
                             <label th:for="'cat-modal:' + ${cat.id}" class="chip" th:text="${cat.name}">
                                 Nombre Tag Categoria
@@ -40,84 +42,16 @@
             <div class="pagination"
                  hx-target="#modals-here"
                  hx-swap="innerHTML">
-                <button th:if="${!categoriesPage.first}"
-                        th:hx-get="@{/modals/more-categories(page-cat=${categoriesPage.pageNumber - 1})}"
+                <button th:if="${!itemsPage.first}"
+                        th:hx-get="@{/modals/more-categories(page-cat=${itemsPage.pageNumber - 1})}"
                 >
                     Anterior
                 </button>
 
-                <span th:text="'Página ' + ${categoriesPage.pageNumber + 1} + ' de ' + ${categoriesPage.totalPages}"></span>
+                <span th:text="'Página ' + ${itemsPage.pageNumber + 1} + ' de ' + ${itemsPage.totalPages}"></span>
 
-                <button th:if="${!categoriesPage.last}"
-                        th:hx-get="@{/modals/more-categories(page-cat=${categoriesPage.pageNumber + 1})}"
-                >
-                    Siguiente
-                </button>
-            </div>
-
-            <button type="button"
-                    class="btn-apply"
-                    onclick="FilterManager.navigateWithFilters();"
-            >
-                Aplicar
-            </button>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal “+ Más Provincias” -->
-<div th:fragment="provincesModal"
-     class="modal-overlay"
-     role="dialog"
-     aria-modal="true"
-     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }"
-     hx-on:htmx:load="initializeModalChips('province_in');">
-
-    <div class="modal-body">
-        <button
-                class="modal-close"
-                aria-label="Cerrar"
-                hx-on:click="this.closest('#modals-here').innerHTML = ''"
-        >
-            ✕
-        </button>
-
-        <h2>Seleccionar provincias</h2>
-
-        <div class="chips-box">
-            <div class="chips" id="chips-container">
-                        <span th:each="prov : ${provincePage.content}" class="chip-toggle">
-
-                            <input type="checkbox"
-                                   th:id="'prov-modal:' + ${prov.id}"
-                                   th:value="${prov.id}"
-
-                                   hx-on:change="FilterManager.toggleArrayFilterValue('province_in', event.target.value, event.target.checked);"
-                            />
-                            <label th:for="'prov-modal:' + ${prov.id}" class="chip" th:text="${prov.name}">
-                                Nombre Tag Provincia
-                            </label>
-                        </span>
-            </div>
-        </div>
-        <p class="help info">Seleccioná una o varias provincias.</p>
-
-        <div class="actions-buttons">
-
-            <div class="pagination"
-                 hx-target="#modals-here"
-                 hx-swap="innerHTML">
-                <button th:if="${!provincePage.first}"
-                        th:hx-get="@{/modals/more-provinces(page-prov=${provincePage.pageNumber - 1})}"
-                >
-                    Anterior
-                </button>
-
-                <span th:text="'Página ' + ${provincePage.pageNumber + 1} + ' de ' + ${provincePage.totalPages}"></span>
-
-                <button th:if="${!provincePage.last}"
-                        th:hx-get="@{/modals/more-provinces(page-prov=${provincePage.pageNumber + 1})}"
+                <button th:if="${!itemsPage.last}"
+                        th:hx-get="@{/modals/more-categories(page-cat=${itemsPage.pageNumber + 1})}"
                 >
                     Siguiente
                 </button>
