@@ -60,7 +60,7 @@ public class PagesController {
       @RequestParam(defaultValue = "0", name = "page") int pageEvent,
       Model model) {
 
-    PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent);
+    PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
 
     model.addAttribute("eventsPage", eventsPage);
     model.addAttribute("newEvent", new EventOutputDTO());
@@ -84,7 +84,7 @@ public class PagesController {
       Model model) {
 
     CollectionDTO collection = collectionService.getByHandler(handler);
-    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent);
+    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
 
 
     model.addAttribute("collection", collection);
@@ -122,7 +122,7 @@ public class PagesController {
 
       Model model) {
 
-    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
+    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, 100);
 
     model.addAttribute("events", eventPage.getContent());
 
