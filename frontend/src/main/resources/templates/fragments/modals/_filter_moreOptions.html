@@ -1,25 +1,24 @@
 <!-- Modal “+ Más categorías” -->
 <div th:fragment="categoriesModal"
-     class="mm-overlay"
+     class="modal-overlay"
      role="dialog"
      aria-modal="true"
-     hx-on:click="if(event.target.classList.contains('mm-overlay')) { this.closest('#modals-here').innerHTML = '' }"
+     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }"
      hx-on:htmx:load="initializeModalChips('category_in');">
 
-    <div class="mm-modal">
+    <div class="modal-body">
         <button
-                class="mm-close"
+                class="modal-close"
                 aria-label="Cerrar"
                 hx-on:click="this.closest('#modals-here').innerHTML = ''"
         >
             ✕
         </button>
 
-        <h2 class="mm-title">Seleccionar categorías</h2>
+        <h2>Seleccionar categorías</h2>
 
         <div class="chips-box">
-            <div class="chips-box">
-                <div class="chips" id="chips-container">
+            <div class="chips" id="chips-container">
                         <span th:each="cat : ${categoriesPage.content}" class="chip-toggle">
 
                             <input type="checkbox"
@@ -32,20 +31,18 @@
                                 Nombre Tag Categoria
                             </label>
                         </span>
-                </div>
-                </span>
             </div>
         </div>
         <p class="help info">Seleccioná una o varias categorías.</p>
 
-        <div class="mm-actions">
+        <div class="actions-buttons">
 
             <div class="pagination"
                  hx-target="#modals-here"
                  hx-swap="innerHTML">
                 <button th:if="${!categoriesPage.first}"
                         th:hx-get="@{/modals/more-categories(page-cat=${categoriesPage.pageNumber - 1})}"
-                        class="btn small">
+                >
                     Anterior
                 </button>
 
@@ -53,7 +50,7 @@
 
                 <button th:if="${!categoriesPage.last}"
                         th:hx-get="@{/modals/more-categories(page-cat=${categoriesPage.pageNumber + 1})}"
-                        class="btn small">
+                >
                     Siguiente
                 </button>
             </div>
@@ -71,26 +68,25 @@
 
 <!-- Modal “+ Más Provincias” -->
 <div th:fragment="provincesModal"
-     class="mm-overlay"
+     class="modal-overlay"
      role="dialog"
      aria-modal="true"
-     hx-on:click="if(event.target.classList.contains('mm-overlay')) { this.closest('#modals-here').innerHTML = '' }"
+     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }"
      hx-on:htmx:load="initializeModalChips('province_in');">
 
-    <div class="mm-modal">
+    <div class="modal-body">
         <button
-                class="mm-close"
+                class="modal-close"
                 aria-label="Cerrar"
                 hx-on:click="this.closest('#modals-here').innerHTML = ''"
         >
             ✕
         </button>
 
-        <h2 class="mm-title">Seleccionar provincias</h2>
+        <h2>Seleccionar provincias</h2>
 
         <div class="chips-box">
-            <div class="chips-box">
-                <div class="chips" id="chips-container">
+            <div class="chips" id="chips-container">
                         <span th:each="prov : ${provincePage.content}" class="chip-toggle">
 
                             <input type="checkbox"
@@ -103,20 +99,18 @@
                                 Nombre Tag Provincia
                             </label>
                         </span>
-                </div>
-                </span>
             </div>
         </div>
         <p class="help info">Seleccioná una o varias provincias.</p>
 
-        <div class="mm-actions">
+        <div class="actions-buttons">
 
             <div class="pagination"
                  hx-target="#modals-here"
                  hx-swap="innerHTML">
                 <button th:if="${!provincePage.first}"
                         th:hx-get="@{/modals/more-provinces(page-prov=${provincePage.pageNumber - 1})}"
-                        class="btn small">
+                >
                     Anterior
                 </button>
 
@@ -124,7 +118,7 @@
 
                 <button th:if="${!provincePage.last}"
                         th:hx-get="@{/modals/more-provinces(page-prov=${provincePage.pageNumber + 1})}"
-                        class="btn small">
+                >
                     Siguiente
                 </button>
             </div>

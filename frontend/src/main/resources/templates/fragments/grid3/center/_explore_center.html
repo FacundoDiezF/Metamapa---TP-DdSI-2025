@@ -9,7 +9,7 @@
                 <input type="text" placeholder="Comparte tus hechos..." readonly/>
                 <div class="post-icons" aria-hidden="true">
                     <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen">
-                        <img src="../shared/icons/imagesmode.svg" alt="">
+                        <img th:src="@{/shared/icons/imagesmode.svg}">
                     </a>
                 </div>
 
@@ -61,8 +61,6 @@
                             </div>
 
                             <a class="btn chip" href="#modal-ubicacion">
-                                <img class="icon" src="../shared/img/icons/location-pin-svgrepo-com.svg" alt=""
-                                     aria-hidden="true"/>
                                 Ubicación
                             </a>
 
