@@ -6,7 +6,7 @@ const LOCAL_STORAGE_KEY = 'appFilters';
 const FilterManager = {
 
     // Función auxiliar para leer un formulario
-    _readForm(formElement) {
+    readForm(formElement) {
         const formData = new FormData(formElement);
         const newFilters = {};
 
@@ -37,7 +37,7 @@ const FilterManager = {
         let newFilters;
 
         if (source instanceof HTMLFormElement) {
-            newFilters = this._readForm(source);
+            newFilters = this.readForm(source);
         } else if (typeof source === 'object' && source !== null) {
             newFilters = source;
         } else {
@@ -61,11 +61,13 @@ const FilterManager = {
 
     updateFilters(source) {
         const currentFilters = this.getFilters();
-        const mergedFilters = { ...currentFilters };
+        // 1. Empezamos con una copia COMPLETA de los filtros actuales
+        const mergedFilters = {...currentFilters};
 
         let updates;
         if (source instanceof HTMLFormElement) {
-            updates = this.readForm(source); // LEE los datos del form como los updates
+            // Si viene de un formulario, lee solo las claves de ese formulario
+            updates = this.readForm(source);
         } else if (typeof source === 'object' && source !== null) {
             updates = source;
         } else {
@@ -73,39 +75,59 @@ const FilterManager = {
             return;
         }
 
-        // Aplica las actualizaciones al objeto mergedFilters
+        // 2. Aplicamos las actualizaciones PARCIALES
         for (const key in updates) {
             const value = updates[key];
-            if (value === null || value === undefined || value === '') {
+
+            // La clave 'key' solo se modificará o borrará si existe en 'updates'.
+            if (value === null || value === undefined || value === '' || (Array.isArray(value) && value.length === 0)) {
+                // Si el valor es nulo/vacío, borramos la clave del conjunto de filtros
                 delete mergedFilters[key];
             } else {
+                // Si tiene valor, actualizamos o añadimos la clave
                 mergedFilters[key] = value;
             }
         }
 
-        // Finalmente, guarda el objeto fusionado
+        // 3. Guardamos el objeto fusionado (que aún contiene claves no modificadas como 'date_gt')
         this.setFilters(mergedFilters);
     },
 
-    clearFilters() {
-        localStorage.removeItem(LOCAL_STORAGE_KEY);
+    toggleArrayFilterValue(filterKey, valueToToggle, isChecked) {
+        const currentFilters = this.getFilters();
+        let currentValues = currentFilters[filterKey] || [];
+
+        if (!Array.isArray(currentValues)) {
+            currentValues = [currentValues];
+        }
+
+        const stringValue = String(valueToToggle);
+        const index = currentValues.indexOf(stringValue);
+
+        if (isChecked) {
+            // Seleccionar: si no está, lo agregamos
+            if (index === -1) {
+                currentValues.push(stringValue);
+            }
+        } else {
+            // Deseleccionar: si está, lo eliminamos
+            if (index !== -1) {
+                currentValues.splice(index, 1);
+            }
+        }
+
+        // Preparamos el update para updateFilters
+        const updates = {};
+        updates[filterKey] = currentValues.length > 0 ? currentValues : null;
+
+        // Actualizamos el conjunto de filtros en localStorage
+        this.updateFilters(updates);
     },
 
-    clearAndNavigate() {
-        this.clearFilters();
-
-        const currentUrl = new URL(window.location.href);
-        currentUrl.search = '';
-        currentUrl.hash = '';
-
-        window.location.href = currentUrl.href;
-    },
-
-    updtaeAndNavigate(source) {
-        this.updateFilters(source);
-
+    navigateWithFilters() {
         const finalFilters = this.getFilters();
 
+        // 1. Construye la cadena de consulta (?...)
         const params = new URLSearchParams();
         for (const key in finalFilters) {
             const value = finalFilters[key];
@@ -117,14 +139,24 @@ const FilterManager = {
         }
         const newQueryString = params.toString() ? `?${params.toString()}` : '';
 
+        // 2. Determina la URL base (pathname limpio)
         const currentUrl = new URL(window.location.href);
         const baseUrl = currentUrl.origin + currentUrl.pathname;
 
+        // 3. Navega a la URL completa con los filtros
         window.location.href = baseUrl + newQueryString;
-    }
-};
+    },
 
-// Hacemos el manager accesible globalmente (para llamadas desde 'onsubmit'/'onclick')
+    clearAndNavigate() {
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+
+        const currentUrl = new URL(window.location.href);
+        currentUrl.search = '';
+        currentUrl.hash = '';
+
+        window.location.href = currentUrl.href;
+    },
+};
 window.FilterManager = FilterManager;
 
 // =================================================================
@@ -165,6 +197,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+window.initializeModalChips = function(filtKey) {
+    const filters = FilterManager.getFilters();
+    let selectedIds = filters[filtKey] || [];
+
+    if (!Array.isArray(selectedIds)) {
+        selectedIds = [selectedIds];
+    }
+    selectedIds = selectedIds.map(String);
+
+    const checkboxes = document.querySelectorAll('#chips-container input[type="checkbox"]');
+
+    checkboxes.forEach(checkbox => {
+        const categoryId = checkbox.value;
+
+        checkbox.checked = selectedIds.includes(categoryId);
+    });
+};
 
 // =================================================================
 // Solo estetcio: Guardar estado (abierto/cerrado) de las secciones de filtro

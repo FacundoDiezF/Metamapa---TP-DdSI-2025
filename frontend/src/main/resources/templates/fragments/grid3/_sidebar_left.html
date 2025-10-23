@@ -17,7 +17,7 @@
                 </summary>
 
                 <div class="flt-body">
-                    <div class="chips" id="category-filter-section">
+                    <div class="chips">
 
                         <span th:each="cat : ${selectedCategories}" class="chip-toggle">
 
@@ -34,7 +34,7 @@
                         <a class="chip mas"
                            hx-get="/modals/more-categories"
                            hx-target="#modals-here" hx-swap="innerHTML"
-                           hx-include="#category-filter-section">
+                        >
                             + Más
                         </a>
 
@@ -88,8 +88,7 @@
                         <!-- Modal -->
                         <a class="chip mas"
                            hx-get="/modals/more-provinces"
-                           hx-target="#modals-here" hx-swap="innerHTML"
-                           hx-include="#province-filter-section">
+                           hx-target="#modals-here" hx-swap="innerHTML">
                             + Más
                         </a>
 
