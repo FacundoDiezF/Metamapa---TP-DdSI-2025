@@ -4,7 +4,10 @@
         <h3>Filtros</h3>
 
         <!-- Form GET para que el backend aplique filtros -->
-        <form class="filters" method="get" th:action="${actionUrl}">
+        <form class="filters"
+              method="get"
+              th:action="${actionUrl}"
+              onsubmit="FilterManager.setFilters(this); return true;">
 
             <!-- CATEGORÍA -->
             <details class="flt">
@@ -61,7 +64,7 @@
                 </div>
             </details>
 
-            <!-- Ubicacion -->
+            <!-- UBICACIÓN -->
             <details class="flt">
                 <summary class="flt-head">
                     <span class="flt-title">Ubicación</span>
@@ -133,26 +136,21 @@
                 </div>
             </details>
 
-            <!-- Acciones -->
+            <!-- ACCIONES -->
             <div class="filters-actions">
-                <a th:href="${actionUrl}" class="btn-clean">Limpiar filtros</a>
-                <button type="submit" class="btn-apply">Aplicar</button>
+                <a class="btn-clean"
+                   href="#"
+                   onclick="FilterManager.clearAndNavigate(); return false;"
+                >
+                    Limpiar filtros
+                </a>
+
+                <button type="submit" class="btn-apply">
+                    Aplicar
+                </button>
             </div>
 
         </form>
     </div>
-
-    <script>
-        // Guardar estado (abierto/cerrado) de las secciones de filtro
-        document.querySelectorAll('details.flt').forEach(det => {
-            const key = 'flt:' + det.querySelector('.flt-title').textContent.trim();
-            const saved = localStorage.getItem(key);
-            if (saved === 'open') det.setAttribute('open', '');
-
-            det.addEventListener('toggle', () => {
-                localStorage.setItem(key, det.open ? 'open' : 'closed');
-            });
-        });
-    </script>
 
 </aside>
