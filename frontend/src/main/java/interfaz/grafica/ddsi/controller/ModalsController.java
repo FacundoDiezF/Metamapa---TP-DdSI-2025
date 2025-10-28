@@ -36,7 +36,19 @@ public class ModalsController {
     model.addAttribute("elementName", "categorias");
     model.addAttribute("filterKey", "category_in");
     model.addAttribute("modalPagePath", "/modals/more-categories");
-    return "fragments/modals/_filter_moreOptions :: moreOptionsFilterModal(itemsPage=${categoriesPage}, elementName=${elementName}, filterKey=${filterKey}, modalPagePath=${modalPagePath})";
+    return "fragments/modals/_moreOptions :: moreOptionsFilterModal(itemsPage=${categoriesPage}, elementName=${elementName}, filterKey=${filterKey}, modalPagePath=${modalPagePath})";
+  }
+
+  @GetMapping("/one-category")
+  public String getOneCategoryModal(
+      @RequestParam(defaultValue = "0", name = "page-cat") int page,
+      Model model) {
+
+    PageDTO<CategoryDTO> categoriesPage = categoryService.getAll(page, 20);
+    model.addAttribute("categoriesPage", categoriesPage);
+    model.addAttribute("elementName", "categorias");
+    model.addAttribute("modalPagePath", "/modals/one-category");
+    return "fragments/modals/_moreOptions :: oneChipElementModal(itemsPage=${categoriesPage}, elementName=${elementName}, modalPagePath=${modalPagePath})";
   }
 
   @GetMapping("/more-provinces")
@@ -49,7 +61,7 @@ public class ModalsController {
     model.addAttribute("elementName", "provincias");
     model.addAttribute("filterKey", "province_in");
     model.addAttribute("modalPagePath", "/modals/more-provinces");
-    return "fragments/modals/_filter_moreOptions :: moreOptionsFilterModal(itemsPage=${provincePage}, elementName=${elementName}, filterKey=${filterKey}, modalPagePath=${modalPagePath})";
+    return "fragments/modals/_moreOptions :: moreOptionsFilterModal(itemsPage=${provincePage}, elementName=${elementName}, filterKey=${filterKey}, modalPagePath=${modalPagePath})";
   }
 
   @GetMapping("/report-event/{id}")

@@ -47,16 +47,23 @@
 
                             <div class="field">
 
-                                <label for="sh-categoria">
+                                <label for="selected-category">
                                     Categoría
                                 </label>
 
-                                <select id="sh-categoria" name="categoria" required aria-label="Categoría"
-                                        th:field="*{category}">
-                                    <option value="">Selecciona una categoría</option>
-                                    <option th:each="cat : ${selectedCategories}" th:value="${cat.name}"
-                                            th:text="${cat.name}"></option>
-                                </select>
+                                <div id="selected-category"
+                                     hx-get="/modals/one-category"
+                                     hx-target="#modals-here" hx-swap="innerHTML">
+
+                                    <a class="chip mas">
+                                        Seleccionar Categoría
+                                    </a>
+
+                                </div>
+
+                                <input hidden value="" th:field="*{category}"/>
+
+
                                 <p class="help error-msg">Elegí una categoría.</p>
                             </div>
 

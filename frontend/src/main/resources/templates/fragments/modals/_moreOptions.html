@@ -1,0 +1,140 @@
+<!-- Modal “+ Más Elementos de filtro” -->
+<div th:fragment="moreOptionsFilterModal(itemsPage, elementName, filterKey, modalPagePath)"
+     class="modal-overlay"
+     role="dialog"
+     aria-modal="true"
+     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }"
+
+     th:data-filter-key="${filterKey}"
+     hx-on:htmx:load="initializeModalChips(this.getAttribute('data-filter-key'));">
+
+    <div class="modal-body">
+        <button
+                class="modal-close"
+                aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''"
+        >
+            ✕
+        </button>
+
+        <h2 th:text="'Seleccionar ' + ${elementName}"> Seleccionar elementName </h2>
+
+        <div class="chips-box">
+            <div class="chips" id="chips-container">
+                        <span th:each="item : ${itemsPage.content}" class="chip-toggle">
+
+                            <input type="checkbox"
+                                   th:id="'item-modal:' + ${item.id}"
+                                   th:value="${item.id}"
+
+                                   hx-on:change="FilterManager.toggleArrayFilterValue(this.closest('[data-filter-key]').getAttribute('data-filter-key'), event.target.value, event.target.checked);"
+                            />
+                            <label th:for="'item-modal:' + ${item.id}" class="chip" th:text="${item.name}">
+                                Nombre Tag Element
+                            </label>
+                        </span>
+            </div>
+        </div>
+        <p class="help info">Seleccioná uno o varios para agregar a los filtros.</p>
+
+        <div class="actions-buttons">
+
+            <div class="pagination"
+                 hx-target="#modals-here"
+                 hx-swap="innerHTML">
+                <button th:if="${!itemsPage.first}"
+                        th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber - 1})}"
+                >
+                    Anterior
+                </button>
+
+                <span th:text="'Página ' + ${itemsPage.pageNumber + 1} + ' de ' + ${itemsPage.totalPages}"></span>
+
+                <button th:if="${!itemsPage.last}"
+                        th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber + 1})}"
+                >
+                    Siguiente
+                </button>
+            </div>
+
+            <button type="button"
+                    class="btn-apply"
+                    onclick="FilterManager.navigateWithFilters();"
+            >
+                Aplicar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Seleccionar 1 categoria (Para newEvent) -->
+<div th:fragment="oneChipElementModal(itemsPage, elementName,modalPagePath)"
+     class="modal-overlay"
+     role="dialog"
+     aria-modal="true"
+     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
+
+    <div class="modal-body">
+        <button
+                class="modal-close"
+                aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''"
+        >
+            ✕
+        </button>
+
+        <h2 th:text="'Seleccionar una ' + ${elementName}"> Seleccionar un elementName </h2>
+
+        <div class="chips-box">
+            <div class="chips">
+                        <span th:each="item : ${itemsPage.content}" class="chip-toggle">
+                            <div>
+                                <input type="radio"
+                                       name="single-chip-selection"
+                                       th:id="'item-modal:' + ${item.id}"
+                                       th:value="${item.id}"
+                                />
+                                <label th:for="'item-modal:' + ${item.id}" class="chip"
+                                       th:text="${item.name}">
+                                    Nombre Tag Element
+                                </label>
+                            </div>
+                        </span>
+            </div>
+        </div>
+        <p class="help info">Seleccioná solo una categoria para aplicarla a tu evento.</p>
+
+        <div class="actions-buttons">
+
+            <div class="pagination"
+                 hx-target="#modals-here"
+                 hx-swap="innerHTML">
+                <button th:if="${!itemsPage.first}"
+                        th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber - 1})}"
+                >
+                    Anterior
+                </button>
+
+                <span th:text="'Página ' + ${itemsPage.pageNumber + 1} + ' de ' + ${itemsPage.totalPages}"></span>
+
+                <button th:if="${!itemsPage.last}"
+                        th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber + 1})}"
+                >
+                    Siguiente
+                </button>
+            </div>
+
+            <button type="button"
+                    class="btn-apply"
+                    hx-on:click=" var selectedChip = document.querySelector('input[name=\'single-chip-selection\']:checked');
+                                  if (selectedChip) {
+                                    var chipLabel = selectedChip.parentElement.innerHTML;
+                                    document.querySelector('#selected-category').innerHTML = chipLabel;
+                                  }
+                                  this.closest('#modals-here').innerHTML = '';"
+            >
+                Seleccionar
+            </button>
+        </div>
+    </div>
+</div>
