@@ -6,7 +6,6 @@ import interfaz.grafica.ddsi.dtos.ProvinceDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.LocationService;
-import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

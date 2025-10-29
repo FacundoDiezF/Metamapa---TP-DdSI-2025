@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class EventOutputDTO {
   String title;
   String description;
-  String category;
+  Long categoryId;
   Double latitude;
   Double longitude;
   LocalDate eventDate;

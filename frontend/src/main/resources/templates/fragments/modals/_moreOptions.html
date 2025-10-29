@@ -85,14 +85,17 @@
 
         <h2 th:text="'Seleccionar una ' + ${elementName}"> Seleccionar un elementName </h2>
 
-        <div class="chips-box">
-            <div class="chips">
+        <form hx-post="/category-input-fragment"
+              hx-target="#selected-category"
+              hx-swap="innerHTML" hx-on:htmx:afterRequest="this.closest('#modals-here').innerHTML = ''">
+
+            <div class="chips-box">
+                <div class="chips">
                         <span th:each="item : ${itemsPage.content}" class="chip-toggle">
                             <div>
-                                <input type="radio"
-                                       name="single-chip-selection"
+                                <input type="radio" name="itemSelected"
                                        th:id="'item-modal:' + ${item.id}"
-                                       th:value="${item.id}"
+                                       th:value="|${item.id}::${item.name}|"
                                 />
                                 <label th:for="'item-modal:' + ${item.id}" class="chip"
                                        th:text="${item.name}">
@@ -100,41 +103,49 @@
                                 </label>
                             </div>
                         </span>
+                </div>
             </div>
-        </div>
-        <p class="help info">Seleccioná solo una categoria para aplicarla a tu evento.</p>
+            <p class="help info">Seleccioná solo una categoria para aplicarla a tu evento.</p>
 
-        <div class="actions-buttons">
+            <div class="actions-buttons">
 
-            <div class="pagination"
-                 hx-target="#modals-here"
-                 hx-swap="innerHTML">
-                <button th:if="${!itemsPage.first}"
-                        th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber - 1})}"
-                >
-                    Anterior
-                </button>
+                <div class="pagination"
+                     hx-target="#modals-here"
+                     hx-swap="innerHTML">
+                    <button th:if="${!itemsPage.first}"
+                            th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber - 1})}"
+                    >
+                        Anterior
+                    </button>
 
-                <span th:text="'Página ' + ${itemsPage.pageNumber + 1} + ' de ' + ${itemsPage.totalPages}"></span>
+                    <span th:text="'Página ' + ${itemsPage.pageNumber + 1} + ' de ' + ${itemsPage.totalPages}"></span>
 
-                <button th:if="${!itemsPage.last}"
-                        th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber + 1})}"
-                >
-                    Siguiente
+                    <button th:if="${!itemsPage.last}"
+                            th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber + 1})}"
+                    >
+                        Siguiente
+                    </button>
+                </div>
+
+                <button type="submit" class="btn-apply">
+                    Seleccionar
                 </button>
             </div>
 
-            <button type="button"
-                    class="btn-apply"
-                    hx-on:click=" var selectedChip = document.querySelector('input[name=\'single-chip-selection\']:checked');
-                                  if (selectedChip) {
-                                    var chipLabel = selectedChip.parentElement.innerHTML;
-                                    document.querySelector('#selected-category').innerHTML = chipLabel;
-                                  }
-                                  this.closest('#modals-here').innerHTML = '';"
-            >
-                Seleccionar
-            </button>
-        </div>
+        </form>
     </div>
 </div>
+
+<th:block th:fragment="categoryInputForOneCategoryModal(catId, catName)">
+    <input type="checkbox"
+           name="categoryId"
+           th:id="'cat-modal:' + ${catId}"
+           th:value="${catId}"
+           checked
+           required
+    />
+    <label th:for="'cat-modal:' + ${catId}" class="chip"
+           th:text="${catName}">
+        Categoría
+    </label>
+</th:block>

@@ -53,16 +53,16 @@
 
                                 <div id="selected-category"
                                      hx-get="/modals/one-category"
-                                     hx-target="#modals-here" hx-swap="innerHTML">
+                                     hx-target="#modals-here" hx-swap="innerHTML"
+                                     class="chip-toggle">
 
                                     <a class="chip mas">
                                         Seleccionar Categoría
                                     </a>
 
+                                    <input id="categoryId" name="categoryId" required th:field="*{categoryId}"/>
+
                                 </div>
-
-                                <input hidden value="" th:field="*{category}"/>
-
 
                                 <p class="help error-msg">Elegí una categoría.</p>
                             </div>
