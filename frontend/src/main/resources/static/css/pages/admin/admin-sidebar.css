@@ -1,0 +1,104 @@
+/* === NAVBAR === */
+.navbar a.active {
+    color: #2563eb; /* azul primario */
+    border-bottom: 2px solid #2563eb;
+    font-weight: 600;
+}
+
+/* === SIDEBAR CARD === */
+.admin-sidebar {
+    width: 272px;
+    background: #fff;
+    border: 1px solid #e6e9ef;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(22, 30, 50, 0.08);
+    padding: 18px 14px;
+    box-sizing: border-box;
+
+    /* separa de navbar y bordes */
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+/* === TÍTULO === */
+.admin-sidebar .admin-title {
+    font-size: 1.375rem;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    margin: 4px 6px 14px;
+}
+
+/* === LISTA === */
+.admin-nav ul {
+    list-style: none !important; /* quita los puntos */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-nav li {
+    list-style: none !important; /* refuerzo */
+    border: 1px solid #e8ebf2;
+    border-radius: 12px;
+    background: #ffffff;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+/* === LINKS === */
+.admin-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    font-weight: 700;
+    color: #0f172a;
+    text-decoration: none;
+}
+
+/* === ÍCONOS === */
+.admin-nav .icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
+    opacity: 0.85;
+    filter: brightness(0) saturate(100%);
+    transition: filter 0.2s ease;
+}
+
+/* === ESTADOS === */
+.admin-nav li:hover {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+.admin-nav .is-active {
+    background: #e6f0ff;
+    border-color: #c7dbff;
+    box-shadow: inset 0 0 0 1px rgba(99, 132, 255, 0.25);
+}
+
+.admin-nav .is-active a {
+    color: #2563eb;
+}
+
+.admin-nav li.is-active .icon,
+.admin-nav li:hover .icon {
+    filter: invert(36%) sepia(98%) saturate(2188%) hue-rotate(214deg)
+    brightness(98%) contrast(97%);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1200px) {
+    .admin-sidebar {
+        width: 248px;
+        margin-left: 12px;
+        margin-top: 12px;
+    }
+    .admin-nav a {
+        padding: 11px 12px;
+    }
+}

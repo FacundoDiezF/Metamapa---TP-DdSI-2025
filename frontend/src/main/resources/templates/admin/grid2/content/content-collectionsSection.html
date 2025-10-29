@@ -1,0 +1,28 @@
+<th:block th:fragment="adminCollectionsContent">
+    <section class="collections-section">
+
+        <!-- Encabezado de la página -->
+        <header class="page-header">
+            <div class="page-header__left">
+                <h1 class="page-title">Colecciones</h1>
+                <p class="page-subtitle">Gestioná todas las colecciones existentes o creá una nueva.</p>
+            </div>
+
+            <div class="page-header__right">
+                <a href="#" class="btn btn-primary" role="button">
+                    + Nueva Colección
+                </a>
+            </div>
+        </header>
+
+        <!-- Contenido siguiente vendrá acá -->
+        <div class="collections-content">
+        <p class="hint" th:text="'Total de colecciones: ' + ${#lists.size(collections)}">Total de colecciones: 0</p>
+
+          <ul class="collections-ul" th:if="${!#lists.isEmpty(collections)}">
+
+          </ul>
+        </div>
+
+    </section>
+</th:block>

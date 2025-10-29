@@ -1,0 +1,58 @@
+<th:block th:fragment="adminSidebar(active)">
+    <aside class="admin-sidebar" aria-label="Panel de Administración">
+        <h2 class="admin-title">Panel de Administración</h2>
+
+        <nav class="admin-nav">
+            <ul>
+                <li th:classappend="${active}=='resumen' ? ' is-active'">
+                    <a th:href="@{/admin}">
+                        <img class="icon" th:src="@{/icons/admin/chart.svg}" alt="">
+                        Resumen
+                    </a>
+                </li>
+
+                <li th:classappend="${active}=='estadisticas' ? ' is-active'">
+                    <a th:href="@{/admin/stats}">
+                        <img class="icon" th:src="@{/icons/admin/stats.svg}" alt="">
+                        Estadísticas
+                    </a>
+                </li>
+
+                <li th:classappend="${active}=='colecciones' ? ' is-active'">
+                    <a th:href="@{/admin/collections}">
+                        <img class="icon" th:src="@{/icons/admin/folder.svg}" alt="">
+                        Colecciones
+                    </a>
+                </li>
+
+                <li th:classappend="${active}=='eliminaciones' ? ' is-active'">
+                    <a th:href="@{/admin/delete-requests}">
+                        <img class="icon" th:src="@{/icons/admin/file.svg}" alt="">
+                        Solicitudes de Eliminación
+                    </a>
+                </li>
+
+                <li th:classappend="${active}=='pendientes' ? ' is-active'">
+                    <a th:href="@{/admin/pending}">
+                        <img class="icon" th:src="@{/icons/admin/pending.svg}" alt="">
+                        Hechos pendientes
+                    </a>
+                </li>
+
+                <li th:classappend="${active}=='fuentes' ? ' is-active'">
+                    <a th:href="@{/admin/sources}">
+                        <img class="icon" th:src="@{/icons/admin/sources.svg}" alt="">
+                        Fuentes
+                    </a>
+                </li>
+
+                <li th:classappend="${active}=='import' ? ' is-active'">
+                    <a th:href="@{/admin/import}">
+                        <img class="icon" th:src="@{/icons/admin/import.svg}" alt="">
+                        Importar CSV
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+</th:block>
