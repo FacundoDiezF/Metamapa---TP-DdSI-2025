@@ -1,4 +1,3 @@
-spring.application.name=metamapa
 # Agregation service port
 server.port=8080
 # CronJob for collection refresh (every hour)
@@ -13,6 +12,10 @@ geo-ref.url=https://apis.datos.gob.ar/georef/api
 thread.count=4
 batch.size=1000
 response.byte.size=1048576
+
+# Eureka Client configuration
+spring.application.name=aggregation-service
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
 
 # Database configuration
 spring.datasource.url=jdbc:mysql://localhost:3306/metamapa_aggregator?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
