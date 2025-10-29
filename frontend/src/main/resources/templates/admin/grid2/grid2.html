@@ -1,0 +1,4 @@
+<div th:fragment="grid2(left, center)" class="grid-2col">
+    <aside class="left-slot" th:replace="${left}"></aside>
+    <main class="center-slot" th:insert="${center}"></main>
+</div>

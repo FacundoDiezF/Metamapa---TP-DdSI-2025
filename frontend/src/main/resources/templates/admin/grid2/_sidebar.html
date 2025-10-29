@@ -6,51 +6,53 @@
             <ul>
                 <li th:classappend="${active}=='resumen' ? ' is-active'">
                     <a th:href="@{/admin}">
-                        <img class="icon" th:src="@{/icons/admin/chart.svg}" alt="">
+                        <img class="icon" th:src="@{/shared/icons/stats1-svgrepo-com.svg}" alt="resumen">
                         Resumen
                     </a>
+
                 </li>
 
                 <li th:classappend="${active}=='estadisticas' ? ' is-active'">
                     <a th:href="@{/admin/stats}">
-                        <img class="icon" th:src="@{/icons/admin/stats.svg}" alt="">
+                        <img class="icon" th:src="@{/shared/icons/insight-svgrepo-com.svg}" alt="estadisticas">
                         Estadísticas
                     </a>
                 </li>
 
                 <li th:classappend="${active}=='colecciones' ? ' is-active'">
                     <a th:href="@{/admin/collections}">
-                        <img class="icon" th:src="@{/icons/admin/folder.svg}" alt="">
+                        <img class="icon" th:src="@{/shared/icons/Group.svg}" alt="colecciones">
                         Colecciones
                     </a>
                 </li>
 
                 <li th:classappend="${active}=='eliminaciones' ? ' is-active'">
                     <a th:href="@{/admin/delete-requests}">
-                        <img class="icon" th:src="@{/icons/admin/file.svg}" alt="">
+                        <img class="icon" th:src="@{/shared/icons/Group.svg}" alt="eliminaciones">
                         Solicitudes de Eliminación
                     </a>
                 </li>
 
                 <li th:classappend="${active}=='pendientes' ? ' is-active'">
                     <a th:href="@{/admin/pending}">
-                        <img class="icon" th:src="@{/icons/admin/pending.svg}" alt="">
+                        <img class="icon" th:src="@{/shared/icons/sand-clock-svgrepo-com.svg}" alt="pendientes">
                         Hechos pendientes
                     </a>
                 </li>
 
                 <li th:classappend="${active}=='fuentes' ? ' is-active'">
                     <a th:href="@{/admin/sources}">
-                        <img class="icon" th:src="@{/icons/admin/sources.svg}" alt="">
+                        <img class="icon" th:src="@{/shared/icons/material-symbols_database-outline.svg}" alt="fuentes">
                         Fuentes
                     </a>
                 </li>
 
                 <li th:classappend="${active}=='import' ? ' is-active'">
                     <a th:href="@{/admin/import}">
-                        <img class="icon" th:src="@{/icons/admin/import.svg}" alt="">
+                        <img class="icon" th:src="@{/shared/icons/uil_import.svg}" alt="import">
                         Importar CSV
                     </a>
+
                 </li>
             </ul>
         </nav>
