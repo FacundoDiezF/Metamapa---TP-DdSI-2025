@@ -124,7 +124,7 @@ public class PagesController {
 
     PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, 100);
 
-    model.addAttribute("events", eventPage.getContent());
+    model.addAttribute("eventsPage", eventPage);
 
     this.addFilterModels(model, category_in, province_in);
 

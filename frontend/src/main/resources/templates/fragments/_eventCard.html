@@ -1,4 +1,4 @@
-<article class="hecho card" th:fragment="cardFragment(item)">
+<article class="hecho card" th:fragment="cardFragment(item)" th:attr="data-event-id=${item.id}">
     <a class="flag-float" aria-label="Reportar este hecho"
        th:hx-get="@{/modals/report-event/{id}(id=${item.id})}"
        hx-target="#modals-here" hx-swap="innerHTML">

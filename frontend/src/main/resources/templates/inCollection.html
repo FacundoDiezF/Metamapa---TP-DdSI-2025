@@ -29,7 +29,21 @@
 </th:block>
 
 <th:block layout:fragment="extraScripts">
-    <script th:src="@{/js/map/mini-map.js}"></script>
+    <script th:inline="javascript">
+        window.events = [[${events}]];
+        console.log('Explore -> window.events length:', Array.isArray(window.events) ? window.events.length : 'NO ARRAY');
+    </script>
+
+    <script th:src="@{/js/map/metamapa-map.js}"></script>
+
+    <script>
+        initMetaMapa({
+            containerId: 'explore-map',
+            center: [-34.6037, -58.3816],
+            zoom: 10,
+            mini: true
+        });
+    </script>
 </th:block>
 
 </html>
