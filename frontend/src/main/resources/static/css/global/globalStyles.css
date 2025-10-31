@@ -91,6 +91,20 @@ form:has(:invalid) .btn-apply:hover {
     background: var(--Background, #f3f4f6);
 }
 
+.icon-btn{
+    justify-content: center;
+    display: inline-flex;
+    background: transparent;
+    padding: .2rem .2rem;
+    border-radius: var(--radius-10);
+    transition: transform 0.12s ease, background 0.12s ease;
+    will-change: transform;
+}
+
+.icon-btn:hover{
+    transform: scale(1.09);
+}
+
 /* ===========================
    Campos de Formulario
 =========================== */

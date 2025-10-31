@@ -24,7 +24,7 @@
                     <!-- Título + estado -->
                     <div class="card-head">
                         <h2 class="card-title">
-                            <a th:href="@{|/collections/${c.handler}|}" th:text="${c.title}">Título</a>
+                            <a th:href="@{/collection/{handler}(handler=${c.handler})}" th:text="${c.title}">Título</a>
                         </h2>
 
                     </div>
@@ -46,9 +46,9 @@
 
                     <!-- Acciones -->
                     <div class="card-actions">
-                        <button class="icon-btn" title="Ver"><img src="/shared/icons/eye.svg" alt=""></button>
-                        <button class="icon-btn" title="Editar"><img src="/shared/icons/edit.svg" alt=""></button>
-                        <button class="icon-btn" title="Eliminar"><img src="/shared/icons/trash.svg" alt=""></button>
+                        <a class="icon-btn" title="Ver" th:href="@{/collection/{handler}(handler=${c.handler})}" ><img src="/shared/icons/eye.svg" alt="Ver coleccion"></a>
+                        <button class="icon-btn" title="Editar"><img src="/shared/icons/edit.svg" alt="Editar coleccion"></button>
+                        <button class="icon-btn" title="Eliminar" ><img src="/shared/icons/trash.svg" alt="Eliminar Coleccion"></button>
                     </div>
 
                 </article>
