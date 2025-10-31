@@ -21,22 +21,24 @@
                 <div class="share-row">
 
                     <div class="field">
-                        <label for="titulo">Título del Hecho</label>
-                        <input id="titulo" name="titulo" type="text" placeholder="Título del Hecho" required
-                               th:field="*{title}"/>
+                        <label>Título del Hecho
+                            <input type="text" placeholder="Título del Hecho" required th:field="*{title}"/>
+                        </label>
                         <p class="help error-msg">El título es obligatorio.</p>
                     </div>
 
                     <div class="field">
-                        <label for="fecha">Fecha</label>
-                        <input id="fecha" name="fecha" type="date" required th:field="*{eventDate}"/>
+                        <label>Fecha
+                            <input type="date" required th:field="*{eventDate}"/>
+                        </label>
                         <p class="help error-msg">Seleccioná una fecha válida.</p>
                     </div>
 
                     <div class="field">
-                        <label for="descripcion">Descripción</label>
-                        <textarea id="descripcion" name="descripcion" rows="5" placeholder="Describe lo ocurrido…"
-                                  required th:field="*{description}"></textarea>
+                        <label>Descripción
+                            <textarea rows="5" placeholder="Describe lo ocurrido…" required
+                                      th:field="*{description}"></textarea>
+                        </label>
                         <p class="help error-msg">La descripción es obligatoria.</p>
                         <p class="help info">Evitá datos personales. Sé claro y específico.</p>
                     </div>
@@ -46,18 +48,14 @@
                         <div class="left-actions">
 
                             <div class="field">
-
-                                <label for="selected-category">
-                                    Categoría
-                                </label>
-
+                                <label for="selected-category">Categoría</label>
                                 <div id="selected-category"
                                      hx-get="/modals/one-category"
                                      hx-target="#modals-here" hx-swap="innerHTML"
                                      class="chip-toggle">
 
                                     <a class="chip mas">
-                                        Seleccionar Categoría
+                                        + Ver Categoría
                                     </a>
 
                                     <input id="categoryId" name="categoryId" required th:field="*{categoryId}"/>
@@ -67,9 +65,23 @@
                                 <p class="help error-msg">Elegí una categoría.</p>
                             </div>
 
-                            <a class="btn chip" href="#modal-ubicacion">
-                                Ubicación
-                            </a>
+                            <div class="field">
+                                <label for="selected-location">Ubicación</label>
+                                <div id="selected-location"
+                                     hx-get="/modals/..."
+                                     hx-target="#modals-here" hx-swap="innerHTML"
+                                     class="chip-toggle">
+
+                                    <a class="chip mas">
+                                        Marcar Ubicación
+                                    </a>
+
+                                    <input id="location" name="" required th:field="*{categoryId}"/>
+
+                                </div>
+
+                                <p class="help error-msg">Elegí una categoría.</p>
+                            </div>
 
                         </div>
 
