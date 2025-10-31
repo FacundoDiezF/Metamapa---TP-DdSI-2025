@@ -17,10 +17,10 @@
                 </div>
             </div>
             <!-- Botones de registro e inicio de sesión -->
-            <button id="accountBtn" class="account-btn" type="button" data-auth="open" data-panel="register">
+            <button id="accountBtn" class="btn-primary btn-rounded" type="button" data-auth="open" data-panel="register">
                 Registrarse
             </button>
-            <button id="loginBtn" class="btn-outline" type="button" data-auth="open" data-panel="login">
+            <button id="loginBtn" class="btn-bordered btn-rounded" type="button" data-auth="open" data-panel="login">
                 Iniciar Sesión
             </button>
         </div>
@@ -31,5 +31,7 @@
         <a th:href="@{/explore}" th:classappend="${active}=='explore' ? ' active'">Explorar</a>
         <a th:href="@{/collections}" th:classappend="${active}=='collections' ? ' active'">Colecciones</a>
         <a th:href="@{/map}" th:classappend="${active}=='map' ? ' active'">Mapa</a>
+        <a th:href="@{/admin/collections}" th:classappend="${active}=='admin' ? 'active'">Panel de control</a>
+
     </nav>
 </th:block>

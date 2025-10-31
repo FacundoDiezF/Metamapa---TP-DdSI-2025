@@ -2,7 +2,7 @@
 <div th:fragment="deletionRequestModal" class="modal-overlay"
      hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
 
-    <div class="auth-modal report-modal" role="dialog" aria-modal="true">
+    <div class="modal-body" role="dialog" aria-modal="true">
 
         <button type="button"
                 class="modal-close"
@@ -43,7 +43,7 @@
             </label>
 
             <button type="submit"
-                    class="submit-report">
+                    class="btn-primary">
                 Enviar solicitud
             </button>
         </form>
@@ -55,7 +55,7 @@
 <div th:fragment="deletionRequestSuccesseModal" class="modal-overlay"
      hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
 
-    <div class="auth-modal success-modal" role="dialog" aria-modal="true">
+    <div class="modal-body success-modal" role="dialog" aria-modal="true">
 
         <button type="button"
                 class="modal-close"

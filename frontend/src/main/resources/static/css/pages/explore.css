@@ -194,6 +194,14 @@ details.share[open] .share-panel {
     min-height: 180px;
 }
 
+#selected-category {
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
 /* ===========================
    Responsive
 =========================== */

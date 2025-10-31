@@ -214,7 +214,7 @@ body, .body {
    Utilidades de Texto
 =========================== */
 
-p, li { font-size: 0.75rem; line-height: 1.55; }
+p, li { font-size: 1rem; line-height: 1.55; }
 .text-muted { color: var(--DarkAccent, #64748b); }
 .fw-medium { font-weight: var(--fw-medium); }
 .fw-semibold { font-weight: var(--fw-semibold); }

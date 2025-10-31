@@ -23,9 +23,9 @@ public class EventService {
     this.server = server;
   }
 
-  public PageDTO<EventDTO> getAll(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page) {
+  public PageDTO<EventDTO> getAll(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page, int size) {
     try {
-      return server.getAllEvents(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
+      return server.getAllEvents(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, size);
     } catch (WebClientResponseException e) {
       throw new BackendException("Backend error: " + e.getStatusCode());
     } catch (Exception e) {
@@ -33,11 +33,11 @@ public class EventService {
     }
   }
 
-  public List<EventDTO> getAllByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page) {
+  public List<EventDTO> getAllByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page, int size) {
     //TODO TEST
     //!No está paginado
     try {
-      return server.getAllEventsByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
+      return server.getAllEventsByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, size);
     } catch (WebClientResponseException e) {
       throw new BackendException("Backend error: " + e.getStatusCode());
     } catch (Exception e) {

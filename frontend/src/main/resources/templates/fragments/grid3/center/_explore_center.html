@@ -9,7 +9,7 @@
                 <input type="text" placeholder="Comparte tus hechos..." readonly/>
                 <div class="post-icons" aria-hidden="true">
                     <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen">
-                        <img src="../shared/icons/imagesmode.svg" alt="">
+                        <img th:src="@{/shared/icons/imagesmode.svg}">
                     </a>
                 </div>
 
@@ -47,22 +47,27 @@
 
                             <div class="field">
 
-                                <label for="sh-categoria">
+                                <label for="selected-category">
                                     Categoría
                                 </label>
 
-                                <select id="sh-categoria" name="categoria" required aria-label="Categoría"
-                                        th:field="*{category}">
-                                    <option value="">Selecciona una categoría</option>
-                                    <option th:each="cat : ${selectedCategories}" th:value="${cat.name}"
-                                            th:text="${cat.name}"></option>
-                                </select>
+                                <div id="selected-category"
+                                     hx-get="/modals/one-category"
+                                     hx-target="#modals-here" hx-swap="innerHTML"
+                                     class="chip-toggle">
+
+                                    <a class="chip mas">
+                                        Seleccionar Categoría
+                                    </a>
+
+                                    <input id="categoryId" name="categoryId" required th:field="*{categoryId}"/>
+
+                                </div>
+
                                 <p class="help error-msg">Elegí una categoría.</p>
                             </div>
 
                             <a class="btn chip" href="#modal-ubicacion">
-                                <img class="icon" src="../shared/img/icons/location-pin-svgrepo-com.svg" alt=""
-                                     aria-hidden="true"/>
                                 Ubicación
                             </a>
 

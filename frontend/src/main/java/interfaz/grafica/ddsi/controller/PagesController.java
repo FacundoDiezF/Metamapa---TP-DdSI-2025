@@ -60,7 +60,7 @@ public class PagesController {
       @RequestParam(defaultValue = "0", name = "page") int pageEvent,
       Model model) {
 
-    PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent);
+    PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
 
     model.addAttribute("eventsPage", eventsPage);
     model.addAttribute("newEvent", new EventOutputDTO());
@@ -84,7 +84,7 @@ public class PagesController {
       Model model) {
 
     CollectionDTO collection = collectionService.getByHandler(handler);
-    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent);
+    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
 
 
     model.addAttribute("collection", collection);
@@ -122,9 +122,9 @@ public class PagesController {
 
       Model model) {
 
-    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page);
+    PageDTO<EventDTO> eventPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, 100);
 
-    model.addAttribute("events", eventPage.getContent());
+    model.addAttribute("eventsPage", eventPage);
 
     this.addFilterModels(model, category_in, province_in);
 
@@ -147,4 +147,23 @@ public class PagesController {
     model.addAttribute("selectedCategories", selectedCategories);
     model.addAttribute("selectedProvinces", selectedProvinces);
   }
+
+
+    @GetMapping("/admin/collections")
+    public String adminCollections(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+
+
+        PageDTO<CollectionDTO> collectionPage = collectionService.getAll(page);
+
+        model.addAttribute("collections", collectionPage.getContent());
+
+        model.addAttribute("pageTitle", "MetaMapa · Colecciones");
+        model.addAttribute("active", "admin");
+
+
+
+        return "admin/pages/collectionsSection";
+    }
 }
+
+

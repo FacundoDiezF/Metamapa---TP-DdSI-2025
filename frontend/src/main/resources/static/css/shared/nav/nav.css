@@ -287,7 +287,6 @@
     background: var(--ModuleBG, #fff);
     border-bottom: 1px solid rgba(229, 231, 235, 0.3);
     overflow-x: auto;
-    font-family: var(--font-sans);
     line-height: var(--lh-snug, 1.3);
 }
 

@@ -6,7 +6,6 @@ import interfaz.grafica.ddsi.dtos.ProvinceDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.LocationService;
-import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,25 +28,39 @@ public class ModalsController {
   @GetMapping("/more-categories")
   public String getMoreCategoriesModal(
       @RequestParam(defaultValue = "0", name = "page-cat") int page,
-      @RequestParam(name = "category_in", required = false) List<Long> categoriesSelected,
       Model model) {
 
     PageDTO<CategoryDTO> categoriesPage = categoryService.getAll(page, 20);
-    model.addAttribute("categoriesSelected", categoriesSelected);
     model.addAttribute("categoriesPage", categoriesPage);
-    return "fragments/modals/_filter_moreOptions :: categoriesModal";
+    model.addAttribute("elementName", "categorias");
+    model.addAttribute("filterKey", "category_in");
+    model.addAttribute("modalPagePath", "/modals/more-categories");
+    return "fragments/modals/_moreOptions :: moreOptionsFilterModal(itemsPage=${categoriesPage}, elementName=${elementName}, filterKey=${filterKey}, modalPagePath=${modalPagePath})";
+  }
+
+  @GetMapping("/one-category")
+  public String getOneCategoryModal(
+      @RequestParam(defaultValue = "0", name = "page-cat") int page,
+      Model model) {
+
+    PageDTO<CategoryDTO> categoriesPage = categoryService.getAll(page, 20);
+    model.addAttribute("categoriesPage", categoriesPage);
+    model.addAttribute("elementName", "categorias");
+    model.addAttribute("modalPagePath", "/modals/one-category");
+    return "fragments/modals/_moreOptions :: oneChipElementModal(itemsPage=${categoriesPage}, elementName=${elementName}, modalPagePath=${modalPagePath})";
   }
 
   @GetMapping("/more-provinces")
   public String getMoreProvincesModal(
       @RequestParam(defaultValue = "0", name = "page-prov") int page,
-      @RequestParam(name = "province_in", required = false) List<Long> provincesSelected,
       Model model) {
 
     PageDTO<ProvinceDTO> provincePage = locationService.getAllProvinces(page, 24);
-    model.addAttribute("provincesSelected", provincesSelected);
     model.addAttribute("provincePage", provincePage);
-    return "fragments/modals/_filter_moreOptions :: provincesModal";
+    model.addAttribute("elementName", "provincias");
+    model.addAttribute("filterKey", "province_in");
+    model.addAttribute("modalPagePath", "/modals/more-provinces");
+    return "fragments/modals/_moreOptions :: moreOptionsFilterModal(itemsPage=${provincePage}, elementName=${elementName}, filterKey=${filterKey}, modalPagePath=${modalPagePath})";
   }
 
   @GetMapping("/report-event/{id}")

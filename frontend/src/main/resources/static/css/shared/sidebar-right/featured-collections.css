@@ -62,23 +62,6 @@
    Botón de Acción
 =========================== */
 
-.colecciones .explorar {
-  width: 100%;
-  padding: .7rem;
-  border: none;
-  border-radius: var(--radius-8);
-  background: var(--Accent);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: var(--font-sans);
-  transition: background 0.2s ease;
-}
-
-.colecciones .explorar:hover {
-  background: #2563EB;
-}
-
 .colecciones .explorar:focus-visible {
   outline: 0; box-shadow: var(--focus-ring);
   outline-offset: 2px;

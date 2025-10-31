@@ -1,4 +1,97 @@
 /* ===========================
+   Botones: primary, bordered, apply  (+ addons: rounded)
+=========================== */
+
+/* Primary Button */
+.btn-primary {
+    background: var(--Accent);
+    color: #fff;
+    border: none;
+    padding: .3rem .6rem;
+    border-radius: var(--radius-10);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #2563EB;
+}
+
+form:has(:invalid) .btn-primary {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+form:has(:invalid) .btn-primary:hover {
+    background: var(--Accent);
+}
+
+/* Bordered Button */
+.btn-bordered {
+    background: transparent;
+    border: none;
+    box-shadow: inset 0 0 0 2px var(--DarkAccent, #475265);
+    color: var(--DarkAccent, #475265);
+    padding: .3rem .6rem;
+    border-radius: var(--radius-10);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-bordered:hover {
+    background: var(--DarkAccent, #475265);
+    color: #fff;
+}
+
+/* Gray button */
+.btn-apply {
+    background: var(--DarkAccent, #475265);
+    border: none;
+    color: #fff;
+    padding: .3rem .6rem;
+    border-radius: var(--radius-10);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-apply:hover {
+    background: #5a6476;
+    border-color: #5a6476;
+}
+
+form:has(:invalid) .btn-apply {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+form:has(:invalid) .btn-apply:hover {
+    background: var(--DarkAccent, #475265);
+}
+
+/* Addons */
+.btn-rounded {
+    border-radius: 1rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
+/* Gray Ref <a> */
+.btn-clean {
+    background: transparent;
+    color: var(--DarkAccent, #6b7280);
+    font-weight: 400;
+    padding: .3rem .6rem;
+    border-radius: var(--radius-10);
+    cursor: pointer;
+    font-family: var(--font-brand), sans-serif;
+    font-size: .9rem;
+}
+
+.btn-clean:hover {
+    background: var(--Background, #f3f4f6);
+}
+
+/* ===========================
    Campos de Formulario
 =========================== */
 
@@ -13,7 +106,6 @@
 .field textarea,
 .field select {
     width: 100%;
-    padding: .7rem .95rem;
     border: 1px solid var(--LightText);
     border-radius: var(--radius-10);
     background: var(--InboxBG);
@@ -21,7 +113,7 @@
     background-repeat: no-repeat;
     background-position: right .6rem center;
     background-size: 18px 18px;
-    padding-right: 2.2rem;
+    padding: .7rem 2.2rem .7rem .95rem;
     transition: border-color .15s, box-shadow .15s, background-color .15s;
 }
 
@@ -65,4 +157,50 @@
 .field:has(textarea:focus:invalid) .error-msg,
 .field:has(select:focus:invalid) .error-msg {
     display: block;
+}
+
+/* ===========================
+   Modales
+=========================== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, .55);
+    z-index: 9999;
+}
+
+.modal-body {
+    position: relative;
+    z-index: 2;
+    width: min(92vw, 720px);
+    max-width: 720px;
+    background: var(--ModuleBG, #fff);
+    border-radius: 16px;
+    padding: 1.25rem 1.25rem 1rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+    transform: translateY(12px);
+    transition: opacity .20s ease, transform .20s ease;
+}
+
+.modal-body h2{
+    margin-bottom: var(--sp-4);
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+    font-size: 17px;
+    opacity: .7;
+}
+
+.modal-close:hover {
+    opacity: 1;
 }
