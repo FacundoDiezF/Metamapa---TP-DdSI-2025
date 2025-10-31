@@ -1,0 +1,60 @@
+<th:block th:fragment="adminCollectionsContent">
+    <section class="collections-section">
+
+        <!-- Encabezado de la página -->
+        <header class="page-header">
+            <div class="page-header__left">
+                <h1 class="page-title">Colecciones</h1>
+                <p class="page-subtitle">Gestioná todas las colecciones existentes o creá una nueva.</p>
+            </div>
+
+            <div class="page-header__right">
+                <a href="#" class="btn btn-primary" role="button">
+                    + Nueva Colección
+                </a>
+            </div>
+        </header>
+
+        <!-- Contenido siguiente vendrá acá -->
+        <div class="collections-content">
+
+            <section class="collections-list" th:if="${!#lists.isEmpty(collections)}">
+                <article class="collection-card" th:each="c : ${collections}">
+
+                    <!-- Título + estado -->
+                    <div class="card-head">
+                        <h2 class="card-title">
+                            <a th:href="@{|/collections/${c.handler}|}" th:text="${c.title}">Título</a>
+                        </h2>
+
+                    </div>
+
+                    <!-- Descripción -->
+                    <p class="card-desc" th:text="${c.description}">Descripción…</p>
+
+
+                    <!-- PODEMOS AGREGAR MAS COSAS COMO PARA QUE LA CARD QUEDE COMO EN LEGACY PERO DEBERIAMOS AGREGARSELA AL DTO -->
+
+
+                    <!-- Meta -->
+                    <div class="card-meta">
+                        <span class="meta">
+                            <img class="meta-icon" src="/shared/icons/location-pin-svgrepo-com.svg" alt="" />
+                            <strong th:text="${#lists.size(c.eventIds)}">0</strong> hechos
+                        </span>
+                    </div>
+
+                    <!-- Acciones -->
+                    <div class="card-actions">
+                        <button class="icon-btn" title="Ver"><img src="/shared/icons/eye.svg" alt=""></button>
+                        <button class="icon-btn" title="Editar"><img src="/shared/icons/edit.svg" alt=""></button>
+                        <button class="icon-btn" title="Eliminar"><img src="/shared/icons/trash.svg" alt=""></button>
+                    </div>
+
+                </article>
+            </section>
+
+           <p class="hint" th:if="${#lists.isEmpty(collections)}">No hay colecciones cargadas.</p>
+       </div>
+   </section>
+</th:block>

@@ -1,0 +1,156 @@
+/* === Colecciones Section === */
+.collections-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Encabezado */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 0;
+    border-bottom: 1px solid var(--border, #e5e7eb);
+}
+
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.page-subtitle {
+    margin-top: 4px;
+    color: #0c0c0c;
+    font-size: 1rem;
+}
+
+/* Botón */
+.btn {
+    display: inline-block;
+    padding: 0.65rem 1.1rem;
+    border: 1px solid #dbe1ea;
+    border-radius: 0.75rem;
+    background: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    color: #0f172a;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background: #f9fafb;
+}
+
+.btn-primary {
+    background: #BDFFDB;
+    color: #000000;
+    border-color: transparent;
+}
+
+.btn-primary:hover {
+    background: #1e4edb;
+}
+
+
+.collections-content {
+    min-height: 120px;
+}
+
+
+/* ===== CARD de colección ===== */
+.collections-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.collection-card{
+    position: relative;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+    padding: 18px;
+    transition: box-shadow .18s ease, border-color .18s ease, transform .12s ease;
+}
+
+
+
+/* ===== Header: título + estado ===== */
+.card-head{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.card-title{
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.25;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.card-title a{
+    color: inherit;
+    text-decoration: none;
+}
+.card-title a:hover{ text-decoration: underline; }
+
+
+
+/* ===== Descripción ===== */
+.card-desc{
+    margin: 6px 0 12px;
+    color: #334155;
+    font-size: .98rem;
+}
+
+.card-meta{
+    display: flex;
+    color: #000000;
+    font-size: .95rem;
+}
+
+/* ===== Acciones (ver/editar/eliminar) ===== */
+.card-actions{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.grid-2col .center-slot img[src$=".svg"] {
+    max-width: 24px;
+    max-height: 24px;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* Contenedor de los botones de acción */
+.collection-card .card-actions button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+/* Ícono dentro del botón */
+.collection-card .card-actions button img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    display: block;
+}

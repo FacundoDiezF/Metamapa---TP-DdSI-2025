@@ -147,4 +147,23 @@ public class PagesController {
     model.addAttribute("selectedCategories", selectedCategories);
     model.addAttribute("selectedProvinces", selectedProvinces);
   }
+
+
+    @GetMapping("/admin/collections")
+    public String adminCollections(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+
+
+        PageDTO<CollectionDTO> collectionPage = collectionService.getAll(page);
+
+        model.addAttribute("collections", collectionPage.getContent());
+
+        model.addAttribute("pageTitle", "MetaMapa · Colecciones");
+        model.addAttribute("active", "admin");
+
+
+
+        return "admin/pages/collectionsSection";
+    }
 }
+
+
