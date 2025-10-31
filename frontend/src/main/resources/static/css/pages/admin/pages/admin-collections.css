@@ -12,7 +12,6 @@
     align-items: center;
     justify-content: space-between;
     padding: 2px 0;
-    border-bottom: 1px solid var(--border, #e5e7eb);
 }
 
 .page-title {
@@ -26,34 +25,6 @@
     color: #0c0c0c;
     font-size: 1rem;
 }
-
-/* Botón */
-.btn {
-    display: inline-block;
-    padding: 0.65rem 1.1rem;
-    border: 1px solid #dbe1ea;
-    border-radius: 0.75rem;
-    background: #fff;
-    text-decoration: none;
-    font-weight: 600;
-    color: #0f172a;
-    transition: all 0.2s ease;
-}
-
-.btn:hover {
-    background: #f9fafb;
-}
-
-.btn-primary {
-    background: #BDFFDB;
-    color: #000000;
-    border-color: transparent;
-}
-
-.btn-primary:hover {
-    background: #1e4edb;
-}
-
 
 .collections-content {
     min-height: 120px;
