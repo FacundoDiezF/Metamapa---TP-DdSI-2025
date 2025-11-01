@@ -22,15 +22,18 @@ public class PagesController {
   private final CategoryService categoryService;
   private final LocationService locationService;
   private final StatisticsService statisticsService;
+  private final SourcesService sourcesService;
 
-  @Autowired
-  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService) {
+
+    @Autowired
+  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService, SourcesService sourcesService) {
     this.collectionService = collectionService;
     this.eventService = eventService;
     this.categoryService = categoryService;
     this.locationService = locationService;
     this.statisticsService = statisticsService;
-  }
+        this.sourcesService = sourcesService;
+    }
 
   @GetMapping("/")
   public String home() {
@@ -57,6 +60,8 @@ public class PagesController {
       Model model) {
 
     PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
+
+
 
     model.addAttribute("eventsPage", eventsPage);
     model.addAttribute("newEvent", new EventOutputDTO());
@@ -161,7 +166,6 @@ public class PagesController {
         return "admin/pages/collectionsSection";
     }
 
-
     @GetMapping("/admin/statistics")
     public String adminStatistic(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
@@ -178,6 +182,17 @@ public class PagesController {
         model.addAttribute("topHours", topHours);
 
         return "admin/pages/statisticsSection";
+    }
+
+    @GetMapping("/admin/sources")
+    public String adminSources(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+
+        List<SourceDTO> allSources = sourcesService.getAll();
+
+        model.addAttribute("active", "admin");
+        model.addAttribute("sources", allSources);
+
+        return "admin/pages/sourcesSection";
     }
 }
 
