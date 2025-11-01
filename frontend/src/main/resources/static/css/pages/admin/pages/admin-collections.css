@@ -44,13 +44,13 @@
     background: #f9fafb;
 }
 
-.btn-primary {
+.btn-secondary {
     background: #BDFFDB;
     color: #000000;
     border-color: transparent;
 }
 
-.btn-primary:hover {
+.btn-secondary:hover {
     background: #1e4edb;
 }
 

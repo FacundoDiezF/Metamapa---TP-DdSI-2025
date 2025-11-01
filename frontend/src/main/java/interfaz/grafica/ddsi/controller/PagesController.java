@@ -1,16 +1,10 @@
 package interfaz.grafica.ddsi.controller;
 
-import interfaz.grafica.ddsi.dtos.CategoryDTO;
-import interfaz.grafica.ddsi.dtos.CollectionDTO;
-import interfaz.grafica.ddsi.dtos.EventDTO;
-import interfaz.grafica.ddsi.dtos.Origin;
-import interfaz.grafica.ddsi.dtos.PageDTO;
-import interfaz.grafica.ddsi.dtos.ProvinceDTO;
+import interfaz.grafica.ddsi.dtos.*;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
-import interfaz.grafica.ddsi.services.CategoryService;
-import interfaz.grafica.ddsi.services.CollectionService;
-import interfaz.grafica.ddsi.services.EventService;
-import interfaz.grafica.ddsi.services.LocationService;
+import interfaz.grafica.ddsi.services.*;
+import interfaz.grafica.ddsi.services.StatisticsService;
+
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +21,15 @@ public class PagesController {
   private final EventService eventService;
   private final CategoryService categoryService;
   private final LocationService locationService;
+  private final StatisticsService statisticsService;
 
   @Autowired
-  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService) {
+  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService) {
     this.collectionService = collectionService;
     this.eventService = eventService;
     this.categoryService = categoryService;
     this.locationService = locationService;
+    this.statisticsService = statisticsService;
   }
 
   @GetMapping("/")
@@ -163,6 +159,25 @@ public class PagesController {
 
 
         return "admin/pages/collectionsSection";
+    }
+
+
+    @GetMapping("/admin/statistics")
+    public String adminStatistic(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+
+
+        List<StatisticsDTO> topCategories = statisticsService.findTopCategories();
+        List<StatisticsDTO> TopProvincesOnCollection = statisticsService.findTopProvincesOnCollection();
+        List<StatisticsDTO> TopProvincesByCategory = statisticsService.findTopProvincesByCategory();
+        List<StatisticsDTO> topHours = statisticsService.findBusiestHoursByCategory();
+
+        model.addAttribute("active", "admin");
+        model.addAttribute("topCategories", topCategories);
+        model.addAttribute("TopProvincesOnCollection", TopProvincesOnCollection);
+        model.addAttribute("TopProvincesByCategory", TopProvincesByCategory);
+        model.addAttribute("topHours", topHours);
+
+        return "admin/pages/statisticsSection";
     }
 }
 
