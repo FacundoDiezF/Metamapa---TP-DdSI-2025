@@ -4,16 +4,15 @@
 <th:block layout:fragment="extraStyles">
     <link rel="stylesheet" th:href="@{/css/pages/admin/admin-sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/pages/admin/grid-2col.css}">
-
+    <link rel="stylesheet" th:href="@{/css/pages/admin/pages/admin-sources.css}">
 
 </th:block>
 
 
 <th:block th:fragment="contenido">
     <section th:replace="~{admin/grid2/grid2 :: grid2(
-     ~{admin/grid2/_sidebar :: adminSidebar('resumen')},
-     ~{admin/grid2/content/content-summary :: adminSummaryContent}
+     ~{admin/grid2/_sidebar :: adminSidebar('fuentes')},
+     ~{admin/grid2/content/content-sourcesSection :: adminSourcesContent}
   )}"></section>
 </th:block>
 </html>
-

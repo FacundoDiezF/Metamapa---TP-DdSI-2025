@@ -39,24 +39,18 @@
   margin-bottom: .5rem;
 }
 
-.colecciones a {
+.refColeccion {
   color: var(--Accent);
   font-weight: 600;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.colecciones a:hover {
+.refColeccion:hover {
   color: #2563EB;
   text-decoration: underline;
 }
 
-.colecciones a span {
-  font-size: var(--fs-small);
-  margin-left: .5rem;
-  color: var(--Muted, #555);
-  font-weight: 400;
-}
 
 /* ===========================
    Botón de Acción

@@ -1,0 +1,53 @@
+<th:block th:fragment="adminSourcesContent">
+    <section class="source-section">
+
+        <!-- Encabezado de la página -->
+        <header class="page-header">
+            <div class="page-header__left">
+                <h1 class="page-title">Fuentes</h1>
+                <p class="page-subtitle">Gestioná las fuentes de datos para cada colección.</p>
+            </div>
+
+            <div class="page-header__right">
+                <a href="#" class="btn btn-secondary" role="button">
+                    + Nueva Fuente
+                </a>
+            </div>
+        </header>
+
+
+
+        <!-- Contenido siguiente vendrá acá -->
+        <div class="sources-content">
+
+            <section class="sources-list" th:if="${!#lists.isEmpty(sources)}">
+                <article class="source-card" th:each="c : ${sources}">
+
+                    <!-- Título + estado -->
+                    <div class="card-head">
+                        <h2 class="card-title">
+                            <a th:href="@{|/sources/${c.id}|}" th:text="${c.clientId}">Título</a>
+                        </h2>
+
+                    </div>
+
+                    <!-- Descripción -->
+                    <p class="card-desc" th:text="${c.type}">Descripción…</p>
+
+
+
+
+                    <!-- Acciones -->
+                    <div class="card-actions">
+                        <button class="icon-btn" title="Editar"><img src="/shared/icons/edit.svg" alt=""></button>
+                        <button class="icon-btn" title="Eliminar"><img src="/shared/icons/trash.svg" alt=""></button>
+                    </div>
+
+                </article>
+            </section>
+
+            <p class="hint" th:if="${#lists.isEmpty(sources)}">No hay fuentes cargadas.</p>
+        </div>
+    </section>
+
+</th:block>

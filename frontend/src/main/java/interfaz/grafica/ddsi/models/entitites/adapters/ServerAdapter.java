@@ -78,11 +78,12 @@ public class ServerAdapter {
 
 
   //--------------- COLLECTIONS ----------------//
-  public PageDTO<CollectionDTO> getAllCollections(int page) {
+  public PageDTO<CollectionDTO> getAllCollections(int page , int size) {
     return webClient.get()
         .uri(uriBuilder -> uriBuilder
             .path("/collections")
             .queryParam("page", page)
+            .queryParam("size", size)
             //.queryParam("fromUpdatedDate", lastUpdate)
             .build())
         .retrieve()
