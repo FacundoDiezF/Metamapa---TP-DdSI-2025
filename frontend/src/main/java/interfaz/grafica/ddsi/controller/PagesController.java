@@ -61,10 +61,12 @@ public class PagesController {
 
     PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
 
+    PageDTO<CollectionDTO> collectionPage = collectionService.getAll(0 , 3);
 
 
     model.addAttribute("eventsPage", eventsPage);
     model.addAttribute("newEvent", new EventOutputDTO());
+    model.addAttribute("collectionPage", collectionPage);
 
     this.addFilterModels(model, category_in, province_in);
 
@@ -86,9 +88,11 @@ public class PagesController {
 
     CollectionDTO collection = collectionService.getByHandler(handler);
     List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
+    PageDTO<CollectionDTO> collectionPage = collectionService.getAll(0 , 3);
 
 
     model.addAttribute("collection", collection);
+    model.addAttribute("collectionPage", collectionPage);
 
     model.addAttribute("events", eventsFromCol);
 
@@ -102,7 +106,7 @@ public class PagesController {
   @GetMapping("/collections")
   public String collections(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-    PageDTO<CollectionDTO> collectionPage = collectionService.getAll(page);
+    PageDTO<CollectionDTO> collectionPage = collectionService.getAll(page , 20 );
 
     model.addAttribute("collections", collectionPage.getContent());
 
@@ -154,7 +158,7 @@ public class PagesController {
     public String adminCollections(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
 
-        PageDTO<CollectionDTO> collectionPage = collectionService.getAll(page);
+        PageDTO<CollectionDTO> collectionPage = collectionService.getAll(page , 20);
 
         model.addAttribute("collections", collectionPage.getContent());
 

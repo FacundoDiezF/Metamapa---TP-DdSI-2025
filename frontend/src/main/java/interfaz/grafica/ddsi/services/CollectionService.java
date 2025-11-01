@@ -25,9 +25,9 @@ public class CollectionService {
     return mockColecciones().subList(0, 4);
   }
 
-  public PageDTO<CollectionDTO> getAll(int page) {
+  public PageDTO<CollectionDTO> getAll(int page , int size) {
     try {
-      return server.getAllCollections(page);
+      return server.getAllCollections(page , size);
     } catch (WebClientResponseException e) {
       throw new BackendException("Backend error: " + e.getStatusCode());
     } catch (Exception e) {
