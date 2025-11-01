@@ -4,6 +4,7 @@
 
 /* Primary Button */
 .btn-primary {
+    text-align: center;
     background: var(--Accent);
     color: #fff;
     border: 1px solid var(--Accent);
