@@ -4,6 +4,7 @@ import interfaz.grafica.ddsi.dtos.*;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.services.*;
 import interfaz.grafica.ddsi.services.StatisticsService;
+import interfaz.grafica.ddsi.services.DeletionRequestAdminService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,16 +24,18 @@ public class PagesController {
   private final LocationService locationService;
   private final StatisticsService statisticsService;
   private final SourcesService sourcesService;
+  private final DeletionRequestAdminService deletionRequestAdminService;
 
 
     @Autowired
-  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService, SourcesService sourcesService) {
+  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService, SourcesService sourcesService, DeletionRequestAdminService deletionRequestAdminService) {
     this.collectionService = collectionService;
     this.eventService = eventService;
     this.categoryService = categoryService;
     this.locationService = locationService;
     this.statisticsService = statisticsService;
     this.sourcesService = sourcesService;
+    this.deletionRequestAdminService = deletionRequestAdminService;
     }
 
   @GetMapping("/")
@@ -218,6 +221,16 @@ public class PagesController {
         return "admin/pages/pendingEventsSection";
     }
 
+    @GetMapping("/admin/deletionRequests")
+    public String adminDeletionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+
+        List<DeletionRequestDTO> allDeletionsRequest = deletionRequestAdminService.getAll();
+
+        model.addAttribute("active", "admin");
+        model.addAttribute("deletionsRequests", allDeletionsRequest);
+
+        return "admin/pages/deletionRequestsSection";
+    }
 
 
 }

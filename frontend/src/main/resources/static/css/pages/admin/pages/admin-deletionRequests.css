@@ -1,0 +1,187 @@
+.deletion-list{list-style:none;margin:0;padding:0;display:grid;gap:1rem}
+.deletion-item{}
+.deletion-wrapper{padding:1.2rem;border-radius:var(--radius-12);border:1px solid var(--border-subtle);background:var(--ModuleBG)}
+.deletion-extra{margin-top:.8rem;padding:.9rem;border:1px dashed var(--border-subtle);border-radius:12px;background:var(--ModuleBG)}
+.extra-title{margin:.1rem 0 .7rem 0;font-size:1rem}
+.extra-kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.65rem .9rem;margin:0 0 .8rem 0}
+.extra-kv dt{font-weight:600}
+.extra-kv dd{margin:0}
+.extra-actions{display:flex;gap:.6rem}
+/* Reuso tus estilos de botones para mantener consistencia visual */
+.btn-approve{padding:.45rem .9rem;border-radius:8px;border:none;cursor:pointer;font-size:.85rem;background:#10b981;color:#fff;transition:.2s}
+.btn-approve:hover{background:#0e9a6c}
+.btn-reject{padding:.45rem .9rem;border-radius:8px;border:none;cursor:pointer;font-size:.85rem;background:#ef4444;color:#fff;transition:.2s}
+.btn-reject:hover{background:#c93333}
+
+/* ---------- Ajustes pedidos ---------- */
+
+/* Título más grande (usa escalado suave) */
+.title-lg {
+    font-size: clamp(1.15rem, 1vw + 1rem, 1.35rem);
+    line-height: 1.25;
+    margin-bottom: .6rem;
+}
+
+/* Fila superior: Solicitante a la izquierda, botón/ver coords a la derecha */
+.extra-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-bottom: .5rem;
+}
+
+.extra-applicant {
+    color: var(--Text);
+    font-weight: 600;
+}
+.extra-applicant span { font-weight: 700; }
+
+/* Motivo ocupa ancho, con buena legibilidad */
+.extra-motive {
+    margin-top: .25rem;
+}
+.extra-motive p {
+    margin: .25rem 0 0 0;
+    color: var(--Text);
+    line-height: 1.45;
+}
+
+/* Coordenadas plegables estilo “link botón” */
+.coords summary {
+    list-style: none;
+    cursor: pointer;
+    color: var(--ui-blue);
+    font-weight: 700;
+    border: 1px solid transparent;
+    padding: .25rem .5rem;
+    border-radius: 8px;
+    transition: background .15s ease, border-color .15s ease;
+}
+.coords summary::-webkit-details-marker { display: none; }
+.coords[open] summary {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+}
+.coords-body {
+    margin-top: .35rem;
+    color: var(--Muted);
+    font-weight: 600;
+}
+
+/* Más aire entre la card del evento y las acciones */
+.event-card-host {
+    margin-top: .6rem;
+    margin-bottom: 1.0rem; /* separa la card de los botones */
+}
+.extra-actions {
+    margin-top: 1.0rem; /* refuerzo de espacio */
+}
+
+.admin-page-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--Text);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.admin-page-title .count {
+    background: #000000;
+    color: #ffffff;
+    font-size: .9rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: .2rem .6rem;
+    line-height: 1;
+}
+
+
+
+
+
+
+/* ----- Compactar card de deletion requests ----- */
+
+/* Reducir padding superior de la card contenedora */
+.deletion-wrapper {
+    padding-top: 0.2rem !important;
+}
+
+/* Espacio más pequeño entre el bloque superior y la card-event */
+.deletion-extra {
+    margin-bottom: 0.2rem;
+}
+
+/* Achicar margen superior de la card-event */
+.event-card-host > * {
+    margin-top: 0.2rem !important;
+}
+
+/* Botones más pegados al card-event */
+.extra-actions {
+    margin-top: 0.4rem !important;
+}
+
+
+/* === Evitar “layout shift” al abrir coordenadas === */
+.deletion-wrapper { overflow: visible; }              /* Por si el padre recorta */
+.deletion-requests { overflow: visible; }
+
+.coords {
+    position: relative;
+    display: inline-block;
+}
+
+.coords summary {
+    list-style: none;
+    cursor: pointer;
+    color: var(--ui-blue);
+    font-weight: 700;
+    border: 1px solid transparent;
+    padding: .25rem .5rem;
+    border-radius: 8px;
+    transition: background .15s ease, border-color .15s ease;
+}
+.coords summary::-webkit-details-marker { display: none; }
+.coords[open] summary { background: #eef2ff; border-color: #c7d2fe; }
+
+/* El panel se superpone (no ocupa espacio) */
+.coords .coords-body {
+    position: absolute;
+    top: calc(100% + 6px);   /* debajo del botón */
+    right: 0;                /* alineado a la derecha */
+    z-index: 30;
+    background: #fff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    padding: .5rem .65rem;
+    white-space: nowrap;     /* en una línea */
+}
+
+/* Flechita opcional */
+.coords .coords-body::before {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: -6px;
+    width: 10px; height: 10px;
+    background: #fff;
+    border-left: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--border-subtle);
+    transform: rotate(45deg);
+}
+
+/* Fallback móvil: que fluya debajo (evita recortes en pantallas chicas) */
+@media (max-width: 640px) {
+    .coords .coords-body {
+        position: static;
+        margin-top: .35rem;
+        box-shadow: none;
+        border-radius: 8px;
+        white-space: normal;
+    }
+}

@@ -1,0 +1,68 @@
+<th:block th:fragment="deletionRequestContent">
+    <h1 class="admin-page-title">
+        Solicitudes de eliminación
+        <span class="count" th:text="${deletionsRequests.size()}"></span>
+    </h1>
+
+    <section class="deletion-requests">
+
+        <div class="empty" th:if="${#lists.isEmpty(deletionsRequests)}">
+            No hay solicitudes pendientes.
+        </div>
+
+        <ul class="deletion-list" th:if="${!#lists.isEmpty(deletionsRequests)}">
+            <li class="deletion-item" th:each="req : ${deletionsRequests}">
+                <article class="deletion-wrapper hecho card">
+
+
+                    <!-- 1) Bloque de datos extra de la Deletion Request -->
+                    <section class="deletion-extra">
+                        <div class="extra-row">
+                            <span class="extra-applicant" th:if="${req.applicantName != null}">
+                              <strong>Solicitante:</strong>
+                              <span th:text="${req.applicantName}"></span>
+                            </span>
+
+                            <!-- Coordenadas plegables -->
+                            <details class="coords" th:if="${req.event?.location != null}">
+                                <summary>Ver coordenadas</summary>
+                                <div class="coords-body">
+
+                                    <span th:if="${req.event.location.latitude != null}">
+                                      <strong th:text="${#numbers.formatDecimal(req.event.location.latitude,1,3)}"></strong>
+                                    </span>
+
+                                    <span th:if="${req.event.location.longitude != null}">
+                                        <strong th:text="${#numbers.formatDecimal(req.event.location.longitude,1,3)}"></strong>
+                                    </span>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Motivo ancho completo -->
+                        <div class="extra-motive" th:if="${req.argument != null}">
+                            <strong>Motivo:</strong>
+                            <p th:text="${req.argument}">
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- 2) Reuso card de evento  -->
+                    <div class="event-card-host">
+                        <div th:replace="~{fragments/_eventCard.html :: cardFragment(${req.event})}"></div>
+                    </div>
+
+                    <!-- 4) Aceptar o eliminar -->
+                    <div class="extra-actions">
+                        <form th:action="@{'/deletions/' + ${req.event.id} + '/approve'}" method="post">
+                            <button type="submit" class="btn-approve">Aceptar</button>
+                        </form>
+                        <form th:action="@{'/deletions/' + ${req.event.id} + '/reject'}" method="post">
+                            <button type="submit" class="btn-reject">Rechazar</button>
+                        </form>
+                    </div>
+                </article>
+            </li>
+        </ul>
+    </section>
+</th:block>
