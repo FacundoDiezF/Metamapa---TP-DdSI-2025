@@ -1,0 +1,40 @@
+<article class="hecho card" th:fragment="cardFragment(item)" th:attr="data-event-id=${item.id}">
+
+    <span class="tag" th:text="${item.category}">
+        Categoria
+    </span>
+    <h2 th:text="${item.title}">
+        Titulo del Hecho
+    </h2>
+    <p class="ubicacion">
+        <span th:text="${item.location.municipality}"></span><span
+            th:if="${item.location.municipality != null and item.location.department != null}">, </span><span
+            th:text="${item.location.department}"></span><span
+            th:if="${(item.location.municipality != null or item.location.department != null) and item.location.province != null}"> - </span><span
+            th:text="${item.location.province}"></span><span
+            th:if="${item.location.municipality != null or item.location.department != or and item.location.province != null}"> | </span><span
+            th:text="${#temporals.format(item.eventDate, 'dd MMMM yyyy')}"></span>
+    </p>
+    <p th:text="${item.description}">
+        Descripción del hecho muy buena descripcion la verdad que me gusta mucho este hecho
+        que paso y que es muy interesante y que deberian saber todos los usuarios de
+    </p>
+
+
+    <p class="fuente" th:text="${item.Origin} + ' • ' + ${item.sourceId}">
+        Static • Nombre de la fuente
+    </p>
+
+    <div class="card-actions">
+        <form th:action="@{'/admin/events/approve/' + ${item.id}}" method="post">
+            <button type="submit" class="btn-approve">Aceptar</button>
+        </form>
+
+        <form th:action="@{'/admin/events/reject/' + ${item.id}}" method="post">
+            <button type="submit" class="btn-reject">Rechazar</button>
+        </form>
+    </div>
+
+
+</article>
+

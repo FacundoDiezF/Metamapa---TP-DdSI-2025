@@ -1,0 +1,18 @@
+<html layout:decorate="~{layout/base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- CSS propio (se inyecta en el <head> del base) -->
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="@{/css/pages/admin/admin-sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/pages/admin/grid-2col.css}">
+    <link rel="stylesheet" th:href="@{/css/pages/admin/pages/admin-pendingEvents.css}">
+
+</th:block>
+
+
+<th:block th:fragment="contenido">
+    <section th:replace="~{admin/grid2/grid2 :: grid2(
+     ~{admin/grid2/_sidebar :: adminSidebar('pendientes')},
+     ~{admin/grid2/content/content-pendingEventsSections :: pendingEventsContent}
+  )}"></section>
+</th:block>
+</html>

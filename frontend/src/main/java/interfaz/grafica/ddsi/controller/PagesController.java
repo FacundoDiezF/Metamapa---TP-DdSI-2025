@@ -32,7 +32,7 @@ public class PagesController {
     this.categoryService = categoryService;
     this.locationService = locationService;
     this.statisticsService = statisticsService;
-        this.sourcesService = sourcesService;
+    this.sourcesService = sourcesService;
     }
 
   @GetMapping("/")
@@ -198,6 +198,28 @@ public class PagesController {
 
         return "admin/pages/sourcesSection";
     }
+
+    @GetMapping("/admin/pendingEvents")
+    public String adminPendingEvents(
+            @RequestParam(required = false, name = "category_in") List<Long> category_in,
+            @RequestParam(required = false, name = "province_in") List<Long> province_in,
+            @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
+            @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
+            @RequestParam(required = false, name = "source_in") List<Origin> source_in,
+            @RequestParam(defaultValue = "0", name = "page") int pageEvent,
+            Model model) {
+
+        PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
+
+        model.addAttribute("eventsPage", eventsPage);
+
+
+        model.addAttribute("active", "admin");
+        return "admin/pages/pendingEventsSection";
+    }
+
+
+
 }
 
 

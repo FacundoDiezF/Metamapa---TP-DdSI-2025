@@ -1,0 +1,12 @@
+<th:block th:fragment="pendingEventsContent">
+    <div id="events-container">
+        <th:block th:if="${#lists.isEmpty(eventsPage.content)}">
+            <p class="no-events-msg">No hay Eventos disponibles.</p>
+        </th:block>
+
+        <th:block th:if="${!#lists.isEmpty(eventsPage.content)}" th:each="event : ${eventsPage.content}">
+            <div th:replace="~{fragments/_pendingEventCard :: cardFragment(item=${event})}"></div>
+        </th:block>
+    </div>
+
+</th:block>
