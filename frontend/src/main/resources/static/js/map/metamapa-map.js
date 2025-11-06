@@ -1,18 +1,17 @@
-
 // /js/metamapa-map.js
 (function () {
     if (typeof L === 'undefined') return;
 
     const ICON_PALETTE = [
-        "#2563eb","#16a34a","#ea580c","#7c3aed","#db2777","#0891b2","#ca8a04","#ef4444","#0ea5e9","#10b981",
-        "#f97316","#ec4899","#14b8a6","#a855f7","#84cc16","#f59e0b","#3b82f6","#e11d48","#8b5cf6","#06b6d4",
-        "#1e40af","#15803d","#b45309","#5b21b6","#9d174d","#0e7490","#854d0e","#b91c1c","#0369a1","#047857",
-        "#c2410c","#6d28d9","#be185d","#0f766e","#7e22ce","#9a3412","#1d4ed8","#15803d","#c026d3","#ea580c",
-        "#60a5fa","#34d399","#facc15","#a78bfa","#fb7185","#67e8f9","#bef264","#fde047","#93c5fd","#fca5a5",
-        "#99f6e4","#86efac","#fcd34d","#c4b5fd","#f9a8d4","#22d3ee","#bbf7d0","#fef08a","#ddd6fe","#f5d0fe",
-        "#bae6fd","#a7f3d0","#fde68a","#e9d5ff","#fecdd3","#7dd3fc","#6ee7b7","#fef9c3","#d8b4fe","#fda4af",
-        "#38bdf8","#4ade80","#fde68a","#c084fc","#fb7185","#0ea5e9","#22c55e","#eab308","#8b5cf6","#f43f5e",
-        "#0284c7","#16a34a","#ca8a04","#7c3aed","#e11d48"
+        "#2563eb", "#16a34a", "#ea580c", "#7c3aed", "#db2777", "#0891b2", "#ca8a04", "#ef4444", "#0ea5e9", "#10b981",
+        "#f97316", "#ec4899", "#14b8a6", "#a855f7", "#84cc16", "#f59e0b", "#3b82f6", "#e11d48", "#8b5cf6", "#06b6d4",
+        "#1e40af", "#15803d", "#b45309", "#5b21b6", "#9d174d", "#0e7490", "#854d0e", "#b91c1c", "#0369a1", "#047857",
+        "#c2410c", "#6d28d9", "#be185d", "#0f766e", "#7e22ce", "#9a3412", "#1d4ed8", "#15803d", "#c026d3", "#ea580c",
+        "#60a5fa", "#34d399", "#facc15", "#a78bfa", "#fb7185", "#67e8f9", "#bef264", "#fde047", "#93c5fd", "#fca5a5",
+        "#99f6e4", "#86efac", "#fcd34d", "#c4b5fd", "#f9a8d4", "#22d3ee", "#bbf7d0", "#fef08a", "#ddd6fe", "#f5d0fe",
+        "#bae6fd", "#a7f3d0", "#fde68a", "#e9d5ff", "#fecdd3", "#7dd3fc", "#6ee7b7", "#fef9c3", "#d8b4fe", "#fda4af",
+        "#38bdf8", "#4ade80", "#fde68a", "#c084fc", "#fb7185", "#0ea5e9", "#22c55e", "#eab308", "#8b5cf6", "#f43f5e",
+        "#0284c7", "#16a34a", "#ca8a04", "#7c3aed", "#e11d48"
     ];
 
     function hashIdx(str) {
@@ -34,6 +33,7 @@
     }
 
     const iconCache = new Map();
+
     function getIconFor(category = "Sin categoría") {
         if (iconCache.has(category)) return iconCache.get(category);
         const color = ICON_PALETTE[hashIdx(category)];
@@ -52,7 +52,7 @@
         if (!ev) return null;
         const lat = Number(ev.location?.latitude);
         const lng = Number(ev.location?.longitude);
-        const ubicacion = (isFinite(lat) && isFinite(lng)) ? { lat, lng } : null;
+        const ubicacion = (isFinite(lat) && isFinite(lng)) ? {lat, lng} : null;
         const fechaISO = ev.eventDate ? new Date(`${ev.eventDate}T00:00:00`).toISOString() : null;
 
         return {
@@ -68,7 +68,7 @@
     }
 
     function fmt(iso) {
-        return new Date(iso).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" });
+        return new Date(iso).toLocaleDateString("es-AR", {day: "2-digit", month: "2-digit", year: "numeric"});
     }
 
     function popupHtml(h) {
@@ -76,13 +76,16 @@
       <h4>${h.titulo}</h4>
       <div class="meta">${h.categoria ?? "–"} • ${h.fechaISO ? fmt(h.fechaISO) : "–"}</div>
       <div class="meta">${h.lugar ?? ""}</div>
-      ${h.link ? `<a class="btn-link" href="${h.link}">Ver más →</a>` : ""}
     `;
     }
 
     // API pública
-    window.initMetaMapa = function initMetaMapa({containerId = 'map', center = [-34.6037, -58.3816], zoom = 11, mini = false} = {})
-    {
+    window.initMetaMapa = function initMetaMapa({
+                                                    containerId = 'map',
+                                                    center = [-34.6037, -58.3816],
+                                                    zoom = 11,
+                                                    mini = false
+                                                } = {}) {
         const isMiniMap = mini;
         const el = document.getElementById(containerId);
         if (!el) return;
@@ -91,7 +94,7 @@
         const frame = el.closest('.map-frame') || el.parentElement;
         if (frame && frame.getBoundingClientRect().height < 10) frame.style.height = '300px';
 
-        const map = L.map(el, { zoomControl: true, attributionControl: true, scrollWheelZoom: true });
+        const map = L.map(el, {zoomControl: true, attributionControl: true, scrollWheelZoom: true});
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; OpenStreetMap'
@@ -118,7 +121,7 @@
                     marker.on('click', () => {
                         const target = document.querySelector(`[data-event-id="${h.id}"]`);
                         if (target) {
-                            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            target.scrollIntoView({behavior: 'smooth', block: 'center'});
                             target.classList.add('highlighted');
                             setTimeout(() => target.classList.remove('highlighted'), 1000);
                         } else {
@@ -126,7 +129,7 @@
                         }
                     });
                 } else {
-                    marker.bindPopup(popupHtml(h), { closeButton: true, maxWidth: 320 });
+                    marker.bindPopup(popupHtml(h), {closeButton: true, maxWidth: 320});
                 }
             });
         }
@@ -141,6 +144,6 @@
 
         // Exponer para debug puntual
         window.MetaMapa = window.MetaMapa || {};
-        window.MetaMapa[containerId] = { map, markersLayer, render };
+        window.MetaMapa[containerId] = {map, markersLayer, render};
     };
 })();
