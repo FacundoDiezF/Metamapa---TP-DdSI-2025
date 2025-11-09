@@ -9,18 +9,22 @@ import java.util.List;
 public class StatisticsService {
 
     public List<StatisticsDTO> findTopCategories() {
-        return  mockTopCategories();
+      //TODO: GET /statistics/categories/top?count=4
+      return  mockTopCategories();
     }
 
     public List<StatisticsDTO> findTopProvincesOnCollection() {
-        return  mockTopProvinces();
+      //TODO: GET /statistics/collection/{handler}/provinces/top?count=4
+      return  mockTopProvinces();
     }
 
     public List<StatisticsDTO> findTopProvincesByCategory() {
+      // TODO: GET /statistics/category/{idCategory}/provinces/top?count=4
         return  mockTopProvinces();
     }
 
     public List<StatisticsDTO> findBusiestHoursByCategory() {
+      //TODO: GET/statistics/category/{idCategory}/busiest-hours/top
         return  mockBusiestHours();
     }
 
