@@ -190,4 +190,16 @@ public class ServerAdapter {
         })
         .block();
   }
+
+  public List<StatisticsDTO> getTopProvincesByCategory(Long idCategory) {
+    return statsClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/statistics/category/{idCategory}/provinces/top")
+            .queryParam("count", 4)
+            .build(idCategory))
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<List<StatisticsDTO>>() {
+        })
+        .block();
+  }
 }

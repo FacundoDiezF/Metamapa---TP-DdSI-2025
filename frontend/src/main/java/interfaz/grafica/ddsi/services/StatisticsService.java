@@ -24,9 +24,8 @@ public class StatisticsService {
     return mockTopProvinces();
   }
 
-  public List<StatisticsDTO> findTopProvincesByCategory() {
-    // TODO: GET /statistics/category/{idCategory}/provinces/top?count=4
-    return mockTopProvinces();
+  public List<StatisticsDTO> findTopProvincesByCategory(Long idCategory) {
+    return server.getTopProvincesByCategory(idCategory);
   }
 
   public List<StatisticsDTO> findBusiestHoursByCategory() {
