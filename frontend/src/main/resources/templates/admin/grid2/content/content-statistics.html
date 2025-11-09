@@ -15,43 +15,44 @@
             </div>
         </header>
 
-        <!-- Filtros (maqueta; conectás luego) -->
-        <form class="stats-filters" method="get" novalidate>
-            <div class="filters-row">
-                <label class="field">
-                    <span class="label">Colección</span>
-                    <select class="input">
-                        <option>Todas</option>
-                    </select>
-                </label>
+        <!--        &lt;!&ndash; Filtros (maqueta; conectás luego) &ndash;&gt;-->
+        <!--        <form class="stats-filters" method="get" novalidate>-->
+        <!--            <div class="filters-row">-->
+        <!--                <label class="field">-->
+        <!--                    <span class="label">Colección</span>-->
+        <!--                    <select class="input">-->
+        <!--                        <option>Todas</option>-->
+        <!--                    </select>-->
+        <!--                </label>-->
 
-                <label class="field">
-                    <span class="label">Categoría</span>
-                    <select class="input">
-                        <option>Todas</option>
-                    </select>
-                </label>
+        <!--                <label class="field">-->
+        <!--                    <span class="label">Categoría</span>-->
+        <!--                    <select class="input">-->
+        <!--                        <option>Todas</option>-->
+        <!--                    </select>-->
+        <!--                </label>-->
 
-                <label class="field">
-                    <span class="label">Desde</span>
-                    <input class="input" type="text" placeholder="dd/mm/aaaa">
-                </label>
+        <!--                <label class="field">-->
+        <!--                    <span class="label">Desde</span>-->
+        <!--                    <input class="input" type="text" placeholder="dd/mm/aaaa">-->
+        <!--                </label>-->
 
-                <label class="field">
-                    <span class="label">Hasta</span>
-                    <input class="input" type="text" placeholder="dd/mm/aaaa">
-                </label>
+        <!--                <label class="field">-->
+        <!--                    <span class="label">Hasta</span>-->
+        <!--                    <input class="input" type="text" placeholder="dd/mm/aaaa">-->
+        <!--                </label>-->
 
-                <div class="filters-actions">
-                    <button type="submit" class="btn btn-primary">Aplicar filtros</button>
-                    <button type="button" class="btn btn-plain">Limpiar</button>
-                </div>
-            </div>
-        </form>
+        <!--                <div class="filters-actions">-->
+        <!--                    <button type="submit" class="btn btn-primary">Aplicar filtros</button>-->
+        <!--                    <button type="button" class="btn btn-plain">Limpiar</button>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </form>-->
 
         <div class="stats-grid">
             <!-- Provincias con más hechos (todas las colecciones) -->
-            <section class="stat-card" th:with="max=${TopProvincesOnCollection != null and !#lists.isEmpty(TopProvincesOnCollection) ? (TopProvincesOnCollection[0].occurrences != null ? TopProvincesOnCollection[0].occurrences : 1): 1}">
+            <section class="stat-card"
+                     th:with="max=${TopProvincesOnCollection != null and !#lists.isEmpty(TopProvincesOnCollection) ? (TopProvincesOnCollection[0].occurrences != null ? TopProvincesOnCollection[0].occurrences : 1): 1}">
                 <header class="stat-head">
                     <h3 class="stat-title">¿En qué provincia se agrupa la mayor cantidad de hechos?</h3>
                     <a class="chip" href="#" role="button">CSV</a>
@@ -64,29 +65,32 @@
                         pct=${max > 0 ? (val * 100.0) / max : 0}">
                         <span class="label" th:text="${s.entityName}">Provincia</span>
 
-                            <div class="bar">
+                        <div class="bar">
                                 <span class="bar-fill"
-                                th:style="'width:' + ${#numbers.formatDecimal(pct,1,3)} + '%;'"></span>
-                            </div>
-                        <span class="value" th:text="${#numbers.formatDecimal(val,1,3)}">0.000</span>
+                                      th:style="'width:' + ${#numbers.formatDecimal(pct,1,3)} + '%;'"></span>
+                        </div>
+                        <span class="value" th:text="${val}">0.000</span>
                     </li>
                 </ol>
             </section>
 
             <!-- categorias -->
-            <section class="stat-card" th:with="max=${topCategories != null and !#lists.isEmpty(topCategories) ? (topCategories[0].occurrences != null ? topCategories[0].occurrences : 1) : 1}">
+            <section class="stat-card"
+                     th:with="max=${topCategories != null and !#lists.isEmpty(topCategories) ? (topCategories[0].occurrences != null ? topCategories[0].occurrences : 1) : 1}">
                 <header class="stat-head">
                     <h3 class="stat-title">¿Cuál es la categoría con mayor cantidad de hechos?</h3>
                     <a class="chip" href="#" role="button">CSV</a>
                 </header>
 
                 <ol class="stat-list">
-                    <li class="stat-item" th:each="s : ${topCategories}" th:with="val=${s.occurrences != null ? s.occurrences : 0}, pct=${max > 0 ? (val * 100.0) / max : 0}">
+                    <li class="stat-item" th:each="s : ${topCategories}"
+                        th:with="val=${s.occurrences != null ? s.occurrences : 0}, pct=${max > 0 ? (val * 100.0) / max : 0}">
                         <span class="label" th:text="${s.entityName}">Categoría</span>
-                            <div class="bar">
-                                <span class="bar-fill" th:style="'width:' + ${#numbers.formatDecimal(pct,1,3)} + '%;'"></span>
-                            </div>
-                        <span class="value" th:text="${#numbers.formatDecimal(val,1,3)}">0.000</span>
+                        <div class="bar">
+                            <span class="bar-fill"
+                                  th:style="'width:' + ${#numbers.formatDecimal(pct,1,3)} + '%;'"></span>
+                        </div>
+                        <span class="value" th:text="${val}">0.000</span>
                     </li>
                 </ol>
 
@@ -98,41 +102,47 @@
             </section>
 
             <!-- Provincias con más hechos por categoría -->
-            <section class="stat-card" th:with="max=${TopProvincesByCategory != null and !#lists.isEmpty(TopProvincesByCategory) ? (TopProvincesByCategory[0].occurrences != null ? TopProvincesByCategory[0].occurrences : 1): 1}">
+            <section class="stat-card"
+                     th:with="max=${TopProvincesByCategory != null and !#lists.isEmpty(TopProvincesByCategory) ? (TopProvincesByCategory[0].occurrences != null ? TopProvincesByCategory[0].occurrences : 1): 1}">
                 <header class="stat-head">
                     <h3 class="stat-title">¿En qué provincia hay más hechos de una categoría dada?</h3>
                     <a class="chip" href="#" role="button">CSV</a>
                 </header>
 
                 <ol class="stat-list">
-                    <li class="stat-item" th:each="s : ${TopProvincesByCategory}" th:with="val=${s.occurrences != null ? s.occurrences : 0},pct=${max > 0 ? (val * 100.0) / max : 0}">
+                    <li class="stat-item" th:each="s : ${TopProvincesByCategory}"
+                        th:with="val=${s.occurrences != null ? s.occurrences : 0},pct=${max > 0 ? (val * 100.0) / max : 0}">
                         <span class="label" th:text="${s.entityName}">Provincia</span>
 
                         <div class="bar">
-                            <span class="bar-fill" th:style="'width:' + ${#numbers.formatDecimal(pct,1,3)} + '%;'"></span>
+                            <span class="bar-fill"
+                                  th:style="'width:' + ${#numbers.formatDecimal(pct,1,3)} + '%;'"></span>
                         </div>
 
-                        <span class="value" th:text="${#numbers.formatDecimal(val,1,3)}">0.000</span>
+                        <span class="value" th:text="${val}">0.000</span>
                     </li>
                 </ol>
             </section>
 
             <!-- Horas con mayor actividad dentro de una categoría -->
-            <section class="stat-card" th:with="max=${topHours != null and !#lists.isEmpty(topHours)? (topHours[0].occurrences != null ? topHours[0].occurrences : 1) : 1}">
+            <section class="stat-card"
+                     th:with="max=${topHours != null and !#lists.isEmpty(topHours)? (topHours[0].occurrences != null ? topHours[0].occurrences : 1) : 1}">
                 <header class="stat-head">
                     <h3 class="stat-title">¿A qué hora del día ocurren más hechos de una categoría?</h3>
                     <a class="chip" href="#" role="button">CSV</a>
                 </header>
 
                 <ol class="stat-list">
-                    <li class="stat-item" th:each="s : ${topHours}" th:with="val=${s.occurrences != null ? s.occurrences : 0},pct=${max > 0 ? (val * 100.0) / max : 0}">
+                    <li class="stat-item" th:each="s : ${topHours}"
+                        th:with="val=${s.occurrences != null ? s.occurrences : 0},pct=${max > 0 ? (val * 100.0) / max : 0}">
                         <span class="label" th:text="${s.entityName}">Hora</span>
 
                         <div class="bar">
-                            <span class="bar-fill" th:style="'width:' + ${#numbers.formatDecimal(pct,1,3)} + '%;'"></span>
+                            <span class="bar-fill"
+                                  th:style="'width:' + ${#numbers.formatDecimal(pct,1,3)} + '%;'"></span>
                         </div>
 
-                        <span class="value" th:text="${#numbers.formatDecimal(val,1,3)}">0.000</span>
+                        <span class="value" th:text="${val}">0.000</span>
                     </li>
                 </ol>
             </section>

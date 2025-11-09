@@ -6,6 +6,7 @@ import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
+import interfaz.grafica.ddsi.dtos.StatisticsDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
 import java.net.URI;
 import java.time.LocalDate;
@@ -22,9 +23,16 @@ public class ServerAdapter {
 
   private final WebClient webClient;
 
+  private final WebClient statsClient; //TODO: Borrar y remplazar su uso cuando tengamos el gateway
+
   public ServerAdapter(@Value("${aggregator.url}") String url) {
     this.webClient = WebClient.builder()
         .baseUrl(url)
+        .build();
+
+    //TODO: Borrar y remplazar su uso cuando tengamos el gateway
+    this.statsClient = WebClient.builder()
+        .baseUrl("http://localhost:8084")
         .build();
   }
 
@@ -167,6 +175,19 @@ public class ServerAdapter {
         .bodyValue(deletionRequestDTO)
         .retrieve()
         .bodyToMono(Void.class)
+        .block();
+  }
+
+  //--------------- STATISTICS ----------------//
+  public List<StatisticsDTO> getTopCategories() {
+    return statsClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/statistics/categories/top")
+            .queryParam("count", 4)
+            .build())
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<List<StatisticsDTO>>() {
+        })
         .block();
   }
 }

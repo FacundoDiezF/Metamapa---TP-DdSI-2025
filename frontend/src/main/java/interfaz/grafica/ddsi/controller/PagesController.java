@@ -186,7 +186,6 @@ public class PagesController {
   @GetMapping("/admin/statistics")
   public String adminStatistic(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-
     List<StatisticsDTO> topCategories = statisticsService.findTopCategories();
     List<StatisticsDTO> TopProvincesOnCollection = statisticsService.findTopProvincesOnCollection();
     List<StatisticsDTO> TopProvincesByCategory = statisticsService.findTopProvincesByCategory();
