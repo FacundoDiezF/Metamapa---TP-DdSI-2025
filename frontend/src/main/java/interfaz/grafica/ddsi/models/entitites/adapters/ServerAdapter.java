@@ -129,7 +129,7 @@ public class ServerAdapter {
     return getAllCategories(page, size, null);
   }
   
-  public List<CategoryDTO> getCategoriesByIds(List<Long> categoriesIds) {
+  public List<CategoryDTO> getAllCategoriesByIds(List<Long> categoriesIds) {
 
     if (categoriesIds == null || categoriesIds.isEmpty()) {
       return new ArrayList<>();
@@ -138,6 +138,17 @@ public class ServerAdapter {
     return getAllCategories(0, categoriesIds.size(), categoriesIds).getContent();
   }
 
+  public CategoryDTO getCategoryById(Long idCategory) {
+
+    return webClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/categories/{idCategory}")
+            .build(idCategory))
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<CategoryDTO>() {
+        })
+        .block();
+  }
 
   //--------------- PROVINCES ----------------//
   public PageDTO<ProvinceDTO> getAllProvinces(int page, int size, List<Long> provinceIds) {

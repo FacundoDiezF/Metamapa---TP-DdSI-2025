@@ -28,9 +28,19 @@ public class CategoryService {
     }
   }
 
-  public List<CategoryDTO> getByIds(List<Long> categoriesIds) {
+  public List<CategoryDTO> getAllByIds(List<Long> categoriesIds) {
     try {
-      return server.getCategoriesByIds(categoriesIds);
+      return server.getAllCategoriesByIds(categoriesIds);
+    } catch (WebClientResponseException e) {
+      throw new BackendException("Backend error: " + e.getStatusCode());
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
+    }
+  }
+
+  public CategoryDTO getById(Long categoryIds) {
+    try {
+      return server.getCategoryById(categoryIds);
     } catch (WebClientResponseException e) {
       throw new BackendException("Backend error: " + e.getStatusCode());
     } catch (Exception e) {

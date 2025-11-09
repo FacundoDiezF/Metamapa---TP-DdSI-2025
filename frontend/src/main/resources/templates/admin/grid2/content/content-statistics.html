@@ -132,6 +132,8 @@
                     <a class="chip" href="#" role="button">CSV</a>
                 </header>
 
+                <p th:text="'Cat: ' + ${selectedCategory.name}"> Test</p>
+
                 <ol class="stat-list">
                     <li class="stat-item" th:each="s : ${topHours}"
                         th:with="val=${s.occurrences != null ? s.occurrences : 0},pct=${max > 0 ? (val * 100.0) / max : 0}">
@@ -146,6 +148,7 @@
                     </li>
                 </ol>
             </section>
+
 
         </div>
     </section>

@@ -160,7 +160,7 @@ public class PagesController {
 
   private void addFilterModels(Model model, List<Long> category_in, List<Long> province_in) {
 
-    List<CategoryDTO> selectedCategories = categoryService.getByIds(category_in);
+    List<CategoryDTO> selectedCategories = categoryService.getAllByIds(category_in);
     List<ProvinceDTO> selectedProvinces = locationService.getProvincesByIds(province_in);
 
     model.addAttribute("selectedCategories", selectedCategories);
@@ -190,12 +190,14 @@ public class PagesController {
     List<StatisticsDTO> topCategories = statisticsService.findTopCategories();
     List<StatisticsDTO> TopProvincesOnCollection = statisticsService.findTopProvincesOnCollection();
 
-    //TODO: Recuperar con getById la categoria seleccionada para poder mostrar su nombre en la vista
+    CategoryDTO selectedCategory = categoryService.getById(selectedCategoryId);
     List<StatisticsDTO> TopProvincesByCategory = statisticsService.findTopProvincesByCategory(selectedCategoryId);
     List<StatisticsDTO> topHours = statisticsService.findBusiestHoursByCategory(selectedCategoryId);
 
     model.addAttribute("topCategories", topCategories);
     model.addAttribute("TopProvincesOnCollection", TopProvincesOnCollection);
+
+    model.addAttribute("selectedCategory",selectedCategory);
     model.addAttribute("TopProvincesByCategory", TopProvincesByCategory);
     model.addAttribute("topHours", topHours);
 
