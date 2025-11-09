@@ -45,7 +45,7 @@ public class StatisticsController {
   }
 
   @GetMapping("/category/{id}/busiest-hours/top")
-  public List<String> getBusiestHoursByCategory(
+  public List<TopOutputDTO> getBusiestHoursByCategory(
       @PathVariable Long id,
       @RequestParam(required = false, defaultValue = "3") Integer count
   ) {

@@ -16,5 +16,5 @@ public interface IStatisticsService {
 
   List<TopOutputDTO> findTopProvincesByCategory(Long categoryId, Integer count);
 
-  List<String> findBusiestHoursByCategory(Long categoryId, Integer count);
+  List<TopOutputDTO> findBusiestHoursByCategory(Long categoryId, Integer count);
 }
