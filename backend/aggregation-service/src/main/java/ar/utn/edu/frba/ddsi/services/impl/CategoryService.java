@@ -1,5 +1,6 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
+import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.output.category.CategoryDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.repositories.ICategoryRepository;
@@ -46,6 +47,14 @@ public class CategoryService implements ICategoryService {
     Page<Category> categoryPage = categoryRepository.findAllByIdIn(ids, pageable);
 
     return categoryPage.map(CategoryDTO::from);
+  }
+
+  @Override
+  public CategoryDTO getById(Long idCategory) {
+    Category category = categoryRepository.findById(idCategory)
+        .orElseThrow(() -> new NotFoundException("Category not found for ID: " + idCategory));
+
+    return CategoryDTO.from(category);
   }
 
   private String findFuzzyMatch(String name) {
