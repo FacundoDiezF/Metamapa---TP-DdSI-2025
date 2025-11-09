@@ -8,12 +8,18 @@
         </div>
     </div>
 
-    <div class="card colecciones">
+    <div th:if="${!#lists.isEmpty(collectionPage.content)}" class="card colecciones">
         <h3>Colecciones</h3>
         <ul>
-            <li  th:each="col : ${collectionPage.content}" ><a class="refColeccion" th:href="@{/collection/{handler}(handler=${col.handler})}"  th:text="${col.title}"    >tituloColeccion</a> </li>
+            <li th:each="col : ${collectionPage.content}">
+                <a class="refColeccion"
+                   th:href="@{/collection/{handler}(handler=${col.handler})}"
+                   th:text="${col.title}">
+                    Titulo Coleccion
+                </a>
+            </li>
         </ul>
-        <a th:href="@{/collections}"  class="btn-primary">Explorar Mas</a>
+        <a th:href="@{/collections}" class="btn-primary">Explorar Mas</a>
     </div>
 
 

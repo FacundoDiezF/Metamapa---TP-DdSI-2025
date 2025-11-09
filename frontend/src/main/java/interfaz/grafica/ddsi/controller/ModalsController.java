@@ -4,6 +4,7 @@ import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
+import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.LocationService;
 import org.springframework.stereotype.Controller;
@@ -74,5 +75,13 @@ public class ModalsController {
     model.addAttribute("newDeletionRequest", deletionRequestDTO);
 
     return "fragments/modals/_reportEventModal :: deletionRequestModal";
+  }
+
+  @GetMapping("/new-collection")
+  public String getNewCollectionModal(Model model) {
+
+    model.addAttribute("newCollection", new CollectionOutputDTO());
+
+    return "fragments/modals/_newCollectionModal :: newCollectoinModal";
   }
 }

@@ -4,9 +4,10 @@
 
 /* Primary Button */
 .btn-primary {
+    text-align: center;
     background: var(--Accent);
     color: #fff;
-    border: none;
+    border: 1px solid var(--Accent);
     padding: .3rem .6rem;
     border-radius: var(--radius-10);
     cursor: pointer;
@@ -89,6 +90,20 @@ form:has(:invalid) .btn-apply:hover {
 
 .btn-clean:hover {
     background: var(--Background, #f3f4f6);
+}
+
+.icon-btn{
+    justify-content: center;
+    display: inline-flex;
+    background: transparent;
+    padding: .2rem .2rem;
+    border-radius: var(--radius-10);
+    transition: transform 0.12s ease, background 0.12s ease;
+    will-change: transform;
+}
+
+.icon-btn:hover{
+    transform: scale(1.09);
 }
 
 /* ===========================
