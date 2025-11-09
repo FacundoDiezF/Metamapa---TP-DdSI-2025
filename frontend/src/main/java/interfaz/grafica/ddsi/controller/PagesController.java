@@ -185,14 +185,14 @@ public class PagesController {
 
   @GetMapping("/admin/statistics")
   public String adminStatistic(Model model,
-                               @RequestParam(defaultValue = "1", name = "catId") Long selectedCategoryId) {
+                               @RequestParam(defaultValue = "96", name = "catId") Long selectedCategoryId) {
 
     List<StatisticsDTO> topCategories = statisticsService.findTopCategories();
     List<StatisticsDTO> TopProvincesOnCollection = statisticsService.findTopProvincesOnCollection();
 
     //TODO: Recuperar con getById la categoria seleccionada para poder mostrar su nombre en la vista
     List<StatisticsDTO> TopProvincesByCategory = statisticsService.findTopProvincesByCategory(selectedCategoryId);
-    List<StatisticsDTO> topHours = statisticsService.findBusiestHoursByCategory();
+    List<StatisticsDTO> topHours = statisticsService.findBusiestHoursByCategory(selectedCategoryId);
 
     model.addAttribute("topCategories", topCategories);
     model.addAttribute("TopProvincesOnCollection", TopProvincesOnCollection);

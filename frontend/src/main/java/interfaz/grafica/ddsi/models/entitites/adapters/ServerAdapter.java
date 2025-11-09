@@ -202,4 +202,16 @@ public class ServerAdapter {
         })
         .block();
   }
+
+  public List<StatisticsDTO> getBuisiestHoursByCategory(Long idCategory) {
+    return statsClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/statistics/category/{idCategory}/busiest-hours/top")
+            .queryParam("count", 4)
+            .build(idCategory))
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<List<StatisticsDTO>>() {
+        })
+        .block();
+  }
 }

@@ -28,34 +28,8 @@ public class StatisticsService {
     return server.getTopProvincesByCategory(idCategory);
   }
 
-  public List<StatisticsDTO> findBusiestHoursByCategory() {
-    //TODO: GET/statistics/category/{idCategory}/busiest-hours/top
-    return mockBusiestHours();
-  }
-
-
-  private List<StatisticsDTO> mockTopCategories() {
-    return List.of(
-        new StatisticsDTO(
-            "categoria1",
-            150L
-        ),
-
-        new StatisticsDTO(
-            "categoria2",
-            120L
-        ),
-
-        new StatisticsDTO(
-            "categoria3",
-            90L
-        ),
-
-        new StatisticsDTO(
-            "categoria4",
-            80L
-        )
-    );
+  public List<StatisticsDTO> findBusiestHoursByCategory(Long idCategory) {
+    return server.getBuisiestHoursByCategory(idCategory);
   }
 
   private List<StatisticsDTO> mockTopProvinces() {
@@ -82,27 +56,4 @@ public class StatisticsService {
     );
   }
 
-  private List<StatisticsDTO> mockBusiestHours() {
-    return List.of(
-        new StatisticsDTO(
-            "4am",
-            222L
-        ),
-
-        new StatisticsDTO(
-            "2pm",
-            181L
-        ),
-
-        new StatisticsDTO(
-            "7pm",
-            160L
-        ),
-
-        new StatisticsDTO(
-            "6am",
-            140L
-        )
-    );
-  }
 }
