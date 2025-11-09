@@ -27,13 +27,14 @@ public interface ICategoryRepository extends JpaRepository<Category, Long> {
   //TODO: Ver si esto anda bien y crear si es necesario un DTO para el resultado
   @Query("""
       SELECT new ar.utn.edu.frba.ddsi.models.dtos.output.TopOutputDTO(
-          HOUR(e.eventDate),
+          HOUR(e.updatedDate),
           COUNT(e.id)
         )
         FROM Event e
         WHERE e.category.id = :categoryId
-        GROUP BY HOUR(e.eventDate)
+        GROUP BY HOUR(e.updatedDate)
         ORDER BY COUNT(e.id) DESC
+        LIMIT :count
       """)
   List<TopOutputDTO> findCategoryBusiestHours(Long categoryId, Integer count);
 }

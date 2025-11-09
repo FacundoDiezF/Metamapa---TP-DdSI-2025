@@ -14,4 +14,5 @@ public class EventInputDTO {
   LocationInputDTO location;
   LocalDateTime eventDate;
   LocalDateTime uploadDate;
+  LocalDateTime updatedDate;
 }
