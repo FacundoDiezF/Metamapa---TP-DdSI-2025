@@ -2,7 +2,7 @@
 <div th:fragment="successeModal(title, desc)" class="modal-overlay"
      hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
 
-    <div class="modal-body success-modal" role="dialog" aria-modal="true">
+    <div class="modal-body message-modal" role="dialog" aria-modal="true">
 
         <button type="button"
                 class="modal-close"
@@ -27,7 +27,7 @@
 <div th:fragment="warningModal(title, desc)" class="modal-overlay"
      hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
 
-    <div class="modal-body modal-warning" role="dialog" aria-modal="true">
+    <div class="modal-body message-modal modal-warning" role="dialog" aria-modal="true">
 
         <button type="button" class="modal-close" aria-label="Cerrar"
                 hx-on:click="this.closest('#modals-here').innerHTML = ''">✕
@@ -47,7 +47,7 @@
 <div th:fragment="errorModal(title, desc)" class="modal-overlay"
      hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
 
-    <div class="modal-body modal-error" role="dialog" aria-modal="true">
+    <div class="modal-body message-modal modal-error" role="dialog" aria-modal="true">
 
         <button type="button" class="modal-close" aria-label="Cerrar"
                 hx-on:click="this.closest('#modals-here').innerHTML = ''">✕

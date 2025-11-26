@@ -220,7 +220,17 @@ form:has(:invalid) .btn-apply:hover {
     opacity: 1;
 }
 
-/* --- Estilos para Modal WARNING (Ámbar/Naranja) --- */
+/* ======================================  Modales de mensaje */
+
+.message-modal {
+    display: grid;
+    gap: var(--sp-3);
+    text-align: left;
+
+    z-index: 1;
+}
+
+/* ===========  WARNING */
 .modal-warning {
     border-bottom: 6px solid #f59e0b;
 }
@@ -229,7 +239,7 @@ form:has(:invalid) .btn-apply:hover {
     color: var(--AltDetails);
 }
 
-/* --- Estilos para Modal ERROR --- */
+/* ===========  ERROR */
 .modal-error {
     border-bottom: 6px solid var(--Danger);
 }
