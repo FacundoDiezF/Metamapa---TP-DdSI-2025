@@ -27,7 +27,7 @@ public class EventService {
     try {
       return server.getAllEvents(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, size);
     } catch (WebClientResponseException e) {
-      throw new BackendException("Backend error: " + e.getStatusCode());
+      throw new BackendException(e);
     } catch (Exception e) {
       throw new ConnectionException("Could not connect to backend");
     }
@@ -39,7 +39,7 @@ public class EventService {
     try {
       return server.getAllEventsByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, size);
     } catch (WebClientResponseException e) {
-      throw new BackendException("Backend error: " + e.getStatusCode());
+      throw new BackendException(e);
     } catch (Exception e) {
       throw new ConnectionException("Could not connect to backend");
     }
