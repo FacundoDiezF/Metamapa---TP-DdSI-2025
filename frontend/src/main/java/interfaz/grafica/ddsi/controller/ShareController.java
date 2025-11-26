@@ -48,6 +48,11 @@ public class ShareController {
       model.addAttribute("errorDescription", e.getErrorInfo().getMessage());
       return "fragments/modals/_messageModals :: errorModal(title=${errorTitle}, desc=${errorDescription})";
     }
-    return "fragments/modals/_reportEventModal :: deletionRequestSuccesseModal";
+
+    model.addAttribute("succesTitle", "Solicitud en revisión");
+    model.addAttribute("succesDescriptioni",
+        "Gracias por colaborar con la comunidad! Revisaremos tu solicitud y actuaremos de acuerdo con las normas de convivencia para mantener MetaMapa útil, seguro y respetuoso para todas las personas."
+    );
+    return "fragments/modals/_messageModals :: successeModal(title=${succesTitle}, desc=${succesDescriptioni})";
   }
 }
