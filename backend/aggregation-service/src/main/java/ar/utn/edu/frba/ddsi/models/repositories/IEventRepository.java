@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -47,4 +48,13 @@ public interface IEventRepository extends JpaRepository<Event, Long> {
         AND e.originEventId = :originEventId
       """)
   Optional<Event> findByExternalIds(Long sourceClientId, Long originSourceId, Long originEventId);
+
+  @Query("""
+      SELECT e FROM Event e
+        JOIN FETCH e.source
+        JOIN FETCH e.category
+        LEFT JOIN FETCH e.passedConsensus
+      WHERE e.deleted = :deleted
+      """)
+  List<Event> findByDeletedWithRelations(@Param("deleted") boolean deleted);
 }
