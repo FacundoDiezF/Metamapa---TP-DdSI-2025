@@ -219,3 +219,21 @@ form:has(:invalid) .btn-apply:hover {
 .modal-close:hover {
     opacity: 1;
 }
+
+/* --- Estilos para Modal WARNING (Ámbar/Naranja) --- */
+.modal-warning {
+    border-bottom: 6px solid #f59e0b;
+}
+
+.modal-warning h2 {
+    color: var(--AltDetails);
+}
+
+/* --- Estilos para Modal ERROR --- */
+.modal-error {
+    border-bottom: 6px solid var(--Danger);
+}
+
+.modal-error h2 {
+    color: var(--Danger);
+}

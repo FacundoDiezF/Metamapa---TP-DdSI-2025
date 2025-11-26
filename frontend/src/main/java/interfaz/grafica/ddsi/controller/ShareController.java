@@ -2,6 +2,7 @@ package interfaz.grafica.ddsi.controller;
 
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
+import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
 import org.springframework.stereotype.Controller;
@@ -33,10 +34,20 @@ public class ShareController {
   @PostMapping("/deletion-request")
   public String handleShareDeletionRequest(@ModelAttribute("newDeletionRequest") DeletionRequestDTO newDeletionRequest, Model model) {
 
-    deletionRequestService.postNew(newDeletionRequest);
+    try {
+      deletionRequestService.postNew(newDeletionRequest);
+    } catch (BackendException e) {
 
+      if ("SPAM_DETECTED".equals(e.getErrorInfo().getErrorCode())) {
+        model.addAttribute("warningTitle", "Spam detectado");
+        model.addAttribute("warningDescription", "Hemos detectado que el contenido de tu envío podría infringir nuestras políticas de spam.");
+        return "fragments/modals/_messageModals :: warningModal(title=${warningTitle}, desc=${warningDescription})";
+      }
+
+      model.addAttribute("errorTitle", e.getErrorInfo().getErrorCode());
+      model.addAttribute("errorDescription", e.getErrorInfo().getMessage());
+      return "fragments/modals/_messageModals :: errorModal(title=${errorTitle}, desc=${errorDescription})";
+    }
     return "fragments/modals/_reportEventModal :: deletionRequestSuccesseModal";
   }
-
-
 }
