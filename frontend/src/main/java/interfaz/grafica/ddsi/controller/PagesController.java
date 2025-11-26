@@ -246,9 +246,10 @@ public class PagesController {
   @GetMapping("/admin/deletionRequests")
   public String adminDeletionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-    PageDTO<DeletionRequestDTO> allDeletionsRequest = deletionRequestAdminService.getAll(page, 20);
+    PageDTO<DeletionRequestDTO> deletionsRequestsPage = deletionRequestAdminService.getAll(page, 1);
 
-    model.addAttribute("deletionsRequests", allDeletionsRequest.getContent());
+    model.addAttribute("deletionsRequestsPage", deletionsRequestsPage);
+
 
     model.addAttribute("active", "admin");
     model.addAttribute("pageTitle", "MetaMapa · Gestionar Solicitudes de Eliminación");
