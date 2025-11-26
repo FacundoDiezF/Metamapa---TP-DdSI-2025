@@ -62,7 +62,6 @@ public class PagesController {
     return "landing";
   }
 
-  //TODO: Query params con nombres correctos
   @GetMapping("/explore")
   public String explore(
       @RequestParam(required = false, name = "category_in") List<Long> category_in,
@@ -247,9 +246,9 @@ public class PagesController {
   @GetMapping("/admin/deletionRequests")
   public String adminDeletionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-    List<DeletionRequestDTO> allDeletionsRequest = deletionRequestAdminService.getAll();
+    PageDTO<DeletionRequestDTO> allDeletionsRequest = deletionRequestAdminService.getAll(page, 20);
 
-    model.addAttribute("deletionsRequests", allDeletionsRequest);
+    model.addAttribute("deletionsRequests", allDeletionsRequest.getContent());
 
     model.addAttribute("active", "admin");
     model.addAttribute("pageTitle", "MetaMapa · Gestionar Solicitudes de Eliminación");

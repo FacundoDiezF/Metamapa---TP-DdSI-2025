@@ -1,6 +1,6 @@
 package interfaz.grafica.ddsi.services;
 
-import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.exceptions.ConnectionException;
 import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
@@ -16,7 +16,7 @@ public class DeletionRequestService {
     this.server = server;
   }
 
-  public void postNew(DeletionRequestDTO newDeletionRequest) {
+  public void postNew(DeletionRequestCreationDTO newDeletionRequest) {
     try {
       server.postNewDeletionRequest(newDeletionRequest);
     } catch (WebClientResponseException e) {

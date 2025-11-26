@@ -2,12 +2,13 @@ package interfaz.grafica.ddsi.models.entitites.adapters;
 
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
+import interfaz.grafica.ddsi.dtos.DeletionRequestDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
 import interfaz.grafica.ddsi.dtos.StatisticsDTO;
-import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -183,7 +184,7 @@ public class ServerAdapter {
   }
 
   //--------------- DELETION REQUESTS ----------------//
-  public void postNewDeletionRequest(DeletionRequestDTO deletionRequestDTO) {
+  public void postNewDeletionRequest(DeletionRequestCreationDTO deletionRequestDTO) {
     webClient.post()
         .uri("/deletion-request")
         .bodyValue(deletionRequestDTO)
@@ -228,4 +229,19 @@ public class ServerAdapter {
         })
         .block();
   }
+
+  //--------------- DELETION REQUESTS ----------------//
+  public PageDTO<DeletionRequestDTO> getAllDeletionRequests(int page, int size) {
+    return webClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/deletion-request")
+            .queryParam("page", page)
+            .queryParam("size", size)
+            .build())
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<DeletionRequestDTO>>() {
+        })
+        .block();
+  }
+
 }

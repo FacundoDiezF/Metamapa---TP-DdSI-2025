@@ -1,6 +1,6 @@
 package interfaz.grafica.ddsi.controller;
 
-import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
@@ -32,7 +32,7 @@ public class ShareController {
   }
 
   @PostMapping("/deletion-request")
-  public String handleShareDeletionRequest(@ModelAttribute("newDeletionRequest") DeletionRequestDTO newDeletionRequest, Model model) {
+  public String handleShareDeletionRequest(@ModelAttribute("newDeletionRequest") DeletionRequestCreationDTO newDeletionRequest, Model model) {
 
     try {
       deletionRequestService.postNew(newDeletionRequest);
