@@ -22,7 +22,7 @@ public class CategoryService {
     try {
       return server.getAllCategories(page, size);
     } catch (WebClientResponseException e) {
-      throw new BackendException("Backend error: " + e.getStatusCode());
+      throw new BackendException(e);
     } catch (Exception e) {
       throw new ConnectionException("Could not connect to backend");
     }
@@ -32,7 +32,7 @@ public class CategoryService {
     try {
       return server.getAllCategoriesByIds(categoriesIds);
     } catch (WebClientResponseException e) {
-      throw new BackendException("Backend error: " + e.getStatusCode());
+      throw new BackendException(e);
     } catch (Exception e) {
       throw new ConnectionException("Could not connect to backend");
     }
@@ -42,7 +42,7 @@ public class CategoryService {
     try {
       return server.getCategoryById(categoryIds);
     } catch (WebClientResponseException e) {
-      throw new BackendException("Backend error: " + e.getStatusCode());
+      throw new BackendException(e);
     } catch (Exception e) {
       throw new ConnectionException("Could not connect to backend");
     }
