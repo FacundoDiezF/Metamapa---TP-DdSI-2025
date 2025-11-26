@@ -233,34 +233,22 @@
     margin-top: .6rem;
 }
 
-/* ✅ Estilos botón aceptar */
-.btn-approve {
-    padding: .45rem .9rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: .85rem;
-    background: #10b981; /* verde */
-    color: white;
-    transition: .2s;
+.admin-page-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--Text);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
 }
 
-.btn-approve:hover {
-    background: #0e9a6c;
-}
-
-/* ✅ Estilos botón rechazar */
-.btn-reject {
-    padding: .45rem .9rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: .85rem;
-    background: #ef4444; /* rojo */
-    color: white;
-    transition: .2s;
-}
-
-.btn-reject:hover {
-    background: #c93333;
+.admin-page-title .count {
+    background: #000000;
+    color: #ffffff;
+    font-size: .9rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: .2rem .6rem;
+    line-height: 1;
 }

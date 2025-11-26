@@ -1,10 +1,11 @@
 <th:block th:fragment="deletionRequestContent">
-    <h1 class="admin-page-title">
-        Solicitudes de eliminación
-        <span class="count" th:text="${deletionsRequestsPage.totalElements}"></span>
-    </h1>
-
     <section>
+
+        <h1 class="admin-page-title">
+            Solicitudes de eliminación
+            <span class="count" th:text="${deletionsRequestsPage.totalElements}"></span>
+        </h1>
+
 
         <div th:if="${#lists.isEmpty(deletionsRequestsPage.content)}">
             <strong>
