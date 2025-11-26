@@ -13,6 +13,8 @@ import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.services.IDeletionRequestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -68,9 +70,10 @@ public class DeletionRequestService implements IDeletionRequestService {
   }
 
   @Override
-  public List<DeletionRequestOutputDTO> getAll() {
-    return deletionRequestRepository.findAll().stream()
-        .map(DeletionRequestOutputDTO::from)
-        .toList();
+  public Page<DeletionRequestOutputDTO> getAll(Pageable pageable) {
+
+    Page<DeletionRequest> allDeletionRequests = deletionRequestRepository.findAll(pageable);
+
+    return allDeletionRequests.map(DeletionRequestOutputDTO::from);
   }
 }
