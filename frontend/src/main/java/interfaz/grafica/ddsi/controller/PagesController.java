@@ -97,11 +97,12 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
+      @RequestParam(required = false, name = "curatedNavigation") boolean curatedNavigation,
       @RequestParam(defaultValue = "0", name = "page") int pageEvent,
       Model model) {
 
     CollectionDTO collection = collectionService.getByHandler(handler);
-    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
+    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, pageEvent, 15);
     PageDTO<CollectionDTO> collectionPage = collectionService.getAll(0, 3);
 
 
@@ -197,7 +198,7 @@ public class PagesController {
     model.addAttribute("topCategories", topCategories);
     model.addAttribute("TopProvincesOnCollection", TopProvincesOnCollection);
 
-    model.addAttribute("selectedCategory",selectedCategory);
+    model.addAttribute("selectedCategory", selectedCategory);
     model.addAttribute("TopProvincesByCategory", TopProvincesByCategory);
     model.addAttribute("topHours", topHours);
 

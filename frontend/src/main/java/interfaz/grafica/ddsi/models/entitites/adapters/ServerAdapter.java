@@ -39,11 +39,11 @@ public class ServerAdapter {
 
   //--------------- EVENTS ----------------//
 
-  public PageDTO<EventDTO> getAllEvents(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page, int size) {
+  public PageDTO<EventDTO> getAllEvents(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
     return webClient.get()
         .uri(uriBuilder -> {
           uriBuilder.path("/events");
-          return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, size, uriBuilder);
+          return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size, uriBuilder);
         })
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<PageDTO<EventDTO>>() {
@@ -51,11 +51,11 @@ public class ServerAdapter {
         .block();
   }
 
-  public List<EventDTO> getAllEventsByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page, int size) {
+  public List<EventDTO> getAllEventsByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
     return webClient.get()
         .uri(uriBuilder -> {
           uriBuilder.path("collections/" + handler + "/events");
-          return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, size, uriBuilder);
+          return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size, uriBuilder);
         })
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<List<EventDTO>>() {
@@ -63,7 +63,7 @@ public class ServerAdapter {
         .block();
   }
 
-  private URI getEventsUri(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page, int size, UriBuilder uriBuilder) {
+  private URI getEventsUri(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size, UriBuilder uriBuilder) {
     if (category_in != null && !category_in.isEmpty()) {
       uriBuilder.queryParam("category_in", category_in.toArray());
     }
@@ -79,6 +79,9 @@ public class ServerAdapter {
     if (source_in != null && !source_in.isEmpty()) {
       uriBuilder.queryParam("source_in", source_in.toArray());
     }
+    if (curatedNavigation) {
+      uriBuilder.queryParam("curatedNavigation", true);
+    }
     uriBuilder.queryParam("page", page);
     uriBuilder.queryParam("size", size);
     return uriBuilder.build();
@@ -86,7 +89,7 @@ public class ServerAdapter {
 
 
   //--------------- COLLECTIONS ----------------//
-  public PageDTO<CollectionDTO> getAllCollections(int page , int size) {
+  public PageDTO<CollectionDTO> getAllCollections(int page, int size) {
     return webClient.get()
         .uri(uriBuilder -> uriBuilder
             .path("/collections")
@@ -128,7 +131,7 @@ public class ServerAdapter {
   public PageDTO<CategoryDTO> getAllCategories(int page, int size) {
     return getAllCategories(page, size, null);
   }
-  
+
   public List<CategoryDTO> getAllCategoriesByIds(List<Long> categoriesIds) {
 
     if (categoriesIds == null || categoriesIds.isEmpty()) {
