@@ -8,6 +8,7 @@ import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
 import interfaz.grafica.ddsi.dtos.StatisticsDTO;
+import interfaz.grafica.ddsi.dtos.SubmissionRequestDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import java.net.URI;
@@ -27,6 +28,9 @@ public class ServerAdapter {
 
   private final WebClient statsClient; //TODO: Borrar y remplazar su uso cuando tengamos el gateway
 
+  private final WebClient dynamicClient; //TODO: Borrar y remplazar su uso cuando tengamos el gateway
+
+
   public ServerAdapter(@Value("${aggregator.url}") String url) {
     this.webClient = WebClient.builder()
         .baseUrl(url)
@@ -35,6 +39,11 @@ public class ServerAdapter {
     //TODO: Borrar y remplazar su uso cuando tengamos el gateway
     this.statsClient = WebClient.builder()
         .baseUrl("http://localhost:8084")
+        .build();
+
+    //TODO: Borrar y remplazar su uso cuando tengamos el gateway
+    this.dynamicClient = WebClient.builder()
+        .baseUrl("http://localhost:8081")
         .build();
   }
 
@@ -253,6 +262,20 @@ public class ServerAdapter {
         .bodyValue(dto)
         .retrieve()
         .bodyToMono(Void.class)
+        .block();
+  }
+
+  //--------------- DELETION REQUESTS ----------------//
+  public PageDTO<SubmissionRequestDTO> getAllSubmissionRequest(int page, int size) {
+    return dynamicClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/submissions")
+            .queryParam("page", page)
+            .queryParam("size", size)
+            .build())
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<SubmissionRequestDTO>>() {
+        })
         .block();
   }
 
