@@ -185,7 +185,7 @@ public class PagesController {
 
   @GetMapping("/admin/statistics")
   public String adminStatistic(Model model,
-                               @RequestParam(defaultValue = "96", name = "catId") Long selectedCategoryId) {
+                               @RequestParam(defaultValue = "1", name = "catId") Long selectedCategoryId) {
 
     List<StatisticsDTO> topCategories = statisticsService.findTopCategories();
     List<StatisticsDTO> TopProvincesOnCollection = statisticsService.findTopProvincesOnCollection();
