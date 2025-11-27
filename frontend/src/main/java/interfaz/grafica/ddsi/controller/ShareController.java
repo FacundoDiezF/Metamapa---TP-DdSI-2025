@@ -1,6 +1,7 @@
 package interfaz.grafica.ddsi.controller;
 
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
@@ -8,8 +9,10 @@ import interfaz.grafica.ddsi.services.EventService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/share")
@@ -54,5 +57,19 @@ public class ShareController {
         "Gracias por colaborar con la comunidad! Revisaremos tu solicitud y actuaremos de acuerdo con las normas de convivencia para mantener MetaMapa útil, seguro y respetuoso para todas las personas."
     );
     return "fragments/modals/_messageModals :: successeModal(title=${succesTitle}, desc=${succesDescriptioni})";
+  }
+
+  @PostMapping("/deletion-request/evaluate/{dReqId}")
+  public String handleEvaluateDeletionRequest(
+      @PathVariable Long dReqId,
+      @RequestParam("approve") boolean approve,
+      Model model
+  ) {
+
+    DeletionRequestEvaluateDTO evaluationDto = new DeletionRequestEvaluateDTO();
+    evaluationDto.setAccepted(approve);
+
+    deletionRequestService.evaluate(dReqId,evaluationDto);
+    return "redirect:/admin/deletionRequests";
   }
 }

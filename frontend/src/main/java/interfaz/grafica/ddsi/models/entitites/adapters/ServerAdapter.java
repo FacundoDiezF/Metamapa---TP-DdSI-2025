@@ -9,6 +9,7 @@ import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
 import interfaz.grafica.ddsi.dtos.StatisticsDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -241,6 +242,17 @@ public class ServerAdapter {
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<PageDTO<DeletionRequestDTO>>() {
         })
+        .block();
+  }
+
+  public void evaluateDeletionRequest(Long eventId, DeletionRequestEvaluateDTO dto) {
+    webClient.put()
+        .uri(uriBuilder -> uriBuilder
+            .path("/deletion-request/{eventId}")
+            .build(eventId))
+        .bodyValue(dto)
+        .retrieve()
+        .bodyToMono(Void.class)
         .block();
   }
 

@@ -33,10 +33,10 @@
 
                     <!-- Aceptar o eliminar -->
                     <div class="extra-actions">
-                        <form th:action="@{'/deletions/' + ${req.event.id} + '/approve'}" method="post">
+                        <form th:action="@{/share/deletion-request/evaluate/{id}(id=${req.id}, approve=true)}" method="post">
                             <button type="submit" class="btn-approve">Aceptar</button>
                         </form>
-                        <form th:action="@{'/deletions/' + ${req.event.id} + '/reject'}" method="post">
+                        <form th:action="@{/share/deletion-request/evaluate/{id}(id=${req.id}, approve=false)}" method="post">
                             <button type="submit" class="btn-reject">Rechazar</button>
                         </form>
                     </div>

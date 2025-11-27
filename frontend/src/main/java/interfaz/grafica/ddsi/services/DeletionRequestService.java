@@ -1,6 +1,7 @@
 package interfaz.grafica.ddsi.services;
 
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.exceptions.ConnectionException;
 import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
@@ -19,6 +20,16 @@ public class DeletionRequestService {
   public void postNew(DeletionRequestCreationDTO newDeletionRequest) {
     try {
       server.postNewDeletionRequest(newDeletionRequest);
+    } catch (WebClientResponseException e) {
+      throw new BackendException(e);
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
+    }
+  }
+
+  public void evaluate(Long eventId, DeletionRequestEvaluateDTO dto) {
+    try {
+      server.evaluateDeletionRequest(eventId, dto);
     } catch (WebClientResponseException e) {
       throw new BackendException(e);
     } catch (Exception e) {
