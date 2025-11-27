@@ -1,5 +1,7 @@
 package interfaz.grafica.ddsi.services;
 
+import interfaz.grafica.ddsi.dtos.DeletionRequestDTO;
+import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
@@ -15,6 +17,10 @@ public class DeletionRequestService {
 
   public DeletionRequestService(ServerAdapter server) {
     this.server = server;
+  }
+
+  public PageDTO<DeletionRequestDTO> getAll(int page, int size) {
+    return server.getAllDeletionRequests(page, size);
   }
 
   public void postNew(DeletionRequestCreationDTO newDeletionRequest) {

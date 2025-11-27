@@ -12,7 +12,7 @@ import interfaz.grafica.ddsi.dtos.StatisticsDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.CollectionService;
-import interfaz.grafica.ddsi.services.DeletionRequestAdminService;
+import interfaz.grafica.ddsi.services.DeletionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
 import interfaz.grafica.ddsi.services.LocationService;
 import interfaz.grafica.ddsi.services.SourcesService;
@@ -35,18 +35,18 @@ public class PagesController {
   private final LocationService locationService;
   private final StatisticsService statisticsService;
   private final SourcesService sourcesService;
-  private final DeletionRequestAdminService deletionRequestAdminService;
+  private final DeletionRequestService deletionRequestService;
 
 
   @Autowired
-  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService, SourcesService sourcesService, DeletionRequestAdminService deletionRequestAdminService) {
+  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService, SourcesService sourcesService, DeletionRequestService deletionRequestService) {
     this.collectionService = collectionService;
     this.eventService = eventService;
     this.categoryService = categoryService;
     this.locationService = locationService;
     this.statisticsService = statisticsService;
     this.sourcesService = sourcesService;
-    this.deletionRequestAdminService = deletionRequestAdminService;
+    this.deletionRequestService = deletionRequestService;
   }
 
   @GetMapping("/")
@@ -246,7 +246,7 @@ public class PagesController {
   @GetMapping("/admin/deletionRequests")
   public String adminDeletionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-    PageDTO<DeletionRequestDTO> deletionsRequestsPage = deletionRequestAdminService.getAll(page, 5);
+    PageDTO<DeletionRequestDTO> deletionsRequestsPage = deletionRequestService.getAll(page, 5);
 
     model.addAttribute("deletionsRequestsPage", deletionsRequestsPage);
 
