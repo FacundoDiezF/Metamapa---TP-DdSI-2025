@@ -3,9 +3,11 @@ package interfaz.grafica.ddsi.controller;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
+import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
+import interfaz.grafica.ddsi.services.SubmissionRequestService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,10 +22,12 @@ public class ShareController {
 
   private final EventService eventService;
   private final DeletionRequestService deletionRequestService;
+  private final SubmissionRequestService submissionRequestService;
 
-  public ShareController(EventService eventService, DeletionRequestService deletionRequestService) {
+  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService) {
     this.eventService = eventService;
     this.deletionRequestService = deletionRequestService;
+    this.submissionRequestService = submissionRequestService;
   }
 
   @PostMapping("/event")
@@ -83,5 +87,19 @@ public class ShareController {
 
     deletionRequestService.evaluate(dReqId, evaluationDto);
     return "redirect:/admin/deletionRequests";
+  }
+
+  @PostMapping("/submission-request/evaluate/{sReqId}")
+  public String handleEvaluateSubmissionRequest(
+      @PathVariable Long sReqId,
+      @RequestParam("approve") boolean approve,
+      Model model
+  ) {
+
+    SubmissionRequestEvaluationDTO evaluationDto = new SubmissionRequestEvaluationDTO(approve, null);
+    //TODO: suggestion, deberiamos recibir y pasar al constructor las sugerrencias en caso de que un admin deseeagregar
+
+    submissionRequestService.evaluate(sReqId, evaluationDto);
+    return "redirect:/admin/pendingEvents";
   }
 }

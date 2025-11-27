@@ -11,6 +11,7 @@ import interfaz.grafica.ddsi.dtos.StatisticsDTO;
 import interfaz.grafica.ddsi.dtos.SubmissionRequestDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
+import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -276,6 +277,17 @@ public class ServerAdapter {
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<PageDTO<SubmissionRequestDTO>>() {
         })
+        .block();
+  }
+
+  public void evaluateSubmissionRequest(Long subId, SubmissionRequestEvaluationDTO dto) {
+    dynamicClient.put()
+        .uri(uriBuilder -> uriBuilder
+            .path("/submissions/{subId}")
+            .build(subId))
+        .bodyValue(dto)
+        .retrieve()
+        .bodyToMono(Void.class)
         .block();
   }
 
