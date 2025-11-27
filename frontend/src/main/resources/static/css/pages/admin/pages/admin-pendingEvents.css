@@ -1,266 +1,40 @@
-/* ===========================
-   Hechos (Event Cards)
-=========================== */
-
-.hecho {
-    position: relative;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-12);
-    padding: 1.2rem;
-    box-shadow:  inset 0 0 0 3px transparent, 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.8s ease, transform 0.4s ease;
-    background: var(--ModuleBG);
-    display: block;
-    overflow: visible;
-    clear: both;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-.feed .hecho {
-    flex: 0 0 auto;
-    min-height: 84px;
+.scroll-container {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    align-self: stretch;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    gap: 16px;
+    padding: 1rem 0;
 }
 
-
-
-.hecho h2 {
-    margin: .2rem 0 .45rem;
-    font-size: 1.1rem;
-    line-height: 1.25;
-}
-
-.hecho p {
-    font-size: .9rem;
-    margin: 0 0 .6rem;
-    line-height: 1.4;
-}
-
-.hecho .ubicacion {
-    color: var(--ui-blue);
-    font-size: .80rem;
-    margin-bottom: .45rem;
-}
-
-.hecho .fuente {
-    font-size: .80rem;
-    color: var(--ui-muted);
-}
-
-.hecho img {
-    display: block;
-
-    max-width: 100%;
-    height: auto;
-    margin: .5rem auto;
-    border-radius: var(--radius-8)
-}
-
-.tag {
-    display: inline-block;
-    background: var(--Details);
-    color: var(--Text);
-    padding: .2rem .5rem;
-    border-radius: 0 0 15px 15px;
-    font-size: .8rem;
-}
-
-.flag-float {
-    position: absolute;
-    top: 15px;
-    right: 19px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-    border-radius: var(--radius-8);
-    z-index: 5;
-}
-
-.flag-float:hover {
-    background: #f1f5f9;
-}
-
-/* ===========================
-   Mensaje fin de resultados
-=========================== */
-.end-message {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--sp-5) var(--sp-4);
-    margin: var(--sp-4) 0;
-    border-radius: var(--radius-12);
-    background: var(--ModuleBG);
-    border: 1px solid var(--border-subtle);
-    animation: fadeIn 0.3s ease;
-}
-
-.end-message p {
-    margin: 0;
-    color: var(--Success);
-    font-size: var(--fs-small);
-    font-weight: var(--fw-semibold);
-    display: flex;
-    align-items: center;
-    gap: var(--sp-2);
-}
-
-.no-events-msg {
-    text-align: center;
-    color: var(--Muted);
-    padding: var(--sp-6);
-    font-size: var(--fs-body);
-}
-
-/* =========================== MODALES =========================== */
-
-/* ===========================
-   Modal de Reportar
-=========================== */
-
-.muted {
-    color: var(--Muted);
-    line-height: var(--lh-normal);
-    margin: 0 0 var(--sp-4);
-}
-
-.report-form {
-    display: grid;
-    gap: var(--sp-4);
-    margin-top: var(--sp-4);
-}
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-}
-
-/* ===========================
-   Modal de Éxito
-=========================== */
-
-.success-modal {
-    position: relative;
-    display: grid;
-    gap: var(--sp-3);
-    text-align: left;
-
-    z-index: 1;
-}
-
-/* ===========================
-   Modal de Subir Imagen
-=========================== */
-
-.upload-modal {
-    position: relative;
-    z-index: 1;
-}
-
-.upload-form {
-    display: grid;
-    gap: .8rem;
-}
-
-.dropzone {
-    position: relative;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    gap: .25rem;
-    padding: 1.25rem;
-    border: 2px dashed #cbd5e1;
-    border-radius: var(--radius-12);
-    background: #f8fafc;
-    cursor: pointer;
-    color: var(--Text);
-}
-
-.dropzone:hover {
-    background: var(--Background);
-}
-
-.dropzone:focus-within {
-    outline: 3px solid rgba(59, 130, 246, .25);
-    outline-offset: 2px;
-}
-
-.dropzone input[type="file"] {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.upload-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--sp-3);
-    margin-top: var(--sp-2);
-}
-
-
-.hecho.highlighted {
-    box-shadow:
-            inset 0 0 10px 3px var(--Details),
-            0 8px 16px rgba(0, 0, 0, 0.25);
-    transform: translateY(-4px);
-    transition:
-            box-shadow 0.25s ease,
-            transform 0.25s ease;
-}
-
-/* ✅ Más espacio entre cards */
-.hecho {
-    margin-bottom: 1.2rem; /* antes tenía 0 */
-}
-
-/* ✅ Contenedor de botones */
 .card-actions {
+    margin-top: 1.3rem;
     display: flex;
+    flex-direction: row;
     justify-content: flex-start;
     gap: .8rem;
-    margin-top: .6rem;
 }
 
-/* ✅ Estilos botón aceptar */
-.btn-approve {
-    padding: .45rem .9rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: .85rem;
-    background: #10b981; /* verde */
-    color: white;
-    transition: .2s;
+/* ===================== Titulo Pag (cont) ===================== */
+
+.admin-page-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--Text);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
 }
 
-.btn-approve:hover {
-    background: #0e9a6c;
-}
-
-/* ✅ Estilos botón rechazar */
-.btn-reject {
-    padding: .45rem .9rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: .85rem;
-    background: #ef4444; /* rojo */
-    color: white;
-    transition: .2s;
-}
-
-.btn-reject:hover {
-    background: #c93333;
+.admin-page-title .count {
+    background: #000000;
+    color: #ffffff;
+    font-size: .9rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: .2rem .6rem;
+    line-height: 1;
 }

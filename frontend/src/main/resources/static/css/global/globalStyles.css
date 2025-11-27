@@ -69,6 +69,36 @@ form:has(:invalid) .btn-apply:hover {
     background: var(--DarkAccent, #475265);
 }
 
+.btn-approve {
+    padding: .45rem .9rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: .85rem;
+    background: #10b981;
+    color: #fff;
+    transition: .2s
+}
+
+.btn-approve:hover {
+    background: #0e9a6c
+}
+
+.btn-reject {
+    padding: .45rem .9rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: .85rem;
+    background: #ef4444;
+    color: #fff;
+    transition: .2s
+}
+
+.btn-reject:hover {
+    background: #c93333
+}
+
 /* Addons */
 .btn-rounded {
     border-radius: 1rem;
@@ -92,7 +122,7 @@ form:has(:invalid) .btn-apply:hover {
     background: var(--Background, #f3f4f6);
 }
 
-.icon-btn{
+.icon-btn {
     justify-content: center;
     display: inline-flex;
     background: transparent;
@@ -102,7 +132,7 @@ form:has(:invalid) .btn-apply:hover {
     will-change: transform;
 }
 
-.icon-btn:hover{
+.icon-btn:hover {
     transform: scale(1.09);
 }
 
@@ -200,7 +230,7 @@ form:has(:invalid) .btn-apply:hover {
     transition: opacity .20s ease, transform .20s ease;
 }
 
-.modal-body h2{
+.modal-body h2 {
     margin-bottom: var(--sp-4);
 }
 
@@ -218,4 +248,32 @@ form:has(:invalid) .btn-apply:hover {
 
 .modal-close:hover {
     opacity: 1;
+}
+
+/* ======================================  Modales de mensaje */
+
+.message-modal {
+    display: grid;
+    gap: var(--sp-3);
+    text-align: left;
+
+    z-index: 1;
+}
+
+/* ===========  WARNING */
+.modal-warning {
+    border-bottom: 6px solid #f59e0b;
+}
+
+.modal-warning h2 {
+    color: var(--AltDetails);
+}
+
+/* ===========  ERROR */
+.modal-error {
+    border-bottom: 6px solid var(--Danger);
+}
+
+.modal-error h2 {
+    color: var(--Danger);
 }

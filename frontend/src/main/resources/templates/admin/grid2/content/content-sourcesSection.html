@@ -9,13 +9,13 @@
             </div>
 
             <div class="page-header__right">
-                <a href="#" class="btn btn-secondary" role="button">
-                    + Nueva Fuente
-                </a>
+                <button hx-get="/modals/new-source"
+                        hx-target="#modals-here" hx-swap="innerHTML"
+                        class="btn-primary" role="button">
+                    + Asociar nueva fuente
+                </button>
             </div>
         </header>
-
-
 
         <!-- Contenido siguiente vendrá acá -->
         <div class="sources-content">
@@ -33,9 +33,6 @@
 
                     <!-- Descripción -->
                     <p class="card-desc" th:text="${c.type}">Descripción…</p>
-
-
-
 
                     <!-- Acciones -->
                     <div class="card-actions">

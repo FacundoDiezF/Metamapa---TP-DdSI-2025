@@ -9,7 +9,7 @@
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 1000; /* Aumentado para que el wrapper del curated toggle (3500) funcione correctamente */
+    z-index: 3000;
     height: var(--header-h);
     padding: 0 clamp(12px, 2vw, 24px);
     display: grid;
@@ -17,7 +17,7 @@
     align-items: center;
     gap: 24px;
     background: var(--ModuleBG, #fff);
-    border-bottom: 1px solid rgba(229, 231, 235, 0.5); /* Border con opacidad intermedia (50%) */
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
     box-shadow: 0 1px 0 rgba(0, 0, 0, .02);
     font-family: var(--font-sans);
 }

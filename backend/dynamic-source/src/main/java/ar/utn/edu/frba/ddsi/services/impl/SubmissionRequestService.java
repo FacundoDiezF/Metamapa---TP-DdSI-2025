@@ -13,6 +13,8 @@ import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
 import ar.utn.edu.frba.ddsi.services.ISubmissionRequestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +27,7 @@ public class SubmissionRequestService implements ISubmissionRequestService {
   private final Publisher publisher;
 
   @Autowired
-  private SubmissionRequestService(ISubmissionRepository submissionRepository, IEventRepository eventRepository, Publisher publisher){
+  private SubmissionRequestService(ISubmissionRepository submissionRepository, IEventRepository eventRepository, Publisher publisher) {
     this.submissionRepository = submissionRepository;
     this.eventRepository = eventRepository;
     this.publisher = publisher;
@@ -57,13 +59,8 @@ public class SubmissionRequestService implements ISubmissionRequestService {
   }
 
   @Override
-  public List<SubmissionRequestOutputDTO> getSubmissionRequests(SubmissionState state) {
-
-    if(state == null) {
-      return submissionRepository.findAll().stream().map(SubmissionRequestOutputDTO::from).toList();
-    }
-
-    return submissionRepository.findByState(state).stream().map(SubmissionRequestOutputDTO::from).toList();
+  public Page<SubmissionRequestOutputDTO> getSubmissionRequests(SubmissionState state, Pageable pageable) {
+    return submissionRepository.findByState(state, pageable).map(SubmissionRequestOutputDTO::from);
   }
 
 }

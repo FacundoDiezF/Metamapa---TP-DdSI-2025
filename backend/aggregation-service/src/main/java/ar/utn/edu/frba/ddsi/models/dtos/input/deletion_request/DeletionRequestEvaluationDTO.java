@@ -5,6 +5,5 @@ import lombok.Data;
 @Data
 public class DeletionRequestEvaluationDTO {
   Long deletionRequestId;
-  String evaluatorName; //TODO: Esto deberia ser un usuario
   boolean accepted;
 }

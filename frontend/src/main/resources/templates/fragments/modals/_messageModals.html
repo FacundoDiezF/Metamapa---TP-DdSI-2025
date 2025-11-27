@@ -1,0 +1,31 @@
+<!-- Modal de confirmación, Warning y Error -->
+<div th:fragment="messageModal(type, title, desc)" class="modal-overlay"
+     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
+
+    <div class="modal-body message-modal"
+         th:classappend="${type == 'warning' ? 'modal-warning' : (type == 'error' ? 'modal-error' : '')}"
+         role="dialog"
+         aria-modal="true">
+
+        <button type="button"
+                class="modal-close"
+                aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''">
+            ✕
+        </button>
+
+        <h2 th:text="${(type == 'warning' ? '⚠️ ' : (type == 'error' ? '‼️Error: ' : '')) + title}">
+            Título del mensaje
+        </h2>
+
+        <p class="muted" th:text="${desc}">
+            Descripción del mensaje.
+        </p>
+
+        <a class="btn-apply"
+           role="button"
+           hx-on:click="this.closest('#modals-here').innerHTML = '' ">
+            Entendido
+        </a>
+    </div>
+</div>

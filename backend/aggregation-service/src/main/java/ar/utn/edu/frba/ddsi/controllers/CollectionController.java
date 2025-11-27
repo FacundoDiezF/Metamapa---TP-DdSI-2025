@@ -54,7 +54,7 @@ public class CollectionController {
   @GetMapping("/{handler}/events")
   public List<EventOutputDTO> getEventsFromCollection(
       @PathVariable String handler,
-      @RequestParam(required = false) boolean curedNavigation,
+      @RequestParam(required = false) boolean curatedNavigation,
       @RequestParam(required = false) List<Long> category_in,
       @RequestParam(required = false) List<Long> province_in,
       @RequestParam(required = false) List<Origin> source_in,
@@ -63,7 +63,7 @@ public class CollectionController {
       @RequestParam(required = false) LocalDateTime eventDate_lt,
       @RequestParam(required = false) LocalDateTime eventDate_gt
   ) {
-    return collectionService.getEventsFromCollection(handler, curedNavigation, category_in, province_in, source_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt);
+    return collectionService.getEventsFromCollection(handler, curatedNavigation, category_in, province_in, source_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt);
   }
 
   @PutMapping("/{handler}")

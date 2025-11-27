@@ -2,12 +2,16 @@ package interfaz.grafica.ddsi.models.entitites.adapters;
 
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
+import interfaz.grafica.ddsi.dtos.DeletionRequestDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
 import interfaz.grafica.ddsi.dtos.StatisticsDTO;
-import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
+import interfaz.grafica.ddsi.dtos.SubmissionRequestDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
+import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +29,9 @@ public class ServerAdapter {
 
   private final WebClient statsClient; //TODO: Borrar y remplazar su uso cuando tengamos el gateway
 
+  private final WebClient dynamicClient; //TODO: Borrar y remplazar su uso cuando tengamos el gateway
+
+
   public ServerAdapter(@Value("${aggregator.url}") String url) {
     this.webClient = WebClient.builder()
         .baseUrl(url)
@@ -34,16 +41,21 @@ public class ServerAdapter {
     this.statsClient = WebClient.builder()
         .baseUrl("http://localhost:8084")
         .build();
+
+    //TODO: Borrar y remplazar su uso cuando tengamos el gateway
+    this.dynamicClient = WebClient.builder()
+        .baseUrl("http://localhost:8081")
+        .build();
   }
 
 
   //--------------- EVENTS ----------------//
 
-  public PageDTO<EventDTO> getAllEvents(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page, int size) {
+  public PageDTO<EventDTO> getAllEvents(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
     return webClient.get()
         .uri(uriBuilder -> {
           uriBuilder.path("/events");
-          return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, size, uriBuilder);
+          return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size, uriBuilder);
         })
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<PageDTO<EventDTO>>() {
@@ -51,11 +63,11 @@ public class ServerAdapter {
         .block();
   }
 
-  public List<EventDTO> getAllEventsByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page, int size) {
+  public List<EventDTO> getAllEventsByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
     return webClient.get()
         .uri(uriBuilder -> {
           uriBuilder.path("collections/" + handler + "/events");
-          return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, page, size, uriBuilder);
+          return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size, uriBuilder);
         })
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<List<EventDTO>>() {
@@ -63,7 +75,7 @@ public class ServerAdapter {
         .block();
   }
 
-  private URI getEventsUri(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, int page, int size, UriBuilder uriBuilder) {
+  private URI getEventsUri(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size, UriBuilder uriBuilder) {
     if (category_in != null && !category_in.isEmpty()) {
       uriBuilder.queryParam("category_in", category_in.toArray());
     }
@@ -79,6 +91,9 @@ public class ServerAdapter {
     if (source_in != null && !source_in.isEmpty()) {
       uriBuilder.queryParam("source_in", source_in.toArray());
     }
+    if (curatedNavigation) {
+      uriBuilder.queryParam("curatedNavigation", true);
+    }
     uriBuilder.queryParam("page", page);
     uriBuilder.queryParam("size", size);
     return uriBuilder.build();
@@ -86,7 +101,7 @@ public class ServerAdapter {
 
 
   //--------------- COLLECTIONS ----------------//
-  public PageDTO<CollectionDTO> getAllCollections(int page , int size) {
+  public PageDTO<CollectionDTO> getAllCollections(int page, int size) {
     return webClient.get()
         .uri(uriBuilder -> uriBuilder
             .path("/collections")
@@ -128,7 +143,7 @@ public class ServerAdapter {
   public PageDTO<CategoryDTO> getAllCategories(int page, int size) {
     return getAllCategories(page, size, null);
   }
-  
+
   public List<CategoryDTO> getAllCategoriesByIds(List<Long> categoriesIds) {
 
     if (categoriesIds == null || categoriesIds.isEmpty()) {
@@ -180,7 +195,7 @@ public class ServerAdapter {
   }
 
   //--------------- DELETION REQUESTS ----------------//
-  public void postNewDeletionRequest(DeletionRequestDTO deletionRequestDTO) {
+  public void postNewDeletionRequest(DeletionRequestCreationDTO deletionRequestDTO) {
     webClient.post()
         .uri("/deletion-request")
         .bodyValue(deletionRequestDTO)
@@ -225,4 +240,55 @@ public class ServerAdapter {
         })
         .block();
   }
+
+  //--------------- DELETION REQUESTS ----------------//
+  public PageDTO<DeletionRequestDTO> getAllDeletionRequests(int page, int size) {
+    return webClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/deletion-request")
+            .queryParam("page", page)
+            .queryParam("size", size)
+            .build())
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<DeletionRequestDTO>>() {
+        })
+        .block();
+  }
+
+  public void evaluateDeletionRequest(Long eventId, DeletionRequestEvaluateDTO dto) {
+    webClient.put()
+        .uri(uriBuilder -> uriBuilder
+            .path("/deletion-request/{eventId}")
+            .build(eventId))
+        .bodyValue(dto)
+        .retrieve()
+        .bodyToMono(Void.class)
+        .block();
+  }
+
+  //--------------- DELETION REQUESTS ----------------//
+  public PageDTO<SubmissionRequestDTO> getAllSubmissionRequest(int page, int size) {
+    return dynamicClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/submissions")
+            .queryParam("page", page)
+            .queryParam("size", size)
+            .build())
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<PageDTO<SubmissionRequestDTO>>() {
+        })
+        .block();
+  }
+
+  public void evaluateSubmissionRequest(Long subId, SubmissionRequestEvaluationDTO dto) {
+    dynamicClient.put()
+        .uri(uriBuilder -> uriBuilder
+            .path("/submissions/{subId}")
+            .build(subId))
+        .bodyValue(dto)
+        .retrieve()
+        .bodyToMono(Void.class)
+        .block();
+  }
+
 }
