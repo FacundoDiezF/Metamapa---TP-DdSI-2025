@@ -14,5 +14,6 @@ public interface IDeletionRequestRepository extends JpaRepository<DeletionReques
 
   List<DeletionRequest> findByEvent_Id(long eventId);
 
-  Page<DeletionRequest> findAllByState(DeletionRequestState state, Pageable pageable);
+
+  Page<DeletionRequest> findAllByStateAndEvent_DeletedFalse(DeletionRequestState state, Pageable pageable);
 }

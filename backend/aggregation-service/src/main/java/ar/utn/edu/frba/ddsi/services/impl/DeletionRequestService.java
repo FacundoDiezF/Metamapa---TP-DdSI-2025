@@ -73,7 +73,7 @@ public class DeletionRequestService implements IDeletionRequestService {
   @Override
   public Page<DeletionRequestOutputDTO> getAll(DeletionRequestState state, Pageable pageable) {
 
-    Page<DeletionRequest> allDeletionRequests = deletionRequestRepository.findAllByState(state, pageable);
+    Page<DeletionRequest> allDeletionRequests = deletionRequestRepository.findAllByStateAndEvent_DeletedFalse(state, pageable);
 
     return allDeletionRequests.map(DeletionRequestOutputDTO::from);
   }
