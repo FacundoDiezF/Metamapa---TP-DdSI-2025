@@ -4,6 +4,8 @@ server.port=8080
 collection.refresh.cron=0 0 * * * *
 #CornJob for reevaluate consensus (every day at 3am)
 reevaluate.consensus.cron=0 0 3 * * *
+#CronJob for statistics refresh
+statistics.refresh.cron=0 0 * * * *
 # Agregation service URL
 aggregation-service.url=http://localhost:8080
 

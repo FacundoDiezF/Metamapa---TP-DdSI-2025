@@ -1,9 +1,5 @@
 server.port=8081
 
-# Upload path (should be absolute)
-app.upload.path=
-app.upload.folder.images=
-
 #File Upload Configuration
 spring.servlet.multipart.max-file-size=10MB
 spring.servlet.multipart.max-request-size=50MB
@@ -21,6 +17,7 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 # Hibernate configuration
 spring.jpa.hibernate.ddl-auto=create-drop
+
 # Possible values: validate | update | create | create-drop | none
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
