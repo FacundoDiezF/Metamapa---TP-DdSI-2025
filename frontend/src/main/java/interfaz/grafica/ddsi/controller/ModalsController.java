@@ -3,7 +3,9 @@ package interfaz.grafica.ddsi.controller;
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
-import interfaz.grafica.ddsi.dtos.output.DeletionRequestDTO;
+import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
+import interfaz.grafica.ddsi.dtos.output.SourceClientOutputDTO;
+import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.LocationService;
 import org.springframework.stereotype.Controller;
@@ -68,11 +70,27 @@ public class ModalsController {
       @PathVariable Long id,
       Model model) {
 
-    DeletionRequestDTO deletionRequestDTO = new DeletionRequestDTO();
+    DeletionRequestCreationDTO deletionRequestDTO = new DeletionRequestCreationDTO();
     deletionRequestDTO.setEventId(id);
 
     model.addAttribute("newDeletionRequest", deletionRequestDTO);
 
     return "fragments/modals/_reportEventModal :: deletionRequestModal";
+  }
+
+  @GetMapping("/new-collection")
+  public String getNewCollectionModal(Model model) {
+
+    model.addAttribute("newCollection", new CollectionOutputDTO());
+
+    return "fragments/modals/_newCollectionModal :: newCollectoinModal";
+  }
+
+  @GetMapping("/new-source")
+  public String getNewSourceModal(Model model) {
+
+    model.addAttribute("newSourceClient", new SourceClientOutputDTO());
+
+    return "fragments/modals/_newSourceModal :: newSourceModal";
   }
 }

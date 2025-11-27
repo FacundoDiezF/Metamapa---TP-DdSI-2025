@@ -149,19 +149,6 @@
 }
 
 /* ===========================
-   Modal de Éxito
-=========================== */
-
-.success-modal {
-    position: relative;
-    display: grid;
-    gap: var(--sp-3);
-    text-align: left;
-
-    z-index: 1;
-}
-
-/* ===========================
    Modal de Subir Imagen
 =========================== */
 

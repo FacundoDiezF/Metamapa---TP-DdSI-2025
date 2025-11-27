@@ -9,9 +9,11 @@
             </div>
 
             <div class="page-header__right">
-                <a href="#" class="btn-primary" role="button">
+                <button hx-get="/modals/new-collection"
+                        hx-target="#modals-here" hx-swap="innerHTML"
+                        class="btn-primary" role="button">
                     + Nueva Colección
-                </a>
+                </button>
             </div>
         </header>
 
@@ -24,7 +26,7 @@
                     <!-- Título + estado -->
                     <div class="card-head">
                         <h2 class="card-title">
-                            <a th:href="@{|/collections/${c.handler}|}" th:text="${c.title}">Título</a>
+                            <a th:href="@{/collection/{handler}(handler=${c.handler})}" th:text="${c.title}">Título</a>
                         </h2>
 
                     </div>
@@ -32,29 +34,28 @@
                     <!-- Descripción -->
                     <p class="card-desc" th:text="${c.description}">Descripción…</p>
 
-
-                    <!-- PODEMOS AGREGAR MAS COSAS COMO PARA QUE LA CARD QUEDE COMO EN LEGACY PERO DEBERIAMOS AGREGARSELA AL DTO -->
-
-
                     <!-- Meta -->
                     <div class="card-meta">
                         <span class="meta">
-                            <img class="meta-icon" src="/shared/icons/location-pin-svgrepo-com.svg" alt="" />
+                            <img class="meta-icon" src="/shared/icons/location-pin-svgrepo-com.svg" alt=""/>
                             <strong th:text="${#lists.size(c.eventIds)}">0</strong> hechos
                         </span>
                     </div>
 
                     <!-- Acciones -->
                     <div class="card-actions">
-                        <button class="icon-btn" title="Ver"><img src="/shared/icons/eye.svg" alt=""></button>
-                        <button class="icon-btn" title="Editar"><img src="/shared/icons/edit.svg" alt=""></button>
-                        <button class="icon-btn" title="Eliminar"><img src="/shared/icons/trash.svg" alt=""></button>
+                        <a class="icon-btn" title="Ver" th:href="@{/collection/{handler}(handler=${c.handler})}"><img
+                                src="/shared/icons/eye.svg" alt="Ver coleccion"></a>
+                        <button class="icon-btn" title="Editar"><img src="/shared/icons/edit.svg"
+                                                                     alt="Editar coleccion"></button>
+                        <button class="icon-btn" title="Eliminar"><img src="/shared/icons/trash.svg"
+                                                                       alt="Eliminar Coleccion"></button>
                     </div>
 
                 </article>
             </section>
 
-           <p class="hint" th:if="${#lists.isEmpty(collections)}">No hay colecciones cargadas.</p>
-       </div>
-   </section>
+            <p class="hint" th:if="${#lists.isEmpty(collections)}">No hay colecciones cargadas.</p>
+        </div>
+    </section>
 </th:block>

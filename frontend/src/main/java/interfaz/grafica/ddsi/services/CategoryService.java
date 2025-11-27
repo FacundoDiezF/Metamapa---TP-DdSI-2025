@@ -22,17 +22,27 @@ public class CategoryService {
     try {
       return server.getAllCategories(page, size);
     } catch (WebClientResponseException e) {
-      throw new BackendException("Backend error: " + e.getStatusCode());
+      throw new BackendException(e);
     } catch (Exception e) {
       throw new ConnectionException("Could not connect to backend");
     }
   }
 
-  public List<CategoryDTO> getByIds(List<Long> categoriesIds) {
+  public List<CategoryDTO> getAllByIds(List<Long> categoriesIds) {
     try {
-      return server.getCategoriesByIds(categoriesIds);
+      return server.getAllCategoriesByIds(categoriesIds);
     } catch (WebClientResponseException e) {
-      throw new BackendException("Backend error: " + e.getStatusCode());
+      throw new BackendException(e);
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
+    }
+  }
+
+  public CategoryDTO getById(Long categoryIds) {
+    try {
+      return server.getCategoryById(categoryIds);
+    } catch (WebClientResponseException e) {
+      throw new BackendException(e);
     } catch (Exception e) {
       throw new ConnectionException("Could not connect to backend");
     }

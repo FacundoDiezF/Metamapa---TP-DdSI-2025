@@ -13,4 +13,6 @@ public interface ICategoryService {
   Page<CategoryDTO> getAll(Pageable pageable);
   
   Page<CategoryDTO> getAllByIds(List<Long> ids, Pageable pageable);
+
+  CategoryDTO getById(Long idCategory);
 }

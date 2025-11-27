@@ -35,7 +35,7 @@ public class Event {
   @JoinColumn(name = "province_id")
   Province province;
 
-  @Column(name = "event_date", nullable = false)
-  private LocalDateTime eventDate;
+  @Column(name = "updated_date", nullable = false)
+  private LocalDateTime updatedDate;
 
 }

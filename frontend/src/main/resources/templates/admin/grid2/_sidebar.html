@@ -13,7 +13,7 @@
                 </li>
 
                 <li th:classappend="${active}=='estadisticas' ? ' is-active'">
-                    <a th:href="@{/admin/stats}">
+                    <a th:href="@{/admin/statistics}">
                         <img class="icon" th:src="@{/shared/icons/insight-svgrepo-com.svg}" alt="estadisticas">
                         Estadísticas
                     </a>
@@ -27,14 +27,14 @@
                 </li>
 
                 <li th:classappend="${active}=='eliminaciones' ? ' is-active'">
-                    <a th:href="@{/admin/delete-requests}">
+                    <a th:href="@{/admin/deletionRequests}">
                         <img class="icon" th:src="@{/shared/icons/Group.svg}" alt="eliminaciones">
                         Solicitudes de Eliminación
                     </a>
                 </li>
 
                 <li th:classappend="${active}=='pendientes' ? ' is-active'">
-                    <a th:href="@{/admin/pending}">
+                    <a th:href="@{/admin/pendingEvents}">
                         <img class="icon" th:src="@{/shared/icons/sand-clock-svgrepo-com.svg}" alt="pendientes">
                         Hechos pendientes
                     </a>

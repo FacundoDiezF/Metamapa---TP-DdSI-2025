@@ -1,0 +1,23 @@
+<th:block th:fragment="pendingEventsContent">
+    <section>
+
+        <h1 class="admin-page-title">
+            Hechos Pendientes
+            <span class="count" th:text="${submissionPage.totalElements}"></span>
+        </h1>
+
+        <div id="events-container" class="scroll-container">
+            <th:block th:if="${#lists.isEmpty(submissionPage.content)}">
+                <p class="no-events-msg">No hay Eventos disponibles.</p>
+            </th:block>
+
+            <th:block th:if="${!#lists.isEmpty(submissionPage.content)}"
+                      th:each="submission : ${submissionPage.content}">
+
+                <div th:replace="~{fragments/_pendingEventCard :: cardFragment(sub=${submission})}"></div>
+
+            </th:block>
+        </div>
+
+    </section>
+</th:block>

@@ -5,14 +5,17 @@ import ar.utn.edu.frba.ddsi.exceptions.SpamException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.deletion_request.DeletionRequestCreationDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.input.deletion_request.DeletionRequestEvaluationDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.deletion_request.DeletionRequestOutputDTO;
-import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.deletion_request.DeletionRequest;
+import ar.utn.edu.frba.ddsi.models.entities.deletion_request.DeletionRequestState;
+import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.spamDetector.ISpamDetector;
 import ar.utn.edu.frba.ddsi.models.repositories.IDeletionRequestRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.services.IDeletionRequestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -61,16 +64,17 @@ public class DeletionRequestService implements IDeletionRequestService {
     DeletionRequest deletionRequest = deletionRequestRepository.findById(evaluation.getDeletionRequestId())
         .orElseThrow(() -> new NotFoundException("Deletion request not found - ID: " + evaluation.getDeletionRequestId()));
 
-    deletionRequest.evaluate(evaluation.isAccepted(), evaluation.getEvaluatorName());
+    deletionRequest.evaluate(evaluation.isAccepted(), "Aca va el admin que lo valido"); //TODO: poner el usuario que lo valida
 
     deletionRequestRepository.save(deletionRequest);
     return DeletionRequestOutputDTO.from(deletionRequest);
   }
 
   @Override
-  public List<DeletionRequestOutputDTO> getAll() {
-    return deletionRequestRepository.findAll().stream()
-        .map(DeletionRequestOutputDTO::from)
-        .toList();
+  public Page<DeletionRequestOutputDTO> getAll(DeletionRequestState state, Pageable pageable) {
+
+    Page<DeletionRequest> allDeletionRequests = deletionRequestRepository.findAllByStateAndEvent_DeletedFalse(state, pageable);
+
+    return allDeletionRequests.map(DeletionRequestOutputDTO::from);
   }
 }
