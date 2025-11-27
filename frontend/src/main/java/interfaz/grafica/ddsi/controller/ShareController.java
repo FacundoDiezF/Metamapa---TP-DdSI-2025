@@ -37,26 +37,38 @@ public class ShareController {
   @PostMapping("/deletion-request")
   public String handleShareDeletionRequest(@ModelAttribute("newDeletionRequest") DeletionRequestCreationDTO newDeletionRequest, Model model) {
 
+    String modalType;
+    String title;
+    String description;
+
     try {
       deletionRequestService.postNew(newDeletionRequest);
+      modalType = "success";
+      title = "Solicitud en revisión";
+      description = "Gracias por colaborar con la comunidad! Revisaremos tu solicitud y actuaremos de acuerdo con las normas de convivencia para mantener MetaMapa útil, seguro y respetuoso para todas las personas.";
+
     } catch (BackendException e) {
 
-      if ("SPAM_DETECTED".equals(e.getErrorInfo().getErrorCode())) {
-        model.addAttribute("warningTitle", "Spam detectado");
-        model.addAttribute("warningDescription", "Hemos detectado que el contenido de tu envío podría infringir nuestras políticas de spam.");
-        return "fragments/modals/_messageModals :: warningModal(title=${warningTitle}, desc=${warningDescription})";
-      }
+      switch (e.getErrorInfo().getErrorCode()) {
+        case "SPAM_DETECTED":
+          modalType = "warning";
+          title = "Spam detectado";
+          description = "Hemos detectado que el contenido de tu envío podría infringir nuestras políticas de spam. Por favor, revisa tu solicitud antes de enviarla nuevamente.";
+          break;
 
-      model.addAttribute("errorTitle", e.getErrorInfo().getErrorCode());
-      model.addAttribute("errorDescription", e.getErrorInfo().getMessage());
-      return "fragments/modals/_messageModals :: errorModal(title=${errorTitle}, desc=${errorDescription})";
+        default:
+          modalType = "error";
+          title = e.getErrorInfo().getErrorCode();
+          description = e.getErrorInfo().getMessage();
+          break;
+      }
     }
 
-    model.addAttribute("succesTitle", "Solicitud en revisión");
-    model.addAttribute("succesDescriptioni",
-        "Gracias por colaborar con la comunidad! Revisaremos tu solicitud y actuaremos de acuerdo con las normas de convivencia para mantener MetaMapa útil, seguro y respetuoso para todas las personas."
-    );
-    return "fragments/modals/_messageModals :: successeModal(title=${succesTitle}, desc=${succesDescriptioni})";
+    model.addAttribute("mType", modalType);
+    model.addAttribute("mTitle", title);
+    model.addAttribute("mDesc", description);
+
+    return "fragments/modals/_messageModals :: messageModal(type=${mType}, title=${mTitle}, desc=${mDesc})";
   }
 
   @PostMapping("/deletion-request/evaluate/{dReqId}")
@@ -69,7 +81,7 @@ public class ShareController {
     DeletionRequestEvaluateDTO evaluationDto = new DeletionRequestEvaluateDTO();
     evaluationDto.setAccepted(approve);
 
-    deletionRequestService.evaluate(dReqId,evaluationDto);
+    deletionRequestService.evaluate(dReqId, evaluationDto);
     return "redirect:/admin/deletionRequests";
   }
 }
