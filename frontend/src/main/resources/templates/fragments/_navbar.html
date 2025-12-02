@@ -1,4 +1,4 @@
-<th:block th:fragment="navbar">
+<th:block th:fragment="navbar" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="navbar" id="navbar">
         <a th:href="@{/explore}" class="brand">
             <div class="brand-mark"><span class="dot"></span></div>
@@ -17,12 +17,31 @@
                 </div>
             </div>
             <!-- Botones de registro e inicio de sesión -->
-            <button id="accountBtn" class="btn-primary btn-rounded" type="button" data-auth="open" data-panel="register">
-                Registrarse
-            </button>
-            <button id="loginBtn" class="btn-bordered btn-rounded" type="button" data-auth="open" data-panel="login">
-                Iniciar Sesión
-            </button>
+            <div sec:authorize="!isAuthenticated()" style="display: flex; gap: 10px;">
+                <a th:href="@{/register}" class="btn-primary btn-rounded" style="text-decoration: none;">
+                    Registrarse
+                </a>
+                <a th:href="@{/login}" class="btn-bordered btn-rounded" style="text-decoration: none;">
+                    Iniciar Sesión
+                </a>
+            </div>
+
+
+            <div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 10px;">
+
+                <span style="font-size: 0.9rem; font-weight: 500;">
+                    Hola, <span sec:authentication="name">Usuario</span>
+                </span>
+
+                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                    <button type="submit" class="btn-bordered btn-rounded"
+                            style="border-color: #ff4d4f; color: #ff4d4f; background: transparent; cursor: pointer;">
+                        Cerrar Sesión
+                    </button>
+                </form>
+
+            </div>
+
         </div>
     </div>
 
@@ -31,7 +50,7 @@
         <a th:href="@{/explore}" th:classappend="${active}=='explore' ? ' active'">Explorar</a>
         <a th:href="@{/collections}" th:classappend="${active}=='collections' ? ' active'">Colecciones</a>
         <a th:href="@{/map}" th:classappend="${active}=='map' ? ' active'">Mapa</a>
-        <a th:href="@{/admin/collections}" th:classappend="${active}=='admin' ? 'active'">Panel de control</a>
+        <a th:href="@{/admin/collections}" th:classappend="${active}=='admin' ? 'active'" sec:authorize="hasRole('ADMIN')">Panel de control</a>
 
     </nav>
 </th:block>

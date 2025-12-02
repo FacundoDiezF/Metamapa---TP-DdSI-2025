@@ -40,7 +40,7 @@ public class AuthController {
 
       return "redirect:/";
 
-    } catch (BackendException e) { //TODO Validar que este manejo de errores sea conceptualmente correcto
+    } catch (BackendException e) {
       String errorMessage = "Error registering user.";
       if (e.getErrorInfo() != null && e.getErrorInfo().getMessage() != null) {
         errorMessage = e.getErrorInfo().getMessage();
