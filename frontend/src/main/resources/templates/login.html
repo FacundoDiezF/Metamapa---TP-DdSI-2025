@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Login - MetaMapa</title>
+</head>
+<body>
+<div style="text-align: center; margin-top: 50px;">
+  <h2>Login</h2>
+
+  <div th:if="${param.error}" style="color: red; margin-bottom: 10px;">
+    Invalid username or password.
+  </div>
+
+  <div th:if="${param.logout}" style="color: green; margin-bottom: 10px;">
+    You have been logged out.
+  </div>
+
+  <form th:action="@{/login}" method="post">
+    <div>
+      <label>Username:</label>
+      <input type="text" name="username" required autofocus/>
+    </div>
+    <br/>
+    <div>
+      <label>Password:</label>
+      <input type="password" name="password" required/>
+    </div>
+    <br/>
+    <button type="submit">Sign In</button>
+  </form>
+
+  <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
+  <p><a th:href="@{/}">Go back Home</a></p>
+</div>
+</body>
+</html>
+
+<!--TODO: Hacer bien, esto solo fue hecho para probar la funcionalidad-->
