@@ -21,21 +21,38 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//    http
+//        // 1. Autorización: Permitir tod0
+//        .authorizeHttpRequests(auth -> auth
+//            .anyRequest().permitAll()
+//        )
+//        // 2. Desactivar protecciones que molestan en desarrollo (CSRF)
+//        .csrf(csrf -> csrf.disable())
+//        // 3. Desactivar el Formulario de Login automático
+//        .formLogin(form -> form.disable())
+//        // 4. Desactivar Logout automático
+//        .logout(logout -> logout.disable());
     http
         .authorizeHttpRequests(auth -> auth
             // 1. Recursos estáticos (CSS, JS, Imágenes) -> PÚBLICOS
             .requestMatchers("/css/**", "/js/**", "/shared/**", "/images/**").permitAll()
 
-            // 2. Páginas de Acceso (Login, Register, Home pública) -> PÚBLICAS
-            .requestMatchers("/login", "/register", "/home", "/").permitAll()
+            // 2. Páginas de Acceso (Landing, Explorar, Colecciones, Mapa) -> PÚBLICAS
+            .requestMatchers("/", "/landing", "/explore", "/collections", "/map").permitAll() //! no se por qué a veces aparece http://localhost:8085/static, asumo que es un error y no debería pasar, por eso no la voy a poner como pública
 
-            // 3. Lo demás -> REQUIERE LOGIN
+            // 3. Páginas de Autenticación (Login, Registro) -> PÚBLICAS
+            .requestMatchers("/login", "/register").permitAll()
+
+            // 4. Páginas de ERRORES -> PÚBLICAS
+            .requestMatchers("/403", "/404", "/error").permitAll()
+
+            // 5. Lo demás -> REQUIERE LOGIN
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
             .loginPage("/login")        // TODO: La URL de tu controlador que muestra el HTML
             .loginProcessingUrl("/login") // TODO: La URL donde el HTML hace POST (Spring lo intercepta)
-            .defaultSuccessUrl("/", true) // A dónde ir si sale bien (ej: Home o Mapa)
+            .defaultSuccessUrl("/explore", true) // A dónde ir si sale bien (ej: Home o Mapa)
             .failureUrl("/login?error=true") // TODO: A dónde ir si falla
             .permitAll()
         )
@@ -47,10 +64,6 @@ public class SecurityConfig {
             .permitAll()
         )
         .exceptionHandling(ex -> ex
-          // Usuario no autenticado → redirigir a login
-          .authenticationEntryPoint((request, response, authException) ->
-              response.sendRedirect("/login?unauthorized")
-          )
           // Usuario autenticado pero sin permisos → redirigir a página de error
           .accessDeniedHandler((request, response, accessDeniedException) ->
               response.sendRedirect("/403")

@@ -28,6 +28,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.util.UriBuilder;
 
@@ -324,7 +325,10 @@ public class ServerAdapter {
 
       throw new BackendException(e);
 
-    } catch (ResourceAccessException | IllegalStateException e) {
+    } catch (WebClientRequestException e) {
+    throw new ConnectionException("Could not connect to the authentication server.");
+
+  }catch (ResourceAccessException | IllegalStateException e) {
       throw new ConnectionException("Could not connect to the server.");
     }
   }
@@ -341,7 +345,10 @@ public class ServerAdapter {
 
       throw new BackendException(e);
 
-    } catch (ResourceAccessException | IllegalStateException e) {
+    } catch (WebClientRequestException e) {
+      throw new ConnectionException("Could not connect to the registration server.");
+
+    }catch (ResourceAccessException | IllegalStateException e) {
       throw new ConnectionException("Could not connect to the server.");
     }
   }
