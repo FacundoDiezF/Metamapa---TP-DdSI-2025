@@ -12,6 +12,7 @@ import interfaz.grafica.ddsi.dtos.SubmissionRequestDTO;
 import interfaz.grafica.ddsi.dtos.auth.AuthResponseDTO;
 import interfaz.grafica.ddsi.dtos.auth.LoginRequestDTO;
 import interfaz.grafica.ddsi.dtos.auth.RegisterRequestDTO;
+import interfaz.grafica.ddsi.dtos.auth.UserSummaryDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
@@ -310,6 +311,11 @@ public class ServerAdapter {
 
   //--------------- AUTHENTICATION ----------------//
   public AuthResponseDTO login(LoginRequestDTO request) {
+
+    if ("admin".equals(request.getUsername()) || "cont".equals(request.getUsername())) {
+      return crearMockUser(request.getUsername());
+    } //! Esto está mockeado full croto para que ustedes puedan probar el front sin que funcione el back, cuando esté el back, vuela
+
     try {
       return apiGatewayClient.post()
           .uri("/api/auth/login")
@@ -353,4 +359,23 @@ public class ServerAdapter {
     }
   }
 
+  //!--------------- MOCK ----------------// cuando esté el back, vuela
+  private AuthResponseDTO crearMockUser(String type) {
+    AuthResponseDTO response = new AuthResponseDTO();
+    response.setAccessToken("token-falso-" + type);
+    response.setRefreshToken("refresh-falso-" + type);
+
+    UserSummaryDTO user = new UserSummaryDTO();
+    user.setUsername(type);
+    user.setPublicId(java.util.UUID.randomUUID().toString());
+
+    if ("admin".equals(type)) {
+      user.setRoles(java.util.List.of("ADMIN", "CONTRIBUYENTE")); // El admin suele tener ambos
+    } else {
+      user.setRoles(java.util.List.of("CONTRIBUYENTE"));
+    }
+
+    response.setUser(user);
+    return response;
+  }
 }
