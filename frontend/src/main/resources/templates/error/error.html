@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Error - MetaMapa</title>
+</head>
+<body>
+<div style="text-align: center; margin-top: 50px;">
+  <p>si ves este error es porque te faltó un try-catch >:(.</p>
+  <h1>¡Ups!</h1>
+  <h2>Algo no salió como esperábamos</h2>
+
+  <p>Código de error: <span th:text="${status}">Unknown</span></p>
+
+  <p>No pudimos procesar tu solicitud.</p>
+  <br>
+  <a href="/" class="btn">Volver al Inicio</a>
+</div>
+</body>
+</html>
+
+<!--TODO: Hacer bien, esto solo fue hecho para probar la funcionalidad-->
