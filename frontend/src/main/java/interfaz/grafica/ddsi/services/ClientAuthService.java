@@ -33,9 +33,9 @@ public class ClientAuthService {
 
     // 3. Auto-Login en Spring Security
     List<SimpleGrantedAuthority> authorities = Collections.emptyList();
-    if (response.getUser().getAuthorities() != null) {
-      authorities = response.getUser().getAuthorities().stream()
-          .map(SimpleGrantedAuthority::new)
+    if (response.getUser().getRoles() != null) {
+      authorities = response.getUser().getRoles().stream()
+          .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
           .collect(Collectors.toList());
     }
 

@@ -55,15 +55,15 @@ public class CustomAuthProvider implements AuthenticationProvider {
       session.setAttribute("publicId", response.getUser().getPublicId());
       session.setAttribute("username", response.getUser().getUsername());
 
-      // 3. Guardar los permisos en sesión
+      // 4. Guardar los permisos en sesión
       List<GrantedAuthority> authorities = new ArrayList<>();
-      if (response.getUser().getAuthorities() != null) {
-        authorities = response.getUser().getAuthorities().stream()
-            .map(SimpleGrantedAuthority::new) // Ej: "event:create"
+      if (response.getUser().getRoles() != null) {
+        authorities = response.getUser().getRoles().stream()
+            .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Ej: "ROLE_ADMIN"
             .collect(Collectors.toList());
       }
 
-      // 4. Retornar el token de éxito (Importante: password null para seguridad)
+      // 5. Retornar el token de éxito (Importante: password null para seguridad)
       return new UsernamePasswordAuthenticationToken(
           username,
           null,
