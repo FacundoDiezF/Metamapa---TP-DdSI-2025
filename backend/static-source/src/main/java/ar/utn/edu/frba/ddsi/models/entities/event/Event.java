@@ -41,7 +41,7 @@ public class Event {
   @Column(name = "title", nullable = false)
   private final String title;
 
-  @Column(name = "description", nullable = false)
+  @Column(name = "description", nullable = false, columnDefinition = "TEXT")
   private final String description;
 
   @ManyToOne
