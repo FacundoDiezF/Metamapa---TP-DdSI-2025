@@ -33,7 +33,7 @@ public class EventService {
   }
 
   public List<EventDTO> getAllByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
-    //!No está paginado
+    //!No está paginado TODO
     try {
       return server.getAllEventsByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size);
     } catch (WebClientResponseException e) {
@@ -45,6 +45,12 @@ public class EventService {
   }
 
   public void postNew(EventOutputDTO newEvent) {
-    //TODO que le mande el evento al agregador (Debemos crear el endpoint y que rediriga a la fuente dinamica)
+    try {
+      server.postNewEvent(newEvent);
+    } catch (WebClientResponseException e) {
+      throw new BackendException(e);
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
+    }
   }
 }

@@ -5,29 +5,22 @@
         <details class="share">
 
             <summary id="shareSummary" class="card post-box" role="button" aria-controls="sharePanel">
-
                 <input type="text" placeholder="Comparte tus hechos..." readonly/>
-                <div class="post-icons" aria-hidden="true">
-                    <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen">
-                        <img th:src="@{/shared/icons/imagesmode.svg}">
-                    </a>
-                </div>
-
             </summary>
 
-            <form id="sharePanel" method="post" class="share-panel" novalidate
+            <form id="sharePanel" method="post" class="share-panel"
                   th:object="${newEvent}" th:action="@{/share/event}">
 
                 <div class="share-row">
 
-                    <div class="field">
+                    <div class="field field-adaptive">
                         <label>Título del Hecho
                             <input type="text" placeholder="Título del Hecho" required th:field="*{title}"/>
                         </label>
                         <p class="help error-msg">El título es obligatorio.</p>
                     </div>
 
-                    <div class="field">
+                    <div class="field field-adaptive">
                         <label>Fecha
                             <input type="date" required th:field="*{eventDate}"/>
                         </label>
@@ -58,7 +51,7 @@
                                         + Ver Categoría
                                     </a>
 
-                                    <input id="categoryId" name="categoryId" required th:field="*{categoryId}"/>
+                                    <input id="category" name="category" required th:field="*{category}"/>
 
                                 </div>
 
@@ -66,21 +59,24 @@
                             </div>
 
                             <div class="field">
-                                <label for="selected-location">Ubicación</label>
+                                <label>Ubicación</label>
+
                                 <div id="selected-location"
-                                     hx-get="/modals/..."
-                                     hx-target="#modals-here" hx-swap="innerHTML"
+                                     hx-get="/modals/map-selection"
+                                     hx-target="#modals-here"
+                                     hx-swap="innerHTML"
                                      class="chip-toggle">
 
                                     <a class="chip mas">
-                                        Marcar Ubicación
+                                        + Marcar Ubicación
                                     </a>
 
-                                    <input id="location" name="" required th:field="*{categoryId}"/>
+                                    <input required th:field="*{latitude}" />
+                                    <input required th:field="*{longitude}" />
 
                                 </div>
 
-                                <p class="help error-msg">Elegí una categoría.</p>
+                                <p class="help error-msg">Debés marcar una ubicación en el mapa.</p>
                             </div>
 
                         </div>

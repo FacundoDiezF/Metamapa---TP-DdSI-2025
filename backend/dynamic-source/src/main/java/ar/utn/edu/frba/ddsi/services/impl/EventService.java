@@ -53,7 +53,7 @@ public class EventService implements IEventService {
         .category(category)
         .latitude(dto.getLatitude())
         .longitude(dto.getLongitude())
-        .eventDate(dto.getEventDate())
+        .eventDate(dto.getEventDate().atStartOfDay())
         .uploadDate(LocalDateTime.now())
         .contributor(dto.getContributor()) //TODO: Esto deberia ser un usuario
         .build();
@@ -83,7 +83,7 @@ public class EventService implements IEventService {
     if (dto.getCategory() != null) event.setCategory(categoryService.findOrCreate(dto.getCategory()));
     if (dto.getLatitude() != null) event.setLatitude(dto.getLatitude());
     if (dto.getLongitude() != null) event.setLongitude(dto.getLongitude());
-    if (dto.getEventDate() != null) event.setEventDate(dto.getEventDate());
+    if (dto.getEventDate() != null) event.setEventDate(dto.getEventDate().atStartOfDay());
 
     event.setUpdateDate(LocalDateTime.now());
     Event eventSaved = eventRepository.save(event);

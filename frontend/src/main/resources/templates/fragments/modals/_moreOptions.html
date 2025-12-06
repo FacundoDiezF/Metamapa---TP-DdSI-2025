@@ -87,7 +87,7 @@
 
         <form hx-post="/category-input-fragment"
               hx-target="#selected-category"
-              hx-swap="innerHTML" hx-on:htmx:afterRequest="this.closest('#modals-here').innerHTML = ''">
+              hx-swap="innerHTML" hx-on:htmx:after-request="if(event.detail.successful) { document.getElementById('modals-here').innerHTML = '' }">
 
             <div class="chips-box">
                 <div class="chips">
@@ -138,9 +138,9 @@
 
 <th:block th:fragment="categoryInputForOneCategoryModal(catId, catName)">
     <input type="checkbox"
-           name="categoryId"
+           name="category"
            th:id="'cat-modal:' + ${catId}"
-           th:value="${catId}"
+           th:value="${catName}"
            checked
            required
     />
