@@ -5,14 +5,7 @@
         <details class="share">
 
             <summary id="shareSummary" class="card post-box" role="button" aria-controls="sharePanel">
-
                 <input type="text" placeholder="Comparte tus hechos..." readonly/>
-                <div class="post-icons" aria-hidden="true">
-                    <a href="#modal-media" class="post-icon" aria-label="Adjuntar imagen">
-                        <img th:src="@{/shared/icons/imagesmode.svg}">
-                    </a>
-                </div>
-
             </summary>
 
             <form id="sharePanel" method="post" class="share-panel"
@@ -20,14 +13,14 @@
 
                 <div class="share-row">
 
-                    <div class="field">
+                    <div class="field field-adaptive">
                         <label>Título del Hecho
                             <input type="text" placeholder="Título del Hecho" required th:field="*{title}"/>
                         </label>
                         <p class="help error-msg">El título es obligatorio.</p>
                     </div>
 
-                    <div class="field">
+                    <div class="field field-adaptive">
                         <label>Fecha
                             <input type="date" required th:field="*{eventDate}"/>
                         </label>
@@ -75,7 +68,7 @@
                                      class="chip-toggle">
 
                                     <a class="chip mas">
-                                        Marcar Ubicación
+                                        + Marcar Ubicación
                                     </a>
 
                                     <input required th:field="*{latitude}" />
