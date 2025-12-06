@@ -19,7 +19,7 @@
         <form hx-post="/location-input-fragment"
               hx-target="#selected-location"
               hx-swap="innerHTML"
-              hx-on:htmx:afterRequest="this.closest('#modals-here').innerHTML = ''">
+              hx-on:htmx:after-request="if(event.detail.successful) { document.getElementById('modals-here').innerHTML = '' }">
 
             <input type="hidden" id="modal-lat" name="latitude" required>
             <input type="hidden" id="modal-lng" name="longitude" required>
