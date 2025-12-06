@@ -22,4 +22,15 @@ public class ExtrasController {
     return "fragments/modals/_moreOptions :: categoryInputForOneCategoryModal(catId=${catId}, catName=${catName})";
   }
 
+  @PostMapping("/location-input-fragment")
+  public String getLocationInputFragment(
+      @RequestParam Double latitude,
+      @RequestParam Double longitude,
+      Model model) {
+
+    model.addAttribute("lat", latitude);
+    model.addAttribute("lng", longitude);
+
+    return "fragments/modals/_mapModal :: locationSelectedFragment";
+  }
 }

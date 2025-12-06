@@ -1,0 +1,56 @@
+<div th:fragment="mapModal"
+     class="modal-overlay"
+     role="dialog"
+     aria-modal="true"
+     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
+
+    <div class="modal-body" style="max-width: 600px; width: 90%;">
+        <button class="modal-close" aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''">
+            ✕
+        </button>
+
+        <h2>Seleccionar Ubicación</h2>
+
+        <div id="map-container" style="height: 400px; width: 100%; border-radius: 8px; margin-bottom: 1rem;"></div>
+
+        <p class="help info">Hacé click en el mapa para marcar el punto exacto.</p>
+
+        <form hx-post="/location-input-fragment"
+              hx-target="#selected-location"
+              hx-swap="innerHTML"
+              hx-on:htmx:afterRequest="this.closest('#modals-here').innerHTML = ''">
+
+            <input type="hidden" id="modal-lat" name="latitude" required>
+            <input type="hidden" id="modal-lng" name="longitude" required>
+
+            <div class="actions-buttons">
+                <button type="submit" class="btn-apply" id="btn-confirm-loc" disabled>
+                    Confirmar Ubicación
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script th:src="@{/js/map/modalMapHandler.js}"></script>
+
+</div>
+
+<div th:fragment="locationSelectedFragment" class="chip-toggle">
+    <div hx-get="/modals/map-selection"
+         hx-target="#modals-here"
+         hx-swap="innerHTML"
+         style="display:flex; gap:10px; align-items:center; cursor:pointer;">
+
+        <span class="chip" style="background-color: #e0f2f1; color: #00695c;">
+            ✓ Ubicación Guardada
+        </span>
+        <span style="font-size: 0.8em; color: #666;"
+              th:text="|Lat: ${#numbers.formatDecimal(lat, 1, 4)}, Lng: ${#numbers.formatDecimal(lng, 1, 4)}|">
+        </span>
+
+    </div>
+
+    <input type="hidden" name="latitude" th:value="${lat}" />
+    <input type="hidden" name="longitude" th:value="${lng}" />
+</div>

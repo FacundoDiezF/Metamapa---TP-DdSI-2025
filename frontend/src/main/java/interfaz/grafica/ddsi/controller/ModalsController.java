@@ -52,6 +52,11 @@ public class ModalsController {
     return "fragments/modals/_moreOptions :: oneChipElementModal(itemsPage=${categoriesPage}, elementName=${elementName}, modalPagePath=${modalPagePath})";
   }
 
+  @GetMapping("/map-selection")
+  public String getMapModal() {
+    return "fragments/modals/_mapModal :: mapModal";
+  }
+
   @GetMapping("/more-provinces")
   public String getMoreProvincesModal(
       @RequestParam(defaultValue = "0", name = "page-prov") int page,

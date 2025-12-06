@@ -64,23 +64,25 @@
 
                                 <p class="help error-msg">Elegí una categoría.</p>
                             </div>
-
                             <div class="field">
-                                <label for="selected-location">Ubicación</label>
+                                <label>Ubicación</label>
+
                                 <div id="selected-location"
-                                     hx-get="/modals/..."
-                                     hx-target="#modals-here" hx-swap="innerHTML"
+                                     hx-get="/modals/map-selection"
+                                     hx-target="#modals-here"
+                                     hx-swap="innerHTML"
                                      class="chip-toggle">
 
                                     <a class="chip mas">
                                         Marcar Ubicación
                                     </a>
 
-                                    <input id="location" name="" required th:field="*{categoryId}"/>
+                                    <input type="hidden" th:field="*{latitude}" />
+                                    <input type="hidden" th:field="*{longitude}" />
 
                                 </div>
 
-                                <p class="help error-msg">Elegí una categoría.</p>
+                                <p class="help error-msg">Debés marcar una ubicación en el mapa.</p>
                             </div>
 
                         </div>
