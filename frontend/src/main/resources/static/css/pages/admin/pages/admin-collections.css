@@ -1,38 +1,54 @@
-/* === Colecciones Section === */
+/* === Layout Principal (Flex Column) === */
 .collections-section {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
-/* Encabezado */
 .page-header {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 2px 0;
+    gap: 20px;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--details);
+    z-index: 10;
 }
 
 .page-title {
-    font-size: 1.75rem;
-    font-weight: 800;
+    font-size: 1.5rem;
+    font-weight: 700;
     margin: 0;
+    color: #0f172a;
+    line-height: 1.2;
 }
 
 .page-subtitle {
-    margin-top: 4px;
-    color: #0c0c0c;
-    font-size: 1rem;
+    margin: 4px 0 0;
+    color: #64748b;
+    font-size: 0.95rem;
 }
 
-.collections-content {
-    min-height: 120px;
+.collections-scroll-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
 }
 
-
+/* === Lista Interna === */
 .collections-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.empty-state {
+    display: flex;
+    justify-content: center;
+    padding-top: 3rem;
+    color: #64748b;
 }

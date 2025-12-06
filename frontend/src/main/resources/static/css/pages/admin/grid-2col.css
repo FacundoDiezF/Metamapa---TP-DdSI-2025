@@ -1,32 +1,38 @@
+/* ===== GRID PRINCIPAL (Fondo del Dashboard) ===== */
 .grid-2col {
     display: grid;
-    grid-template-columns:minmax(240px, 280px) minmax(480px, 1fr);
-    gap: var(--sp-4, 24px);
-    padding: var(--sp-4, 16px) var(--sp-6, 24px);
-    height: calc(100svh - var(--header-h, 64px) - var(--subnav-h, 48px));
+    grid-template-columns: var(--sidebar-w, 260px) minmax(0, 1fr);
+    height: calc(100svh - var(--header-h, 64px) - var(--subnav-h, 0px));
     width: 100%;
+    gap: 16px;
+    padding: 16px;
+    background-color: var(--bg-app, #f1f5f9);
     box-sizing: border-box;
-    align-items: start;
-    overflow-x: visible;
-    overflow-y: visible;
+    align-items: stretch;
+    overflow: hidden;
 }
 
-.left-slot, .center-slot, .left-slot *, .center-slot * {
-    min-width: 0;
-    min-height: 0
+/* ===== ESTILO COMÚN PARA AMBAS TARJETAS ===== */
+.left-slot,
+.center-slot {
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    overflow: hidden;
 }
 
+/* ===== SLOT IZQUIERDO (SIDEBAR) ===== */
+.left-slot {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* ===== SLOT CENTRAL (CONTENIDO) ===== */
 .center-slot {
     display: flex;
     flex-direction: column;
-    gap: .75rem;
-    min-width: 320px;
-    min-height: 0
-}
-
-.center-slot > .feed {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch
+    position: relative;
+    height: 100%;
 }
