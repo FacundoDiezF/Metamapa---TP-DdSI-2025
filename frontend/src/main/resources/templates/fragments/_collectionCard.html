@@ -1,0 +1,32 @@
+<article class="collection-card" th:fragment="collectionCard(collection)">
+
+    <div class="card-head">
+        <h2 class="card-title">
+            <a th:href="@{/collection/{handler}(handler=${collection.handler})}"
+               th:text="${collection.title}">Título</a>
+        </h2>
+    </div>
+
+    <p class="card-desc" th:text="${collection.description}">Descripción…</p>
+
+    <div class="card-meta">
+        <span class="meta">
+            <img class="meta-icon" src="/shared/icons/location-pin-svgrepo-com.svg" alt=""/>
+            <strong th:text="${#lists.size(collection.eventIds)}">0</strong> hechos
+        </span>
+    </div>
+
+    <div class="card-actions">
+        <a class="icon-btn" title="Ver"
+           th:href="@{/collection/{handler}(handler=${collection.handler})}">
+            <img src="/shared/icons/eye.svg" alt="Ver coleccion">
+        </a>
+        <button class="icon-btn" title="Editar">
+            <img src="/shared/icons/edit.svg" alt="Editar coleccion">
+        </button>
+        <button class="icon-btn" title="Eliminar">
+            <img src="/shared/icons/trash.svg" alt="Eliminar Coleccion">
+        </button>
+    </div>
+
+</article>

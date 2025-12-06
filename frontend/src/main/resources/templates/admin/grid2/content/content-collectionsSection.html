@@ -21,38 +21,11 @@
         <div class="collections-content">
 
             <section class="collections-list" th:if="${!#lists.isEmpty(collections)}">
-                <article class="collection-card" th:each="c : ${collections}">
 
-                    <!-- Título + estado -->
-                    <div class="card-head">
-                        <h2 class="card-title">
-                            <a th:href="@{/collection/{handler}(handler=${c.handler})}" th:text="${c.title}">Título</a>
-                        </h2>
+                <th:block th:each="col : ${collections}">
+                    <article th:replace="~{fragments/_collectionCard :: collectionCard(collection=${col})}"></article>
+                </th:block>
 
-                    </div>
-
-                    <!-- Descripción -->
-                    <p class="card-desc" th:text="${c.description}">Descripción…</p>
-
-                    <!-- Meta -->
-                    <div class="card-meta">
-                        <span class="meta">
-                            <img class="meta-icon" src="/shared/icons/location-pin-svgrepo-com.svg" alt=""/>
-                            <strong th:text="${#lists.size(c.eventIds)}">0</strong> hechos
-                        </span>
-                    </div>
-
-                    <!-- Acciones -->
-                    <div class="card-actions">
-                        <a class="icon-btn" title="Ver" th:href="@{/collection/{handler}(handler=${c.handler})}"><img
-                                src="/shared/icons/eye.svg" alt="Ver coleccion"></a>
-                        <button class="icon-btn" title="Editar"><img src="/shared/icons/edit.svg"
-                                                                     alt="Editar coleccion"></button>
-                        <button class="icon-btn" title="Eliminar"><img src="/shared/icons/trash.svg"
-                                                                       alt="Eliminar Coleccion"></button>
-                    </div>
-
-                </article>
             </section>
 
             <p class="hint" th:if="${#lists.isEmpty(collections)}">No hay colecciones cargadas.</p>
