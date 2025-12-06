@@ -4,7 +4,7 @@
      aria-modal="true"
      hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
 
-    <div class="modal-body" style="max-width: 600px; width: 90%;">
+    <div class="modal-body modal-map-size">
         <button class="modal-close" aria-label="Cerrar"
                 hx-on:click="this.closest('#modals-here').innerHTML = ''">
             ✕
@@ -12,7 +12,7 @@
 
         <h2>Seleccionar Ubicación</h2>
 
-        <div id="map-container" style="height: 400px; width: 100%; border-radius: 8px; margin-bottom: 1rem;"></div>
+        <div id="map-container" class="map-modal-canvas"></div>
 
         <p class="help info">Hacé click en el mapa para marcar el punto exacto.</p>
 
@@ -40,12 +40,12 @@
     <div hx-get="/modals/map-selection"
          hx-target="#modals-here"
          hx-swap="innerHTML"
-         style="display:flex; gap:10px; align-items:center; cursor:pointer;">
+         class="location-result-wrapper">
 
-        <span class="chip" style="background-color: #e0f2f1; color: #00695c;">
+        <span class="chip chip-success">
             ✓ Ubicación Guardada
         </span>
-        <span style="font-size: 0.8em; color: #666;"
+        <span class="coords-text"
               th:text="|Lat: ${#numbers.formatDecimal(lat, 1, 4)}, Lng: ${#numbers.formatDecimal(lng, 1, 4)}|">
         </span>
 
