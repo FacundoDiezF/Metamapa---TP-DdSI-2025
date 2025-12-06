@@ -1,127 +1,59 @@
-/* === Source Section === */
-.source-section {
+
+/* ===== CARD DE FUENTE ===== */
+.source-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    width: 100%;
+    gap: 0.5rem;
+
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-/* Encabezado */
-.page-header {
+.source-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+}
+
+/* --- Cabecera de Card --- */
+.card-head {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 2px 0;
-}
-
-.page-title {
-    font-size: 1.75rem;
-    font-weight: 800;
-    margin: 0;
-}
-
-.page-subtitle {
-    margin-top: 4px;
-    color: #0c0c0c;
-    font-size: 1rem;
-}
-
-.sources-content {
-    min-height: 120px;
-}
-
-
-/* ===== CARD de fuente ===== */
-.sources-list {
-    display: flex;
-    flex-direction: column;
+    justify-content: space-between; /* Separa Título de Botones */
+    align-items: flex-start;
     gap: 16px;
 }
 
-.source-card{
-    position: relative;
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
-    padding: 18px;
-    transition: box-shadow .18s ease, border-color .18s ease, transform .12s ease;
-}
-
-
-
-/* ===== Header: título + estado ===== */
-.card-head{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 12px;
-    margin-bottom: 8px;
-}
-
-.card-title{
+.card-title {
     margin: 0;
-    font-size: 1.25rem;
-    line-height: 1.25;
-    font-weight: 800;
+    font-size: 1.1rem;
+    font-weight: 700;
     color: #0f172a;
+    line-height: 1.3;
 }
 
-.card-title a{
-    color: inherit;
-    text-decoration: none;
-}
-.card-title a:hover{ text-decoration: underline; }
-
-
-
-/* ===== Descripción ===== */
-.card-desc{
-    margin: 6px 0 12px;
-    color: #334155;
-    font-size: .98rem;
+/* --- Cuerpo / Descripción --- */
+.source-type {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #64748b;
 }
 
-.card-meta{
-    display: flex;
-    color: #000000;
-    font-size: .95rem;
+.source-type .label {
+    font-weight: 600;
+    color: #475569;
+    margin-right: 4px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
 }
 
-/* ===== Acciones (ver/editar/eliminar) ===== */
-.card-actions{
-    position: absolute;
-    top: 12px;
-    right: 12px;
+/* --- Acciones (Botones de Icono) --- */
+.card-actions {
     display: flex;
     gap: 8px;
-}
-
-.grid-2col .center-slot img[src$=".svg"] {
-    max-width: 24px;
-    max-height: 24px;
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-}
-
-/* Contenedor de los botones de acción */
-.source-card .card-actions button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-}
-
-/* Ícono dentro del botón */
-.source-card .card-actions button img {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
-    display: block;
+    flex-shrink: 0;
 }
