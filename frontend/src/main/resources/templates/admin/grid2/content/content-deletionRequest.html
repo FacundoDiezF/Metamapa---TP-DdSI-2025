@@ -1,47 +1,53 @@
 <th:block th:fragment="deletionRequestContent">
-    <section>
 
-        <h1 class="admin-page-title">
-            Solicitudes de eliminación
-            <span class="count" th:text="${deletionsRequestsPage.totalElements}"></span>
-        </h1>
+    <section class="admin-section">
 
+        <header class="page-header">
+            <div class="header-text">
+                <h1 class="page-title">
+                    Solicitudes de eliminación
+                    <span class="count" th:text="${deletionsRequestsPage.totalElements}">0</span>
+                </h1>
+                <p class="page-subtitle">Gestioná los reportes de contenido inapropiado.</p>
+            </div>
+        </header>
 
-        <div th:if="${#lists.isEmpty(deletionsRequestsPage.content)}">
-            <strong>
-                No hay solicitudes pendientes.
-            </strong>
+        <div class="admin-scroll-area">
+
+            <div class="empty-state" th:if="${#lists.isEmpty(deletionsRequestsPage.content)}">
+                <p>No hay solicitudes pendientes.</p>
+            </div>
+
+            <ul class="deletion-list admin-list-container" th:if="${!#lists.isEmpty(deletionsRequestsPage.content)}">
+
+                <li th:each="req : ${deletionsRequestsPage.content}">
+                    <article class="deletion-card">
+
+                        <div class="motive-box">
+                            <span class="label">Motivo del reporte</span>
+                            <p class="text" th:text="${req.argument ?: 'Sin motivo especificado'}"></p>
+                        </div>
+
+                        <div class="deletion-target">
+                            <span class="label">Hecho reportado</span>
+                            <div class="event-embed">
+                                <div th:replace="~{fragments/_eventCard.html :: cardFragment(${req.event})}"></div>
+                            </div>
+                        </div>
+
+                        <div class="deletion-actions">
+                            <form th:action="@{/share/deletion-request/evaluate/{id}(id=${req.id}, approve=true)}" method="post">
+                                <button class="btn btn-danger">Eliminar Hecho</button>
+                            </form>
+                            <form th:action="@{/share/deletion-request/evaluate/{id}(id=${req.id}, approve=false)}" method="post">
+                                <button class="btn btn-secondary">Desestimar</button>
+                            </form>
+                        </div>
+
+                    </article>
+                </li>
+            </ul>
+
         </div>
-
-        <ul class="deletion-list" th:if="${!#lists.isEmpty(deletionsRequestsPage.content)}">
-            <li th:each="req : ${deletionsRequestsPage.content}">
-                <article class="deletion-wrapper">
-                    <!-- Card de evento  -->
-                    <section class="deletion-extra">
-                        <strong>Hecho reportado:</strong>
-                        <div class="event-card-host">
-                            <div th:replace="~{fragments/_eventCard.html :: cardFragment(${req.event})}"></div>
-                        </div>
-
-                        <!-- Motivo del reporte -->
-                        <div class="extra-motive" th:if="${req.argument != null}">
-                            <strong>Motivo del reporte:</strong>
-                            <p th:text="${req.argument}">
-                            </p>
-                        </div>
-                    </section>
-
-                    <!-- Aceptar o eliminar -->
-                    <div class="extra-actions">
-                        <form th:action="@{/share/deletion-request/evaluate/{id}(id=${req.id}, approve=true)}" method="post">
-                            <button type="submit" class="btn-approve">Aceptar</button>
-                        </form>
-                        <form th:action="@{/share/deletion-request/evaluate/{id}(id=${req.id}, approve=false)}" method="post">
-                            <button type="submit" class="btn-reject">Rechazar</button>
-                        </form>
-                    </div>
-                </article>
-            </li>
-        </ul>
     </section>
 </th:block>

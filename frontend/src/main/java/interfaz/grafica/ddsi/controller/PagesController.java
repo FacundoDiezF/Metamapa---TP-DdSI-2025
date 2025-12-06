@@ -244,7 +244,7 @@ public class PagesController {
   @GetMapping("/admin/deletionRequests")
   public String adminDeletionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-    PageDTO<DeletionRequestDTO> deletionsRequestsPage = deletionRequestService.getAll(page, 1);
+    PageDTO<DeletionRequestDTO> deletionsRequestsPage = deletionRequestService.getAll(page, 5);
 
     model.addAttribute("deletionsRequestsPage", deletionsRequestsPage);
 
