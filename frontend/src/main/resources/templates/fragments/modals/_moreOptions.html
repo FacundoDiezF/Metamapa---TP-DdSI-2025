@@ -138,9 +138,9 @@
 
 <th:block th:fragment="categoryInputForOneCategoryModal(catId, catName)">
     <input type="checkbox"
-           name="categoryId"
+           name="category"
            th:id="'cat-modal:' + ${catId}"
-           th:value="${catId}"
+           th:value="${catName}"
            checked
            required
     />

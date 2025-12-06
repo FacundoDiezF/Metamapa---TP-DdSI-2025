@@ -11,6 +11,7 @@ import interfaz.grafica.ddsi.dtos.StatisticsDTO;
 import interfaz.grafica.ddsi.dtos.SubmissionRequestDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
+import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
 import java.net.URI;
 import java.time.LocalDate;
@@ -50,6 +51,15 @@ public class ServerAdapter {
 
 
   //--------------- EVENTS ----------------//
+
+  public void postNewEvent(EventOutputDTO newEvent) {
+    dynamicClient.post()
+        .uri("/events")
+        .bodyValue(newEvent)
+        .retrieve()
+        .bodyToMono(Void.class)
+        .block();
+  }
 
   public PageDTO<EventDTO> getAllEvents(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
     return webClient.get()

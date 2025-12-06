@@ -47,7 +47,7 @@ public class Event {
   private String title;
 
   @Setter
-  @Column(name = "description", nullable = false)
+  @Column(name = "description", nullable = false, columnDefinition = "TEXT")
   private String description;
 
   @Setter
