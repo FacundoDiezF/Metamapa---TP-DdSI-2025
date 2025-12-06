@@ -9,17 +9,16 @@ import ar.utn.edu.frba.ddsi.models.entities.collections.Collection;
 import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.CollectionCriteria;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
-import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import ar.utn.edu.frba.ddsi.models.repositories.ICollectionRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ICollectionCriteriaService;
 import ar.utn.edu.frba.ddsi.services.ICollectionService;
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -109,6 +108,7 @@ public class CollectionService implements ICollectionService {
   }
 
   @Override
+  @Transactional
   public void refreshCollections(LocalDateTime lastUpdate) {
     for (Collection collection : collectionRepository.findAll()) {
       collection.refresh(lastUpdate);

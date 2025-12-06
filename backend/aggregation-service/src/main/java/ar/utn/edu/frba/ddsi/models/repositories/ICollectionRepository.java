@@ -12,4 +12,5 @@ public interface ICollectionRepository extends JpaRepository<Collection, Long> {
   Collection findByHandler(String handler);
 
   Page<Collection> findAllByUpdatedDateAfter(LocalDateTime updatedDate, Pageable pageable);
+
 }
