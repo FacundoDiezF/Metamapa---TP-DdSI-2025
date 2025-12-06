@@ -1,5 +1,6 @@
 <th:block th:fragment="adminCollectionsContent">
-    <section class="collections-section">
+
+    <section class="admin-section">
 
         <header class="page-header">
             <div class="header-text">
@@ -16,16 +17,16 @@
             </div>
         </header>
 
-        <div class="collections-scroll-area">
+        <div class="admin-scroll-area">
 
-            <div class="collections-list" th:if="${!#lists.isEmpty(collections)}">
+            <div class="admin-list-container" th:if="${!#lists.isEmpty(collections)}">
                 <th:block th:each="col : ${collections}">
                     <article th:replace="~{fragments/_collectionCard :: collectionCard(collection=${col})}"></article>
                 </th:block>
             </div>
 
             <div class="empty-state" th:if="${#lists.isEmpty(collections)}">
-                <p class="hint">No hay colecciones cargadas.</p>
+                <p>No hay colecciones cargadas.</p>
             </div>
 
         </div>

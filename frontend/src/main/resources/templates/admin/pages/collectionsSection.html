@@ -1,14 +1,10 @@
 <html layout:decorate="~{layout/base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<!-- CSS propio (se inyecta en el <head> del base) -->
 <th:block layout:fragment="extraStyles">
     <link rel="stylesheet" th:href="@{/css/pages/admin/admin-sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/pages/admin/grid-2col.css}">
-    <link rel="stylesheet" th:href="@{/css/pages/admin/pages/admin-collections.css}">
     <link rel="stylesheet" th:href="@{/css/shared/cards/card-collection.css}">
-
 </th:block>
-
 
 <th:block th:fragment="contenido">
     <section th:replace="~{admin/grid2/grid2 :: grid2(
