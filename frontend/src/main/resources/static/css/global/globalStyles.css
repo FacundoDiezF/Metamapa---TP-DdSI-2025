@@ -122,18 +122,30 @@ form:has(:invalid) .btn-apply:hover {
     background: var(--Background, #f3f4f6);
 }
 
+/* icon button */
 .icon-btn {
+    display: flex;
     justify-content: center;
-    display: inline-flex;
-    background: transparent;
-    padding: .2rem .2rem;
-    border-radius: var(--radius-10);
-    transition: transform 0.12s ease, background 0.12s ease;
-    will-change: transform;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.2s;
 }
 
 .icon-btn:hover {
-    transform: scale(1.09);
+    background-color: #f1f5f9;
+}
+
+.icon-btn img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    display: block;
 }
 
 /* ===========================

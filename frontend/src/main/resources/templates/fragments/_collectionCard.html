@@ -5,28 +5,30 @@
             <a th:href="@{/collection/{handler}(handler=${collection.handler})}"
                th:text="${collection.title}">Título</a>
         </h2>
+
+        <div class="top-actions">
+            <button class="icon-btn" title="Editar">
+                <img src="/shared/icons/edit.svg" alt="Editar">
+            </button>
+            <button class="icon-btn" title="Eliminar">
+                <img src="/shared/icons/trash.svg" alt="Eliminar">
+            </button>
+        </div>
     </div>
 
-    <p class="card-desc" th:text="${collection.description}">Descripción…</p>
+    <p class="card-desc" th:text="${collection.description}">Descripción de la colección...</p>
 
-    <div class="card-meta">
-        <span class="meta">
+    <div class="card-footer">
+
+        <div class="card-meta">
             <img class="meta-icon" src="/shared/icons/location-pin-svgrepo-com.svg" alt=""/>
-            <strong th:text="${#lists.size(collection.eventIds)}">0</strong> hechos
-        </span>
-    </div>
+            <span th:text="${#lists.size(collection.eventIds)} + ' hechos'">0 hechos</span>
+        </div>
 
-    <div class="card-actions">
-        <a class="icon-btn" title="Ver"
+        <a class="btn btn-outline"
            th:href="@{/collection/{handler}(handler=${collection.handler})}">
-            <img src="/shared/icons/eye.svg" alt="Ver coleccion">
+            Ver Colección
         </a>
-        <button class="icon-btn" title="Editar">
-            <img src="/shared/icons/edit.svg" alt="Editar coleccion">
-        </button>
-        <button class="icon-btn" title="Eliminar">
-            <img src="/shared/icons/trash.svg" alt="Eliminar Coleccion">
-        </button>
     </div>
 
 </article>
