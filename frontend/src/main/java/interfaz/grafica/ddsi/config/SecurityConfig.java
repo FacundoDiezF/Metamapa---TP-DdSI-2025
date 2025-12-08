@@ -45,15 +45,19 @@ public class SecurityConfig {
             // 3. Páginas de Autenticación (Login, Registro) -> PÚBLICAS
             .requestMatchers("/login", "/register").permitAll()
 
+            // 4 Páginas de MODALES -> PÚBLICAS
             .requestMatchers("/modals/**").permitAll() //! Hay que permitir solo las modales que sean públicas (y securizar las otras)
 
+            // 5 Endpoints para fragments usados en AJAX -> PÚBLICOS
             .requestMatchers("/category-input-fragment", "/location-input-fragment").permitAll() //!
 
+            // 6 POSTS
+            .requestMatchers("/share").permitAll() //! Hay que permitir solo los POSTS que sean públicos (y securizar los otros)
 
-            // 4. Páginas de ERRORES -> PÚBLICAS
+            // 7. Páginas de ERRORES -> PÚBLICAS
             .requestMatchers("/403", "/404", "/error").permitAll()
 
-            // 5. Lo demás -> REQUIERE LOGIN
+            // 8. Lo demás -> REQUIERE LOGIN
             .anyRequest().authenticated()
         )
         .csrf(csrf -> csrf //! Esto es temporal, hay que ver como hacerlo bien porque si se usa irresponsablemente deja una SUPER vulnerabilidad en el sistema (Cross Site Request Forgery).
