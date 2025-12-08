@@ -52,7 +52,7 @@ public class SecurityConfig {
             .requestMatchers("/category-input-fragment", "/location-input-fragment").permitAll() //!
 
             // 6 POSTS
-            .requestMatchers("/share").permitAll() //! Hay que permitir solo los POSTS que sean públicos (y securizar los otros)
+            .requestMatchers("/share/**").permitAll() //! Hay que permitir solo los POSTS que sean públicos (y securizar los otros)
 
             // 7. Páginas de ERRORES -> PÚBLICAS
             .requestMatchers("/403", "/404", "/error").permitAll()
