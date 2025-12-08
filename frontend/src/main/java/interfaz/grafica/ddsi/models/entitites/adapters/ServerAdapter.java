@@ -380,9 +380,9 @@ public class ServerAdapter {
     user.setPublicId(java.util.UUID.randomUUID().toString());
 
     if ("admin".equals(type)) {
-      user.setRoles(java.util.List.of("ADMIN", "CONTRIBUYENTE")); // El admin suele tener ambos
+      user.setRoles(java.util.List.of("ADMIN", "CONTRIBUTOR")); // El admin suele tener ambos
     } else {
-      user.setRoles(java.util.List.of("CONTRIBUYENTE"));
+      user.setRoles(java.util.List.of("CONTRIBUTOR"));
     }
 
     response.setUser(user);

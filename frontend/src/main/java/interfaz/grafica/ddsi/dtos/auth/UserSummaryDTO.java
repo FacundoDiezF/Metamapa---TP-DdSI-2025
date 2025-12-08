@@ -11,5 +11,5 @@ public class UserSummaryDTO {
 //  private String firstName;
 //  private String lastName;
 //  private String avatarUrl;
-  private List<String> roles; // Ej: ["CONTRIBUYENTE", "ADMIN"]
+  private List<String> roles; // Ej: ["CONTRIBUTOR", "ADMIN"]
 }

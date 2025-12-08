@@ -23,41 +23,30 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//    http
-//        // 1. Autorización: Permitir tod0
-//        .authorizeHttpRequests(auth -> auth
-//            .anyRequest().permitAll()
-//        )
-//        // 2. Desactivar protecciones que molestan en desarrollo (CSRF)
-//        .csrf(csrf -> csrf.disable())
-//        // 3. Desactivar el Formulario de Login automático
-//        .formLogin(form -> form.disable())
-//        // 4. Desactivar Logout automático
-//        .logout(logout -> logout.disable());
     http
         .authorizeHttpRequests(auth -> auth
-            // 1. Recursos estáticos (CSS, JS, Imágenes) -> PÚBLICOS
+            // Recursos estáticos (CSS, JS, Imágenes) -> PÚBLICOS
             .requestMatchers("/css/**", "/js/**", "/shared/**", "/images/**").permitAll()
 
-            // 2. Páginas de Acceso (Landing, Explorar, Colecciones, Mapa) -> PÚBLICAS
+            // Páginas de Acceso (Landing, Explorar, Colecciones, Mapa) -> PÚBLICAS
             .requestMatchers("/", "/landing", "/explore", "/collections", "/map").permitAll() //! no se por qué a veces aparece http://localhost:8085/static, asumo que es un error y no debería pasar, por eso no la voy a poner como pública
 
-            // 3. Páginas de Autenticación (Login, Registro) -> PÚBLICAS
+            // Páginas de Autenticación (Login, Registro) -> PÚBLICAS
             .requestMatchers("/login", "/register").permitAll()
 
-            // 4 Páginas de MODALES -> PÚBLICAS
+            // Páginas de MODALES -> PÚBLICAS
             .requestMatchers("/modals/**").permitAll() //! Hay que permitir solo las modales que sean públicas (y securizar las otras)
 
-            // 5 Endpoints para fragments usados en AJAX -> PÚBLICOS
+            // Endpoints para fragments usados en AJAX -> PÚBLICOS
             .requestMatchers("/category-input-fragment", "/location-input-fragment").permitAll() //!
 
-            // 6 POSTS
+            // POSTS
             .requestMatchers("/share/**").permitAll() //! Hay que permitir solo los POSTS que sean públicos (y securizar los otros)
 
-            // 7. Páginas de ERRORES -> PÚBLICAS
+            // Páginas de ERRORES -> PÚBLICAS
             .requestMatchers("/403", "/404", "/error").permitAll()
 
-            // 8. Lo demás -> REQUIERE LOGIN
+            // Lo demás -> REQUIERE LOGIN
             .anyRequest().authenticated()
         )
         .csrf(csrf -> csrf //! Esto es temporal, hay que ver como hacerlo bien porque si se usa irresponsablemente deja una SUPER vulnerabilidad en el sistema (Cross Site Request Forgery).
