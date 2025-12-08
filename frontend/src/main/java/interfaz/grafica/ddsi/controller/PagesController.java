@@ -93,7 +93,7 @@ public class PagesController {
     // Repitan eso en otros endpoints si les llega a salir el error IllegalStateException: Cannot create a session bla bla bla.
     // Si encuentran una mejor solución, reemplacen esta.
     // -----------------------------------------------------------------------------
-    request.getSession(true);
+    //request.getSession(true);
 
     PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
 

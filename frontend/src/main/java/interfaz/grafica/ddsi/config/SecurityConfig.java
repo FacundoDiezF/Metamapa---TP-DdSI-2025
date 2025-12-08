@@ -45,11 +45,19 @@ public class SecurityConfig {
             // 3. Páginas de Autenticación (Login, Registro) -> PÚBLICAS
             .requestMatchers("/login", "/register").permitAll()
 
+            .requestMatchers("/modals/**").permitAll() //! Hay que permitir solo las modales que sean públicas (y securizar las otras)
+
+            .requestMatchers("/category-input-fragment", "/location-input-fragment").permitAll() //!
+
+
             // 4. Páginas de ERRORES -> PÚBLICAS
             .requestMatchers("/403", "/404", "/error").permitAll()
 
             // 5. Lo demás -> REQUIERE LOGIN
             .anyRequest().authenticated()
+        )
+        .csrf(csrf -> csrf //! Esto es temporal, hay que ver como hacerlo bien porque si se usa irresponsablemente deja una SUPER vulnerabilidad en el sistema (Cross Site Request Forgery).
+            .ignoringRequestMatchers("/category-input-fragment", "/location-input-fragment")
         )
         .formLogin(form -> form
             .loginPage("/login")        // TODO: La URL de tu controlador que muestra el HTML
