@@ -61,7 +61,7 @@ public class SecurityConfig {
             .anyRequest().authenticated()
         )
         .csrf(csrf -> csrf //! Esto es temporal, hay que ver como hacerlo bien porque si se usa irresponsablemente deja una SUPER vulnerabilidad en el sistema (Cross Site Request Forgery).
-            .ignoringRequestMatchers("/category-input-fragment", "/location-input-fragment")
+            .ignoringRequestMatchers("/category-input-fragment", "/location-input-fragment", "/share/**")
         )
         .formLogin(form -> form
             .loginPage("/login")        // TODO: La URL de tu controlador que muestra el HTML
