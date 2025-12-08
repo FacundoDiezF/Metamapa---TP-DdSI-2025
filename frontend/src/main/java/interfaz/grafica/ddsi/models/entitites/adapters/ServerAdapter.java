@@ -9,6 +9,10 @@ import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
 import interfaz.grafica.ddsi.dtos.StatisticsDTO;
 import interfaz.grafica.ddsi.dtos.SubmissionRequestDTO;
+import interfaz.grafica.ddsi.dtos.auth.AuthResponseDTO;
+import interfaz.grafica.ddsi.dtos.auth.LoginRequestDTO;
+import interfaz.grafica.ddsi.dtos.auth.RegisterRequestDTO;
+import interfaz.grafica.ddsi.dtos.auth.UserSummaryDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
@@ -17,10 +21,17 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import interfaz.grafica.ddsi.exceptions.BackendException;
+import interfaz.grafica.ddsi.exceptions.ConnectionException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.util.UriBuilder;
 
 @Component
@@ -32,8 +43,11 @@ public class ServerAdapter {
 
   private final WebClient dynamicClient; //TODO: Borrar y remplazar su uso cuando tengamos el gateway
 
+  private final WebClient apiGatewayClient;
 
-  public ServerAdapter(@Value("${aggregator.url}") String url) {
+
+  public ServerAdapter(@Value("${aggregator.url}") String url, @Value("${api.gateway.url}") String apiGatewayUrl) {
+    //TODO: Borrar y remplazar su uso cuando tengamos el gateway
     this.webClient = WebClient.builder()
         .baseUrl(url)
         .build();
@@ -46,6 +60,10 @@ public class ServerAdapter {
     //TODO: Borrar y remplazar su uso cuando tengamos el gateway
     this.dynamicClient = WebClient.builder()
         .baseUrl("http://localhost:8081")
+        .build();
+
+    this.apiGatewayClient = WebClient.builder()
+        .baseUrl(apiGatewayUrl)
         .build();
   }
 
@@ -301,4 +319,73 @@ public class ServerAdapter {
         .block();
   }
 
+  //--------------- AUTHENTICATION ----------------//
+  public AuthResponseDTO login(LoginRequestDTO request) {
+
+    if ("admin".equals(request.getUsername()) || "cont".equals(request.getUsername())) {
+      return crearMockUser(request.getUsername());
+    } //! Esto está mockeado full croto para que ustedes puedan probar el front sin que funcione el back, cuando esté el back, vuela
+
+    try {
+      return apiGatewayClient.post()
+          .uri("/api/auth/login")
+          .bodyValue(request)
+          .retrieve()
+          .bodyToMono(AuthResponseDTO.class)
+          .block();
+    } catch (WebClientResponseException e) {
+
+      if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+        throw new BadCredentialsException("Invalid username or password.");
+      }
+
+      throw new BackendException(e);
+
+    } catch (WebClientRequestException e) {
+    throw new ConnectionException("Could not connect to the authentication server.");
+
+  }catch (ResourceAccessException | IllegalStateException e) {
+      throw new ConnectionException("Could not connect to the server.");
+    }
+  }
+
+  public AuthResponseDTO register(RegisterRequestDTO request) {
+    try {
+    return apiGatewayClient.post()
+        .uri("/api/auth/register")
+        .bodyValue(request)
+        .retrieve()
+        .bodyToMono(AuthResponseDTO.class)
+        .block();
+    } catch (WebClientResponseException e) {
+
+      throw new BackendException(e);
+
+    } catch (WebClientRequestException e) {
+      throw new ConnectionException("Could not connect to the registration server.");
+
+    }catch (ResourceAccessException | IllegalStateException e) {
+      throw new ConnectionException("Could not connect to the server.");
+    }
+  }
+
+  //!--------------- MOCK ----------------// cuando esté el back, vuela
+  private AuthResponseDTO crearMockUser(String type) {
+    AuthResponseDTO response = new AuthResponseDTO();
+    response.setAccessToken("token-falso-" + type);
+    response.setRefreshToken("refresh-falso-" + type);
+
+    UserSummaryDTO user = new UserSummaryDTO();
+    user.setUsername(type);
+    user.setPublicId(java.util.UUID.randomUUID().toString());
+
+    if ("admin".equals(type)) {
+      user.setRoles(java.util.List.of("ADMIN", "CONTRIBUYENTE")); // El admin suele tener ambos
+    } else {
+      user.setRoles(java.util.List.of("CONTRIBUYENTE"));
+    }
+
+    response.setUser(user);
+    return response;
+  }
 }
