@@ -12,6 +12,7 @@ import interfaz.grafica.ddsi.dtos.output.collection.ConsensusType;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.LocationService;
 import interfaz.grafica.ddsi.services.SourcesService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -89,6 +90,7 @@ public class ModalsController {
     return "fragments/modals/_reportEventModal :: deletionRequestModal";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/new-collection")
   public String getNewCollectionModal(Model model) {
 
@@ -115,6 +117,7 @@ public class ModalsController {
     return "fragments/modals/_newCollectionModal :: conditionRow";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/new-source")
   public String getNewSourceModal(Model model) {
 

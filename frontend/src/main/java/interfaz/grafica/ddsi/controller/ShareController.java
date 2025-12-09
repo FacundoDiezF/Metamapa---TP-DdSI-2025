@@ -4,10 +4,12 @@ import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
+import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
 import interfaz.grafica.ddsi.services.SubmissionRequestService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -75,6 +77,7 @@ public class ShareController {
     return "fragments/modals/_messageModals :: messageModal(type=${mType}, title=${mTitle}, desc=${mDesc})";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/deletion-request/evaluate/{dReqId}")
   public String handleEvaluateDeletionRequest(
       @PathVariable Long dReqId,
@@ -89,6 +92,7 @@ public class ShareController {
     return "redirect:/admin/deletionRequests";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/submission-request/evaluate/{sReqId}")
   public String handleEvaluateSubmissionRequest(
       @PathVariable Long sReqId,
@@ -101,5 +105,14 @@ public class ShareController {
 
     submissionRequestService.evaluate(sReqId, evaluationDto);
     return "redirect:/admin/pendingEvents";
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/collections")
+  public String createCollection(@ModelAttribute CollectionOutputDTO collectionForm) {
+
+    System.out.println("Creating collection: " + collectionForm);
+
+    return "redirect:/admin/collections";
   }
 }

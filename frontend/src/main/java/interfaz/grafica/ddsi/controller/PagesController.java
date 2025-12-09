@@ -207,6 +207,7 @@ public class PagesController {
     return "admin/pages/collectionsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/statistics")
   public String adminStatistic(Model model,
                                @RequestParam(defaultValue = "1", name = "catId") Long selectedCategoryId) {
@@ -232,6 +233,7 @@ public class PagesController {
     return "admin/pages/statisticsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/sources")
   public String adminSources(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
@@ -246,6 +248,7 @@ public class PagesController {
     return "admin/pages/sourcesSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/pendingEvents")
   public String adminPendingEvents(
       @RequestParam(defaultValue = "0", name = "page") int page,
@@ -261,6 +264,7 @@ public class PagesController {
     return "admin/pages/pendingEventsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/deletionRequests")
   public String adminDeletionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
