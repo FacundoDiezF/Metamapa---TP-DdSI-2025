@@ -3,14 +3,15 @@ package interfaz.grafica.ddsi.controller;
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
-import interfaz.grafica.ddsi.dtos.SourceDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.SourceClientOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
+import interfaz.grafica.ddsi.dtos.output.collection.ConditionDTO;
+import interfaz.grafica.ddsi.dtos.output.collection.ConditionType;
+import interfaz.grafica.ddsi.dtos.output.collection.ConsensusType;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.LocationService;
 import interfaz.grafica.ddsi.services.SourcesService;
-import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -91,13 +92,27 @@ public class ModalsController {
   @GetMapping("/new-collection")
   public String getNewCollectionModal(Model model) {
 
-    model.addAttribute("newCollection", new CollectionOutputDTO());
+    CollectionOutputDTO form = new CollectionOutputDTO();
+    form.setConsensusType(ConsensusType.SIMPLE_MAJORITY);
 
-    List<SourceDTO> allSources = sourcesService.getAll();
+    model.addAttribute("newCollection", form);
+    model.addAttribute("sources", sourcesService.getAll());
 
-    model.addAttribute("sources", allSources);
+    return "fragments/modals/_newCollectionModal :: newCollectionModal";
+  }
 
-    return "fragments/modals/_newCollectionModal :: newCollectoinModal";
+  @GetMapping("/new-collection/add-condition-row")
+  public String addConditionRow(@RequestParam("type") ConditionType type,
+                                @RequestParam("index") int index,
+                                Model model) {
+
+    ConditionDTO conditionDto = new ConditionDTO();
+    conditionDto.setConditionType(type);
+
+    model.addAttribute("condition", conditionDto);
+    model.addAttribute("idx", index); //Para th:field (conditions[0], conditions[1]...)
+
+    return "fragments/modals/_newCollectionModal :: conditionRow";
   }
 
   @GetMapping("/new-source")

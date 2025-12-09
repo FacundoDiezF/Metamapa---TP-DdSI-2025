@@ -1,163 +1,140 @@
-<!-- Modal de Creacion Coleccion -->
-<div th:fragment="newCollectoinModal" class="modal-overlay"
+<div th:fragment="newCollectionModal" class="modal-overlay"
      hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
 
-    <div class="modal-body" role="dialog" aria-modal="true">
+    <div class="modal-body modal-collection-size">
 
-        <button type="button"
-                class="modal-close"
-                aria-label="Cerrar"
-                hx-on:click="this.closest('#modals-here').innerHTML = ''">
-            ✕
+        <button type="button" class="modal-close"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''">✕
         </button>
 
-        <h2>Crear una nueva colección</h2>
-        <form method="POST" class="modal-form">
+        <h2>Crear nueva colección</h2>
 
-            <div class="field">
-                <label>Título
-                    <input name="title" type="text" placeholder="Nombre de la colección" required/>
-                </label>
+        <form method="POST" th:action="@{/collections/create}"
+              th:object="${newCollection}"
+              class="modal-form-flex">
+            <div class="form-scrollable-area">
 
-                <p class="help error-msg">El título es obligatorio.</p>
-            </div>
+                <div class="field">
+                    <label>Título <input type="text" th:field="*{title}" required/></label>
+                </div>
 
-            <div class="field">
-                <label>Descripción
-                    <textarea name="description" rows="5" placeholder="Describe lo ocurrido…" required></textarea>
-                </label>
-                <p class="help error-msg">La descripción es obligatoria.</p>
-                <p class="help info">Evitá datos personales. Sé claro y específico.</p>
-            </div>
+                <div class="field">
+                    <label>Descripción <textarea rows="3" th:field="*{description}" required></textarea></label>
+                </div>
 
-            <div class="form-row">
-                <label class="field-label">Fuentes asociadas</label>
+                <div>
+                    <label class="field-label">Fuentes asociadas</label>
+                    <div class="sources-chips-container">
+                        <div class="source-grid">
 
-                <div class="sources-chips-container">
-                    <div class="chips-grid">
-                        <label th:each="src : ${sources}" class="chip">
+                            <label th:each="src : ${sources}" class="source-option">
+                                <input type="checkbox"
+                                       th:field="*{sourceIds}"
+                                       th:value="${src.id}"
+                                       class="source-option-input"/>
+                                <span class="source-option-label" th:text="${src.clientId + ' (' + src.type + ')'}"></span>
+                            </label>
 
-                            <!-- Checkbox REAL pero oculto -->
-                            <input type="checkbox"
-                                   name="sourceIds"
-                                   th:value="${src.id}"
-                                   class="chip-checkbox"/>
+                        </div>
+                    </div>
+                </div>
 
-                            <!-- CHIP visible -->
-                            <span class="chip-label"
-                                  th:text="${src.type} + ' ' + ${src.id}">
-                             </span>
+                <div class=" consensus-section">
+                    <span>Algoritmo de consenso</span>
+                    <div class="consensus-chips-group">
+
+                        <label class="consensus-chip">
+                            <input type="radio" th:field="*{consensusType}" value="" class="consensus-radio"/>
+                            <span class="consensus-chip-label">ALL PASS</span>
+                        </label>
+
+                        <label class="consensus-chip"
+                               th:each="algo : ${T(interfaz.grafica.ddsi.dtos.output.collection.ConsensusType).values()}">
+                            <input type="radio" th:field="*{consensusType}" th:value="${algo}" class="consensus-radio"/>
+                            <span class="consensus-chip-label"
+                                  th:text="${#strings.replace(algo.name(), '_', ' ')}"></span>
                         </label>
                     </div>
                 </div>
 
-            </div>
+                <div class=" conditions-section">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>Condiciones de Pertenencia</span>
 
-            <!-- Criterios -->
-            <div class="form-row criteria-section">
-                <span class="field-label">Criterios</span>
+                        <div class="criteria-actions">
+                            <button type="button" class="btn-xs-outline"
+                                    hx-get="/modals/new-collection/add-condition-row?type=TITLE"
+                                    hx-vals="js:{index: document.querySelectorAll('.condition-item').length}"
+                                    hx-target="#conditions-list"
+                                    hx-swap="beforeend">+ Título
+                            </button>
 
-                <div class="criteria-chips-group">
-                    <!-- Categorías -->
-                    <label class="criteria-chip">
-                        <input type="radio" name="criteria" class="criteria-radio"/>
-                        <span class="criteria-chip-label"
-                              hx-get="@{/modals/categories-criteria}"
-                              hx-target="#modals-here"
-                              hx-swap="innerHTML">
-                Categorías
-            </span>
-                    </label>
+                            <button type="button" class="btn-xs-outline"
+                                    hx-get="/modals/new-collection/add-condition-row?type=CATEGORY"
+                                    hx-vals="js:{index: document.querySelectorAll('.condition-item').length}"
+                                    hx-target="#conditions-list"
+                                    hx-swap="beforeend">+ Categoría
+                            </button>
 
-                    <!-- Fecha desde -->
-                    <label class="criteria-chip">
-                        <input type="radio" name="criteria" class="criteria-radio"/>
-                        <span class="criteria-chip-label"
-                              hx-get="@{/modals/date-from-criteria}"
-                              hx-target="#modals-here"
-                              hx-swap="innerHTML">
-                Fecha desde
-            </span>
-                    </label>
+                            <button type="button" class="btn-xs-outline"
+                                    hx-get="/modals/new-collection/add-condition-row?type=FROM_DATE"
+                                    hx-vals="js:{index: document.querySelectorAll('.condition-item').length}"
+                                    hx-target="#conditions-list"
+                                    hx-swap="beforeend">+ Fecha Desde
+                            </button>
 
-                    <!-- Fecha hasta -->
-                    <label class="criteria-chip">
-                        <input type="radio" name="criteria" class="criteria-radio"/>
-                        <span class="criteria-chip-label"
-                              hx-get="@{/modals/date-to-criteria}"
-                              hx-target="#modals-here"
-                              hx-swap="innerHTML">
-                Fecha hasta
-            </span>
-                    </label>
+                            <button type="button" class="btn-xs-outline"
+                                    hx-get="/modals/new-collection/add-condition-row?type=TO_DATE"
+                                    hx-vals="js:{index: document.querySelectorAll('.condition-item').length}"
+                                    hx-target="#conditions-list"
+                                    hx-swap="beforeend">+ Fecha Hasta
+                            </button>
+                        </div>
+                    </div>
 
-                    <!-- Cuarto criterio (cámbiale el nombre después) -->
-                    <label class="criteria-chip">
-                        <input type="radio" name="criteria" class="criteria-radio"/>
-                        <span class="criteria-chip-label"
-                              hx-get="@{/modals/other-criteria}"
-                              hx-target="#modals-here"
-                              hx-swap="innerHTML">
-                Otro criterio
-            </span>
-                    </label>
+                    <div id="conditions-list" class="criteria-list-container">
+                    </div>
                 </div>
 
-                <!-- Acá se muestra el resumen de criterios aplicados -->
-                <div id="criteria-summary">
-                    <div id="criteria-categories-summary"></div>
-                    <div id="criteria-date-from-summary"></div>
-                    <div id="criteria-date-to-summary"></div>
-                    <div id="criteria-other-summary"></div>
-                </div>
             </div>
-
-
-            <div class="form-row consensus-section">
-                <span class="field-label">Algoritmo de consenso</span>
-
-                <div class="consensus-chips-group">
-                    <!-- SIN_CONSENSO -->
-                    <label class="consensus-chip">
-                        <input type="radio"
-                               name="consensusAlgorithm"
-                               value="SIN_CONSENSO"
-                               class="consensus-radio"
-                               checked/>
-                        <span class="consensus-chip-label">Sin consenso</span>
-                    </label>
-
-                    <!-- MULTIPLES_MENCIONES -->
-                    <label class="consensus-chip">
-                        <input type="radio"
-                               name="consensusAlgorithm"
-                               value="MULTIPLES_MENCIONES"
-                               class="consensus-radio"/>
-                        <span class="consensus-chip-label">Múltiples menciones</span>
-                    </label>
-
-                    <!-- MAYORIA_SIMPLE -->
-                    <label class="consensus-chip">
-                        <input type="radio"
-                               name="consensusAlgorithm"
-                               value="MAYORIA_SIMPLE"
-                               class="consensus-radio"/>
-                        <span class="consensus-chip-label">Mayoría simple</span>
-                    </label>
-
-                    <!-- ABSOLUTA -->
-                    <label class="consensus-chip">
-                        <input type="radio"
-                               name="consensusAlgorithm"
-                               value="ABSOLUTA"
-                               class="consensus-radio"/>
-                        <span class="consensus-chip-label">Absoluta</span>
-                    </label>
-                </div>
+            <div class="modal-footer-fixed">
+                <button type="submit" class="btn-apply">Crear Colección</button>
             </div>
-
-            <button type="submit" class="btn-apply">Crear</button>
 
         </form>
+    </div>
+</div>
+
+<div th:fragment="conditionRow" class="condition-item fade-in-up">
+
+    <div class="condition-row-content">
+        <input type="hidden"
+               th:name="|conditions[${idx}].conditionType|"
+               th:value="${condition.conditionType}">
+
+        <span class="criteria-badge" th:text="${condition.conditionType}">TYPE</span>
+
+        <th:block
+                th:if="${condition.conditionType.name() == 'FROM_DATE' or condition.conditionType.name() == 'TO_DATE'}">
+            <input type="date"
+                   th:name="|conditions[${idx}].conditionValue|"
+                   required class="input-sm"/>
+        </th:block>
+
+        <th:block th:if="${condition.conditionType.name() == 'TITLE'}">
+            <input type="text"
+                   th:name="|conditions[${idx}].conditionValue|"
+                   placeholder="Palabra clave en el título"
+                   required class="input-sm"/>
+        </th:block>
+
+        <th:block th:if="${condition.conditionType.name() == 'CATEGORY'}">
+            <input type="text"
+                   th:name="|conditions[${idx}].conditionValue|"
+                   placeholder="ID de Categoría seleccionada"
+                   required class="input-sm"/>
+        </th:block>
+
+        <button type="button" class="btn-icon-remove" onclick="this.closest('.condition-item').remove()">✕</button>
     </div>
 </div>
