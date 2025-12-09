@@ -2,7 +2,6 @@ package interfaz.grafica.ddsi.services;
 
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.SourceDTO;
-import interfaz.grafica.ddsi.dtos.StatisticsDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +33,6 @@ public class SourcesService {
                         104L,
                         Origin.STATIC
                 )
-
         );
     }
 

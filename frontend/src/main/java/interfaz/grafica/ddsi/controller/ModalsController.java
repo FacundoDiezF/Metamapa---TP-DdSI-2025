@@ -3,11 +3,14 @@ package interfaz.grafica.ddsi.controller;
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
+import interfaz.grafica.ddsi.dtos.SourceDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.SourceClientOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.LocationService;
+import interfaz.grafica.ddsi.services.SourcesService;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +24,12 @@ public class ModalsController {
 
   private final CategoryService categoryService;
   private final LocationService locationService;
+  private final SourcesService sourcesService;
 
-  public ModalsController(CategoryService categoryService, LocationService locationService) {
+  public ModalsController(CategoryService categoryService, LocationService locationService, SourcesService sourcesService) {
     this.categoryService = categoryService;
     this.locationService = locationService;
+    this.sourcesService = sourcesService;
   }
 
   @GetMapping("/more-categories")
@@ -93,6 +98,10 @@ public class ModalsController {
 
   @GetMapping("/new-source")
   public String getNewSourceModal(Model model) {
+
+    List<SourceDTO> allSources = sourcesService.getAll();
+
+    model.addAttribute("sources", allSources);
 
     model.addAttribute("newSourceClient", new SourceClientOutputDTO());
 

@@ -12,7 +12,7 @@
         </button>
 
         <h2>Crear una nueva colección</h2>
-        <form method="POST">
+        <form method="POST" class="modal-form">
 
             <div class="field">
                 <label>Título
@@ -30,7 +30,133 @@
                 <p class="help info">Evitá datos personales. Sé claro y específico.</p>
             </div>
 
-            <button type="submit" class="btn-apply">Enviar</button>
+            <div class="form-row">
+                <label class="field-label">Fuentes asociadas</label>
+
+                <div class="sources-chips-container">
+                    <div class="chips-grid">
+                        <label th:each="src : ${sources}" class="chip">
+
+                            <!-- Checkbox REAL pero oculto -->
+                            <input type="checkbox"
+                                   name="sourceIds"
+                                   th:value="${src.id}"
+                                   class="chip-checkbox"/>
+
+                            <!-- CHIP visible -->
+                            <span class="chip-label"
+                                  th:text="${src.type} + ' ' + ${src.id}">
+                             </span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Criterios -->
+            <div class="form-row criteria-section">
+                <span class="field-label">Criterios</span>
+
+                <div class="criteria-chips-group">
+                    <!-- Categorías -->
+                    <label class="criteria-chip">
+                        <input type="radio" name="criteria" class="criteria-radio"/>
+                        <span class="criteria-chip-label"
+                              hx-get="@{/modals/categories-criteria}"
+                              hx-target="#modals-here"
+                              hx-swap="innerHTML">
+                Categorías
+            </span>
+                    </label>
+
+                    <!-- Fecha desde -->
+                    <label class="criteria-chip">
+                        <input type="radio" name="criteria" class="criteria-radio"/>
+                        <span class="criteria-chip-label"
+                              hx-get="@{/modals/date-from-criteria}"
+                              hx-target="#modals-here"
+                              hx-swap="innerHTML">
+                Fecha desde
+            </span>
+                    </label>
+
+                    <!-- Fecha hasta -->
+                    <label class="criteria-chip">
+                        <input type="radio" name="criteria" class="criteria-radio"/>
+                        <span class="criteria-chip-label"
+                              hx-get="@{/modals/date-to-criteria}"
+                              hx-target="#modals-here"
+                              hx-swap="innerHTML">
+                Fecha hasta
+            </span>
+                    </label>
+
+                    <!-- Cuarto criterio (cámbiale el nombre después) -->
+                    <label class="criteria-chip">
+                        <input type="radio" name="criteria" class="criteria-radio"/>
+                        <span class="criteria-chip-label"
+                              hx-get="@{/modals/other-criteria}"
+                              hx-target="#modals-here"
+                              hx-swap="innerHTML">
+                Otro criterio
+            </span>
+                    </label>
+                </div>
+
+                <!-- Acá se muestra el resumen de criterios aplicados -->
+                <div id="criteria-summary">
+                    <div id="criteria-categories-summary"></div>
+                    <div id="criteria-date-from-summary"></div>
+                    <div id="criteria-date-to-summary"></div>
+                    <div id="criteria-other-summary"></div>
+                </div>
+            </div>
+
+
+            <div class="form-row consensus-section">
+                <span class="field-label">Algoritmo de consenso</span>
+
+                <div class="consensus-chips-group">
+                    <!-- SIN_CONSENSO -->
+                    <label class="consensus-chip">
+                        <input type="radio"
+                               name="consensusAlgorithm"
+                               value="SIN_CONSENSO"
+                               class="consensus-radio"
+                               checked/>
+                        <span class="consensus-chip-label">Sin consenso</span>
+                    </label>
+
+                    <!-- MULTIPLES_MENCIONES -->
+                    <label class="consensus-chip">
+                        <input type="radio"
+                               name="consensusAlgorithm"
+                               value="MULTIPLES_MENCIONES"
+                               class="consensus-radio"/>
+                        <span class="consensus-chip-label">Múltiples menciones</span>
+                    </label>
+
+                    <!-- MAYORIA_SIMPLE -->
+                    <label class="consensus-chip">
+                        <input type="radio"
+                               name="consensusAlgorithm"
+                               value="MAYORIA_SIMPLE"
+                               class="consensus-radio"/>
+                        <span class="consensus-chip-label">Mayoría simple</span>
+                    </label>
+
+                    <!-- ABSOLUTA -->
+                    <label class="consensus-chip">
+                        <input type="radio"
+                               name="consensusAlgorithm"
+                               value="ABSOLUTA"
+                               class="consensus-radio"/>
+                        <span class="consensus-chip-label">Absoluta</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-apply">Crear</button>
 
         </form>
     </div>
