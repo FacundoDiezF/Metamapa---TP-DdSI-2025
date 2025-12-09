@@ -7,6 +7,7 @@ import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
+import interfaz.grafica.ddsi.dtos.SourceDTO;
 import interfaz.grafica.ddsi.dtos.StatisticsDTO;
 import interfaz.grafica.ddsi.dtos.SubmissionRequestDTO;
 import interfaz.grafica.ddsi.dtos.auth.AuthResponseDTO;
@@ -161,6 +162,15 @@ public class ServerAdapter {
         .block();
   }
 
+  //--------------- SOURCES ----------------//
+  public List<SourceDTO> getAllSources() {
+    return webClient.get()
+        .uri("/sources")
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<List<SourceDTO>>() {
+        })
+        .block();
+  }
 
   //--------------- CATEGORIES ----------------//
   public PageDTO<CategoryDTO> getAllCategories(int page, int size, List<Long> categoryIds) {

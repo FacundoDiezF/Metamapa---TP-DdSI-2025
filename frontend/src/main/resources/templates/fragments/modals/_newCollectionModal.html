@@ -32,7 +32,7 @@
                                        th:field="*{sourceIds}"
                                        th:value="${src.id}"
                                        class="source-option-input"/>
-                                <span class="source-option-label" th:text="${src.clientId + ' (' + src.type + ')'}"></span>
+                                <span class="source-option-label" th:text="${'C' + src.clientId + ' • S' + src.id + ' (' + src.type + ')'}"></span>
                             </label>
 
                         </div>
