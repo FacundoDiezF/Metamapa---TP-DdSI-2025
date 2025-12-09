@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
+@Builder
 public class SourceInputDTO {
   @JsonProperty("file_name")
   String fileName;

@@ -1,0 +1,16 @@
+<html layout:decorate="~{layout/base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block layout:fragment="extraStyles">
+    <link rel="stylesheet" th:href="@{/css/pages/admin/admin-sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/pages/admin/grid-2col.css}">
+    <link rel="stylesheet" th:href="@{/css/pages/admin/importCSV.css}">
+</th:block>
+
+<th:block th:fragment="contenido">
+    <section th:replace="~{admin/grid2/grid2 :: grid2(
+     ~{admin/grid2/_sidebar :: adminSidebar('import')},
+     ~{admin/grid2/content/content-importCSVSection :: adminImportCSVContent}
+  )}"></section>
+</th:block>
+</html>
+

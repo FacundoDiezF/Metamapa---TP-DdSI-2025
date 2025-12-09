@@ -11,4 +11,6 @@ public interface IEventService {
   EventOutputDTO createEvent(EventImportDTO eventImportDTO);
 
   EventOutputDTO deleteEvent(Long eventId);
+
+  void saveEvents(Set<EventImportDTO>);
 }

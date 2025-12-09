@@ -102,4 +102,13 @@ public class ShareController {
     submissionRequestService.evaluate(sReqId, evaluationDto);
     return "redirect:/admin/pendingEvents";
   }
+
+  @GetMapping("/admin/import")
+  public String adminImport(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+
+    model.addAttribute("active", "admin");
+    model.addAttribute("pageTitle", "MetaMapa · Importar CSV");
+
+    return "admin/pages/importCSV";
+  }
 }

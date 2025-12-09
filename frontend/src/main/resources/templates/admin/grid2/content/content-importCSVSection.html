@@ -1,0 +1,47 @@
+
+<th:block th:fragment="adminImportCSVContent">
+
+    <section class="admin-section">
+        <header class="admin-section__header">
+            <h1 class="admin-section__title">Importar eventos desde CSV</h1>
+            <p class="admin-section__subtitle">
+                Seleccioná un archivo CSV con eventos y lo enviaremos a la fuente estática para su importación.
+            </p>
+        </header>
+
+        <!-- Mensajes opcionales si querés mostrarlos después -->
+        <div th:if="${ok}" class="alert alert-success">
+            <p th:text="${ok}"></p>
+        </div>
+        <div th:if="${error}" class="alert alert-error">
+            <p th:text="${error}"></p>
+        </div>
+
+        <section class="card">
+            <h2 class="card-title">Subir archivo CSV</h2>
+
+            <!-- FORMULARIO SIMPLE -->
+            <form method="post"
+                  enctype="multipart/form-data"
+                  action="http://localhost:8082/admin/imports/csv">
+
+                <div class="field">
+                    <label for="csvfile">Archivo CSV</label>
+                    <input id="csvfile"
+                           name="csvfile"
+                           type="file"
+                           accept=".csv,text/csv"
+                           required>
+                    <p class="field-help">
+                        Formato esperado: title, description, name, latitude, longitude, EventDate
+                    </p>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Importar
+                </button>
+            </form>
+        </section>
+    </section>
+
+</th:block>

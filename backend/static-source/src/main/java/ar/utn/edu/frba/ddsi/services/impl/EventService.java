@@ -69,4 +69,12 @@ public class EventService implements IEventService {
     eventRepository.save(event);
     return EventOutputDTO.from(event);
   }
+
+  @Override
+  public void saveEvents(Set<EventImportDTO> eventos){
+    for(EventImportDTO dto : eventos){
+      createEvent(dto);
+    }
+  }
+
 }
