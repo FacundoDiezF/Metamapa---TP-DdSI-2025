@@ -2,6 +2,11 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="utf-8"/>
+
+    <!-- CSRF Token -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <title th:text="${pageTitle} ?: 'MetaMapa'"></title>
@@ -49,6 +54,34 @@
 <script th:src="@{/js/navbar/curated-mode.js}"></script>
 
 <!-- Scripts específicos de página -->
+<th:block layout:fragment="extraScripts"></th:block>
+
+<!--Script para inyectar token CSRF en el header de llamadas HTTP hechas por HTMX o fetch manuales (thymeleaf maneja solo los formularios automáticamente)-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 1. Obtener el token y el nombre del header de los meta tags
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        // 2. Configuración para HTMX (si es lo que usa tu modal)
+        if (typeof htmx !== 'undefined') {
+            document.body.addEventListener('htmx:configRequest', function(evt) {
+                evt.detail.headers[csrfHeader] = csrfToken;
+            });
+        }
+
+        // 3. Interceptor global para 'fetch' (por si usan JS vanilla)
+        const originalFetch = window.fetch;
+        window.fetch = function(url, config) {
+            if (config && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(config.method?.toUpperCase())) {
+                config.headers = config.headers || {};
+                config.headers[csrfHeader] = csrfToken;
+            }
+            return originalFetch(url, config);
+        };
+    });
+</script>
+
 <th:block layout:fragment="extraScripts"></th:block>
 
 </body>
