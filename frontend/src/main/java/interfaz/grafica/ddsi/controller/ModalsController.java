@@ -103,6 +103,7 @@ public class ModalsController {
     return "fragments/modals/_newCollectionModal :: newCollectionModal";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/new-collection/add-condition-row")
   public String addConditionRow(@RequestParam("type") ConditionType type,
                                 @RequestParam("index") int index,

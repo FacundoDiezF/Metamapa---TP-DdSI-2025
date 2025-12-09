@@ -6,7 +6,7 @@
                th:text="${collection.title}">Título</a>
         </h2>
 
-        <div class="top-actions">
+        <div class="top-actions" sec:authorize="hasRole('ADMIN')">
             <button class="icon-btn" title="Editar">
                 <img src="/shared/icons/edit.svg" alt="Editar">
             </button>
