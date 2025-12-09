@@ -6,6 +6,7 @@ import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
+import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
 import interfaz.grafica.ddsi.services.SubmissionRequestService;
@@ -25,11 +26,13 @@ public class ShareController {
   private final EventService eventService;
   private final DeletionRequestService deletionRequestService;
   private final SubmissionRequestService submissionRequestService;
+  private final CollectionService collectionService;
 
-  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService) {
+  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, CollectionService collectionService) {
     this.eventService = eventService;
     this.deletionRequestService = deletionRequestService;
     this.submissionRequestService = submissionRequestService;
+    this.collectionService = collectionService;
   }
 
   @PostMapping("/event")
@@ -111,7 +114,7 @@ public class ShareController {
   @PostMapping("/collections")
   public String createCollection(@ModelAttribute CollectionOutputDTO collectionForm) {
 
-    System.out.println("Creating collection: " + collectionForm);
+    collectionService.postNew(collectionForm);
 
     return "redirect:/admin/collections";
   }

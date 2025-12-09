@@ -17,6 +17,7 @@ import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
+import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -148,6 +149,15 @@ public class ServerAdapter {
         .uri("/collections/{handler}", handler)
         .retrieve()
         .bodyToMono(CollectionDTO.class)
+        .block();
+  }
+
+  public void postNewCollection(CollectionOutputDTO collectionDTO) {
+    webClient.post()
+        .uri("/collections")
+        .bodyValue(collectionDTO)
+        .retrieve()
+        .bodyToMono(Void.class)
         .block();
   }
 
