@@ -63,8 +63,8 @@ public class PagesController {
 
   @GetMapping("/landing")
   public String landing(Model model) {
-    List<CollectionDTO> topCollections = collectionService.getTop();
-    model.addAttribute("topCollections", topCollections);
+    PageDTO<CollectionDTO> collectionPage = collectionService.getAll(0, 4);
+    model.addAttribute("topCollections", collectionPage.getContent());
     model.addAttribute("pageTitle", "MetaMapa · Landing");
     return "landing";
   }
