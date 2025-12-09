@@ -93,15 +93,15 @@ public class ModalsController {
 
     model.addAttribute("newCollection", new CollectionOutputDTO());
 
+    List<SourceDTO> allSources = sourcesService.getAll();
+
+    model.addAttribute("sources", allSources);
+
     return "fragments/modals/_newCollectionModal :: newCollectoinModal";
   }
 
   @GetMapping("/new-source")
   public String getNewSourceModal(Model model) {
-
-    List<SourceDTO> allSources = sourcesService.getAll();
-
-    model.addAttribute("sources", allSources);
 
     model.addAttribute("newSourceClient", new SourceClientOutputDTO());
 
