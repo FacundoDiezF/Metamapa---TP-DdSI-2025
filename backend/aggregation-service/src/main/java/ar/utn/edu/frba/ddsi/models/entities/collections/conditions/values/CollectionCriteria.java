@@ -10,6 +10,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.List;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(force = true)
@@ -21,6 +22,7 @@ public class CollectionCriteria {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Getter
   @ManyToMany
   @JoinTable(
       name = "criterias_conditions",

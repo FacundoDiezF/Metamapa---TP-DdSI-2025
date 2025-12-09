@@ -1,6 +1,7 @@
 package ar.utn.edu.frba.ddsi.models.entities.collections.conditions.impl;
 
 import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.Condition;
+import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.ConditionType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
@@ -24,5 +25,15 @@ public class UntilDateCondition extends Condition {
   @Override
   public boolean isSatisfiedBy(Event event) {
     return event.getEventDate().isBefore(to);
+  }
+
+  @Override
+  public String getConditionValue() {
+    return to.toString();
+  }
+
+  @Override
+  public ConditionType getType() {
+    return ConditionType.TO_DATE;
   }
 }

@@ -21,4 +21,8 @@ public abstract class Condition {
   private Long id;
 
   public abstract boolean isSatisfiedBy(Event event);
+
+  public abstract String getConditionValue();
+
+  public abstract ConditionType getType();
 }
