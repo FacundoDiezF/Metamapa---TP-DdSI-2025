@@ -279,6 +279,12 @@
     border-top: 1px solid #f1f5f9;
 }
 
+.conditions-options {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
 .criteria-actions {
     display: flex;
     align-items: center;
