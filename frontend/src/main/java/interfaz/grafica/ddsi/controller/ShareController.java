@@ -1,5 +1,6 @@
 package interfaz.grafica.ddsi.controller;
 
+import interfaz.grafica.ddsi.services.SourcesService;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
@@ -15,17 +16,33 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+
+
+
+
+import lombok.extern.slf4j.Slf4j;
+
+
+
 
 @Controller
 @RequestMapping("/share")
+
+@Slf4j
 public class ShareController {
+
+    private final SourcesService sourcesService;
 
   private final EventService eventService;
   private final DeletionRequestService deletionRequestService;
   private final SubmissionRequestService submissionRequestService;
 
-  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService) {
-    this.eventService = eventService;
+  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService , SourcesService sourcesService) {
+    this.sourcesService = sourcesService;
+
+      this.eventService = eventService;
     this.deletionRequestService = deletionRequestService;
     this.submissionRequestService = submissionRequestService;
   }
@@ -103,12 +120,15 @@ public class ShareController {
     return "redirect:/admin/pendingEvents";
   }
 
-  @GetMapping("/admin/import")
-  public String adminImport(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+    @PostMapping("/source")
+    public String adminImport(@RequestParam("csvfile") MultipartFile csvfile, Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-    model.addAttribute("active", "admin");
-    model.addAttribute("pageTitle", "MetaMapa · Importar CSV");
+        log.info("LLEGUE ACA");
 
-    return "admin/pages/importCSV";
-  }
+
+        sourcesService.postNewSource(csvfile);
+        return "redirect:/admin/import";
+    }
+
+
 }

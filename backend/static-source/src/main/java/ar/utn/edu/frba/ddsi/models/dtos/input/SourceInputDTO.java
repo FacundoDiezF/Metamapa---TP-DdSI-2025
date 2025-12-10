@@ -1,13 +1,17 @@
 package ar.utn.edu.frba.ddsi.models.dtos.input;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 
-@Data
 @Builder
+@Data
+
 public class SourceInputDTO {
   @JsonProperty("file_name")
   String fileName;
   @JsonProperty("import_strategy")
   String importStrategy;
+
+
 }

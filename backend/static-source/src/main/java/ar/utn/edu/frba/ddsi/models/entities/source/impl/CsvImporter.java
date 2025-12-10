@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -59,7 +60,7 @@ public class CsvImporter implements IImporter {
                 double longitude = Double.parseDouble(stripQuotes(columns[4]));
                 String rawDate = stripQuotes(columns[5]);
 
-                LocalDate eventDate = LocalDate.parse(rawDate, DATE_FORMATTER);
+                LocalDate date = LocalDate.parse(rawDate, DATE_FORMATTER);
                 LocalDateTime eventDate = date.atStartOfDay();
 
                 Long sourceId = source.getId();

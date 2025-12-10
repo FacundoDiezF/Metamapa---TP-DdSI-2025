@@ -3,6 +3,8 @@ package ar.utn.edu.frba.ddsi.models.entities.source;
 import ar.utn.edu.frba.ddsi.converters.ImporterConverter;
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventImportDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Origin;
+
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -14,12 +16,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
@@ -40,13 +40,18 @@ public class Source{
   @Column(name = "path", nullable = false)
   private final String path;
 
+  @Column(name = "imported", nullable = false)
+  private boolean imported;
+
   public Source(String path, IImporter importer) {
     this.path = path;
     this.importer = importer;
     this.type = Origin.STATIC;
+    this.imported = false;
   }
 
   public Set<EventImportDTO> importEvents() {
     return this.importer.importEvents(this);
   }
+
 }

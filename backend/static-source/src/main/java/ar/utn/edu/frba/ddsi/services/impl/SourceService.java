@@ -12,10 +12,17 @@ import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import ar.utn.edu.frba.ddsi.services.ISourceService;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class SourceService implements ISourceService {
@@ -40,6 +47,7 @@ public class SourceService implements ISourceService {
   @Override
   public SourceOutputDTO create(SourceInputDTO sourceInput) {
 
+
     Source source = sourceFactory.createFrom(sourceInput);
     sourceRepository.save(source);
 
@@ -47,6 +55,30 @@ public class SourceService implements ISourceService {
     publisher.notifyNewSource(sourceOutput);
 
     return sourceOutput;
+  }
+
+
+  @Override
+  public SourceOutputDTO createFromCsvFile(MultipartFile csvfile) throws IOException {
+
+        if (csvfile.isEmpty()) {
+            throw new IllegalArgumentException("El archivo CSV está vacío");
+        }
+
+
+        Path uploadsDir = Paths.get("uploads"); // o desde application.properties
+        Files.createDirectories(uploadsDir);
+
+        Path destino = uploadsDir.resolve(csvfile.getOriginalFilename());
+        Files.copy(csvfile.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+
+        SourceInputDTO dto = SourceInputDTO.builder()
+                .fileName(destino.toString())
+                .importStrategy("CSV")
+                .build();
+
+
+        return this.create(dto);
   }
 
   @Override
@@ -73,4 +105,6 @@ public class SourceService implements ISourceService {
 
     return events.stream().map(EventOutputDTO::from).toList();
   }
+
+
 }

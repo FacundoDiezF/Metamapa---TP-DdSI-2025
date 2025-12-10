@@ -21,9 +21,9 @@
             <h2 class="card-title">Subir archivo CSV</h2>
 
             <!-- FORMULARIO SIMPLE -->
-            <form method="post"
-                  enctype="multipart/form-data"
-                  action="http://localhost:8082/admin/imports/csv">
+            <form th:action="@{/source}"
+                  method="post"
+                  enctype="multipart/form-data">
 
                 <div class="field">
                     <label for="csvfile">Archivo CSV</label>
@@ -41,6 +41,7 @@
                     Importar
                 </button>
             </form>
+
         </section>
     </section>
 

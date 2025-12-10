@@ -1,0 +1,129 @@
+/* Contenedor general de la sección */
+.admin-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.600rem;
+    padding: 2.400rem 2.800rem 3.200rem;
+}
+
+/* Header igual al de "Colecciones" */
+.admin-section__header {
+    margin-bottom: 1.600rem;
+}
+
+.admin-section__title {
+    font-size: 2.400rem;
+    line-height: 1.150;
+    font-weight: 700;
+    color: var(--mm-heading, #111827); /* mismo tono oscuro que títulos del panel */
+    margin-bottom: 0.400rem;
+}
+
+.admin-section__subtitle {
+    font-size: 1.400rem;
+    color: var(--mm-text-muted, #6B7280);
+}
+
+/* Card principal (similar a la de cada colección) */
+.card {
+    margin-top: 0.800rem;
+    padding: 1.800rem 2.000rem 2.000rem;
+    border-radius: 1.600rem;
+    background: #FFFFFF;
+    border: 0.063rem solid #E5E7EB;
+    box-shadow: 0 0.750rem 1.875rem rgba(15, 23, 42, 0.04);
+}
+
+.card-title {
+    font-size: 1.600rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1.200rem;
+}
+
+/* Campos del formulario */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.400rem;
+    margin-bottom: 1.600rem;
+}
+
+.field label {
+    font-size: 1.300rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* Input de archivo con estilo similar a los inputs del admin */
+#csvfile {
+    display: block;
+    width: 100%;
+    padding: 0.800rem 1.000rem;
+    border-radius: 1.000rem;
+    border: 0.063rem solid #D1D5DB;
+    background-color: #F9FAFB;
+    font-size: 1.300rem;
+    cursor: pointer;
+}
+
+#csvfile:hover {
+    background-color: #F3F4F6;
+}
+
+#csvfile:focus {
+    outline: none;
+    border-color: var(--mm-primary, #2563EB);
+    box-shadow: 0 0 0 0.188rem rgba(37, 99, 235, 0.12);
+    background-color: #FFFFFF;
+}
+
+.field-help {
+    font-size: 1.200rem;
+    color: #6B7280;
+}
+
+/* Botón primario alineado al estilo general */
+.btn.btn-primary {
+    padding: 0.800rem 1.600rem;
+    border-radius: 0.999rem;
+    font-size: 1.300rem;
+    font-weight: 600;
+    border: none;
+    background-color: var(--mm-primary, #2563EB);
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: background-color 0.150s ease, box-shadow 0.150s ease,
+    transform 0.150s ease;
+}
+
+.btn.btn-primary:hover {
+    background-color: var(--mm-primary-hover, #1D4ED8);
+    box-shadow: 0 0.500rem 1.250rem rgba(37, 99, 235, 0.25);
+    transform: translateY(-0.063rem);
+}
+
+.btn.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Mensajes de feedback (ok / error), en línea con el admin */
+.alert {
+    padding: 0.900rem 1.200rem;
+    border-radius: 0.875rem;
+    font-size: 1.300rem;
+    margin-bottom: 1.200rem;
+}
+
+.alert-success {
+    background-color: #ECFDF3;
+    color: #166534;
+    border: 0.063rem solid #BBF7D0;
+}
+
+.alert-error {
+    background-color: #FEF2F2;
+    color: #B91C1C;
+    border: 0.063rem solid #FECACA;
+}
