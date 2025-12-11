@@ -27,4 +27,9 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleNonMatchingPasswordException(NonMatchingPasswordException ex) {
     return handleException(ex, HttpStatus.UNAUTHORIZED); //TODO actualizar el status que se catchea en el login del front para que muestre el error correspondiente
   }
+
+  @ExceptionHandler(InvalidOrExpiredTokenException.class)
+  public ResponseEntity<ErrorResponse> handleInvalidOrExpiredTokenException(InvalidOrExpiredTokenException ex) {
+    return handleException(ex, HttpStatus.UNAUTHORIZED); //TODO actualizar el status que se catchea en el login del front para que muestre el error correspondiente
+  }
 }
