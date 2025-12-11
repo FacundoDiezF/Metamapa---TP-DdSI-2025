@@ -1,11 +1,8 @@
 package interfaz.grafica.ddsi.services;
 
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
-import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
-import interfaz.grafica.ddsi.dtos.SourceDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
-import java.util.List;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.exceptions.ConnectionException;
 import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
@@ -44,6 +41,16 @@ public class CollectionService {
   public void postNew(CollectionOutputDTO newCollection) {
     try {
       server.postNewCollection(newCollection);
+    } catch (WebClientResponseException e) {
+      throw new BackendException(e);
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
+    }
+  }
+
+  public void deleteByHandler(String handler) {
+    try {
+      server.deleteCollection(handler);
     } catch (WebClientResponseException e) {
       throw new BackendException(e);
     } catch (Exception e) {
