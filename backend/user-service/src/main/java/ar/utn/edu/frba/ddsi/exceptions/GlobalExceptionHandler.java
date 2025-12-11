@@ -32,4 +32,9 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleInvalidOrExpiredTokenException(InvalidOrExpiredTokenException ex) {
     return handleException(ex, HttpStatus.UNAUTHORIZED); //TODO actualizar el status que se catchea en el login del front para que muestre el error correspondiente
   }
+
+  @ExceptionHandler(InactiveUserException.class)
+  public ResponseEntity<ErrorResponse> handleInactiveUserExceptionException(InactiveUserException ex) {
+    return handleException(ex, HttpStatus.FORBIDDEN); //TODO actualizar el status que se catchea en el login del front para que muestre el error correspondiente
+  }
 }
