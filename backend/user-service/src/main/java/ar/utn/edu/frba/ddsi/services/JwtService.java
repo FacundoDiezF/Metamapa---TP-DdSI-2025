@@ -60,4 +60,50 @@ public class JwtService {
         .signWith(jwtConfig.getPrivateKey(), SignatureAlgorithm.RS256)
         .compact();
   }
+
+  // ==========================================
+  // VALIDACIÓN
+  // ==========================================
+
+  public boolean isRefreshTokenValid(String token) {
+    try {
+
+      if (isTokenExpired(token)) return false;
+
+      String type = extractClaim(token, claims -> claims.get("type", String.class)); //* Acá explotaría si su firma no es válida
+      return "REFRESH".equals(type);
+
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  // ==========================================
+  // UTILIDADES DE EXTRACCIÓN
+  // ==========================================
+
+  public String extractUsername(String token) {
+    return extractClaim(token, Claims::getSubject);
+  }
+
+  private Date extractExpiration(String token) {
+    return extractClaim(token, Claims::getExpiration);
+  }
+
+  private boolean isTokenExpired(String token) {
+    return extractExpiration(token).before(new Date());
+  }
+
+  private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    final Claims claims = extractAllClaims(token);
+    return claimsResolver.apply(claims);
+  }
+
+  private Claims extractAllClaims(String token) {
+    return Jwts.parserBuilder()
+        .setSigningKey(jwtConfig.getPublicKey())
+        .build()
+        .parseClaimsJws(token)
+        .getBody();
+  }
 }

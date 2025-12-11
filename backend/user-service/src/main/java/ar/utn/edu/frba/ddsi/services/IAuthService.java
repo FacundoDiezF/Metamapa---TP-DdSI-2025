@@ -9,4 +9,6 @@ public interface IAuthService {
   AuthResponseDTO register(RegisterRequestDTO registerRequestDTO);
 
   AuthResponseDTO login(LoginRequestDTO loginRequestDTO);
+
+  AuthResponseDTO refreshToken(RefreshTokenDTO refreshTokenDTO);
 }

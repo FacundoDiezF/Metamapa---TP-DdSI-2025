@@ -1,10 +1,12 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
+import ar.utn.edu.frba.ddsi.exceptions.InvalidOrExpiredTokenException;
 import ar.utn.edu.frba.ddsi.exceptions.NonExistentUserException;
 import ar.utn.edu.frba.ddsi.exceptions.NonMatchingPasswordException;
 import ar.utn.edu.frba.ddsi.exceptions.UsernameAlreadyExistsException;
 import ar.utn.edu.frba.ddsi.models.dtos.AuthResponseDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.LoginRequestDTO;
+import ar.utn.edu.frba.ddsi.models.dtos.RefreshTokenDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.RegisterRequestDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.UserSummaryDTO;
 import ar.utn.edu.frba.ddsi.models.entities.User;
@@ -44,9 +46,6 @@ public class AuthService implements IAuthService {
 
   @Override
   public AuthResponseDTO login(LoginRequestDTO loginRequestDTO) {
-    if(!userRepository.existsByUsername(loginRequestDTO.getUsername())) {
-      throw new NonExistentUserException();
-    }
     User user = userRepository.findByUsername(loginRequestDTO.getUsername())
         .orElseThrow(NonExistentUserException::new);
 
@@ -61,5 +60,27 @@ public class AuthService implements IAuthService {
     AuthResponseDTO authResponse = jwtService.generateTokens(user);
     authResponse.setUser(UserSummaryDTO.from(user));
     return authResponse;
+  }
+
+  @Override
+  public AuthResponseDTO refreshToken(RefreshTokenDTO refreshTokenDTO) {
+    String refreshToken = refreshTokenDTO.getRefreshToken();
+
+    String username;
+
+    try {
+      username = jwtService.extractUsername(refreshToken);
+    } catch (Exception e) {
+      throw new InvalidOrExpiredTokenException();
+    }
+
+    User user = userRepository.findByUsername(username) //? Debería obtenerlo por nombre de usuario o por id publica?
+        .orElseThrow(NonExistentUserException::new);
+
+    if(!jwtService.isRefreshTokenValid(refreshTokenDTO.getRefreshToken())) {
+      throw new InvalidOrExpiredTokenException();
+    }
+
+    return authResponse(user);
   }
 }
