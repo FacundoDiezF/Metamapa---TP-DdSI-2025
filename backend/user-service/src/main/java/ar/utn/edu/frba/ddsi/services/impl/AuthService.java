@@ -1,31 +1,32 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
+import ar.utn.edu.frba.ddsi.exceptions.NonExistentUserException;
+import ar.utn.edu.frba.ddsi.exceptions.NonMatchingPasswordException;
 import ar.utn.edu.frba.ddsi.exceptions.UsernameAlreadyExistsException;
 import ar.utn.edu.frba.ddsi.models.dtos.AuthResponseDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.LoginRequestDTO;
-import ar.utn.edu.frba.ddsi.models.dtos.RefreshTokenDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.RegisterRequestDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.UserSummaryDTO;
-import ar.utn.edu.frba.ddsi.models.entities.Role;
 import ar.utn.edu.frba.ddsi.models.entities.User;
+import ar.utn.edu.frba.ddsi.models.factories.UserFactory;
 import ar.utn.edu.frba.ddsi.models.repositories.IUserRepository;
 import ar.utn.edu.frba.ddsi.services.IAuthService;
 import ar.utn.edu.frba.ddsi.services.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-
 @Service
 public class AuthService implements IAuthService {
   private final IUserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
+  private final UserFactory userFactory;
 
-  public AuthService(IUserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+  public AuthService(IUserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, UserFactory userFactory) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.jwtService = jwtService;
+    this.userFactory = userFactory;
   }
 
   @Override
@@ -34,17 +35,31 @@ public class AuthService implements IAuthService {
       throw new UsernameAlreadyExistsException();
     }
 
-    User user = User.from(registerRequestDTO);
-
-    user.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
-
-    user.setRoles(Set.of(Role.CONTRIBUTOR)); // Asignar rol por defecto
+    User user = userFactory.createFrom(registerRequestDTO);
 
     userRepository.save(user);
 
+    return authResponse(user);
+  }
+
+  @Override
+  public AuthResponseDTO login(LoginRequestDTO loginRequestDTO) {
+    if(!userRepository.existsByUsername(loginRequestDTO.getUsername())) {
+      throw new NonExistentUserException();
+    }
+    User user = userRepository.findByUsername(loginRequestDTO.getUsername())
+        .orElseThrow(NonExistentUserException::new);
+
+    if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
+      throw new NonMatchingPasswordException();
+    }
+
+    return authResponse(user);
+  }
+
+  private AuthResponseDTO authResponse(User user) {
     AuthResponseDTO authResponse = jwtService.generateTokens(user);
     authResponse.setUser(UserSummaryDTO.from(user));
-
     return authResponse;
   }
 }

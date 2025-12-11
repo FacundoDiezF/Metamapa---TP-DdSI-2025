@@ -7,4 +7,6 @@ import ar.utn.edu.frba.ddsi.models.dtos.RegisterRequestDTO;
 
 public interface IAuthService {
   AuthResponseDTO register(RegisterRequestDTO registerRequestDTO);
+
+  AuthResponseDTO login(LoginRequestDTO loginRequestDTO);
 }
