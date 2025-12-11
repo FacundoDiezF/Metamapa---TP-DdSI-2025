@@ -1,6 +1,7 @@
 package ar.utn.edu.frba.ddsi.controllers;
 
 import ar.utn.edu.frba.ddsi.models.dtos.AuthResponseDTO;
+import ar.utn.edu.frba.ddsi.models.dtos.LoginRequestDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.RegisterRequestDTO;
 import ar.utn.edu.frba.ddsi.services.IAuthService;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,10 @@ public class AuthController {
   public ResponseEntity<AuthResponseDTO> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
 
     return ResponseEntity.ok(authService.register(registerRequestDTO));
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+    return ResponseEntity.ok(authService.login(loginRequestDTO));
   }
 }
