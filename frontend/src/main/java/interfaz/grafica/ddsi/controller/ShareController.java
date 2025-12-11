@@ -121,9 +121,17 @@ public class ShareController {
   }
 
   @PreAuthorize("hasAnyRole('ADMIN')")
-  @DeleteMapping("/collections/{handler}" )
-  public String deleteCollection(@PathVariable String handler) {
+  @DeleteMapping("/collections/{handler}")
+  public String deleteCollection(@PathVariable String handler, Model model) {
+
     collectionService.deleteByHandler(handler);
-    return "redirect:/admin/collections";
+
+    model.addAttribute("type", "success"); // O dejalo vacío si no tenés estilos para success
+    model.addAttribute("title", "Colección eliminada");
+    model.addAttribute("desc", "La colección '" + handler + "' ha sido eliminada correctamente.");
+
+    model.addAttribute("reloadOnClose", true);
+
+    return "fragments/modals/_messageModals :: messageModal";
   }
 }

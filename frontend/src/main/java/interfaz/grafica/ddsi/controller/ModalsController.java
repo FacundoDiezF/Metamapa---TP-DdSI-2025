@@ -131,6 +131,18 @@ public class ModalsController {
   }
 
   @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/confirm-delete/{handler}")
+  public String getConfirmDeleteModal(@PathVariable String handler, Model model) {
+
+    CollectionDTO col = collectionService.getByHandler(handler);
+
+    model.addAttribute("handler", handler);
+    model.addAttribute("title", col.getTitle());
+
+    return "fragments/modals/_messageModals :: deleteConfirmationModal";
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/new-source")
   public String getNewSourceModal(Model model) {
 

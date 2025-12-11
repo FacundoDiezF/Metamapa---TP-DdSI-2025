@@ -13,7 +13,10 @@
 
                 <img src="/shared/icons/edit.svg" alt="Editar">
             </button>
-            <button class="icon-btn" title="Eliminar">
+            <button class="icon-btn" title="Eliminar"
+                    th:hx-get="@{/modals/confirm-delete/{h}(h=${collection.handler})}"
+                    hx-target="#modals-here"
+                    hx-swap="innerHTML">
                 <img src="/shared/icons/trash.svg" alt="Eliminar">
             </button>
         </div>
