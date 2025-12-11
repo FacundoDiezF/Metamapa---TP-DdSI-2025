@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class UntilDateCondition extends Condition {
 
   @Column(name = "until_date")
-  final LocalDateTime to;
+  final LocalDateTime to; //TODO: Debe ser LocalDate
 
   public UntilDateCondition(LocalDateTime to) {
     this.to = to;

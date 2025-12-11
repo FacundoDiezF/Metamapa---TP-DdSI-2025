@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class FromDateCondition extends Condition {
 
   @Column(name = "from_date")
-  private final LocalDateTime from;
+  private final LocalDateTime from; //TODO: Debe ser LocalDate
 
   public FromDateCondition(LocalDateTime from) {
     this.from = from;
