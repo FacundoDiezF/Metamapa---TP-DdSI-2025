@@ -1,5 +1,6 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
+import ar.utn.edu.frba.ddsi.exceptions.InactiveUserException;
 import ar.utn.edu.frba.ddsi.exceptions.InvalidOrExpiredTokenException;
 import ar.utn.edu.frba.ddsi.exceptions.NonExistentUserException;
 import ar.utn.edu.frba.ddsi.exceptions.NonMatchingPasswordException;
@@ -49,6 +50,10 @@ public class AuthService implements IAuthService {
     User user = userRepository.findByUsername(loginRequestDTO.getUsername())
         .orElseThrow(NonExistentUserException::new);
 
+    if (!user.isActive()){
+      throw new InactiveUserException();
+    }
+
     if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
       throw new NonMatchingPasswordException();
     }
@@ -76,6 +81,10 @@ public class AuthService implements IAuthService {
 
     User user = userRepository.findByUsername(username) //? Debería obtenerlo por nombre de usuario o por id publica?
         .orElseThrow(NonExistentUserException::new);
+
+    if (!user.isActive()){
+      throw new InactiveUserException();
+    }
 
     if(!jwtService.isRefreshTokenValid(refreshTokenDTO.getRefreshToken())) {
       throw new InvalidOrExpiredTokenException();

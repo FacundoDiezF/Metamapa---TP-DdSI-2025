@@ -19,6 +19,7 @@ public class UserFactory {
     User user = User.from(dto);
     user.setPassword(passwordEncoder.encode(dto.getPassword()));
     user.setRoles(Set.of(Role.CONTRIBUTOR));
+    user.setActive(true);
     return user;
   }
 }

@@ -58,6 +58,9 @@ public class User {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
+  @Column(nullable = false)
+  private boolean active;
+
   @PrePersist
   public void generatePublicId() {
     if (this.publicId == null) {
