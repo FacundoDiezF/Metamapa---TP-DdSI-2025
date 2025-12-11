@@ -1,5 +1,6 @@
 package ar.utn.edu.frba.ddsi.models.entities;
 
+import ar.utn.edu.frba.ddsi.models.dtos.RegisterRequestDTO;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -62,5 +63,11 @@ public class User {
     if (this.publicId == null) {
       this.publicId = UUID.randomUUID().toString();
     }
+  }
+
+  public static User from(RegisterRequestDTO dto) {
+    return User.builder()
+        .username(dto.getUsername())
+        .build();
   }
 }
