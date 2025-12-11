@@ -29,7 +29,7 @@ public class UntilDateCondition extends Condition {
 
   @Override
   public String getConditionValue() {
-    return to.toString();
+    return to.toLocalDate().toString();
   }
 
   @Override

@@ -1,15 +1,16 @@
 package interfaz.grafica.ddsi.controller;
 
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
+import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
+import interfaz.grafica.ddsi.dtos.SourceDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.SourceClientOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
-import interfaz.grafica.ddsi.dtos.output.collection.ConditionDTO;
-import interfaz.grafica.ddsi.dtos.output.collection.ConditionType;
 import interfaz.grafica.ddsi.dtos.output.collection.ConsensusType;
 import interfaz.grafica.ddsi.services.CategoryService;
+import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.LocationService;
 import interfaz.grafica.ddsi.services.SourcesService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,11 +28,13 @@ public class ModalsController {
   private final CategoryService categoryService;
   private final LocationService locationService;
   private final SourcesService sourcesService;
+  private final CollectionService collectionService;
 
-  public ModalsController(CategoryService categoryService, LocationService locationService, SourcesService sourcesService) {
+  public ModalsController(CategoryService categoryService, LocationService locationService, SourcesService sourcesService, CollectionService collectionService) {
     this.categoryService = categoryService;
     this.locationService = locationService;
     this.sourcesService = sourcesService;
+    this.collectionService = collectionService;
   }
 
   @GetMapping("/more-categories")
@@ -104,18 +107,27 @@ public class ModalsController {
   }
 
   @PreAuthorize("hasRole('ADMIN')")
-  @GetMapping("/new-collection/add-condition-row")
-  public String addConditionRow(@RequestParam("type") ConditionType type,
-                                @RequestParam("index") int index,
-                                Model model) {
+  @GetMapping("/edit-collection/{handler}")
+  public String editNewCollectionModal(@PathVariable String handler , Model model) {
 
-    ConditionDTO conditionDto = new ConditionDTO();
-    conditionDto.setConditionType(type);
+    //Obtengo la coleccion y la cargo en el formulario (cambio el formato del DTO)
+    CollectionDTO collectionToEdit = collectionService.getByHandler(handler);
 
-    model.addAttribute("condition", conditionDto);
-    model.addAttribute("idx", index); //Para th:field (conditions[0], conditions[1]...)
+    CollectionOutputDTO form = new CollectionOutputDTO();
+    form.setTitle(collectionToEdit.getTitle());
+    form.setDescription(collectionToEdit.getDescription());
+    form.setConsensusType(collectionToEdit.getConsensusType());
+    form.setConditions(collectionToEdit.getConditions());
+    form.setSourceIds(collectionToEdit.getSources().stream().map(SourceDTO::getId).toList());
 
-    return "fragments/modals/_newCollectionModal :: conditionRow";
+
+    model.addAttribute("newCollection", form);
+    model.addAttribute("sources", sourcesService.getAll());
+
+    model.addAttribute("isEditMode", true);
+    model.addAttribute("handler", handler);
+
+    return "fragments/modals/_newCollectionModal :: newCollectionModal";
   }
 
   @PreAuthorize("hasRole('ADMIN')")

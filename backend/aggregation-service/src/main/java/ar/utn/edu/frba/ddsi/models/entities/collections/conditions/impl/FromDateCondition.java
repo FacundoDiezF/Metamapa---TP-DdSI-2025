@@ -29,7 +29,7 @@ public class FromDateCondition extends Condition {
 
   @Override
   public String getConditionValue() {
-    return this.from.toString();
+    return this.from.toLocalDate().toString();
   }
 
   @Override

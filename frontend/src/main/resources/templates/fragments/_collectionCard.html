@@ -7,7 +7,10 @@
         </h2>
 
         <div class="top-actions" sec:authorize="hasRole('ADMIN')">
-            <button class="icon-btn" title="Editar">
+            <button class="icon-btn" title="Editar"
+                    th:hx-get="@{/modals/edit-collection/{handler}(handler=${collection.handler})}"
+                    hx-target="#modals-here" hx-swap="innerHTML">
+
                 <img src="/shared/icons/edit.svg" alt="Editar">
             </button>
             <button class="icon-btn" title="Eliminar">
