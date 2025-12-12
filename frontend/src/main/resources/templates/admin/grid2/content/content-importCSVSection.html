@@ -21,7 +21,7 @@
             <h2 class="card-title">Subir archivo CSV</h2>
 
             <!-- FORMULARIO SIMPLE -->
-            <form th:action="@{/source}"
+            <form th:action="@{/share/source}"
                   method="post"
                   enctype="multipart/form-data">
 
@@ -44,5 +44,10 @@
 
         </section>
     </section>
+
+
+    <th:block th:replace="~{fragments/modals/_importSuccesfullModals :: importSuccessToast(importSuccess=${importSuccess})}"></th:block>
+
+
 
 </th:block>

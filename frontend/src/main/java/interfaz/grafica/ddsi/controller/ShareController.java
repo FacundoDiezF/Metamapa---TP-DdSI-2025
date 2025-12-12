@@ -23,8 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import lombok.extern.slf4j.Slf4j;
-
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -121,13 +120,20 @@ public class ShareController {
   }
 
     @PostMapping("/source")
-    public String adminImport(@RequestParam("csvfile") MultipartFile csvfile, Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+    public String adminImport(@RequestParam("csvfile") MultipartFile csvfile, RedirectAttributes redirectAttributes, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-        log.info("LLEGUE ACA");
+        System.out.println(">>>> LLEGUE AL CONTROLLER /source <<<<");
+        System.out.println("Nombre: " + csvfile.getOriginalFilename());
+        System.out.println("Tamaño: " + csvfile.getSize());
 
+        try{
+            sourcesService.postNewSource(csvfile);
+            redirectAttributes.addFlashAttribute("importSuccess", true);
+        } catch (Exception e){
+            redirectAttributes.addFlashAttribute("importError", "Ocurrió un error al importar el CSV.");
+        }
 
-        sourcesService.postNewSource(csvfile);
-        return "redirect:/admin/import";
+        return "redirect:/admin/import"; //TODO aca deberia saltar un popup de exito o error
     }
 
 

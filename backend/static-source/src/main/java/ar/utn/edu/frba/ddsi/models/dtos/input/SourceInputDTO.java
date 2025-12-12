@@ -12,6 +12,7 @@ public class SourceInputDTO {
   String fileName;
   @JsonProperty("import_strategy")
   String importStrategy;
-
+  @JsonProperty("imported")
+  private boolean imported;
 
 }

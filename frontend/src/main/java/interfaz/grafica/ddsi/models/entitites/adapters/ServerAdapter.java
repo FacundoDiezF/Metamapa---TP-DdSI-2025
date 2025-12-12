@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.exceptions.ConnectionException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,8 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.util.UriBuilder;
 
+
+@Slf4j
 @Component
 public class ServerAdapter {
 
@@ -52,7 +55,14 @@ public class ServerAdapter {
   private final WebClient apiGatewayClient;
 
 
-  public ServerAdapter(@Value("${aggregator.url}") String url, @Value("${api.gateway.url}") String apiGatewayUrl) {
+  public ServerAdapter(
+          @Value("${aggregator.url}") String url,
+          @Value("${api.gateway.url}") String apiGatewayUrl,
+          @Value("${static-source.url}") String staticSourceUrl) {
+
+
+
+
     //TODO: Borrar y remplazar su uso cuando tengamos el gateway
     this.webClient = WebClient.builder()
         .baseUrl(url)
@@ -64,7 +74,7 @@ public class ServerAdapter {
         .build();
 
     this.staticClient = WebClient.builder()
-        .baseUrl("http://localhost:8085")
+        .baseUrl(staticSourceUrl)
         .build();
 
     //TODO: Borrar y remplazar su uso cuando tengamos el gateway
@@ -405,6 +415,7 @@ public class ServerAdapter {
         builder.part("csvfile", csvfile.getResource())
                 .filename(csvfile.getOriginalFilename());
 
+        log.info("VOY A HACER EL POST AL BACKEND");
         staticClient.post()
                 .uri("/sources")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
@@ -412,6 +423,9 @@ public class ServerAdapter {
                 .retrieve()
                 .bodyToMono(SourceClientOutputDTO.class)
                 .block();
+
+        log.info("[FRONT] Source creada en back");
+
 
     }
 }

@@ -65,16 +65,21 @@ public class SourceService implements ISourceService {
             throw new IllegalArgumentException("El archivo CSV está vacío");
         }
 
+      String basePath = "D:/Facultad/Dss/fron/2025-tpa-ma-ma-grupo-18/backend/static-source/CSV";
 
-        Path uploadsDir = Paths.get("uploads"); // o desde application.properties
-        Files.createDirectories(uploadsDir);
+      Path uploadsDir = Paths.get(basePath);
+      Files.createDirectories(uploadsDir);  // crea la carpeta si no existe
 
-        Path destino = uploadsDir.resolve(csvfile.getOriginalFilename());
+      Path destino = uploadsDir.resolve(csvfile.getOriginalFilename());
+
+
+
         Files.copy(csvfile.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
         SourceInputDTO dto = SourceInputDTO.builder()
                 .fileName(destino.toString())
                 .importStrategy("CSV")
+                .imported(false)
                 .build();
 
 

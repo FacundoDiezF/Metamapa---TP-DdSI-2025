@@ -1,0 +1,50 @@
+.mm-modal-backdrop{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 99999;
+}
+
+/* modal “igual al de antes” pero abajo */
+.mm-modal{
+    position: fixed;
+    right: 24px;
+    bottom: 24px;                /* acá lo mandamos abajo */
+    width: min(560px, calc(100vw - 32px));
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    padding: 18px;
+}
+
+/* si querés conservar la clase */
+.mm-modal--bottom{
+    /* ya está posicionado por .mm-modal */
+}
+
+.mm-modal__header h2{
+    margin: 0 0 8px 0;
+}
+
+.mm-modal__footer{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+/* Barra: se vacía de izquierda a derecha */
+.mm-modal__bar{
+    margin-top: 14px;
+    height: 6px;
+    background: rgba(0,0,0,0.12);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.mm-modal__barFill{
+    height: 100%;
+    width: 100%;
+    transform-origin: left;
+    transform: scaleX(1); /* llena */
+    background: rgba(37, 99, 235, 0.90);
+}

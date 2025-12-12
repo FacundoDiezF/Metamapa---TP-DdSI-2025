@@ -1,0 +1,49 @@
+<th:block th:fragment="importSuccessToast(importSuccess)">
+
+    <div th:if="${importSuccess}" class="mm-modal-backdrop" id="importModalBackdrop">
+        <div class="mm-modal mm-modal--bottom" id="importModal">
+            <div class="mm-modal__header">
+                <h2>Importación exitosa</h2>
+            </div>
+
+            <div class="mm-modal__body">
+                <p>El archivo CSV se importó correctamente. Los eventos serán procesados en breve.</p>
+            </div>
+
+            <div class="mm-modal__footer">
+                <button type="button" class="btn btn-primary" onclick="closeImportModal()">
+                    Cerrar
+                </button>
+            </div>
+
+            <!-- barra que se VACÍA -->
+            <div class="mm-modal__bar">
+                <div class="mm-modal__barFill" id="importModalBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <script th:if="${importSuccess}">
+        (function () {
+            const DURATION_MS = 4500; // 4.500s
+            const backdrop = document.getElementById('importModalBackdrop');
+            const bar = document.getElementById('importModalBar');
+
+            if (!backdrop || !bar) return;
+
+            // arranca llena y se vacía
+            bar.style.transition = `transform ${DURATION_MS}ms linear`;
+            requestAnimationFrame(() => {
+                bar.style.transform = 'scaleX(0)';
+            });
+
+            window.closeImportModal = function () {
+                backdrop.remove();
+            };
+
+            setTimeout(window.closeImportModal, DURATION_MS);
+        })();
+    </script>
+
+</th:block>
+
