@@ -162,6 +162,15 @@ public class ServerAdapter {
         .block();
   }
 
+  public void updateCollection(String handler, CollectionOutputDTO collectionDTO) {
+    webClient.put()
+        .uri("/collections/{handler}", handler)
+        .bodyValue(collectionDTO)
+        .retrieve()
+        .bodyToMono(Void.class)
+        .block();
+  }
+
   public void deleteCollection(String handler) {
     webClient.delete()
         .uri("/collections/{handler}", handler)

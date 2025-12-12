@@ -48,6 +48,16 @@ public class CollectionService {
     }
   }
 
+  public void updateByHandler(String handler, CollectionOutputDTO updatedCollection) {
+    try {
+      server.updateCollection(handler, updatedCollection);
+    } catch (WebClientResponseException e) {
+      throw new BackendException(e);
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
+    }
+  }
+
   public void deleteByHandler(String handler) {
     try {
       server.deleteCollection(handler);
