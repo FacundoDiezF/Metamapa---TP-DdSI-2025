@@ -20,12 +20,17 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class SourceService implements ISourceService {
+
+    @Value("${static-source.storage.dir}")
+    private String storageDir;
 
   private final ISourceRepository sourceRepository;
   private final IEventRepository eventRepository;
@@ -65,25 +70,24 @@ public class SourceService implements ISourceService {
             throw new IllegalArgumentException("El archivo CSV está vacío");
         }
 
-      String basePath = "D:/Facultad/Dss/fron/2025-tpa-ma-ma-grupo-18/backend/static-source/CSV";
+      String userHome = System.getProperty("user.home");
 
-      Path uploadsDir = Paths.get(basePath);
-      Files.createDirectories(uploadsDir);  // crea la carpeta si no existe
+      Path uploadsDir = Paths.get(userHome, storageDir);
+      Files.createDirectories(uploadsDir);
 
       Path destino = uploadsDir.resolve(csvfile.getOriginalFilename());
 
+      Files.copy(csvfile.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
 
-        Files.copy(csvfile.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
-
-        SourceInputDTO dto = SourceInputDTO.builder()
+      SourceInputDTO dto = SourceInputDTO.builder()
                 .fileName(destino.toString())
                 .importStrategy("CSV")
                 .imported(false)
                 .build();
 
-
-        return this.create(dto);
+      System.out.println("Guardando CSV en: " + uploadsDir.toAbsolutePath());
+      return this.create(dto);
   }
 
   @Override

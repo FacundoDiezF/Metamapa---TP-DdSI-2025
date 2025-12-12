@@ -21,3 +21,7 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 
 # IMPORT SCHEDULER CONFIG
 imports.fixed-delay-ms=60000
+
+
+# PATH DONDE VAN LOS CSV
+static-source.storage.dir=metamapa/static-sources/csv
