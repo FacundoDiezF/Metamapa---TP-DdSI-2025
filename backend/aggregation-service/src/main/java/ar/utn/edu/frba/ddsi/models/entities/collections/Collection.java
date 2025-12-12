@@ -1,6 +1,6 @@
 package ar.utn.edu.frba.ddsi.models.entities.collections;
 
-import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
+import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionCreationDTO;
 import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.CollectionCriteria;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
@@ -49,7 +49,7 @@ public class Collection {
   private String title;
 
   @Setter
-  @Column(name = "description")
+  @Column(name = "description", columnDefinition = "TEXT")
   private String description;
 
   @Builder.Default
@@ -129,9 +129,41 @@ public class Collection {
         .collect(Collectors.toSet());
   }
 
-  public void update(CollectionUpdateDTO dto) {
-    if (dto.getTitle() != null) this.title = dto.getTitle();
-    if (dto.getDescription() != null) this.description = dto.getDescription();
+  public void update(CollectionCreationDTO dto, Set<Source> newSources) {
+
+    //Simple fields
+    if (dto.getTitle() != null && !dto.getTitle().equals(this.title)) {
+      this.title = dto.getTitle();
+    }
+    if (dto.getDescription() != null && !dto.getDescription().equals(this.description)) {
+      this.description = dto.getDescription();
+    }
+    if (dto.getConsensusType() != null && !dto.getConsensusType().equals(this.consensusType)) {
+      this.consensusType = dto.getConsensusType();
+    }
+
+    // Criteria
+    //TODO: Deberia recibir y validar que la CollectionCriteria nueva no sea igual a la vieja antes de setear el flag para el refresh global.
+    boolean criteriaChanged = false;
+
+    // Sources
+    if (newSources != null) {
+      //To remove (filtering those not present)
+      Set<Source> toRemove = new HashSet<>(this.sources);
+      toRemove.removeAll(newSources);
+
+      // To add (filtering those already present)
+      Set<Source> toAdd = new HashSet<>(newSources);
+      toAdd.removeAll(this.sources);
+      toRemove.forEach(this::remove);
+      toAdd.forEach(this::add);
+
+    }
+
+    // Refresh Global !(no en funcionamiento)
+    if (criteriaChanged) {
+      this.refresh(null);
+    }
   }
 
   public void remove(Source source) {

@@ -2,7 +2,6 @@ package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionCreationDTO;
-import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.collection.CollectionOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.collections.Collection;
@@ -117,12 +116,22 @@ public class CollectionService implements ICollectionService {
   }
 
   @Override
-  public void updateCollection(String handler, CollectionUpdateDTO dto) {
-    //TODO: validate that user can do this petition.
+  @Transactional
+  public void updateCollection(String handler, CollectionCreationDTO dto) {
+
     Collection collection = collectionRepository.findByHandler(handler);
     if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
-    collection.update(dto);
+    List<Source> foundSources = sourceRepository.findAllById(dto.getSourceIds());
+    if (foundSources.size() != dto.getSourceIds().size()) {
+      throw new NotFoundException("Una o más fuentes no existen.");
+    }
+    Set<Source> newSources = new HashSet<>(foundSources);
+
+    //CollectionCriteria newCriteria = collectionCriteriaService.findOrCreate(dto.getConditions());
+    //TODO: Permitir actualizar criterios de coleccion.
+
+    collection.update(dto, newSources);
 
     collectionRepository.save(collection);
   }
@@ -143,6 +152,8 @@ public class CollectionService implements ICollectionService {
 
     return CollectionOutputDTO.from(collection);
   }
+
+  //! ------------------------ Metodos que actualmente estan al pedo ------------------------ \\
 
   @Override
   public void updateConsensus(String handler, ConsensusType consensusType) {
