@@ -1,6 +1,9 @@
 
 <th:block th:fragment="adminImportCSVContent">
 
+    <!-- Toast Container para mensajes de error -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <section class="admin-section">
         <header class="admin-section__header">
             <h1 class="admin-section__title">Importar eventos desde CSV</h1>
@@ -9,7 +12,6 @@
             </p>
         </header>
 
-        <!-- Mensajes opcionales si querés mostrarlos después -->
         <div th:if="${ok}" class="alert alert-success">
             <p th:text="${ok}"></p>
         </div>

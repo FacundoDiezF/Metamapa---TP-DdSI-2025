@@ -7,6 +7,10 @@
     <link rel="stylesheet" th:href="@{/css/modals/importSuccesfullModals.css}">
 </th:block>
 
+<th:block layout:fragment="extraScripts">
+    <script th:src="@{/js/pages/admin/importCSV.js}"></script>
+</th:block>
+
 <th:block th:fragment="contenido">
     <section th:replace="~{admin/grid2/grid2 :: grid2(
      ~{admin/grid2/_sidebar :: adminSidebar('import')},
