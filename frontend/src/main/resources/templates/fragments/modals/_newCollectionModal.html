@@ -45,11 +45,6 @@
                 <div class="consensus-section">
                     <span>Algoritmo de consenso</span>
                     <div class="consensus-chips-group">
-                        <label class="consensus-chip">
-                            <input type="radio" th:field="*{consensusType}" value="" class="consensus-radio"/>
-                            <span class="consensus-chip-label">ALL PASS</span>
-                        </label>
-
                         <label class="consensus-chip"
                                th:each="algo : ${T(interfaz.grafica.ddsi.dtos.output.collection.ConsensusType).values()}">
                             <input type="radio" th:field="*{consensusType}" th:value="${algo}" class="consensus-radio"/>

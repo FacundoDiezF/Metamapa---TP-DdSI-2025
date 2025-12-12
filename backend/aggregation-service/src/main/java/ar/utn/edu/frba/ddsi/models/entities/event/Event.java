@@ -102,7 +102,7 @@ public class Event {
   }
 
   public boolean meetsAlgorithmConsensus(ConsensusType consensusType) {
-    if (consensusType == null) return true;
+    if (consensusType == ConsensusType.ALL_PASS) return true;
 
     return passedConsensus.contains(consensusType);
   }
