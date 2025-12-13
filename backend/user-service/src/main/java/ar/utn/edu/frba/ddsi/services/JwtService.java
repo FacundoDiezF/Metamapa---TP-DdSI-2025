@@ -103,7 +103,7 @@ public class JwtService {
     return Jwts.parserBuilder()
         .setSigningKey(jwtConfig.getPublicKey())
         .build()
-        .parseClaimsJws(token)
+        .parseClaimsJws(token)// Acá explotaría si no es válido
         .getBody();
   }
 }
