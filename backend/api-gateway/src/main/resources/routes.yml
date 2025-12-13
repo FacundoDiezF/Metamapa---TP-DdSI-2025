@@ -1,0 +1,105 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      # ==========================================
+      # 🏭 RUTAS DE SERVICIOS
+      # ==========================================
+        # --- USER SERVICE (Login, Register, Refresh) ---
+        - id: auth-service
+          uri: lb://USER-SERVICE #? se llama asi en eureka?
+          predicates:
+            - Path=/api/v1/auth/**
+          filters:
+            - StripPrefix=2
+        # --- AGGREGATION SERVICE ---
+        # --- STATIC SOURCE ---
+        # --- DYNAMIC SOURCE ---
+        # --- PROXY SOURCE ---
+        # --- STATISTICS SERVICE ---
+
+      # ==========================================
+      # 🧪 RUTAS DE TESTING (Self-Routing)
+      # ==========================================
+        # CASO 1: PÚBLICA (Sin autenticación)
+        # Prueba: GET http://localhost:8086/test/case1
+        # Esperado: 200 OK (JSON sin headers X-User-Id)
+        - id: test-public
+          uri: forward:/test/dump-headers
+          predicates:
+            - Path=/api/v1/test/public
+          filters:
+            - StripPrefix=2
+            - SetPath=/test/dump-headers
+
+        # CASO 2: AUTENTICADO (Cualquier Rol)
+        # Esperado: 200 OK (JSON con headers X-User-Id)
+        # Fallo: Si no mandas token -> 401
+        - id: test-any-auth
+          uri: forward:/test/dump-headers
+          predicates:
+            - Path=/api/v1/test/authenticated
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter
+            - SetPath=/test/dump-headers
+
+        # CASO 3: SI O SI ADMIN
+        # Esperado: 200 OK
+        # Fallo: Token User/Contributor -> 403 Forbidden
+        - id: test-admin-only
+          uri: forward:/test/dump-headers
+          predicates:
+            - Path=/api/v1/test/admin-only
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+            - SetPath=/test/dump-headers
+
+        # CASO 4: ADMIN "Y" CONTRIBUTOR (AND)
+        # Esperado: Solo pasa si el usuario tiene AMBOS roles.
+        - id: test-admin-and-contributor
+          uri: forward:/test/dump-headers
+          predicates:
+            - Path=/api/v1/test/admin-and-contributor
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=CONTRIBUTOR
+            - AuthenticationFilter=ADMIN
+            - SetPath=/test/dump-headers
+
+        # CASO 5: ADMIN "O" CONTRIBUTOR (OR)
+        # Prueba: POST http://localhost:8086/test/case5
+        - id: test-admin-or-contributor
+          uri: forward:/test/dump-headers
+          predicates:
+            - Path=/api/v1/test/admin-or-contributor
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+              args:
+                roles:
+                  - ADMIN
+                  - CONTRIBUTOR
+            - SetPath=/test/dump-headers
+
+        # CASO 6: SOFT AUTH
+        # Prueba A (Anónimo): GET http://localhost:8086/test/case6 -> 200 OK (Sin headers)
+        # Prueba B (Auth): GET http://localhost:8086/test/case6 + Token -> 200 OK (Con headers)
+        # Prueba C (Invalido): GET ... + Token Vencido -> 401 Unauthorized
+        - id: test-optional-auth
+          uri: forward:/test/dump-headers
+          predicates:
+            - Path=/api/v1/test/soft-auth
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+              args:
+                required: false
+                roles:
+                  - ADMIN
+                  - CONTRIBUTOR
+            - SetPath=/test/dump-headers
+
+
+
