@@ -2,6 +2,7 @@ package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionCreationDTO;
+import ar.utn.edu.frba.ddsi.models.dtos.input.collection.ConditionDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.collection.CollectionOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.collections.Collection;
@@ -52,13 +53,7 @@ public class CollectionService implements ICollectionService {
     CollectionCriteria collectionCriteria = collectionCriteriaService.findOrCreate(collectionDto.getConditions());
 
     // Construct Collection
-    Collection collection = Collection.builder()
-        .title(collectionDto.getTitle())
-        .description(collectionDto.getDescription())
-        .sources(collectionSources)
-        .collectionCriteria(collectionCriteria)
-        .consensusType(collectionDto.getConsensusType())
-        .build();
+    Collection collection = Collection.builder().title(collectionDto.getTitle()).description(collectionDto.getDescription()).sources(collectionSources).collectionCriteria(collectionCriteria).consensusType(collectionDto.getConsensusType()).build();
 
     //Refresh collection to populate events
     collection.refresh(null);
@@ -69,39 +64,18 @@ public class CollectionService implements ICollectionService {
 
   @Override
   public Page<CollectionOutputDTO> getCollections(LocalDateTime fromUpdateDate, Pageable pageable) {
-    Page<Collection> collections = fromUpdateDate != null
-        ? collectionRepository.findAllByUpdatedDateAfter(fromUpdateDate, pageable)
-        : collectionRepository.findAll(pageable);
+    Page<Collection> collections = fromUpdateDate != null ? collectionRepository.findAllByUpdatedDateAfter(fromUpdateDate, pageable) : collectionRepository.findAll(pageable);
     return collections.map(CollectionOutputDTO::from);
   }
 
   @Override
-  public List<EventOutputDTO> getEventsFromCollection(
-      String handler,
-      boolean curedNavigation,
-      List<Long> category_in,
-      List<Long> province_in,
-      List<Origin> source_in,
-      LocalDateTime uploadDate_lt,
-      LocalDateTime uploadDate_gt,
-      LocalDateTime eventDate_lt,
-      LocalDateTime eventDate_gt
-  ) {
+  public List<EventOutputDTO> getEventsFromCollection(String handler, boolean curedNavigation, List<Long> category_in, List<Long> province_in, List<Origin> source_in, LocalDateTime uploadDate_lt, LocalDateTime uploadDate_gt, LocalDateTime eventDate_lt, LocalDateTime eventDate_gt) {
 
     Collection collection = collectionRepository.findByHandler(handler);
     if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
 
-    List<Event> finalEvents = collection.getEvents().stream()
-        .filter(e -> (!curedNavigation || e.meetsAlgorithmConsensus(collection.getConsensusType())))
-        .filter(e -> category_in == null || category_in.isEmpty() || category_in.contains(e.getCategory().getId()))
-        .filter(e -> province_in == null || province_in.isEmpty() || province_in.contains(e.getLocation().getProvince() != null ? e.getLocation().getProvince().getId() : null))
-        .filter(e -> source_in == null || source_in.isEmpty() || source_in.contains(e.getSource().getType()))
-        .filter(e -> uploadDate_lt == null || e.getUploadDate().isBefore(uploadDate_lt))
-        .filter(e -> uploadDate_gt == null || e.getUploadDate().isAfter(uploadDate_gt))
-        .filter(e -> eventDate_lt == null || e.getEventDate().isBefore(eventDate_lt))
-        .filter(e -> eventDate_gt == null || e.getEventDate().isAfter(eventDate_gt))
-        .toList();
+    List<Event> finalEvents = collection.getEvents().stream().filter(e -> (!curedNavigation || e.meetsAlgorithmConsensus(collection.getConsensusType()))).filter(e -> category_in == null || category_in.isEmpty() || category_in.contains(e.getCategory().getId())).filter(e -> province_in == null || province_in.isEmpty() || province_in.contains(e.getLocation().getProvince() != null ? e.getLocation().getProvince().getId() : null)).filter(e -> source_in == null || source_in.isEmpty() || source_in.contains(e.getSource().getType())).filter(e -> uploadDate_lt == null || e.getUploadDate().isBefore(uploadDate_lt)).filter(e -> uploadDate_gt == null || e.getUploadDate().isAfter(uploadDate_gt)).filter(e -> eventDate_lt == null || e.getEventDate().isBefore(eventDate_lt)).filter(e -> eventDate_gt == null || e.getEventDate().isAfter(eventDate_gt)).toList();
 
     return finalEvents.stream().map(EventOutputDTO::from).toList();
   }
@@ -128,10 +102,22 @@ public class CollectionService implements ICollectionService {
     }
     Set<Source> newSources = new HashSet<>(foundSources);
 
-    //CollectionCriteria newCriteria = collectionCriteriaService.findOrCreate(dto.getConditions());
-    //TODO: Permitir actualizar criterios de coleccion.
+    // Collection criteria update check (from the DTOs)
+    CollectionCriteria criteriaToUpdate = collection.getCollectionCriteria();
+    if (dto.getConditions() != null) {
+      List<ConditionDTO> currentConditionsAsDTOs = collection.getCollectionCriteria().getConditions().stream().map(ConditionDTO :: from).toList();
 
-    collection.update(dto, newSources);
+      // Use Set to ignore order and duplicates
+      Set<ConditionDTO> currentSet = new HashSet<>(currentConditionsAsDTOs);
+      Set<ConditionDTO> newSet = new HashSet<>(dto.getConditions());
+
+      // Creates new condition if there is any change
+      if (!currentSet.equals(newSet)) {
+        criteriaToUpdate = collectionCriteriaService.findOrCreate(dto.getConditions());
+      }
+    }
+
+    collection.update(dto, newSources, criteriaToUpdate);
 
     collectionRepository.save(collection);
   }
@@ -170,8 +156,7 @@ public class CollectionService implements ICollectionService {
     Collection collection = collectionRepository.findByHandler(handler);
     if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
-    Source source = sourceRepository.findById(sourceId)
-        .orElseThrow(() -> new NotFoundException("Source not found - ID: " + sourceId));
+    Source source = sourceRepository.findById(sourceId).orElseThrow(() -> new NotFoundException("Source not found - ID: " + sourceId));
 
     collection.remove(source);
 
@@ -184,8 +169,7 @@ public class CollectionService implements ICollectionService {
     Collection collection = collectionRepository.findByHandler(handler);
     if (collection == null) throw new NotFoundException("Collection not found - Handler: " + handler);
 
-    Source source = sourceRepository.findById(sourceId)
-        .orElseThrow(() -> new NotFoundException("Source not found - ID: " + sourceId));
+    Source source = sourceRepository.findById(sourceId).orElseThrow(() -> new NotFoundException("Source not found - ID: " + sourceId));
 
     collection.add(source);
     collectionRepository.save(collection);

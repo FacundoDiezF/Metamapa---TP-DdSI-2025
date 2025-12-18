@@ -59,7 +59,7 @@ public class Collection {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "collection_criteria_id", nullable = false)
   @NonNull
-  private final CollectionCriteria collectionCriteria;
+  private CollectionCriteria collectionCriteria;
   //TODO: Al crear una Collection, debería fijarme si la CollectionCriteria ya existe para no duplicarla
   //TODO: Al borrar la Collection, si solo ese usa la CollectionCriteria, tambien deberia borrarla
 
@@ -129,7 +129,7 @@ public class Collection {
         .collect(Collectors.toSet());
   }
 
-  public void update(CollectionCreationDTO dto, Set<Source> newSources) {
+  public void update(CollectionCreationDTO dto, Set<Source> newSources, CollectionCriteria newCriteria) {
 
     //Simple fields
     if (dto.getTitle() != null && !dto.getTitle().equals(this.title)) {
@@ -143,8 +143,13 @@ public class Collection {
     }
 
     // Criteria
-    //TODO: Deberia recibir y validar que la CollectionCriteria nueva no sea igual a la vieja antes de setear el flag para el refresh global.
     boolean criteriaChanged = false;
+
+    if (newCriteria != null && !newCriteria.equals(this.collectionCriteria)) {
+      this.collectionCriteria = newCriteria;
+      criteriaChanged = true;
+    }
+
 
     // Sources
     if (newSources != null) {
@@ -155,12 +160,12 @@ public class Collection {
       // To add (filtering those already present)
       Set<Source> toAdd = new HashSet<>(newSources);
       toAdd.removeAll(this.sources);
+
       toRemove.forEach(this::remove);
       toAdd.forEach(this::add);
-
     }
 
-    // Refresh Global !(no en funcionamiento)
+    // Refresh Global
     if (criteriaChanged) {
       this.refresh(null);
     }
