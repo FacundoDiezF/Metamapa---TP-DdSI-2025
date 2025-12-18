@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-window.initializeModalChips = function(filtKey) {
+window.initializeModalChips = function (filtKey) {
     const filters = FilterManager.getFilters();
     let selectedIds = filters[filtKey] || [];
 
@@ -229,3 +229,19 @@ document.querySelectorAll('details.flt').forEach(det => {
     });
 });
 
+
+// =================================================================
+// Modal coleccion: Condiciones dinámicas, añadir/quitar filas y reindexar
+// =================================================================function removeAndReindex(button) {
+
+function removeAndReindex(button) {
+    // Eliminar la fila
+    button.closest('.condition-item').remove();
+
+    // Reindexar
+    document.querySelectorAll('#conditions-list .condition-item').forEach((row, index) => {
+        row.querySelectorAll('[name^="conditions["]').forEach(input => {
+            input.name = input.name.replace(/conditions\[\d+\]/, `conditions[${index}]`);
+        });
+    });
+}
