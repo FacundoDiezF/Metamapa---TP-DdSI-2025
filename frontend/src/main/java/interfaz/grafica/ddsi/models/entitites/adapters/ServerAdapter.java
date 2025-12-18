@@ -7,6 +7,7 @@ import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.ProvinceDTO;
+import interfaz.grafica.ddsi.dtos.SourceDTO;
 import interfaz.grafica.ddsi.dtos.StatisticsDTO;
 import interfaz.grafica.ddsi.dtos.SubmissionRequestDTO;
 import interfaz.grafica.ddsi.dtos.auth.AuthResponseDTO;
@@ -17,6 +18,7 @@ import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
+import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -151,6 +153,41 @@ public class ServerAdapter {
         .block();
   }
 
+  public void postNewCollection(CollectionOutputDTO collectionDTO) {
+    webClient.post()
+        .uri("/collections")
+        .bodyValue(collectionDTO)
+        .retrieve()
+        .bodyToMono(Void.class)
+        .block();
+  }
+
+  public void updateCollection(String handler, CollectionOutputDTO collectionDTO) {
+    webClient.put()
+        .uri("/collections/{handler}", handler)
+        .bodyValue(collectionDTO)
+        .retrieve()
+        .bodyToMono(Void.class)
+        .block();
+  }
+
+  public void deleteCollection(String handler) {
+    webClient.delete()
+        .uri("/collections/{handler}", handler)
+        .retrieve()
+        .bodyToMono(Void.class)
+        .block();
+  }
+
+  //--------------- SOURCES ----------------//
+  public List<SourceDTO> getAllSources() {
+    return webClient.get()
+        .uri("/sources")
+        .retrieve()
+        .bodyToMono(new ParameterizedTypeReference<List<SourceDTO>>() {
+        })
+        .block();
+  }
 
   //--------------- CATEGORIES ----------------//
   public PageDTO<CategoryDTO> getAllCategories(int page, int size, List<Long> categoryIds) {

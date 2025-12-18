@@ -1,39 +1,31 @@
 package interfaz.grafica.ddsi.services;
 
-import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.SourceDTO;
+import interfaz.grafica.ddsi.exceptions.BackendException;
+import interfaz.grafica.ddsi.exceptions.ConnectionException;
+import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
 public class SourcesService {
 
-    public List<SourceDTO> getAll() {return mockAllSources();}
+  private final ServerAdapter server;
 
-    private List<SourceDTO> mockAllSources() {
-        return List.of(
-                new SourceDTO(
-                        1L,
-                        101L,
-                        Origin.STATIC
-                ),
-                new SourceDTO(
-                        2L,
-                        102L,
-                        Origin.STATIC
-                ),
-                new SourceDTO(
-                        3L,
-                        103L,
-                        Origin.STATIC
-                ),
-                new SourceDTO(
-                        4L,
-                        104L,
-                        Origin.STATIC
-                )
-        );
+  public SourcesService(ServerAdapter server) {
+    this.server = server;
+  }
+
+  public List<SourceDTO> getAll() {
+    try {
+      return server.getAllSources();
+    } catch (WebClientResponseException e) {
+      throw new BackendException(e);
+    } catch (Exception e) {
+      throw new ConnectionException("Could not connect to backend");
     }
+  }
 
 }

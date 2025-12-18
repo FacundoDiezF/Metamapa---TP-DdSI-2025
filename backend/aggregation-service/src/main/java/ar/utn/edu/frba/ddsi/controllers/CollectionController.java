@@ -1,7 +1,6 @@
 package ar.utn.edu.frba.ddsi.controllers;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionCreationDTO;
-import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.collection.CollectionOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
@@ -67,7 +66,7 @@ public class CollectionController {
   }
 
   @PutMapping("/{handler}")
-  public void updateCollection(@PathVariable String handler, @RequestBody CollectionUpdateDTO dto) {
+  public void updateCollection(@PathVariable String handler, @RequestBody CollectionCreationDTO dto) {
     collectionService.updateCollection(handler, dto);
   }
 
@@ -80,6 +79,8 @@ public class CollectionController {
   public CollectionOutputDTO getCollectionByHandler(@PathVariable String handler) {
     return collectionService.getCollectionByHandler(handler);
   }
+
+  //! ------------------------ Metodos que actualmente estan al pedo ------------------------ \\
 
   @PatchMapping("/{handler}/consensus")
   public void updateConsensus(@PathVariable String handler, @RequestBody ConsensusType consensusType) {

@@ -63,8 +63,8 @@ public class PagesController {
 
   @GetMapping("/landing")
   public String landing(Model model) {
-    List<CollectionDTO> topCollections = collectionService.getTop();
-    model.addAttribute("topCollections", topCollections);
+    PageDTO<CollectionDTO> collectionPage = collectionService.getAll(0, 4);
+    model.addAttribute("topCollections", collectionPage.getContent());
     model.addAttribute("pageTitle", "MetaMapa · Landing");
     return "landing";
   }
@@ -77,23 +77,7 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
       @RequestParam(defaultValue = "0", name = "page") int pageEvent,
-      Model model,
-      HttpServletRequest request) {
-
-    // -----------------------------------------------------------------------------
-    // [FIX CRÍTICO PARA THYMELEAF + SPRING SECURITY]
-    // Problema: Thymeleaf empieza a escribir el HTML de la respuesta (streaming) antes
-    // de que Spring Security intente crear el token CSRF para los formularios.
-    // Como el CSRF requiere una sesión, Spring intenta crearla e inyectar la cookie
-    // JSESSIONID, pero falla porque los headers ya se enviaron ("Response committed").
-    //
-    // Solución: Forzamos la creación de la sesión acá, antes de que se procese
-    // cualquier vista, para asegurar que la cookie de sesión viaje en los headers.
-    //
-    // Repitan eso en otros endpoints si les llega a salir el error IllegalStateException: Cannot create a session bla bla bla.
-    // Si encuentran una mejor solución, reemplacen esta.
-    // -----------------------------------------------------------------------------
-    //request.getSession(true);
+      Model model) {
 
     PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
 
@@ -207,6 +191,7 @@ public class PagesController {
     return "admin/pages/collectionsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/statistics")
   public String adminStatistic(Model model,
                                @RequestParam(defaultValue = "1", name = "catId") Long selectedCategoryId) {
@@ -232,6 +217,7 @@ public class PagesController {
     return "admin/pages/statisticsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/sources")
   public String adminSources(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
@@ -246,6 +232,7 @@ public class PagesController {
     return "admin/pages/sourcesSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/pendingEvents")
   public String adminPendingEvents(
       @RequestParam(defaultValue = "0", name = "page") int page,
@@ -261,6 +248,7 @@ public class PagesController {
     return "admin/pages/pendingEventsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/deletionRequests")
   public String adminDeletionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 

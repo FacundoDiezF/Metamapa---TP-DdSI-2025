@@ -1,5 +1,7 @@
 package interfaz.grafica.ddsi.dtos;
 
+import interfaz.grafica.ddsi.dtos.output.collection.ConditionDTO;
+import interfaz.grafica.ddsi.dtos.output.collection.ConsensusType;
 import java.util.List;
 import lombok.Data;
 
@@ -8,14 +10,9 @@ public class CollectionDTO {
   String handler;
   String title;
   String description;
+  List<ConditionDTO> conditions;
   List<SourceDTO> sources;
-  List<Long> eventIds;
+  ConsensusType consensusType;
 
-  public CollectionDTO(String handler, String title, String description, List<SourceDTO> sources, List<Long> eventIds) {
-    this.handler = handler;
-    this.title = title;
-    this.description = description;
-    this.sources = sources;
-    this.eventIds = eventIds;
-  }
+  List<Long> eventIds;
 }

@@ -69,7 +69,7 @@ public class Event {
   private Location location;
 
   @Column(name = "event_date", nullable = false)
-  private LocalDateTime eventDate;
+  private LocalDateTime eventDate; //TODO: Debe ser LocalDate
 
   //-- Funcionales
   @Column(name = "upload_date", nullable = false)
@@ -82,9 +82,6 @@ public class Event {
   @Builder.Default
   @Column(name = "deleted", nullable = false)
   private boolean deleted = false;
-
-  //@ManyToMany
-  //@Builder.Default public Set<Tag> tags = new HashSet<>();
 
   @ElementCollection
   @Enumerated(EnumType.STRING)
@@ -105,7 +102,7 @@ public class Event {
   }
 
   public boolean meetsAlgorithmConsensus(ConsensusType consensusType) {
-    if (consensusType == null) return true;
+    if (consensusType == ConsensusType.ALL_PASS) return true;
 
     return passedConsensus.contains(consensusType);
   }

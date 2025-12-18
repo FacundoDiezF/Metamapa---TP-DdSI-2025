@@ -4,12 +4,17 @@ import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
+import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
+import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
 import interfaz.grafica.ddsi.services.SubmissionRequestService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,11 +28,13 @@ public class ShareController {
   private final EventService eventService;
   private final DeletionRequestService deletionRequestService;
   private final SubmissionRequestService submissionRequestService;
+  private final CollectionService collectionService;
 
-  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService) {
+  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, CollectionService collectionService) {
     this.eventService = eventService;
     this.deletionRequestService = deletionRequestService;
     this.submissionRequestService = submissionRequestService;
+    this.collectionService = collectionService;
   }
 
   @PostMapping("/event")
@@ -75,6 +82,7 @@ public class ShareController {
     return "fragments/modals/_messageModals :: messageModal(type=${mType}, title=${mTitle}, desc=${mDesc})";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/deletion-request/evaluate/{dReqId}")
   public String handleEvaluateDeletionRequest(
       @PathVariable Long dReqId,
@@ -89,6 +97,7 @@ public class ShareController {
     return "redirect:/admin/deletionRequests";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/submission-request/evaluate/{sReqId}")
   public String handleEvaluateSubmissionRequest(
       @PathVariable Long sReqId,
@@ -102,4 +111,43 @@ public class ShareController {
     submissionRequestService.evaluate(sReqId, evaluationDto);
     return "redirect:/admin/pendingEvents";
   }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/collections")
+  public String createCollection(@ModelAttribute CollectionOutputDTO collectionForm) {
+
+    collectionService.postNew(collectionForm);
+
+    return "redirect:/admin/collections";
+  }
+
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @PostMapping("/collections/{handler}")
+  public String updateCollection(
+      @PathVariable("handler") String handler,
+      @ModelAttribute CollectionOutputDTO collectionForm,
+      HttpServletRequest request) {
+
+    collectionService.updateByHandler(handler, collectionForm);
+
+    String referer = request.getHeader("Referer");
+    return "redirect:" + (referer != null ? referer : "/admin/collections");
+  }
+
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @DeleteMapping("/collections/{handler}")
+  public String deleteCollection(@PathVariable String handler, Model model) {
+
+    collectionService.deleteByHandler(handler);
+
+    model.addAttribute("type", "success"); // O dejalo vacío si no tenés estilos para success
+    model.addAttribute("title", "Colección eliminada");
+    model.addAttribute("desc", "La colección '" + handler + "' ha sido eliminada correctamente.");
+
+    model.addAttribute("reloadOnClose", true);
+
+    return "fragments/modals/_messageModals :: messageModal";
+  }
+
+
 }

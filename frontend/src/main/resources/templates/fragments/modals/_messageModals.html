@@ -1,31 +1,62 @@
 <!-- Modal de confirmación, Warning y Error -->
 <div th:fragment="messageModal(type, title, desc)" class="modal-overlay"
-     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
+     >
 
     <div class="modal-body message-modal"
          th:classappend="${type == 'warning' ? 'modal-warning' : (type == 'error' ? 'modal-error' : '')}"
-         role="dialog"
-         aria-modal="true">
+         role="dialog" aria-modal="true">
 
-        <button type="button"
-                class="modal-close"
-                aria-label="Cerrar"
-                hx-on:click="this.closest('#modals-here').innerHTML = ''">
+        <button type="button" class="modal-close" aria-label="Cerrar"
+                th:hx-on:click="${reloadOnClose == true} ? 'window.location.reload()' : 'this.closest(\'#modals-here\').innerHTML = \'\''">
             ✕
         </button>
 
         <h2 th:text="${(type == 'warning' ? '⚠️ ' : (type == 'error' ? '‼️Error: ' : '')) + title}">
-            Título del mensaje
+            Título
         </h2>
 
-        <p class="muted" th:text="${desc}">
-            Descripción del mensaje.
-        </p>
+        <p class="muted" th:text="${desc}">Descripción</p>
 
-        <a class="btn-apply"
-           role="button"
-           hx-on:click="this.closest('#modals-here').innerHTML = '' ">
+        <a class="btn-apply" role="button"
+           th:hx-on:click="${reloadOnClose == true} ? 'window.location.reload()' : 'this.closest(\'#modals-here\').innerHTML = \'\''">
             Entendido
         </a>
+    </div>
+</div>
+
+
+<!-- Modal de confirmación de eliminacion -->
+<div th:fragment="deleteConfirmationModal" class="modal-overlay">
+
+    <div class="modal-body message-modal modal-warning" role="dialog" aria-modal="true">
+
+        <button type="button" class="modal-close" aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''">
+            ✕
+        </button>
+
+        <h2>⚠️ Eliminar Colección</h2>
+
+        <p class="muted">
+            ¿Estás seguro de que querés eliminar la colección <strong th:text="${title}">Título</strong>?
+            <br>
+            Esta acción no se puede deshacer.
+        </p>
+
+        <div class="modal-actions" style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 10px;">
+
+            <button type="button" class="btn-clean"
+                    hx-on:click="this.closest('#modals-here').innerHTML = ''">
+                Cancelar
+            </button>
+
+            <button type="button" class="btn-apply"
+                    style="background-color: #ef4444; color: white; border-color: #ef4444;"
+                    th:hx-delete="@{/share/collections/{h}(h=${handler})}"
+                    hx-target="#modals-here"
+                    hx-swap="innerHTML">
+                Eliminar definitivamente
+            </button>
+        </div>
     </div>
 </div>
