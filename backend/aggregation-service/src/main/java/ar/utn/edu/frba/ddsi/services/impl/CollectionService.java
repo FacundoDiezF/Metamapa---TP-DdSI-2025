@@ -158,7 +158,7 @@ public class CollectionService implements ICollectionService {
 
     Source source = sourceRepository.findById(sourceId).orElseThrow(() -> new NotFoundException("Source not found - ID: " + sourceId));
 
-    collection.remove(source);
+    collection.remove(source, true);
 
     collectionRepository.save(collection);
   }
@@ -171,7 +171,7 @@ public class CollectionService implements ICollectionService {
 
     Source source = sourceRepository.findById(sourceId).orElseThrow(() -> new NotFoundException("Source not found - ID: " + sourceId));
 
-    collection.add(source);
+    collection.add(source, true);
     collectionRepository.save(collection);
   }
 }

@@ -143,13 +143,13 @@ public class Collection {
     }
 
     // Criteria
-    boolean criteriaChanged = false;
-
+    boolean criteriaChanged;
     if (newCriteria != null && !newCriteria.equals(this.collectionCriteria)) {
       this.collectionCriteria = newCriteria;
       criteriaChanged = true;
+    } else {
+      criteriaChanged = false;
     }
-
 
     // Sources
     if (newSources != null) {
@@ -161,8 +161,9 @@ public class Collection {
       Set<Source> toAdd = new HashSet<>(newSources);
       toAdd.removeAll(this.sources);
 
-      toRemove.forEach(this::remove);
-      toAdd.forEach(this::add);
+      // Apply changes (if criteria changed events will be updated only once at the end)
+      toRemove.forEach(s -> this.remove(s, !criteriaChanged));
+      toAdd.forEach(s -> this.add(s, !criteriaChanged));
     }
 
     // Refresh Global
@@ -171,17 +172,21 @@ public class Collection {
     }
   }
 
-  public void remove(Source source) {
+  public void remove(Source source, boolean updateEvents) {
     sources.remove(source);
-    boolean anyRemoved = events.removeIf(e -> e.getSource().equals(source));
+    if (updateEvents) {
+      boolean anyRemoved = events.removeIf(e -> e.getSource().equals(source));
 
-    if (anyRemoved) {
-      updatedDate = LocalDateTime.now();
+      if (anyRemoved) {
+        updatedDate = LocalDateTime.now();
+      }
     }
   }
 
-  public void add(Source source) {
+  public void add(Source source, boolean updateEvents) {
     sources.add(source);
-    this.refresh(null);
+    if (updateEvents) {
+      this.refresh(null);
+    }
   }
 }
