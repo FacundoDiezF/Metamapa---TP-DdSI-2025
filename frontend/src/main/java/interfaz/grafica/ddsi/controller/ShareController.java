@@ -10,6 +10,7 @@ import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
 import interfaz.grafica.ddsi.services.SubmissionRequestService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -121,6 +122,19 @@ public class ShareController {
   }
 
   @PreAuthorize("hasAnyRole('ADMIN')")
+  @PostMapping("/collections/{handler}")
+  public String updateCollection(
+      @PathVariable("handler") String handler,
+      @ModelAttribute CollectionOutputDTO collectionForm,
+      HttpServletRequest request) {
+
+    collectionService.updateByHandler(handler, collectionForm);
+
+    String referer = request.getHeader("Referer");
+    return "redirect:" + (referer != null ? referer : "/admin/collections");
+  }
+
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @DeleteMapping("/collections/{handler}")
   public String deleteCollection(@PathVariable String handler, Model model) {
 
@@ -134,4 +148,6 @@ public class ShareController {
 
     return "fragments/modals/_messageModals :: messageModal";
   }
+
+
 }

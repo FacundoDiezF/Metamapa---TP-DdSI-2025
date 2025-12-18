@@ -1,6 +1,6 @@
 package ar.utn.edu.frba.ddsi.models.entities.collections;
 
-import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
+import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionCreationDTO;
 import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.CollectionCriteria;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
@@ -49,7 +49,7 @@ public class Collection {
   private String title;
 
   @Setter
-  @Column(name = "description")
+  @Column(name = "description", columnDefinition = "TEXT")
   private String description;
 
   @Builder.Default
@@ -59,7 +59,7 @@ public class Collection {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "collection_criteria_id", nullable = false)
   @NonNull
-  private final CollectionCriteria collectionCriteria;
+  private CollectionCriteria collectionCriteria;
   //TODO: Al crear una Collection, debería fijarme si la CollectionCriteria ya existe para no duplicarla
   //TODO: Al borrar la Collection, si solo ese usa la CollectionCriteria, tambien deberia borrarla
 
@@ -129,22 +129,64 @@ public class Collection {
         .collect(Collectors.toSet());
   }
 
-  public void update(CollectionUpdateDTO dto) {
-    if (dto.getTitle() != null) this.title = dto.getTitle();
-    if (dto.getDescription() != null) this.description = dto.getDescription();
-  }
+  public void update(CollectionCreationDTO dto, Set<Source> newSources, CollectionCriteria newCriteria) {
 
-  public void remove(Source source) {
-    sources.remove(source);
-    boolean anyRemoved = events.removeIf(e -> e.getSource().equals(source));
+    //Simple fields
+    if (dto.getTitle() != null && !dto.getTitle().equals(this.title)) {
+      this.title = dto.getTitle();
+    }
+    if (dto.getDescription() != null && !dto.getDescription().equals(this.description)) {
+      this.description = dto.getDescription();
+    }
+    if (dto.getConsensusType() != null && !dto.getConsensusType().equals(this.consensusType)) {
+      this.consensusType = dto.getConsensusType();
+    }
 
-    if (anyRemoved) {
-      updatedDate = LocalDateTime.now();
+    // Criteria
+    boolean criteriaChanged;
+    if (newCriteria != null && !newCriteria.equals(this.collectionCriteria)) {
+      this.collectionCriteria = newCriteria;
+      criteriaChanged = true;
+    } else {
+      criteriaChanged = false;
+    }
+
+    // Sources
+    if (newSources != null) {
+      //To remove (filtering those not present)
+      Set<Source> toRemove = new HashSet<>(this.sources);
+      toRemove.removeAll(newSources);
+
+      // To add (filtering those already present)
+      Set<Source> toAdd = new HashSet<>(newSources);
+      toAdd.removeAll(this.sources);
+
+      // Apply changes (if criteria changed events will be updated only once at the end)
+      toRemove.forEach(s -> this.remove(s, !criteriaChanged));
+      toAdd.forEach(s -> this.add(s, !criteriaChanged));
+    }
+
+    // Refresh Global
+    if (criteriaChanged) {
+      this.refresh(null);
     }
   }
 
-  public void add(Source source) {
+  public void remove(Source source, boolean updateEvents) {
+    sources.remove(source);
+    if (updateEvents) {
+      boolean anyRemoved = events.removeIf(e -> e.getSource().equals(source));
+
+      if (anyRemoved) {
+        updatedDate = LocalDateTime.now();
+      }
+    }
+  }
+
+  public void add(Source source, boolean updateEvents) {
     sources.add(source);
-    this.refresh(null);
+    if (updateEvents) {
+      this.refresh(null);
+    }
   }
 }

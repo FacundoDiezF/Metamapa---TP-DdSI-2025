@@ -15,4 +15,9 @@ public class ConditionDTO {
     dto.conditionValue = condition.getConditionValue();
     return dto;
   }
+
+  // Setter that ensures conditionType is stored in lowercase (!! Podria afectar si en el futuro se agregan ConditionTypes con mayusculas internas).
+  public void setConditionValue(String conditionValue) {
+    this.conditionValue = (conditionValue != null) ? conditionValue.toLowerCase() : null;
+  }
 }

@@ -98,7 +98,7 @@ public class ModalsController {
   public String getNewCollectionModal(Model model) {
 
     CollectionOutputDTO form = new CollectionOutputDTO();
-    form.setConsensusType(ConsensusType.SIMPLE_MAJORITY);
+    form.setConsensusType(ConsensusType.ALL_PASS);
 
     model.addAttribute("newCollection", form);
     model.addAttribute("sources", sourcesService.getAll());

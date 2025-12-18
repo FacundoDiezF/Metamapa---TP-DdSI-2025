@@ -121,7 +121,8 @@
 
         <span class="criteria-badge" th:text="${condition.conditionType}">TYPE</span>
 
-        <th:block th:if="${condition.conditionType.name() == 'FROM_DATE' or condition.conditionType.name() == 'TO_DATE'}">
+        <th:block
+                th:if="${condition.conditionType.name() == 'FROM_DATE' or condition.conditionType.name() == 'TO_DATE'}">
             <input type="date"
                    th:name="|conditions[${idx}].conditionValue|"
                    th:value="${condition.conditionValue}"
@@ -144,6 +145,10 @@
                    required class="input-sm"/>
         </th:block>
 
-        <button type="button" class="btn-icon-remove" onclick="this.closest('.condition-item').remove()">✕</button>
+        <button type="button"
+                class="btn-icon-remove"
+                onclick="removeAndReindex(this)">
+            ✕
+        </button>
     </div>
 </div>
