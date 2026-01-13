@@ -12,7 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,11 +33,8 @@ import java.util.UUID;
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  @Column(unique = true, nullable = false, updatable = false)
-  private String publicId; // ID Público generado con UUID (Para no exponer info interna del sistema)
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
   @Column(unique = true, nullable = false)
   private String username;
@@ -60,13 +56,6 @@ public class User {
 
   @Column(nullable = false)
   private boolean active;
-
-  @PrePersist
-  public void generatePublicId() {
-    if (this.publicId == null) {
-      this.publicId = UUID.randomUUID().toString();
-    }
-  }
 
   public static User from(RegisterRequestDTO dto) {
     return User.builder()

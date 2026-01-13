@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class UserSummaryDTO {
-  private String publicId; // UUID
+  private String id; // UUID
   private String username;
 //  private String email;
 //  private String firstName;
