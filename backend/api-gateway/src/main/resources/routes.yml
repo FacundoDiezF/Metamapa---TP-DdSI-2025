@@ -7,14 +7,36 @@ spring:
       # ==========================================
         # --- USER SERVICE (Login, Register, Refresh) ---
         - id: auth-service
-          uri: lb://USER-SERVICE #? se llama asi en eureka?
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/api/v1/auth/**
           filters:
             - StripPrefix=2
         # --- AGGREGATION SERVICE ---
+        # Ruta específica para LEER eventos (GET)
+        - id: read-events
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/events
+            - Method=GET
+          filters:
+            - StripPrefix=2
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
+        # Ruta específica para CREAR eventos (POST)
+        - id: post-event
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+            - Path=/api/v1/events
+            - Method=POST
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+              args:
+                required: false
+                roles:
+                  - ADMIN
+                  - CONTRIBUTOR
         # --- PROXY SOURCE ---
         # --- STATISTICS SERVICE ---
 

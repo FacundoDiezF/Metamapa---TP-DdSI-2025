@@ -73,8 +73,8 @@ public class ServerAdapter {
   //--------------- EVENTS ----------------//
 
   public void postNewEvent(EventOutputDTO newEvent) {
-    dynamicClient.post()
-        .uri("/events")
+    apiGatewayClient.post()
+        .uri("/api/v1/events")
         .bodyValue(newEvent)
         .retrieve()
         .bodyToMono(Void.class)
@@ -82,9 +82,9 @@ public class ServerAdapter {
   }
 
   public PageDTO<EventDTO> getAllEvents(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
-    return webClient.get()
+    return apiGatewayClient.get()
         .uri(uriBuilder -> {
-          uriBuilder.path("/events");
+          uriBuilder.path("/api/v1/events");
           return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size, uriBuilder);
         })
         .retrieve()
@@ -414,7 +414,7 @@ public class ServerAdapter {
 
     UserSummaryDTO user = new UserSummaryDTO();
     user.setUsername(type);
-    user.setPublicId(java.util.UUID.randomUUID().toString());
+    user.setId(java.util.UUID.randomUUID().toString());
 
     if ("admin".equals(type)) {
       user.setRoles(java.util.List.of("ADMIN", "CONTRIBUTOR")); // El admin suele tener ambos
