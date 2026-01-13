@@ -365,7 +365,7 @@ public class ServerAdapter {
 
     try {
       return apiGatewayClient.post()
-          .uri("/api/auth/login")
+          .uri("/api/v1/auth/login")
           .bodyValue(request)
           .retrieve()
           .bodyToMono(AuthResponseDTO.class)
@@ -389,7 +389,7 @@ public class ServerAdapter {
   public AuthResponseDTO register(RegisterRequestDTO request) {
     try {
     return apiGatewayClient.post()
-        .uri("/api/auth/register")
+        .uri("/api/v1/auth/register")
         .bodyValue(request)
         .retrieve()
         .bodyToMono(AuthResponseDTO.class)
