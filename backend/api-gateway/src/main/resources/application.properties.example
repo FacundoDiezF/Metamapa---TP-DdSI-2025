@@ -1,0 +1,13 @@
+# --- Server Configuration ---
+server.port=8086
+
+# --- Configuration Imports ---
+spring.config.import=classpath:routes.yml
+
+# --- Eureka Client configuration ---
+spring.application.name=api-gateway
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+
+# --- JWT Configuration (RS256) ---
+# Las claves hardcodeadas funcionan en desarrollo, pero en produccion deben ser provistas en las variables de entorno JWT_PRIVATE_KEY y JWT_PUBLIC_KEY
+app.jwt.public-key=${JWT_PUBLIC_KEY:MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0io/S7wajVTA6Xo3lVsTthXLUHwpYob8V18Jeng72ETdIeO90vZ3DvYnHUvisVvdjPWyCUvldMSkzexH7P/EC7lVLkoulsaad5VOl5xCe7dKK4NltA18Cy5kckQoAR+8Xs4eMNOICIUQFBNxeg8LrzqwSmCIZ+GB9Ls04KNB4pjX3/Fay6pFy1Omz/xzflvnPDYIQWm8Cm6Cc/5P5AD0Wyh4d/5m/8DzVaQWm1KEuUvU3s/js7syrDeR0wOAAIgYaN3e1qlNgWr3Az8ZQqDsFhBuIDCiC6fLVf4ZIkrnT2u/yq6V+CkKGe+AAgs+vsxMFxfftNjxiqCzuwEg9mQOqwIDAQAB}
