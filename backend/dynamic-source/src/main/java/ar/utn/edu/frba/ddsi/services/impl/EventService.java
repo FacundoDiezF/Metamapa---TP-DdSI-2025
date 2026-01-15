@@ -42,7 +42,7 @@ public class EventService implements IEventService {
   }
 
   @Override
-  public EventOutputDTO save(EventDTO dto) {
+  public EventOutputDTO save(EventDTO dto, String userId) {
     //TODO: Validar si el usuario puede realizar esta peticion
 
     Category category = categoryService.findOrCreate(dto.getCategory());
@@ -55,7 +55,7 @@ public class EventService implements IEventService {
         .longitude(dto.getLongitude())
         .eventDate(dto.getEventDate().atStartOfDay())
         .uploadDate(LocalDateTime.now())
-        .contributor(dto.getContributor()) //TODO: Esto deberia ser un usuario
+        .creatorId(userId) //* Id del usuario que crea el evento
         .build();
 
     eventRepository.save(event);
@@ -72,7 +72,7 @@ public class EventService implements IEventService {
     Event event = eventRepository.findById(eventId)
         .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
 
-    if (!event.getContributor().equals(dto.getContributor()))
+    if (!event.getCreatorId().equals(dto.getCreatorId())) //! Verificar que esto ande bien
       throw new UnauthorizedException("Unauthorized action: event ownership mismatch");
 
     if (event.getUploadDate().plusDays(7).isBefore(LocalDateTime.now()))

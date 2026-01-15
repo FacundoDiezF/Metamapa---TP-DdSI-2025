@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class EventDTO {
-  String contributor; //TODO: Esto deberia ser un usuario
+  String creatorId; //* UUID del usuario creador
 
   String title;
   String description;

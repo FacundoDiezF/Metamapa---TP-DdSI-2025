@@ -78,8 +78,8 @@ public class Event {
   private LocalDateTime updateDate;
 
   //From Dynamic
-  @Column(name = "contributor", nullable = false)
-  private final String contributor; //TODO: Esto deberia ser un usuario
+  @Column(name = "creatorId")
+  private final String creatorId;
 
   //-- Extras
   @Setter
