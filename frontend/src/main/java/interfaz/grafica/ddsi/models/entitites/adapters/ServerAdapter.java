@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.exceptions.ConnectionException;
+import interfaz.grafica.ddsi.services.internal.WebApiCallerService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
@@ -47,8 +48,10 @@ public class ServerAdapter {
 
   private final WebClient apiGatewayClient;
 
+  private final WebApiCallerService webApiCallerService;
 
-  public ServerAdapter(@Value("${aggregator.url}") String url, @Value("${api.gateway.url}") String apiGatewayUrl) {
+
+  public ServerAdapter(@Value("${aggregator.url}") String url, @Value("${api.gateway.url}") String apiGatewayUrl, WebApiCallerService webApiCallerService) {
     //TODO: Borrar y remplazar su uso cuando tengamos el gateway
     this.webClient = WebClient.builder()
         .baseUrl(url)
@@ -67,18 +70,15 @@ public class ServerAdapter {
     this.apiGatewayClient = WebClient.builder()
         .baseUrl(apiGatewayUrl)
         .build();
+
+    this.webApiCallerService = webApiCallerService;
   }
 
 
   //--------------- EVENTS ----------------//
 
   public void postNewEvent(EventOutputDTO newEvent) {
-    apiGatewayClient.post()
-        .uri("/api/v1/events")
-        .bodyValue(newEvent)
-        .retrieve()
-        .bodyToMono(Void.class)
-        .block();
+    webApiCallerService.post("/api/v1/events", newEvent, Void.class);
   }
 
   public PageDTO<EventDTO> getAllEvents(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
