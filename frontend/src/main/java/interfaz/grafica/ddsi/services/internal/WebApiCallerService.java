@@ -17,11 +17,13 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Service
 public class WebApiCallerService {
 
-  private final WebClient webClient;
+  private final WebClient apiGatewayClient;
   private final String authServiceUrl;
 
   public WebApiCallerService(@Value("${api.gateway.url}") String apiGatewayUrl) {
-    this.webClient = WebClient.builder().build();
+    this.apiGatewayClient = WebClient.builder()
+        .baseUrl(apiGatewayUrl)
+        .build();
     this.authServiceUrl = apiGatewayUrl;
   }
 
@@ -34,13 +36,14 @@ public class WebApiCallerService {
     String accessToken = getAccessTokenFromSession();
     String refreshToken = getRefreshTokenFromSession();
 
-    if (accessToken == null) {
-      throw new RuntimeException("No hay token de acceso disponible");
-    }
+    //! Por ahora voy a sacar esto porque no me parece necesario. Hay peticiones que se deberian poder ejecutar sin token, y es responsabilidad del api gateway validar el token (o su ausencia)
+////    if (accessToken == null) {
+////      throw new RuntimeException("No hay token de acceso disponible");
+////    }
 
     try {
       // Primer intento con el token actual
-      return apiCall.execute(accessToken);
+      return apiCall.execute(this.authHeaderValue(accessToken));
     } catch (WebClientResponseException e) {
       if ((e.getStatusCode() == HttpStatus.UNAUTHORIZED || e.getStatusCode() == HttpStatus.FORBIDDEN) && refreshToken != null) {
         try {
@@ -66,11 +69,11 @@ public class WebApiCallerService {
    * Ejecuta una llamada HTTP GET
    */
   public <T> T get(String url, Class<T> responseType) {
-    return executeWithTokenRetry(accessToken ->
-        webClient
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
             .get()
             .uri(url)
-            .header("Authorization", "Bearer " + accessToken)
+            .header("Authorization", authHeaderValue)
             .retrieve()
             .bodyToMono(responseType)
             .block()
@@ -81,11 +84,11 @@ public class WebApiCallerService {
    * Ejecuta una llamada HTTP GET que retorna una lista
    */
   public <T> java.util.List<T> getList(String url, Class<T> responseType) {
-    return executeWithTokenRetry(accessToken ->
-        webClient
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
             .get()
             .uri(url)
-            .header("Authorization", "Bearer " + accessToken)
+            .header("Authorization", authHeaderValue)
             .retrieve()
             .bodyToFlux(responseType)
             .collectList()
@@ -98,10 +101,10 @@ public class WebApiCallerService {
    */
   public <T> T getWithAuth(String url, String accessToken, Class<T> responseType) {
     try {
-      return webClient
+      return apiGatewayClient
           .get()
           .uri(url)
-          .header("Authorization", "Bearer " + accessToken)
+          .header("Authorization", this.authHeaderValue(accessToken))
           .retrieve()
           .bodyToMono(responseType)
           .block();
@@ -114,11 +117,11 @@ public class WebApiCallerService {
    * Ejecuta una llamada HTTP POST
    */
   public <T> T post(String url, Object body, Class<T> responseType) {
-    return executeWithTokenRetry(accessToken ->
-        webClient
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
             .post()
             .uri(url)
-            .header("Authorization", "Bearer " + accessToken)
+            .header("Authorization", authHeaderValue)
             .bodyValue(body)
             .retrieve()
             .bodyToMono(responseType)
@@ -130,11 +133,11 @@ public class WebApiCallerService {
    * Ejecuta una llamada HTTP PUT
    */
   public <T> T put(String url, Object body, Class<T> responseType) {
-    return executeWithTokenRetry(accessToken ->
-        webClient
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
             .put()
             .uri(url)
-            .header("Authorization", "Bearer " + accessToken)
+            .header("Authorization", authHeaderValue)
             .bodyValue(body)
             .retrieve()
             .bodyToMono(responseType)
@@ -146,11 +149,11 @@ public class WebApiCallerService {
    * Ejecuta una llamada HTTP DELETE
    */
   public void delete(String url) {
-    executeWithTokenRetry(accessToken -> {
-      webClient
+    executeWithTokenRetry(authHeaderValue -> {
+      apiGatewayClient
           .delete()
           .uri(url)
-          .header("Authorization", "Bearer " + accessToken)
+          .header("Authorization", authHeaderValue)
           .retrieve()
           .bodyToMono(Void.class)
           .block();
@@ -167,7 +170,7 @@ public class WebApiCallerService {
           .refreshToken(refreshToken)
           .build();
 
-      AuthResponseDTO response = webClient
+      AuthResponseDTO response = apiGatewayClient
           .post()
           .uri(authServiceUrl + "/auth/refresh")
           .bodyValue(refreshRequest)
@@ -218,6 +221,17 @@ public class WebApiCallerService {
   @FunctionalInterface
   public interface ApiCall<T> {
     T execute(String accessToken) throws Exception;
+  }
+
+  /**
+   * Agrega el header Authorization teniendo en cuenta si es un usuario logueado o no
+   */
+  private String authHeaderValue(String accessToken) {
+    if (accessToken != null) {
+      return "Bearer " + accessToken;
+    } else {
+      return null;
+    }
   }
 }
 
