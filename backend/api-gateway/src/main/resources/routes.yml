@@ -14,10 +14,19 @@ spring:
             - StripPrefix=2
         # --- AGGREGATION SERVICE ---
         # Ruta específica para LEER eventos (GET)
-        - id: read-events
+        - id: get-events
           uri: lb://AGGREGATION-SERVICE
           predicates:
             - Path=/api/v1/events
+            - Method=GET
+          filters:
+            - StripPrefix=2
+
+        # Ruta específica para LEER eventos de una colección (GET)
+        - id: get-collection-events
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/collections/*/events
             - Method=GET
           filters:
             - StripPrefix=2
