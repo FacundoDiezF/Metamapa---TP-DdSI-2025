@@ -82,16 +82,13 @@ public class ServerAdapter {
   }
 
   public PageDTO<EventDTO> getAllEvents(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
-    return apiGatewayClient.get()
-        .uri(uriBuilder -> {
+    return webApiCallerService.get(uriBuilder -> {
           uriBuilder.path("/api/v1/events");
           return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size, uriBuilder);
-        })
-        .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<PageDTO<EventDTO>>() {
-        })
-        .block();
-  }
+        },
+        new ParameterizedTypeReference<PageDTO<EventDTO>>() {
+        });
+  } //* Funciona
 
   public List<EventDTO> getAllEventsByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
     return webClient.get()
