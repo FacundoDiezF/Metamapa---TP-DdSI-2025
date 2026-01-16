@@ -4,12 +4,16 @@ import interfaz.grafica.ddsi.dtos.auth.RefreshTokenDTO;
 import interfaz.grafica.ddsi.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.util.UriBuilder;
+import java.net.URI;
+import java.util.function.Function;
 
 /**
  * Servicio genérico para hacer llamadas HTTP con manejo automático de tokens
@@ -66,7 +70,7 @@ public class WebApiCallerService {
   }
 
   /**
-   * Ejecuta una llamada HTTP GET
+   * Ejecuta una llamada HTTP GET con una URL simple
    */
   public <T> T get(String url, Class<T> responseType) {
     return executeWithTokenRetry(authHeaderValue ->
@@ -76,6 +80,36 @@ public class WebApiCallerService {
             .header("Authorization", authHeaderValue)
             .retrieve()
             .bodyToMono(responseType)
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP GET con una URL construida dinámicamente, y retorna un objeto simple (Class)
+   */
+  public <T> T get(Function<UriBuilder, URI> uriFunction, Class<T> responseType) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .get()
+            .uri(uriFunction)
+            .header("Authorization", authHeaderValue)
+            .retrieve()
+            .bodyToMono(responseType)
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP GET con una URL construida dinámicamente, y retorna un objeto genérico (ParameterizedTypeReference) que evita la limitación type erasure de Java
+   */
+  public <T> T get(Function<UriBuilder, URI> uriFunction, ParameterizedTypeReference<T> typeReference) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .get()
+            .uri(uriFunction)
+            .header("Authorization", authHeaderValue)
+            .retrieve()
+            .bodyToMono(typeReference)
             .block()
     );
   }
