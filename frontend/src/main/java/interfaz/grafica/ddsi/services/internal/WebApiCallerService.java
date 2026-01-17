@@ -40,11 +40,6 @@ public class WebApiCallerService {
     String accessToken = getAccessTokenFromSession();
     String refreshToken = getRefreshTokenFromSession();
 
-    //! Por ahora voy a sacar esto porque no me parece necesario. Hay peticiones que se deberian poder ejecutar sin token, y es responsabilidad del api gateway validar el token (o su ausencia)
-////    if (accessToken == null) {
-////      throw new RuntimeException("No hay token de acceso disponible");
-////    }
-
     try {
       // Primer intento con el token actual
       return apiCall.execute(this.authHeaderValue(accessToken));
@@ -57,7 +52,7 @@ public class WebApiCallerService {
           // Segundo intento con el nuevo token
           return apiCall.execute(newTokens.getAccessToken());
         } catch (Exception refreshError) {
-          throw new RuntimeException("Error al refrescar token y reintentar: " + refreshError.getMessage(), refreshError);
+          throw new RuntimeException("Error al refrescar token y reintentar: " + refreshError.getMessage(), refreshError); //TODO Estos errores nunca se ven porque siempre termina catcheando mas arriba y saliendo el de Could not connect to backend, hay que arreglar eso porque si no se complica saber donde salen los problemas
         }
       }
       if(e.getStatusCode() == HttpStatus.NOT_FOUND){
@@ -206,7 +201,7 @@ public class WebApiCallerService {
 
       AuthResponseDTO response = apiGatewayClient
           .post()
-          .uri(authServiceUrl + "/auth/refresh")
+          .uri("/api/v1/auth/token/refresh")
           .bodyValue(refreshRequest)
           .retrieve()
           .bodyToMono(AuthResponseDTO.class)
