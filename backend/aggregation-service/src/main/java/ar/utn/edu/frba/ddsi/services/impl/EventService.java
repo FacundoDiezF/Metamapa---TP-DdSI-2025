@@ -5,6 +5,7 @@ import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Coordinate;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
 import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
@@ -16,6 +17,7 @@ import ar.utn.edu.frba.ddsi.services.ILocationService;
 import ar.utn.edu.frba.ddsi.services.INormalizationService;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -87,7 +89,10 @@ public class EventService implements IEventService {
   @Override
   public void updateAll(List<EventInputDTO> dtos, Long sourceClientId) {
     // TODO: Validar que la peticion venga de un modulo-fuente registrado (SEGURIDAD)
-    dtos.forEach(dto -> { dto.setSourceClientId(sourceClientId); this.update(dto);});
+    dtos.forEach(dto -> {
+      dto.setSourceClientId(sourceClientId);
+      this.update(dto);
+    });
   }
 
   private void update(EventInputDTO dto) {
@@ -95,8 +100,17 @@ public class EventService implements IEventService {
     Event event = eventRepository.findByExternalIds(dto.getSourceClientId(), dto.getSourceId(), dto.getId())
         .orElseThrow(() -> new NotFoundException("Event not found for SourceClientId: " + dto.getSourceClientId() + " and sourceId: " + dto.getSourceId() + " and eventId: " + dto.getId()));
 
+    // Get or create solicited category
     Category category = categoryService.findOrCreate(dto.getCategory());
 
+    // Update location if changed
+    Coordinate newCoords = new Coordinate(dto.getLatitude(), dto.getLongitude());
+    if (!event.getLocation().getCoordinate().equals(newCoords)) {
+      Location location = locationService.findOrCreateLocationByCoordinates(Set.of(newCoords)).get(0);
+      event.setLocation(location); //TODO: A mejorar
+    }
+
+    // Update other fields (name, description, category, eventDate)
     event.update(dto, category);
 
     eventRepository.save(event);
