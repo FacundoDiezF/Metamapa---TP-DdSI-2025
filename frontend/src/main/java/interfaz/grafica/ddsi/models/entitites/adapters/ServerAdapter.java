@@ -126,18 +126,14 @@ public class ServerAdapter {
 
   //--------------- COLLECTIONS ----------------//
   public PageDTO<CollectionDTO> getAllCollections(int page, int size) {
-    return webClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("/collections")
+    return webApiCallerService.get(uriBuilder -> uriBuilder
+            .path("/api/v1/collections")
             .queryParam("page", page)
             .queryParam("size", size)
-            //.queryParam("fromUpdatedDate", lastUpdate)
-            .build())
-        .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<PageDTO<CollectionDTO>>() {
-        })
-        .block();
-  }
+            .build(),
+        new ParameterizedTypeReference<PageDTO<CollectionDTO>>() {
+        });
+  } //* Funciona
 
   public CollectionDTO getCollection(String handler) {
     return webClient.get()
