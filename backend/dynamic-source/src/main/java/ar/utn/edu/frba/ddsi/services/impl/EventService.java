@@ -65,14 +65,14 @@ public class EventService implements IEventService {
   }
 
   @Override
-  public EventOutputDTO update(Long eventId, EventDTO dto) {
+  public EventOutputDTO update(String userId, Long eventId, EventDTO dto) {
 
     //TODO: Validar si el usuario puede realizar esta peticion
 
     Event event = eventRepository.findById(eventId)
         .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
 
-    if (!event.getCreatorId().equals(dto.getCreatorId())) //! Verificar que esto ande bien
+    if (!event.getCreatorId().equals(userId)) //! Verificar que esto ande bien
       throw new UnauthorizedException("Unauthorized action: event ownership mismatch");
 
     if (event.getUploadDate().plusDays(7).isBefore(LocalDateTime.now()))
