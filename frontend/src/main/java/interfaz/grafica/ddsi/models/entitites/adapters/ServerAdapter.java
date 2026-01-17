@@ -336,14 +336,7 @@ public class ServerAdapter {
   }
 
   public void evaluateSubmissionRequest(Long subId, SubmissionRequestEvaluationDTO dto) {
-    dynamicClient.put()
-        .uri(uriBuilder -> uriBuilder
-            .path("/submissions/{subId}")
-            .build(subId))
-        .bodyValue(dto)
-        .retrieve()
-        .bodyToMono(Void.class)
-        .block();
+    webApiCallerService.put("api/v1/submissions/" + subId, dto, Void.class);
   }
 
   //--------------- AUTHENTICATION ----------------//

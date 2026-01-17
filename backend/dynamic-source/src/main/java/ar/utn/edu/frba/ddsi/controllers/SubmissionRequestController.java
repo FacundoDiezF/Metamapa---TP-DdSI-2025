@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +43,7 @@ public class SubmissionRequestController {
   }
 
   @PutMapping("/{submissionId}")
-  public SubmissionRequestOutputDTO evaluateEvent(@PathVariable Long submissionId, @RequestBody SubmissionEvaluationDTO evaluationDTO) {
-    return submissionRequestService.evaluate(submissionId, evaluationDTO);
+  public SubmissionRequestOutputDTO evaluateEvent(@RequestHeader(value = "X-User-Id") String userId, @PathVariable Long submissionId, @RequestBody SubmissionEvaluationDTO evaluationDTO) {
+    return submissionRequestService.evaluate(userId, submissionId, evaluationDTO);
   }
 }

@@ -65,6 +65,15 @@ spring:
                 roles:
                   - ADMIN
                   - CONTRIBUTOR
+
+        - id: evaluate-event-submission
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+            - Path=/api/v1/submissions/*
+            - Method=PUT
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
         # --- PROXY SOURCE ---
         # --- STATISTICS SERVICE ---
 
