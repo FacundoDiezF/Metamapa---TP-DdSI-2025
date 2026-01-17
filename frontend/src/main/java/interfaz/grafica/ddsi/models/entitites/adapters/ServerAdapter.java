@@ -136,12 +136,12 @@ public class ServerAdapter {
   } //* Funciona
 
   public CollectionDTO getCollection(String handler) {
-    return webClient.get()
-        .uri("/collections/{handler}", handler)
-        .retrieve()
-        .bodyToMono(CollectionDTO.class)
-        .block();
-  }
+    return webApiCallerService.get(uriBuilder -> uriBuilder
+            .path("/api/v1/collections/{handler}")
+            .build(handler),
+        new ParameterizedTypeReference<CollectionDTO>() {
+        });
+  } //* Funciona
 
   public void postNewCollection(CollectionOutputDTO collectionDTO) {
     webClient.post()

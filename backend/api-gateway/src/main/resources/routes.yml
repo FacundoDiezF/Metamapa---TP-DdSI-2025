@@ -40,6 +40,15 @@ spring:
           filters:
             - StripPrefix=2
 
+        # Ruta específica para LEER una colección (GET)
+        - id: get-collection
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/collections/*
+            - Method=GET
+          filters:
+            - StripPrefix=2
+
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
         # Ruta específica para CREAR eventos (POST)
