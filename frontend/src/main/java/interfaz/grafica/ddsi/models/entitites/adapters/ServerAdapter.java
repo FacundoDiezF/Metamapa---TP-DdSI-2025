@@ -144,13 +144,8 @@ public class ServerAdapter {
   } //* Funciona
 
   public void postNewCollection(CollectionOutputDTO collectionDTO) {
-    webClient.post()
-        .uri("/collections")
-        .bodyValue(collectionDTO)
-        .retrieve()
-        .bodyToMono(Void.class)
-        .block();
-  }
+    webApiCallerService.post("/api/v1/collections", collectionDTO, Void.class);
+  } //TODO TEST
 
   public void updateCollection(String handler, CollectionOutputDTO collectionDTO) {
     webClient.put()
