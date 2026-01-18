@@ -8,6 +8,7 @@ import ar.utn.edu.frba.ddsi.services.IEventService;
 import ar.utn.edu.frba.ddsi.services.ISourceService;
 import ar.utn.edu.frba.ddsi.services.ISubscriberService;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 @Service
 public class SubscriberService implements ISubscriberService {
@@ -33,10 +34,22 @@ public class SubscriberService implements ISubscriberService {
 
     publisher.subscribe(subscriber);
 
-    // Notificarle TODAS las sources actuales SOLO al nuevo subscriber
-    sourceService.findAllSources().forEach(subscriber::notifySource);
+    // --- ASYNC SOLUTION ---
 
-    // Notificarle TODOS los eventos actuales SOLO al nuevo subscriber
-    subscriber.notifyNewEvents(eventService.getEvents(null));
+    Flux.fromIterable(sourceService.findAllSources())
+        // 1. Send each source in parallel (or fast sequentially)
+        .flatMap(source -> subscriber.notifySource(source))
+
+        //2. Wait for all sources to be sent successfully (onComplete), then send the events.
+        .then(subscriber.notifyNewEvents(eventService.getEvents(null)))
+
+        .subscribe(
+            null,
+
+            //Error durante la sincronización inicial:
+            error -> System.err.println("Error during initial sync (Sources + Events)" + error.getMessage()),
+
+            () -> System.out.println("Subscriber sync complete (Source + Events) for: " + callbackUrl)
+        );
   }
 }
