@@ -200,16 +200,13 @@ public class ServerAdapter {
   }
 
   public CategoryDTO getCategoryById(Long idCategory) {
-
-    return webClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("/categories/{idCategory}")
-            .build(idCategory))
-        .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<CategoryDTO>() {
-        })
-        .block();
-  }
+    return webApiCallerService.get(
+        uriBuilder -> uriBuilder
+            .path("/api/v1/categories/{idCategory}")
+            .build(idCategory),
+        new ParameterizedTypeReference<CategoryDTO>() {}
+    );
+  } //TODO TEST
 
   //--------------- PROVINCES ----------------//
   public PageDTO<ProvinceDTO> getAllProvinces(int page, int size, List<Long> provinceIds) {

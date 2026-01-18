@@ -97,6 +97,15 @@ spring:
             - Method=GET
           filters:
             - StripPrefix=2
+
+        # --- LEER categoría por ID (GET) ---
+        - id: get-category
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/categories/*
+            - Method=GET
+          filters:
+            - StripPrefix=2
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
         # Ruta específica para CREAR eventos (POST)
