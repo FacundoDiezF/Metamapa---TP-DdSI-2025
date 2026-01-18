@@ -30,7 +30,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
       ServerHttpRequest request = exchange.getRequest();
       boolean authenticationRequired = config.isRequired();
 
-      System.out.println("Ruta: " + exchange.getRequest().getPath() + " | Required: " + authenticationRequired);
+      System.out.println("Ruta: " + exchange.getRequest().getMethod()+ " " + exchange.getRequest().getPath() + " | Auth Required: " + authenticationRequired);
 
       // EXTRACCIÓN DEL TOKEN
       String token = extractToken(request);

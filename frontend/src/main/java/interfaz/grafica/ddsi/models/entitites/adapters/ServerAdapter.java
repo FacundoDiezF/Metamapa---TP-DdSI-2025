@@ -149,15 +149,11 @@ public class ServerAdapter {
 
   public void updateCollection(String handler, CollectionOutputDTO collectionDTO) {
     webApiCallerService.put("/api/v1/collections/" + handler, collectionDTO, Void.class);
-  } //TODO Test
+  } //* Funciona
 
   public void deleteCollection(String handler) {
-    webClient.delete()
-        .uri("/collections/{handler}", handler)
-        .retrieve()
-        .bodyToMono(Void.class)
-        .block();
-  }
+    webApiCallerService.delete("/api/v1/collections/" + handler);
+  } //* Funciona
 
   //--------------- SOURCES ----------------//
   public List<SourceDTO> getAllSources() {

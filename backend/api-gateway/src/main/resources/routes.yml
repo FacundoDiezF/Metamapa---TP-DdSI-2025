@@ -59,12 +59,22 @@ spring:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
 
-        # Ruta específica para CREAR colecciones (POST)
+        # Ruta específica para EDITAR colecciones (POST)
         - id: edit-collection
           uri: lb://AGGREGATION-SERVICE
           predicates:
             - Path=/api/v1/collections/*
             - Method=PUT
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        # Ruta específica para ELIMINAR colecciones (DELETE)
+        - id: delete-collection
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/collections/*
+            - Method=DELETE
           filters:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
