@@ -58,6 +58,16 @@ spring:
           filters:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
+
+        # Ruta específica para CREAR colecciones (POST)
+        - id: edit-collection
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/collections/*
+            - Method=PUT
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
         # Ruta específica para CREAR eventos (POST)
