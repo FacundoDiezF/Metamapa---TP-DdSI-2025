@@ -88,6 +88,15 @@ spring:
           filters:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
+
+        # Ruta específica para LEER categorías (GET)
+        - id: get-categories
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/categories
+            - Method=GET
+          filters:
+            - StripPrefix=2
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
         # Ruta específica para CREAR eventos (POST)
