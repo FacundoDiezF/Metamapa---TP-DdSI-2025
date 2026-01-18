@@ -95,6 +95,21 @@ public class WebApiCallerService {
   }
 
   /**
+   * Ejecuta una llamada HTTP GET con una URL simple, y retorna un objeto genérico (ParameterizedTypeReference) que evita la limitación type erasure de Java
+   */
+  public <T> T get(String url, ParameterizedTypeReference<T> typeReference) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .get()
+            .uri(url)
+            .header("Authorization", authHeaderValue)
+            .retrieve()
+            .bodyToMono(typeReference)
+            .block()
+    );
+  }
+
+  /**
    * Ejecuta una llamada HTTP GET con una URL construida dinámicamente, y retorna un objeto genérico (ParameterizedTypeReference) que evita la limitación type erasure de Java
    */
   public <T> T get(Function<UriBuilder, URI> uriFunction, ParameterizedTypeReference<T> typeReference) {

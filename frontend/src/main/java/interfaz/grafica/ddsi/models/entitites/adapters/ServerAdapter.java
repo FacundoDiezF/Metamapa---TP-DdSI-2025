@@ -157,13 +157,10 @@ public class ServerAdapter {
 
   //--------------- SOURCES ----------------//
   public List<SourceDTO> getAllSources() {
-    return webClient.get()
-        .uri("/sources")
-        .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<List<SourceDTO>>() {
-        })
-        .block();
-  }
+    return webApiCallerService.get("/api/v1/sources",
+        new ParameterizedTypeReference<List<SourceDTO>>() {
+        });
+  } //* Funciona
 
   //--------------- CATEGORIES ----------------//
   public PageDTO<CategoryDTO> getAllCategories(int page, int size, List<Long> categoryIds) {

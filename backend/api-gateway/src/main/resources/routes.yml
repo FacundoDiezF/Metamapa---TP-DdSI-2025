@@ -78,6 +78,16 @@ spring:
           filters:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
+
+        # Ruta específica para LEER sources (GET)
+        - id: get-sources
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/sources
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
         # Ruta específica para CREAR eventos (POST)
