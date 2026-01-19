@@ -4,13 +4,17 @@ import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.exceptions.UnauthorizedException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
+import ar.utn.edu.frba.ddsi.models.entities.edition.EditionStatus;
+import ar.utn.edu.frba.ddsi.models.entities.edition.EventEditionRequest;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
 import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionRequest;
+import ar.utn.edu.frba.ddsi.models.repositories.IEditionRequestRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
 import ar.utn.edu.frba.ddsi.services.ICategoryService;
+import ar.utn.edu.frba.ddsi.services.IEditionRequestService;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,14 +30,14 @@ public class EventService implements IEventService {
 
   private final ICategoryService categoryService;
 
-  private final Publisher publisher;
+  private final IEditionRequestRepository editionRequestRepository;
 
   @Autowired
-  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, Publisher publisher) {
+  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, IEditionRequestRepository editionRequestRepository) {
     this.eventRepository = eventRepository;
     this.submissionRepository = submissionRepository;
     this.categoryService = categoryService;
-    this.publisher = publisher;
+    this.editionRequestRepository = editionRequestRepository;
   }
 
   @Override
@@ -78,21 +82,24 @@ public class EventService implements IEventService {
     if (event.getUploadDate().plusDays(7).isBefore(LocalDateTime.now()))
       throw new IllegalStateException("Event editing window has expired. Modifications are no longer allowed");
 
-    if (dto.getTitle() != null) event.setTitle(dto.getTitle());
-    if (dto.getDescription() != null) event.setDescription(dto.getDescription());
-    if (dto.getCategory() != null) event.setCategory(categoryService.findOrCreate(dto.getCategory()));
-    if (dto.getLatitude() != null) event.setLatitude(dto.getLatitude());
-    if (dto.getLongitude() != null) event.setLongitude(dto.getLongitude());
-    if (dto.getEventDate() != null) event.setEventDate(dto.getEventDate().atStartOfDay());
+    if (!event.isAccepted())
+      throw new IllegalStateException("Only accepted events can be edited");
 
-    event.setUpdateDate(LocalDateTime.now());
-    Event eventSaved = eventRepository.save(event);
+    Category category = categoryService.findOrCreate(dto.getCategory());
 
-    if (eventSaved.isAccepted()) {
-      publisher.notifyUpdatedEvent(eventSaved);
-    }
+    EventEditionRequest newEditionRequest = EventEditionRequest.builder()
+        .event(event)
+        .status(EditionStatus.PENDING)
+        .requestDate(LocalDateTime.now())
+        .newTitle(dto.getTitle())
+        .newDescription(dto.getDescription())
+        .newCategory(category)
+        .newLatitude(dto.getLatitude())
+        .newLongitude(dto.getLongitude())
+        .newEventDate(dto.getEventDate().atStartOfDay())
+        .build();
 
-    return EventOutputDTO.from(eventSaved);
+    editionRequestRepository.save(newEditionRequest);
   }
 
   @Override

@@ -1,6 +1,5 @@
 package ar.utn.edu.frba.ddsi.controllers;
 
-import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.services.IEventService;
@@ -11,9 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,15 +41,5 @@ public class EventController {
     Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
 
     return eventService.getEvents(category_in, province_in, source_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt, fromUpdatedDate, pageable);
-  }
-
-  @PostMapping
-  public void createEvent(@RequestBody List<EventInputDTO> dtos) {
-    // TODO: Redireccionar a la fuente dinamica
-  }
-
-  @PutMapping
-  public void updateEvent(@RequestBody List<EventInputDTO> dtos) {
-    // TODO: Redireccionar a la fuente dinamica
   }
 }

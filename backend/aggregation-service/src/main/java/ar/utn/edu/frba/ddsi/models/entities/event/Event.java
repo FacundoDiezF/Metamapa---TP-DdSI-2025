@@ -92,13 +92,24 @@ public class Event {
 
 
   public void update(EventInputDTO dto, Category category) {
-    if (dto.getTitle() != null) this.title = dto.getTitle();
-    if (dto.getDescription() != null) this.description = dto.getDescription();
-    if (category != null) this.category = category;
-    if (dto.getLatitude() != null) this.location.getCoordinate().setLatitude(dto.getLatitude());
-    if (dto.getLongitude() != null) this.location.getCoordinate().setLongitude(dto.getLongitude());
-    if (dto.getEventDate() != null) this.eventDate = dto.getEventDate();
+
     this.updatedDate = LocalDateTime.now();
+
+    if (dto.getTitle() != null && !Objects.equals(dto.getTitle(), this.title)) {
+      this.title = dto.getTitle();
+    }
+
+    if (dto.getDescription() != null && !Objects.equals(dto.getDescription(), this.description)) {
+      this.description = dto.getDescription();
+    }
+
+    if (category != null && !Objects.equals(category, this.category)) {
+      this.category = category;
+    }
+
+    if (dto.getEventDate() != null && !Objects.equals(dto.getEventDate(), this.eventDate)) {
+      this.eventDate = dto.getEventDate();
+    }
   }
 
   public boolean meetsAlgorithmConsensus(ConsensusType consensusType) {
