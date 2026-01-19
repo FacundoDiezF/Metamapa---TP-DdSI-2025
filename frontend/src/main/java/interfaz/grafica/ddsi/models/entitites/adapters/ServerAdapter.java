@@ -260,17 +260,15 @@ public class ServerAdapter {
     );
   } //TODO TEST
 
-  public List<StatisticsDTO> getBuisiestHoursByCategory(Long idCategory) {
-    return statsClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("/statistics/category/{idCategory}/busiest-hours/top")
+  public List<StatisticsDTO> getBusiestHoursByCategory(Long idCategory) {
+    return webApiCallerService.get(
+        uriBuilder -> uriBuilder
+            .path("/api/v1/statistics/category/{idCategory}/busiest-hours/top")
             .queryParam("count", 4)
-            .build(idCategory))
-        .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<List<StatisticsDTO>>() {
-        })
-        .block();
-  }
+            .build(idCategory),
+        new ParameterizedTypeReference<List<StatisticsDTO>>() {}
+    );
+  } //TODO TEST
 
   //--------------- DELETION REQUESTS ----------------//
   public PageDTO<DeletionRequestDTO> getAllDeletionRequests(int page, int size) {
