@@ -7,9 +7,9 @@ import java.util.List;
 public interface IEventService {
   List<EventOutputDTO> getAllEvents();
 
-  EventOutputDTO save(EventDTO dto);
+  EventOutputDTO save(EventDTO dto, String userId);
 
-  void update(Long eventId, EventDTO dto);
+  EventOutputDTO update(String userId, Long eventId, EventDTO dto);
 
   EventOutputDTO deleteEvent(Long eventId);
 }

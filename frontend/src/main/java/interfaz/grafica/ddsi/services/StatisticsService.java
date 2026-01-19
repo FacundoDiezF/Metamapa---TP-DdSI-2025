@@ -29,7 +29,7 @@ public class StatisticsService {
   }
 
   public List<StatisticsDTO> findBusiestHoursByCategory(Long idCategory) {
-    return server.getBuisiestHoursByCategory(idCategory);
+    return server.getBusiestHoursByCategory(idCategory);
   }
 
   private List<StatisticsDTO> mockTopProvinces() {

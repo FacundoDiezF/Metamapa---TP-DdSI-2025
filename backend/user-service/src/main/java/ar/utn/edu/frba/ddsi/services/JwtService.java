@@ -36,7 +36,7 @@ public class JwtService {
   public String generateAccessToken(User user) {
     Map<String, Object> extraClaims = new HashMap<>();
     extraClaims.put("roles", user.getRoles());
-    extraClaims.put("userId", user.getPublicId());
+    extraClaims.put("userId", user.getId());
     extraClaims.put("type", "ACCESS");
 
     return buildToken(extraClaims, user.getUsername(), jwtConfig.getExpirationMinutes());

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ISubmissionRequestService {
-  SubmissionRequestOutputDTO evaluate(Long submissionId, SubmissionEvaluationDTO submissionEvaluation);
+  SubmissionRequestOutputDTO evaluate(String userId, Long submissionId, SubmissionEvaluationDTO submissionEvaluation);
 
   Page<SubmissionRequestOutputDTO> getSubmissionRequests(SubmissionState state, Pageable pageable);
 }

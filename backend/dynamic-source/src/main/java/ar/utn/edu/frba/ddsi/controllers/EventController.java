@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,13 +32,13 @@ public class EventController {
   }
 
   @PostMapping
-  public EventOutputDTO submitEvent(@RequestBody EventDTO eventDto) {
-    return eventService.save(eventDto);
+  public EventOutputDTO submitEvent(@RequestHeader(value = "X-User-Id", required = false) String userId, @RequestBody EventDTO eventDto) {
+    return eventService.save(eventDto, userId);
   }
 
   @PutMapping("/{eventId}")
-  public void updateEvent(@PathVariable Long eventId, @RequestBody EventDTO eventDto) {
-    eventService.update(eventId, eventDto);
+  public EventOutputDTO updateEvent(@RequestHeader(value = "X-User-Id", required = false) String userId, @PathVariable Long eventId, @RequestBody EventDTO eventDto) {
+    return eventService.update(userId, eventId, eventDto);
   }
 
   @DeleteMapping("/{eventId}")

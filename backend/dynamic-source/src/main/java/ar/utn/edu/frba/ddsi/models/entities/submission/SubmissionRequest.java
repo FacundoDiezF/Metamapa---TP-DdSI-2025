@@ -35,8 +35,8 @@ public class SubmissionRequest {
   @Column(name = "evaluation_date")
   private LocalDateTime evaluationDate;
 
-  @Column(name = "reviewer")
-  private String reviewer; //TODO: Esto deberia ser un usuario
+  @Column(name = "reviewer_id")
+  private String reviewerId;
 
   @Column(name = "state")
   @Enumerated(EnumType.STRING)
@@ -50,9 +50,9 @@ public class SubmissionRequest {
     this.state = SubmissionState.PENDING;
   }
 
-  public void setEvaluation(SubmissionEvaluationDTO submissionEvaluation) {
+  public void setEvaluation(SubmissionEvaluationDTO submissionEvaluation, String userId) {
     this.evaluationDate = LocalDateTime.now();
-    this.reviewer = submissionEvaluation.getReviewer();
+    this.reviewerId = userId;
     this.state = submissionEvaluation.getState();
     this.suggestion = submissionEvaluation.getSuggestion();
 
