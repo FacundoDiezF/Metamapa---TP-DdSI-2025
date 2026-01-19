@@ -19,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 
-
-
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,16 +29,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 public class ShareController {
 
-    private final SourcesService sourcesService;
+  private final SourcesService sourcesService;
 
   private final EventService eventService;
   private final DeletionRequestService deletionRequestService;
   private final SubmissionRequestService submissionRequestService;
 
-  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService , SourcesService sourcesService) {
+  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, SourcesService sourcesService) {
     this.sourcesService = sourcesService;
 
-      this.eventService = eventService;
+    this.eventService = eventService;
     this.deletionRequestService = deletionRequestService;
     this.submissionRequestService = submissionRequestService;
   }
@@ -119,22 +116,17 @@ public class ShareController {
     return "redirect:/admin/pendingEvents";
   }
 
-    @PostMapping("/source")
-    public String adminImport(@RequestParam("csvfile") MultipartFile csvfile, RedirectAttributes redirectAttributes, @RequestParam(defaultValue = "0", name = "page") int page) {
+  @PostMapping("/source")
+  public String adminImport(@RequestParam("csvfile") MultipartFile csvfile, RedirectAttributes redirectAttributes, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-        System.out.println(">>>> LLEGUE AL CONTROLLER /source <<<<");
-        System.out.println("Nombre: " + csvfile.getOriginalFilename());
-        System.out.println("Tamaño: " + csvfile.getSize());
-
-        try{
-            sourcesService.postNewSource(csvfile);
-            redirectAttributes.addFlashAttribute("importSuccess", true);
-        } catch (Exception e){
-            redirectAttributes.addFlashAttribute("importError", "Ocurrió un error al importar el CSV.");
-        }
-
-        return "redirect:/admin/import"; //TODO aca deberia saltar un popup de exito o error
+    try {
+      sourcesService.postNewSource(csvfile);
+      redirectAttributes.addFlashAttribute("importSuccess", true);
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("importError", "Ocurrió un error al importar el CSV.");
     }
 
+    return "redirect:/admin/import";
+  }
 
 }

@@ -16,4 +16,8 @@ public interface ISourceService {
     List<SourceOutputDTO> getSources();
 
     List<EventOutputDTO> getAllEventsBySourceId(Long id);
+
+    void importSourceEvents(Long id);
+
+    void importPendingSources();
 }

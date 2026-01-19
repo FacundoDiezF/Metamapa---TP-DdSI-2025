@@ -19,9 +19,11 @@ spring.jpa.properties.hibernate.format_sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 
 
-# IMPORT SCHEDULER CONFIG
+# Import scheduler configuration
 imports.fixed-delay-ms=60000
 
+# File upload configuration (max file size)
+spring.servlet.multipart.max-file-size=50MB
 
-# PATH DONDE VAN LOS CSV
+# Directory to store uploaded CSV files (from home directory)
 static-source.storage.dir=metamapa/static-sources/csv
