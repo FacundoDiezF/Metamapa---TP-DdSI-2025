@@ -23,21 +23,30 @@ public class Publisher {
     subscribers.remove(subscriber);
   }
 
-  public void notifyNewEvents(List<EventOutputDTO> events) {
+  public void notifyNewEvents(List<EventOutputDTO> eventsToNotify) {
     for (ISubscriber subscriber : subscribers) {
-      subscriber.notifyNewEvents(events);
+      subscriber.notifyNewEvents(eventsToNotify).subscribe(null,
+          error -> {
+            System.err.println("Error notifying events to subscriber: " + error.getMessage());
+          });
     }
   }
 
-  public void notifyUpdatedEvents(List<EventOutputDTO> events) {
+  public void notifyUpdatedEvents(List<EventOutputDTO> eventToNotify) {
     for (ISubscriber subscriber : subscribers) {
-      subscriber.notifyUpdatedEvents(events);
+      subscriber.notifyUpdatedEvents(eventToNotify).subscribe(null,
+          error -> {
+            System.err.println("Error notifying updated event to subscriber: " + error.getMessage());
+          });
     }
   }
 
   public void notifyNewSource(Source source) {
     for (ISubscriber subscriber : subscribers) {
-      subscriber.notifySource(source);
+      subscriber.notifySource(source).subscribe(null,
+          error -> {
+            System.err.println("Error notifying new source to subscriber: " + error.getMessage());
+          });
     }
   }
 }

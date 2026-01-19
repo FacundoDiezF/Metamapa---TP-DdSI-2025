@@ -6,7 +6,9 @@ import ar.utn.edu.frba.ddsi.models.dtos.output.api.LocationAPIOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.api.LocationOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Coordinate;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,6 +19,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import reactor.netty.http.client.HttpClient;
+import reactor.netty.resources.ConnectionProvider;
 
 @Component
 public class LocationAPI {
@@ -28,14 +32,32 @@ public class LocationAPI {
                      @Value("${thread.count}") int threadCount,
                      @Value("${batch.size}") int batchSize,
                      @Value("${response.byte.size}") int responseByteSize) {
+
+
+    // Configuration of the connection pool to the GeoRef API
+    // This is crucial to avoid conection reset issues becouse of inactive connections
+    ConnectionProvider provider = ConnectionProvider.builder("georef-pool")
+        .maxConnections(500)
+        .maxIdleTime(Duration.ofSeconds(10)) // 10 seconds of inactivity max
+        .maxLifeTime(Duration.ofSeconds(60)) // Force recycle after 60 seconds
+        .pendingAcquireTimeout(Duration.ofSeconds(60))
+        .evictInBackground(Duration.ofSeconds(30))
+        .build();
+
+    HttpClient httpClient = HttpClient.create(provider)
+        .option(io.netty.channel.ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+        .responseTimeout(Duration.ofSeconds(10));
+
     this.webClient = WebClient.builder()
         .baseUrl(url)
+        .clientConnector(new ReactorClientHttpConnector(httpClient)) // Use the custom HttpClient with connection pool
         .exchangeStrategies(ExchangeStrategies.builder()
             .codecs(configurer -> configurer
                 .defaultCodecs()
                 .maxInMemorySize(responseByteSize))
             .build())
         .build();
+
     this.threadCount = threadCount;
     this.batchSize = batchSize;
   }
@@ -75,10 +97,10 @@ public class LocationAPI {
     return requests;
   }
 
-  private List<APILocationInputDTO> executeRequests(List<LocationAPIOutputDTO> requests){
+  private List<APILocationInputDTO> executeRequests(List<LocationAPIOutputDTO> requests) {
     List<APILocationInputDTO> allResults = new ArrayList<>();
 
-     //1. Create thread pool
+    //1. Create thread pool
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
 
     try {
@@ -116,7 +138,7 @@ public class LocationAPI {
         .block();
 
     // 2. Extract results
-    if (response == null || response.getResults() == null){
+    if (response == null || response.getResults() == null) {
       // TODO Manejar este error para que detecte cuando la respuesta no es la esperada, no solo null
       throw new RuntimeException("Error executing location API request, null response");
       //TODO devolver un buen error cuando por ejemplo esta caída la API

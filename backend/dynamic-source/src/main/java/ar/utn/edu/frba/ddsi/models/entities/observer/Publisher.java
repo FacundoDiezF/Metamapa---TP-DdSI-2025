@@ -20,14 +20,24 @@ public class Publisher {
   }
 
   public void notifyNewEvent(Event event) {
+    List<EventOutputDTO> eventsToNotify = List.of(EventOutputDTO.from(event));
+
     for (ISubscriber subscriber : subscribers) {
-      subscriber.notifyNewEvent(List.of(EventOutputDTO.from(event)));
+      subscriber.notifyNewEvent(eventsToNotify).subscribe(null,
+          error -> {
+            System.err.println("Error notifying events to subscriber: " + error.getMessage());
+          });
     }
   }
 
   public void notifyUpdatedEvent(Event event) {
+    EventOutputDTO eventToNotify = EventOutputDTO.from(event);
+
     for (ISubscriber subscriber : subscribers) {
-      subscriber.notifyUpdatedEvent(EventOutputDTO.from(event));
+      subscriber.notifyUpdatedEvent(eventToNotify).subscribe(null,
+          error -> {
+            System.err.println("Error notifying updated event to subscriber: " + error.getMessage());
+          });
     }
   }
 }
