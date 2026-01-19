@@ -152,7 +152,14 @@ spring:
             - AuthenticationFilter=ADMIN
         # --- PROXY SOURCE ---
         # --- STATISTICS SERVICE ---
-
+        - id: get-top-categories
+          uri: lb://STATISTICS-SERVICE
+          predicates:
+            - Path=/api/v1/statistics/categories/top
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
       # ==========================================
       # 🧪 RUTAS DE TESTING (Self-Routing)
       # ==========================================
