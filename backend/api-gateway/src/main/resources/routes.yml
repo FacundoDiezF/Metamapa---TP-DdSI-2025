@@ -115,6 +115,16 @@ spring:
             - Method=GET
           filters:
             - StripPrefix=2
+
+        # --- publicar solicitud de eliminación (POST) ---
+        - id: post-deletion-request
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/deletion-request
+            - Method=POST
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
         # Ruta específica para CREAR eventos (POST)

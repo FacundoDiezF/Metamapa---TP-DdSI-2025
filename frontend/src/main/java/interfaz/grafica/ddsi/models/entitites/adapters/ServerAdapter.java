@@ -236,13 +236,8 @@ public class ServerAdapter {
 
   //--------------- DELETION REQUESTS ----------------//
   public void postNewDeletionRequest(DeletionRequestCreationDTO deletionRequestDTO) {
-    webClient.post()
-        .uri("/deletion-request")
-        .bodyValue(deletionRequestDTO)
-        .retrieve()
-        .bodyToMono(Void.class)
-        .block();
-  }
+    webApiCallerService.post("/api/v1/deletion-request", deletionRequestDTO, Void.class);
+  } //* Funciona
 
   //--------------- STATISTICS ----------------//
   public List<StatisticsDTO> getTopCategories() {
