@@ -4,6 +4,7 @@ import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.SourceOutputDTO;
 import java.util.List;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 public class Aggregator implements ISubscriber {
 
@@ -20,21 +21,21 @@ public class Aggregator implements ISubscriber {
     return new Aggregator(callbackUrl);
   }
 
-  public void notifyNewEvents(List<EventOutputDTO> events) {
-    clientCallBack.post()
+  @Override
+  public Mono<Void> notifyNewEvents(List<EventOutputDTO> events) {
+    return clientCallBack.post()
         .uri("/events")
         .bodyValue(events)
         .retrieve()
-        .bodyToMono(Void.class)//? Hay respuesta
-        .block();
+        .bodyToMono(Void.class);
   }
 
-  public void notifySource(SourceOutputDTO source) {
-    clientCallBack.post()
+  @Override
+  public Mono<Void> notifySource(SourceOutputDTO source) {
+    return clientCallBack.post()
         .uri("/sources")
         .bodyValue(source)
         .retrieve()
-        .bodyToMono(Void.class)
-        .block();
+        .bodyToMono(Void.class);
   }
 }
