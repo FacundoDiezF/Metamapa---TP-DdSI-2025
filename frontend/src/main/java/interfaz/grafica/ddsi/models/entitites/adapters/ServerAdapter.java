@@ -288,21 +288,19 @@ public class ServerAdapter {
 
   //--------------- DELETION REQUESTS ----------------//
   public PageDTO<SubmissionRequestDTO> getAllSubmissionRequest(int page, int size) {
-    return dynamicClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("/submissions")
+    return webApiCallerService.get(
+        uriBuilder -> uriBuilder
+            .path("/api/v1/submissions")
             .queryParam("page", page)
             .queryParam("size", size)
-            .build())
-        .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<PageDTO<SubmissionRequestDTO>>() {
-        })
-        .block();
-  }
+            .build(),
+        new ParameterizedTypeReference<PageDTO<SubmissionRequestDTO>>() {}
+    );
+  } //* Funciona
 
   public void evaluateSubmissionRequest(Long subId, SubmissionRequestEvaluationDTO dto) {
     webApiCallerService.put("api/v1/submissions/" + subId, dto, Void.class);
-  }
+  } //* Funciona
 
   //--------------- AUTHENTICATION ----------------//
   public AuthResponseDTO login(LoginRequestDTO request) {

@@ -171,6 +171,16 @@ spring:
           filters:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
+
+        # --- LEER todas las solicitudes de subida (GET) ---
+        - id: get-all-submission-requests
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+            - Path=/api/v1/submissions
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
         # --- PROXY SOURCE ---
         # --- STATISTICS SERVICE ---
         - id: get-top-categories
