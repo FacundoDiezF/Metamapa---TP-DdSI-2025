@@ -142,11 +142,22 @@ spring:
                   - ADMIN
                   - CONTRIBUTOR
 
+        # Ruta específica para EVALUAR subidas de eventos (PUT)
         - id: evaluate-event-submission
           uri: lb://DYNAMIC-SOURCE
           predicates:
             - Path=/api/v1/submissions/*
             - Method=PUT
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        # --- LEER todas las solicitudes de eliminación (GET) ---
+        - id: get-all-deletion-requests
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/deletion-request
+            - Method=GET
           filters:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN

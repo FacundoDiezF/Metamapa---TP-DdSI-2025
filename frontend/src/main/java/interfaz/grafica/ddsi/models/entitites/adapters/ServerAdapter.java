@@ -272,17 +272,15 @@ public class ServerAdapter {
 
   //--------------- DELETION REQUESTS ----------------//
   public PageDTO<DeletionRequestDTO> getAllDeletionRequests(int page, int size) {
-    return webClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("/deletion-request")
+    return webApiCallerService.get(
+        uriBuilder -> uriBuilder
+            .path("/api/v1/deletion-request")
             .queryParam("page", page)
             .queryParam("size", size)
-            .build())
-        .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<PageDTO<DeletionRequestDTO>>() {
-        })
-        .block();
-  }
+            .build(),
+        new ParameterizedTypeReference<PageDTO<DeletionRequestDTO>>() {}
+    );
+  } //* Funciona
 
   public void evaluateDeletionRequest(Long eventId, DeletionRequestEvaluateDTO dto) {
     webClient.put()
