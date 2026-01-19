@@ -283,15 +283,8 @@ public class ServerAdapter {
   } //* Funciona
 
   public void evaluateDeletionRequest(Long eventId, DeletionRequestEvaluateDTO dto) {
-    webClient.put()
-        .uri(uriBuilder -> uriBuilder
-            .path("/deletion-request/{eventId}")
-            .build(eventId))
-        .bodyValue(dto)
-        .retrieve()
-        .bodyToMono(Void.class)
-        .block();
-  }
+    webApiCallerService.put("/api/v1/deletion-request/" + eventId, dto, Void.class);
+  } //* Funciona
 
   //--------------- DELETION REQUESTS ----------------//
   public PageDTO<SubmissionRequestDTO> getAllSubmissionRequest(int page, int size) {
