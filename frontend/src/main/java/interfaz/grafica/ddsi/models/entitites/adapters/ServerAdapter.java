@@ -164,17 +164,6 @@ public class ServerAdapter {
 
   //--------------- CATEGORIES ----------------//
   public PageDTO<CategoryDTO> getAllCategories(int page, int size, List<Long> categoryIds) {
-//    return webClient.get()
-//        .uri(uriBuilder -> uriBuilder
-//            .path("/categories")
-//            .queryParam("page", page)
-//            .queryParam("size", size)
-//            .queryParam("category_in", categoryIds)
-//            .build())
-//        .retrieve()
-//        .bodyToMono(new ParameterizedTypeReference<PageDTO<CategoryDTO>>() {
-//        })
-//        .block();
     return webApiCallerService.get(uriBuilder -> uriBuilder
             .path("/api/v1/categories")
             .queryParam("page", page)
@@ -183,7 +172,7 @@ public class ServerAdapter {
             .build(),
         new ParameterizedTypeReference<PageDTO<CategoryDTO>>() {
         });
-  }
+  } //* Funciona
 
   //Sobrecarga sin filtro de IDs
   public PageDTO<CategoryDTO> getAllCategories(int page, int size) {
