@@ -251,16 +251,14 @@ public class ServerAdapter {
   } //TODO TEST
 
   public List<StatisticsDTO> getTopProvincesByCategory(Long idCategory) {
-    return statsClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("/statistics/category/{idCategory}/provinces/top")
+    return webApiCallerService.get(
+        uriBuilder -> uriBuilder
+            .path("/api/v1/statistics/category/{idCategory}/provinces/top")
             .queryParam("count", 4)
-            .build(idCategory))
-        .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<List<StatisticsDTO>>() {
-        })
-        .block();
-  }
+            .build(idCategory),
+        new ParameterizedTypeReference<List<StatisticsDTO>>() {}
+    );
+  } //TODO TEST
 
   public List<StatisticsDTO> getBuisiestHoursByCategory(Long idCategory) {
     return statsClient.get()

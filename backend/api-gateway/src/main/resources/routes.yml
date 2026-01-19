@@ -160,6 +160,15 @@ spring:
           filters:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
+
+        - id: get-top-provinces-by-category
+          uri: lb://STATISTICS-SERVICE
+          predicates:
+            - Path=/api/v1/statistics/category/*/provinces/top
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
       # ==========================================
       # 🧪 RUTAS DE TESTING (Self-Routing)
       # ==========================================
