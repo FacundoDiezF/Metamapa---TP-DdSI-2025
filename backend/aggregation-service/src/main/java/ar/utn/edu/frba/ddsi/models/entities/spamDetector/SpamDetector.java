@@ -32,75 +32,104 @@ public class SpamDetector implements ISpamDetector {
   public boolean isSpam(List<DeletionRequest> eventDeletionRequests, String argument) {
     String[] processedArgument = preprocess(argument);
 
-    // Get all the arguments from dr's of the same event.
-    List<String[]> processedEventArguments = eventDeletionRequests.stream()
+    // Get all the arguments from DeletionRequests of the same event.
+    List<String[]> processedEventArguments = eventDeletionRequests
+        .stream()
         .map(dr -> preprocess(dr.getArgument()))
         .collect(Collectors.toList());
 
-    processedEventArguments.add(processedArgument); // include given argument to calculate idf.
+    // 1. Check frequency within the argument itself
+    boolean argumentHasSpam = detectSpamByArgumentFrequency(processedArgument);
+    if (argumentHasSpam) return true;
 
-    Map<String, Double> tf = computeTF(processedArgument); // Counts terms frequency in given argument.
-    Map<String, Double> idf = computeIDF(processedEventArguments);
-    Map<String, Double> tfidf = computeTFIDF(tf, idf);
-
-    // Criterio simple: si alguna palabra de SPAM tiene TF-IDF alto
-    return tfidf.entrySet().stream()
-        .anyMatch(entry -> entry.getValue() > 0.2); // TODO: 0.2 is a test value, must be adjusted
+    // 2. Check similarity against history
+    boolean argumentsHaveSpam = detectSpamByHistoryArguments(processedEventArguments, processedArgument);
+    return argumentsHaveSpam;
   }
 
   private String[] preprocess(String argument) {
     return Arrays.stream(argument.toLowerCase()
-            .replaceAll("[^a-zA-Záéíóúüñ0-9\\s]", "") // remove punctuation but allow accents
-            .split("\\s+")) // split by whitespace
-        .filter(word -> !SPANISH_STOPWORDS.contains(word)) // remove stopwords
+            .replaceAll("[^a-zA-Záéíóúüñ0-9\\s]", "") // Remove punctuation but allow accents
+            .split("\\s+")) // Split by whitespace
+        .filter(word -> !SPANISH_STOPWORDS.contains(word)) // Remove stopwords
         .toArray(String[]::new);
   }
 
-  // Counts frequency of terms in argument
-  private Map<String, Double> computeTF(String[] argumentArray) {
-    Map<String, Double> tf = new HashMap<>();
-    double total = argumentArray.length;
+  private boolean detectSpamByArgumentFrequency(String[] argumentWords) {
+    if (argumentWords.length == 0) return false;
 
-    // Counts the occurrences of each word
-    for (String word : argumentArray) {
-      tf.put(word, tf.getOrDefault(word, 0.0) + 1.0);
+    Map<String, Integer> wordCounts = new HashMap<>();
+    double totalWords = argumentWords.length;
+
+    for (String word : argumentWords) {
+      wordCounts.put(word, wordCounts.getOrDefault(word, 0) + 1);
     }
 
-    // Normalize the values by dividing each count by the total number of words
-    for (String word : tf.keySet()) {
-      tf.put(word, tf.get(word) / total);
-    }
+    // If only uses 10 words or less (unique words), checks simply by count.
+    double uniqueWordsCount = wordCounts.size();
 
-    return tf; // Return the map of term frequencies
-  }
+    if (totalWords > 20 && uniqueWordsCount <= 7) return true;
 
-  private Map<String, Double> computeIDF(List<String[]> allDocs) {
-    Map<String, Double> idf = new HashMap<>();
-    int totalDocs = allDocs.size();
+    double threshold = 0.25; // 25% of frequency allowed
 
-    // Counts the occurrences of each word for each argument.
-    for (String[] doc : allDocs) {
-      Set<String> unique = new HashSet<>(Arrays.asList(doc));
-      for (String word : unique) {
-        idf.put(word, idf.getOrDefault(word, 0.0) + 1.0);
+    // Checks if a word has a high frequency.
+    for (Map.Entry<String, Integer> entry : wordCounts.entrySet()) {
+      double frequency = entry.getValue() / totalWords;
+
+      if (frequency > threshold) {
+        return true;
       }
     }
 
-    for (String word : idf.keySet()) {
-      idf.put(word, Math.log((double) totalDocs / idf.get(word)));
-    }
-
-    return idf;
+    return false;
   }
 
-  private Map<String, Double> computeTFIDF(Map<String, Double> tf, Map<String, Double> idf) {
-    Map<String, Double> tfidf = new HashMap<>();
+  private boolean detectSpamByHistoryArguments(List<String[]> historyArguments, String[] currentArgument) {
+    if (historyArguments.isEmpty() || currentArgument.length == 0) return false;
 
-    // Calculates  tf-idf for each word.
-    for (String word : tf.keySet()) {
-      tfidf.put(word, tf.get(word) * idf.getOrDefault(word, 0.0));
+    Set<String> currentBigrams = generateBigramsFromArray(currentArgument);
+
+    if (currentBigrams.isEmpty()) return false;
+
+    double threshold = 0.7; // 70% of similarity allowed
+
+
+    for (String[] historyArg : historyArguments) {
+      if (historyArg.length == 0) continue;
+
+      Set<String> historyBigrams = generateBigramsFromArray(historyArg);
+
+      if (calculateJaccardSimilarity(currentBigrams, historyBigrams) > threshold)
+        return true;
     }
-
-    return tfidf;
+    return false;
   }
+
+  private double calculateJaccardSimilarity(Set<String> set1, Set<String> set2) {
+    if (set1.isEmpty() || set2.isEmpty()) return 0.0;
+
+    Set<String> intersection = new HashSet<>(set1);
+    intersection.retainAll(set2);
+
+    double intersectionSize = intersection.size();
+    // Union = A + B - Intersection
+    double unionSize = set1.size() + set2.size() - intersectionSize;
+
+    if (unionSize == 0) return 0.0;
+
+    return intersectionSize / unionSize;
+  }
+
+  private Set<String> generateBigramsFromArray(String[] words) {
+    Set<String> bigrams = new HashSet<>();
+
+    if (words.length < 2) return bigrams;
+
+    // Create bigrams ("hello world", "world class")
+    for (int i = 0; i < words.length - 1; i++) {
+      bigrams.add(words[i] + " " + words[i + 1]);
+    }
+    return bigrams;
+  }
+
 }
