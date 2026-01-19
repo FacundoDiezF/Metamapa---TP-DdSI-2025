@@ -79,7 +79,7 @@ spring:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
 
-        # Ruta específica para LEER sources (GET)
+        # --- LEER todas las fuentes (GET) ---
         - id: get-sources
           uri: lb://AGGREGATION-SERVICE
           predicates:
@@ -89,7 +89,7 @@ spring:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
 
-        # Ruta específica para LEER categorías (GET)
+        # --- LEER todas las categorías (GET) ---
         - id: get-categories
           uri: lb://AGGREGATION-SERVICE
           predicates:
@@ -103,6 +103,15 @@ spring:
           uri: lb://AGGREGATION-SERVICE
           predicates:
             - Path=/api/v1/categories/*
+            - Method=GET
+          filters:
+            - StripPrefix=2
+
+        # --- LEER provincias (GET) ---
+        - id: get-provinces
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/locations/provinces
             - Method=GET
           filters:
             - StripPrefix=2

@@ -210,18 +210,15 @@ public class ServerAdapter {
 
   //--------------- PROVINCES ----------------//
   public PageDTO<ProvinceDTO> getAllProvinces(int page, int size, List<Long> provinceIds) {
-    return webClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path("/locations/provinces")
+    return webApiCallerService.get(uriBuilder -> uriBuilder
+            .path("/api/v1/locations/provinces")
             .queryParam("page", page)
             .queryParam("size", size)
             .queryParam("province_in", provinceIds)
-            .build())
-        .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<PageDTO<ProvinceDTO>>() {
-        })
-        .block();
-  }
+            .build(),
+        new ParameterizedTypeReference<PageDTO<ProvinceDTO>>() {
+        });
+  } //* Funciona
 
   //Sobrecarga sin filtro de IDs
   public PageDTO<ProvinceDTO> getAllProvinces(int page, int size) {
