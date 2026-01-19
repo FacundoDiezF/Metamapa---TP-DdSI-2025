@@ -69,7 +69,7 @@ public class EventService implements IEventService {
   }
 
   @Override
-  public EventOutputDTO update(String userId, Long eventId, EventDTO dto) {
+  public void update(String userId, Long eventId, EventDTO dto) {
 
     //TODO: Validar si el usuario puede realizar esta peticion
 

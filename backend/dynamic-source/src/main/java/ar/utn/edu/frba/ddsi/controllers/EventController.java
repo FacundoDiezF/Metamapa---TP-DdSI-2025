@@ -37,8 +37,8 @@ public class EventController {
   }
 
   @PutMapping("/{eventId}")
-  public EventOutputDTO updateEvent(@RequestHeader(value = "X-User-Id", required = false) String userId, @PathVariable Long eventId, @RequestBody EventDTO eventDto) {
-    return eventService.update(userId, eventId, eventDto);
+  public void updateEvent(@RequestHeader(value = "X-User-Id", required = false) String userId, @PathVariable Long eventId, @RequestBody EventDTO eventDto) {
+    eventService.update(userId, eventId, eventDto);
   }
 
   @DeleteMapping("/{eventId}")

@@ -9,7 +9,7 @@ public interface IEventService {
 
   EventOutputDTO save(EventDTO dto, String userId);
 
-  EventOutputDTO update(String userId, Long eventId, EventDTO dto);
+  void update(String userId, Long eventId, EventDTO dto);
 
   EventOutputDTO deleteEvent(Long eventId);
 }
