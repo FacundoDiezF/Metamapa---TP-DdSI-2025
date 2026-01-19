@@ -52,7 +52,7 @@ public class CustomAuthProvider implements AuthenticationProvider {
 
       // 3. Guardar información relevante del usuario en sesión
       //? No estoy seguro si esta info es relevante pero por ahora la guardo, de ultima despues se saca
-      session.setAttribute("publicId", response.getUser().getPublicId());
+      session.setAttribute("id", response.getUser().getId());
       session.setAttribute("username", response.getUser().getUsername());
 
       // 4. Guardar los permisos en sesión

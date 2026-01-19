@@ -53,9 +53,11 @@ public class CollectionService {
       server.updateCollection(handler, updatedCollection);
     } catch (WebClientResponseException e) {
       throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
     }
+    //* quiero sacar esta excepcion porque opaca el manejo de excepciones que hay por atras en el back y termina saliendo siempre el mismo mensaje
+//    catch (Exception e) {
+//      throw new ConnectionException("Could not connect to backend");
+//    }
   }
 
   public void deleteByHandler(String handler) {

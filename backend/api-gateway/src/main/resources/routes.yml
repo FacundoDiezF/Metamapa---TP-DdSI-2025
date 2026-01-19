@@ -7,17 +7,208 @@ spring:
       # ==========================================
         # --- USER SERVICE (Login, Register, Refresh) ---
         - id: auth-service
-          uri: lb://USER-SERVICE #? se llama asi en eureka?
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/api/v1/auth/**
           filters:
             - StripPrefix=2
         # --- AGGREGATION SERVICE ---
+        # Ruta específica para LEER eventos (GET)
+        - id: get-events
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/events
+            - Method=GET
+          filters:
+            - StripPrefix=2
+
+        # Ruta específica para LEER eventos de una colección (GET)
+        - id: get-collection-events
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/collections/*/events
+            - Method=GET
+          filters:
+            - StripPrefix=2
+
+        # Ruta específica para LEER colecciones (GET)
+        - id: get-collections
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/collections
+            - Method=GET
+          filters:
+            - StripPrefix=2
+
+        # Ruta específica para LEER una colección (GET)
+        - id: get-collection
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/collections/*
+            - Method=GET
+          filters:
+            - StripPrefix=2
+
+        # Ruta específica para CREAR colecciones (POST)
+        - id: post-collection
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/collections
+            - Method=POST
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        # Ruta específica para EDITAR colecciones (POST)
+        - id: edit-collection
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/collections/*
+            - Method=PUT
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        # Ruta específica para ELIMINAR colecciones (DELETE)
+        - id: delete-collection
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/collections/*
+            - Method=DELETE
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        # --- LEER todas las fuentes (GET) ---
+        - id: get-sources
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/sources
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        # --- LEER todas las categorías (GET) ---
+        - id: get-categories
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/categories
+            - Method=GET
+          filters:
+            - StripPrefix=2
+
+        # --- LEER categoría por ID (GET) ---
+        - id: get-category
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/categories/*
+            - Method=GET
+          filters:
+            - StripPrefix=2
+
+        # --- LEER provincias (GET) ---
+        - id: get-provinces
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/locations/provinces
+            - Method=GET
+          filters:
+            - StripPrefix=2
+
+        # --- publicar solicitud de eliminación (POST) ---
+        - id: post-deletion-request
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/deletion-request
+            - Method=POST
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
+        # Ruta específica para CREAR eventos (POST)
+        - id: post-event
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+            - Path=/api/v1/events
+            - Method=POST
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+              args:
+                required: false
+                roles:
+                  - ADMIN
+                  - CONTRIBUTOR
+
+        # Ruta específica para EVALUAR subidas de eventos (PUT)
+        - id: evaluate-event-submission
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+            - Path=/api/v1/submissions/*
+            - Method=PUT
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        # --- LEER todas las solicitudes de eliminación (GET) ---
+        - id: get-all-deletion-requests
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/deletion-request
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        # --- EVALUAR solicitud de eliminación (PUT) ---
+        - id: evaluate-deletion-request
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/deletion-request/*
+            - Method=PUT
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        # --- LEER todas las solicitudes de subida (GET) ---
+        - id: get-all-submission-requests
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+            - Path=/api/v1/submissions
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
         # --- PROXY SOURCE ---
         # --- STATISTICS SERVICE ---
+        - id: get-top-categories
+          uri: lb://STATISTICS-SERVICE
+          predicates:
+            - Path=/api/v1/statistics/categories/top
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
 
+        - id: get-top-provinces-by-category
+          uri: lb://STATISTICS-SERVICE
+          predicates:
+            - Path=/api/v1/statistics/category/*/provinces/top
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        - id: get-busiest-hours-by-category
+          uri: lb://STATISTICS-SERVICE
+          predicates:
+            - Path=/api/v1/statistics/category/*/busiest-hours/top
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
       # ==========================================
       # 🧪 RUTAS DE TESTING (Self-Routing)
       # ==========================================
