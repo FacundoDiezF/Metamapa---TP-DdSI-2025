@@ -1,4 +1,5 @@
 package interfaz.grafica.ddsi.services.internal;
+
 import interfaz.grafica.ddsi.dtos.auth.AuthResponseDTO;
 import interfaz.grafica.ddsi.dtos.auth.RefreshTokenDTO;
 import interfaz.grafica.ddsi.exceptions.NotFoundException;
@@ -33,6 +34,7 @@ public class WebApiCallerService {
 
   /**
    * Ejecuta una llamada al API con manejo automático de refresh token
+   *
    * @param apiCall función que ejecuta la llamada al API
    * @return resultado de la llamada al API
    */
@@ -51,14 +53,22 @@ public class WebApiCallerService {
 
           // Segundo intento con el nuevo token
           return apiCall.execute(newTokens.getAccessToken());
+
+        } catch (WebClientResponseException wCe) {
+          // Dejo que se propague la excepción original si no es por token expirado, asi lo maneja el servce
+          //TODO: en realidad habria que parsear el error a BackendException, pero como actualmente el service maneja esto lo dejo que lo haga el. (modificar en el futuro)
+          throw wCe;
+
         } catch (Exception refreshError) {
           throw new RuntimeException("Error al refrescar token y reintentar: " + refreshError.getMessage(), refreshError); //TODO Estos errores nunca se ven porque siempre termina catcheando mas arriba y saliendo el de Could not connect to backend, hay que arreglar eso porque si no se complica saber donde salen los problemas
+
         }
       }
-      if(e.getStatusCode() == HttpStatus.NOT_FOUND){
-        throw new NotFoundException(e.getMessage());
-      }
-      throw new RuntimeException("Error en llamada al API: " + e.getMessage(), e);
+
+      // Dejo que se propague la excepción original si no es por token expirado, asi lo maneja el servce
+      //TODO: en realidad habria que parsear el error a BackendException, pero como actualmente el service maneja esto lo dejo que lo haga el. (modificar en el futuro)
+      throw e;
+
     } catch (Exception e) {
       throw new RuntimeException("Error de conexión con el servicio: " + e.getMessage(), e);
     }
