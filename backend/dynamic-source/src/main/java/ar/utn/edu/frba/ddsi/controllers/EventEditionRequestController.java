@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,8 +40,11 @@ public class EventEditionRequestController {
   }
 
   @PutMapping("/{editionRequestId}")
-  public EditionRequestOutputDTO evaluateEvent(@PathVariable Long editionRequestId,
-                                               @RequestParam EditionStatus newEvaluationStatus) {
-    return editionRequestService.evaluate(editionRequestId, newEvaluationStatus);
+  public EditionRequestOutputDTO evaluateEvent(
+      @RequestHeader(value = "X-User-Id") String userId,
+      @PathVariable Long editionRequestId,
+      @RequestParam EditionStatus newEvaluationStatus
+  ) {
+    return editionRequestService.evaluate(userId, editionRequestId, newEvaluationStatus);
   }
 }

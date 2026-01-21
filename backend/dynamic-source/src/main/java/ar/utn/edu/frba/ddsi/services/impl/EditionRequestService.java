@@ -40,14 +40,14 @@ public class EditionRequestService implements IEditionRequestService {
 
   @Override
   @Transactional
-  public EditionRequestOutputDTO evaluate(Long editionRequestId, EditionStatus newEvaluationStatus) {
+  public EditionRequestOutputDTO evaluate(String userId, Long editionRequestId, EditionStatus newEvaluationStatus) {
 
     EventEditionRequest editionRequest = editionRequestRepository.findById(editionRequestId)
         .orElseThrow(() -> new NotFoundException("Edition-Request not found for ID: " + editionRequestId));
 
     editionRequest.setStatus(newEvaluationStatus);
     editionRequest.setEvaluationDate(LocalDateTime.now());
-    editionRequest.setEvaluatorId("REMPLAZAR_CON_ID-USUARIO"); // TODO: Reemplazar con el id del usuario admin actual (lo toma del header de la peticion)
+    editionRequest.setEvaluatorId(userId);
     editionRequestRepository.save(editionRequest);
 
     // Si fue aprobada se actualizan los datos del evento y se notifica a los observadores
