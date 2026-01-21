@@ -1,281 +1,190 @@
-/* Contenedor general de la sección */
-.admin-section {
+/* =========================================
+   PÁGINA IMPORTAR CSV (Estilos Específicos)
+   ========================================= */
+
+.content-card {
+    background-color: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 1.600rem;
-    padding: 2.400rem 2.800rem 3.200rem;
+    gap: 20px;
 }
 
-/* Header igual al de "Colecciones" */
-.admin-section__header {
-    margin-bottom: 1.600rem;
-}
-
-.admin-section__title {
-    font-size: 2.400rem;
-    line-height: 1.150;
-    font-weight: 700;
-    color: var(--mm-heading, #111827); /* mismo tono oscuro que títulos del panel */
-    margin-bottom: 0.400rem;
-}
-
-.admin-section__subtitle {
-    font-size: 1.400rem;
-    color: var(--mm-text-muted, #6B7280);
-}
-
-/* Card principal (similar a la de cada colección) */
-.card {
-    margin-top: 0.800rem;
-    padding: 1.800rem 2.000rem 2.000rem;
-    border-radius: 1.600rem;
-    background: #FFFFFF;
-    border: 0.063rem solid #E5E7EB;
-    box-shadow: 0 0.750rem 1.875rem rgba(15, 23, 42, 0.04);
-}
-
-.card-title {
-    font-size: 1.600rem;
+.card-heading {
+    font-size: 1.1rem;
     font-weight: 600;
-    color: #111827;
-    margin-bottom: 1.200rem;
+    color: #0f172a;
+    margin: 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f1f5f9;
 }
 
-/* Campos del formulario */
-.field {
+/* Formulario */
+.import-form {
     display: flex;
     flex-direction: column;
-    gap: 0.400rem;
-    margin-bottom: 1.600rem;
+    gap: 24px;
 }
 
-.field label {
-    font-size: 1.300rem;
-    font-weight: 500;
-    color: #374151;
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-/* Input de archivo con estilo similar a los inputs del admin */
-#csvfile {
-    display: block;
+.form-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #334155;
+}
+
+.form-help {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 4px 0 0 0;
+}
+
+.form-help code {
+    background: #f1f5f9;
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: #0f172a;
+    font-family: monospace;
+    font-size: 0.8em;
+}
+
+/* Input File Mejorado */
+.form-input-file {
     width: 100%;
-    padding: 0.800rem 1.000rem;
-    border-radius: 1.000rem;
-    border: 0.063rem solid #D1D5DB;
-    background-color: #F9FAFB;
-    font-size: 1.300rem;
+    padding: 10px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #475569;
     cursor: pointer;
 }
 
-#csvfile:hover {
-    background-color: #F3F4F6;
+.form-input-file:hover {
+    background: #f1f5f9;
 }
 
-#csvfile:focus {
-    outline: none;
-    border-color: var(--mm-primary, #2563EB);
-    box-shadow: 0 0 0 0.188rem rgba(37, 99, 235, 0.12);
-    background-color: #FFFFFF;
-}
-
-.field-help {
-    font-size: 1.200rem;
-    color: #6B7280;
-}
-
-/* Botón primario alineado al estilo general */
-.btn.btn-primary {
-    padding: 0.800rem 1.600rem;
-    border-radius: 0.999rem;
-    font-size: 1.300rem;
-    font-weight: 600;
+/* Estilo del botón interno del input file (::file-selector-button) */
+.form-input-file::file-selector-button {
+    margin-right: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: #e2e8f0; /* Un gris suave */
     border: none;
-    background-color: var(--mm-primary, #2563EB);
-    color: #FFFFFF;
+    color: #334155;
+    font-weight: 600;
+    font-size: 0.85rem;
     cursor: pointer;
-    transition: background-color 0.150s ease, box-shadow 0.150s ease,
-    transform 0.150s ease;
+    transition: background 0.2s;
 }
 
-.btn.btn-primary:hover {
-    background-color: var(--mm-primary-hover, #1D4ED8);
-    box-shadow: 0 0.500rem 1.250rem rgba(37, 99, 235, 0.25);
-    transform: translateY(-0.063rem);
+.form-input-file:hover::file-selector-button {
+    background: #cbd5e1;
 }
 
-.btn.btn-primary:active {
-    transform: translateY(0);
-    box-shadow: none;
+.form-footer {
+    display: flex;
+    justify-content: flex-end; /* Botón a la derecha */
+    padding-top: 10px;
 }
 
-/* Mensajes de feedback (ok / error), en línea con el admin */
-.alert {
-    padding: 0.900rem 1.200rem;
-    border-radius: 0.875rem;
-    font-size: 1.300rem;
-    margin-bottom: 1.200rem;
+/* =========================================
+   ALERTAS INLINE (Éxito / Error estáticos)
+   ========================================= */
+.alert-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-.alert-success {
-    background-color: #ECFDF3;
-    color: #166534;
-    border: 0.063rem solid #BBF7D0;
+.alert-box.success {
+    background-color: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
 }
 
-.alert-error {
-    background-color: #FEF2F2;
-    color: #B91C1C;
-    border: 0.063rem solid #FECACA;
+.alert-box.error {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
 }
 
-/* ===== Toast de Error para Validación de Archivos ===== */
+.alert-icon {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* =========================================
+   TOASTS (Flotantes)
+   ========================================= */
 .toast-container {
     position: fixed;
-    top: 2.000rem;
-    right: 2.000rem;
+    top: 20px;
+    right: 20px;
     z-index: 9999;
     display: flex;
     flex-direction: column;
-    gap: 1.200rem;
-    max-width: 60.000rem;
+    gap: 10px;
+    max-width: 400px;
 }
 
 .toast {
     display: flex;
     align-items: flex-start;
-    gap: 1.200rem;
-    padding: 1.400rem 1.800rem;
-    background: #FFFFFF;
-    border-radius: 1.200rem;
-    box-shadow: 0 1.000rem 2.500rem rgba(0, 0, 0, 0.15), 0 0.400rem 1.000rem rgba(0, 0, 0, 0.1);
-    border-left: 0.400rem solid #DC2626;
+    gap: 12px;
+    padding: 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-left: 4px solid #ef4444; /* Rojo por defecto */
     animation: slideIn 0.3s ease-out;
-    opacity: 0;
-    transform: translateX(100%);
-    min-width: 0;
 }
 
-.toast.show {
-    opacity: 1;
-    transform: translateX(0);
+.toast-content {
+    flex: 1;
 }
 
-.toast.hide {
-    animation: slideOut 0.3s ease-out forwards;
+.toast-title {
+    margin: 0 0 4px 0;
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 0.95rem;
+}
+
+.toast-message {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.toast-close {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
 }
 
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateX(100%);
+        transform: translateX(20px);
     }
     to {
         opacity: 1;
         transform: translateX(0);
     }
 }
-
-@keyframes slideOut {
-    from {
-        opacity: 1;
-        transform: translateX(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-}
-
-.toast-icon {
-    flex-shrink: 0;
-    width: 2.400rem;
-    height: 2.400rem;
-    border-radius: 50%;
-    background: #FEF2F2;
-    display: grid;
-    place-items: center;
-    color: #DC2626;
-    font-weight: 700;
-    font-size: 1.600rem;
-}
-
-.toast-content {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-}
-
-.toast-title {
-    margin: 0 0 0.300rem 0;
-    font-weight: 600;
-    color: #111827;
-    font-size: 1.450rem;
-}
-
-.toast-message {
-    margin: 0;
-    color: #6B7280;
-    font-size: 1.350rem;
-    line-height: 1.5;
-}
-
-.toast-close {
-    flex-shrink: 0;
-    background: none;
-    border: none;
-    color: #9CA3AF;
-    cursor: pointer;
-    font-size: 1.800rem;
-    line-height: 1;
-    padding: 0;
-    width: 2.400rem;
-    height: 2.400rem;
-    display: grid;
-    place-items: center;
-    transition: color 0.2s;
-    margin-left: 0.400rem;
-}
-
-.toast-close:hover {
-    color: #6B7280;
-}
-
-/* Highlight de error en el input cuando hay archivo inválido */
-#csvfile.error {
-    border-color: #FCA5A5;
-    background-color: #FEF2F2;
-}
-
-@media (max-width: 1024px) {
-    .toast-container {
-        max-width: 50.000rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .toast-container {
-        max-width: 45.000rem;
-    }
-}
-
-@media (max-width: 640px) {
-    .toast-container {
-        left: 1.500rem;
-        right: 1.500rem;
-        max-width: none;
-    }
-
-    .toast {
-        padding: 1.200rem 1.400rem;
-        gap: 1.000rem;
-    }
-
-    .toast-title {
-        font-size: 1.350rem;
-    }
-
-    .toast-message {
-        font-size: 1.250rem;
-    }
-}
-

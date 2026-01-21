@@ -1,55 +1,69 @@
-
 <th:block th:fragment="adminImportCSVContent">
 
-    <!-- Toast Container para mensajes de error -->
     <div class="toast-container" id="toastContainer"></div>
 
     <section class="admin-section">
-        <header class="admin-section__header">
-            <h1 class="admin-section__title">Importar eventos desde CSV</h1>
-            <p class="admin-section__subtitle">
-                Seleccioná un archivo CSV con eventos y lo enviaremos a la fuente estática para su importación.
-            </p>
+
+        <header class="page-header">
+            <div class="header-text">
+                <h1 class="page-title">Importar eventos desde CSV</h1>
+                <p class="page-subtitle">
+                    Seleccioná un archivo CSV para procesar y enviar a la fuente estática.
+                </p>
+            </div>
         </header>
 
-        <div th:if="${ok}" class="alert alert-success">
-            <p th:text="${ok}"></p>
-        </div>
-        <div th:if="${error}" class="alert alert-error">
-            <p th:text="${error}"></p>
-        </div>
+        <div class="admin-scroll-area">
 
-        <section class="card">
-            <h2 class="card-title">Subir archivo CSV</h2>
+            <div class="admin-list-container">
 
-            <!-- FORMULARIO SIMPLE -->
-            <form th:action="@{/share/source}"
-                  method="post"
-                  enctype="multipart/form-data">
-
-                <div class="field">
-                    <label for="csvfile">Archivo CSV</label>
-                    <input id="csvfile"
-                           name="csvfile"
-                           type="file"
-                           accept=".csv,text/csv"
-                           required>
-                    <p class="field-help">
-                        Formato esperado: title, description, name, latitude, longitude, EventDate
-                    </p>
+                <div th:if="${ok}" class="alert-box success">
+                    <span class="alert-icon">✓</span>
+                    <span th:text="${ok}">Mensaje de éxito</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-                    Importar
-                </button>
-            </form>
+                <div th:if="${error}" class="alert-box error">
+                    <span class="alert-icon">✕</span>
+                    <span th:text="${error}">Mensaje de error</span>
+                </div>
 
-        </section>
+                <div class="content-card">
+                    <h2 class="card-heading">Carga de archivo</h2>
+
+                    <form th:action="@{/share/source}"
+                          method="post"
+                          enctype="multipart/form-data"
+                          class="import-form">
+
+                        <div class="form-group">
+                            <label for="csvfile" class="form-label">Archivo CSV</label>
+
+                            <input id="csvfile"
+                                   name="csvfile"
+                                   type="file"
+                                   accept=".csv,text/csv"
+                                   class="form-input-file"
+                                   required>
+
+                            <p class="form-help">
+                                Columnas requeridas: <code>title</code>, <code>description</code>, <code>name</code>,
+                                <code>latitude</code>, <code>longitude</code>, <code>EventDate</code>
+                            </p>
+                        </div>
+
+                        <div class="form-footer">
+                            <button type="submit" class="btn-primary">
+                                Importar Datos
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
     </section>
 
-
-    <th:block th:replace="~{fragments/modals/_importSuccesfullModals :: importSuccessToast(importSuccess=${importSuccess})}"></th:block>
-
-
+    <th:block
+            th:replace="~{fragments/modals/_importSuccesfullModals :: importSuccessToast(importSuccess=${importSuccess})}"></th:block>
 
 </th:block>
