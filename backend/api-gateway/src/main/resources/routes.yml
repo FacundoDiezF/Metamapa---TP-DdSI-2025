@@ -124,7 +124,12 @@ spring:
             - Method=POST
           filters:
             - StripPrefix=2
-            - AuthenticationFilter
+            - name: AuthenticationFilter
+              args:
+                required: false
+                roles:
+                  - ADMIN
+                  - CONTRIBUTOR
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
         # Ruta específica para CREAR eventos (POST)
