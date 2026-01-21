@@ -24,23 +24,11 @@ public class DeletionRequestService {
   }
 
   public void postNew(DeletionRequestCreationDTO newDeletionRequest) {
-    try {
-      server.postNewDeletionRequest(newDeletionRequest);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    server.postNewDeletionRequest(newDeletionRequest); 
   }
 
   public void evaluate(Long eventId, DeletionRequestEvaluateDTO dto) {
-    try {
-      server.evaluateDeletionRequest(eventId, dto);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    server.evaluateDeletionRequest(eventId, dto); 
   }
 
 }

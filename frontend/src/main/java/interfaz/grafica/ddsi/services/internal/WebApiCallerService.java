@@ -55,9 +55,7 @@ public class WebApiCallerService {
           return apiCall.execute(newTokens.getAccessToken());
 
         } catch (WebClientResponseException wCe) {
-          // Dejo que se propague la excepción original si no es por token expirado, asi lo maneja el servce
-          //TODO: en realidad habria que parsear el error a BackendException, pero como actualmente el service maneja esto lo dejo que lo haga el. (modificar en el futuro)
-          throw wCe;
+          throw new BackendException(wCe);
 
         } catch (Exception refreshError) {
           throw new RuntimeException("Error al refrescar token y reintentar: " + refreshError.getMessage(), refreshError); //TODO Estos errores nunca se ven porque siempre termina catcheando mas arriba y saliendo el de Could not connect to backend, hay que arreglar eso porque si no se complica saber donde salen los problemas
