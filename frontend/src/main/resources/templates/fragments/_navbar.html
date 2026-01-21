@@ -4,53 +4,71 @@
             <div class="brand-mark"><span class="dot"></span></div>
             <span class="brand-name">MetaMapa</span>
         </a>
-        <div class="auth-actions">
-            <!-- Botón modo curado pequeño -->
+
+        <div class="navbar-actions">
+
             <div class="curated-toggle-wrapper">
                 <button id="curatedModeBtn" class="curated-toggle" type="button" title="Activar/Desactivar Modo Curado">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                        <path d="m9 12 2 2 4-4"/>
                     </svg>
                 </button>
                 <div id="curatedModeTooltip" class="curated-tooltip" hidden>
                     <span class="tooltip-text">Modo Normal</span>
                 </div>
             </div>
-            <!-- Botones de registro e inicio de sesión -->
-            <div sec:authorize="!isAuthenticated()" style="display: flex; gap: 10px;">
-                <a th:href="@{/register}" class="btn-primary btn-rounded" style="text-decoration: none;">
-                    Registrarse
-                </a>
-                <a th:href="@{/login}" class="btn-bordered btn-rounded" style="text-decoration: none;">
+
+            <div class="nav-divider"></div>
+
+            <div class="nav-auth-group" sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}" class="nav-btn btn-ghost">
                     Iniciar Sesión
+                </a>
+                <a th:href="@{/register}" class="nav-btn btn-primary">
+                    Registrarse
                 </a>
             </div>
 
+            <div class="user-profile-wrapper" sec:authorize="isAuthenticated()">
 
-            <div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 10px;">
+                <a th:href="@{/events/my-events}" class="nav-btn btn-ghost">
+                    Mis Hechos
+                </a>
 
-                <span style="font-size: 0.9rem; font-weight: 500;">
-                    Hola, <span sec:authentication="name">Usuario</span>
-                </span>
+                <div class="user-badge">
+                    <div class="user-avatar">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
 
-                <form th:action="@{/logout}" method="post" style="margin: 0;">
-                    <button type="submit" class="btn-bordered btn-rounded"
-                            style="border-color: #ff4d4f; color: #ff4d4f; background: transparent; cursor: pointer;">
-                        Cerrar Sesión
-                    </button>
-                </form>
+                    <span class="user-name" sec:authentication="name">Usuario</span>
 
+                    <form th:action="@{/logout}" method="post" class="logout-form">
+                        <button type="submit" class="btn-icon-logout" title="Cerrar Sesión">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
             </div>
 
         </div>
     </div>
 
-    <!-- Barra de navegación secundaria -->
     <nav class="subnav" id="subnav">
         <a th:href="@{/explore}" th:classappend="${active}=='explore' ? ' active'">Explorar</a>
         <a th:href="@{/collections}" th:classappend="${active}=='collections' ? ' active'">Colecciones</a>
         <a th:href="@{/map}" th:classappend="${active}=='map' ? ' active'">Mapa</a>
-        <a th:href="@{/admin/collections}" th:classappend="${active}=='admin' ? 'active'" sec:authorize="hasRole('ADMIN')">Panel de control</a>
-
+        <a th:href="@{/admin/collections}" th:classappend="${active}=='admin' ? 'active'"
+           sec:authorize="hasRole('ADMIN')">Panel de control</a>
     </nav>
 </th:block>
