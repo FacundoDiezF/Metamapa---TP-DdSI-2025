@@ -46,7 +46,7 @@ public class DeletionRequest {
   @Column(name = "upload_date", nullable = false)
   private final LocalDateTime uploadDate;
 
-  @Column(name = "user_id", nullable = false)
+  @Column(name = "user_id")
   private final String userId;
 
   //-- Post Evaluation info
@@ -56,8 +56,8 @@ public class DeletionRequest {
   @Column(name = "evaluator_id")
   private String evaluatorId;
 
-  public static DeletionRequest from(DeletionRequestCreationDTO dto, Event event) {
-    return new DeletionRequest(event, dto.getArgument(), dto.getUserId());
+  public static DeletionRequest from(DeletionRequestCreationDTO dto, Event event, String userId) {
+    return new DeletionRequest(event, dto.getArgument(), userId);
   }
 
   public DeletionRequest(Event event, String argument, String userId) {
