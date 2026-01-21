@@ -46,6 +46,11 @@ public class EventService implements IEventService {
   }
 
   @Override
+  public List<EventOutputDTO> getEventsByUserId(String userId) {
+    return eventRepository.findByCreatorId(userId).stream().map(EventOutputDTO::from).toList();
+  }
+
+  @Override
   public EventOutputDTO save(EventDTO dto, String userId) {
     //TODO: Validar si el usuario puede realizar esta peticion
 
