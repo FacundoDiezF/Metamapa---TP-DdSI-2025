@@ -128,7 +128,6 @@ spring:
               args:
                 required: false
                 roles:
-                  - ADMIN
                   - CONTRIBUTOR
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
