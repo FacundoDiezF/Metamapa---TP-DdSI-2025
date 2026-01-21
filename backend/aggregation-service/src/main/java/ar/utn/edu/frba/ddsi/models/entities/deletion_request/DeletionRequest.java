@@ -46,8 +46,8 @@ public class DeletionRequest {
   @Column(name = "upload_date", nullable = false)
   private final LocalDateTime uploadDate;
 
-  @Column(name = "applicant_name", nullable = false)
-  private final String applicantName; //TODO: Esto deberia ser un usuario
+  @Column(name = "user_id", nullable = false)
+  private final String userId;
 
   //-- Post Evaluation info
   @Column(name = "evaluation_date")
@@ -57,10 +57,10 @@ public class DeletionRequest {
   private String evaluatorName; //TODO: Esto deberia ser un usuario
 
   public static DeletionRequest from(DeletionRequestCreationDTO dto, Event event) {
-    return new DeletionRequest(event, dto.getArgument(), dto.getApplicantName());
+    return new DeletionRequest(event, dto.getArgument(), dto.getUserId());
   }
 
-  public DeletionRequest(Event event, String argument, String applicantName) {
+  public DeletionRequest(Event event, String argument, String userId) {
 
     if (!this.isArgumentValid(argument))
       throw new IllegalArgumentException("Argument must contain a minimum of 500 characters. Now it has: " + argument.length());
@@ -69,7 +69,7 @@ public class DeletionRequest {
     this.argument = argument;
     this.state = DeletionRequestState.PENDING;
     this.uploadDate = LocalDateTime.now();
-    this.applicantName = applicantName;
+    this.userId = userId;
   }
 
   private boolean isArgumentValid(String argument) {

@@ -29,8 +29,8 @@ public class DeletionRequestController {
   }
 
   @PostMapping
-  public DeletionRequestOutputDTO create(@RequestBody DeletionRequestCreationDTO dto) {
-    return deletionRequestService.create(dto);
+  public DeletionRequestOutputDTO create(@RequestHeader(value = "X-User-Id", required = false) String userId, @RequestBody DeletionRequestCreationDTO dto) {
+    return deletionRequestService.create(dto, userId);
   }
 
   @PutMapping("/{id}")

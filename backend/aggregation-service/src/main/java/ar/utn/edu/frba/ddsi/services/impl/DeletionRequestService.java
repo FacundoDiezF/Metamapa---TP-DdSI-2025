@@ -36,12 +36,12 @@ public class DeletionRequestService implements IDeletionRequestService {
 
 
   @Override
-  public DeletionRequestOutputDTO create(DeletionRequestCreationDTO drDTO) {
+  public DeletionRequestOutputDTO create(DeletionRequestCreationDTO drDTO, String userId) {
 
     Event drEvent = eventRepository.findById(drDTO.getEventId())
         .orElseThrow(() -> new NotFoundException("Event not found - ID: " + drDTO.getEventId()));
 
-    DeletionRequest deletionRequest = DeletionRequest.from(drDTO, drEvent);
+    DeletionRequest deletionRequest = DeletionRequest.from(drDTO, drEvent, userId);
 
     // Get a List of the DRs for the same event.
     List<DeletionRequest> eventDeletionRequests = deletionRequestRepository.findByEvent_Id(drDTO.getEventId());
