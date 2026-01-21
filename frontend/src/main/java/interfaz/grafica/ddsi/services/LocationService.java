@@ -19,13 +19,7 @@ public class LocationService {
   }
 
   public PageDTO<ProvinceDTO> getAllProvinces(int page, int size) {
-    try {
-      return server.getAllProvinces(page, size);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    return server.getAllProvinces(page, size); 
   }
 
   public List<ProvinceDTO> getProvincesByIds(List<Long> provincesIds){
