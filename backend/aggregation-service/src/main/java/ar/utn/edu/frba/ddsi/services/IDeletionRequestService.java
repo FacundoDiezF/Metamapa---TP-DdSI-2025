@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface IDeletionRequestService {
-  DeletionRequestOutputDTO evaluate(DeletionRequestEvaluationDTO deletionRequestEvaluationDTO);
+  DeletionRequestOutputDTO evaluate(DeletionRequestEvaluationDTO deletionRequestEvaluationDTO, String evaluatorId);
 
   DeletionRequestOutputDTO create(DeletionRequestCreationDTO deletionRequestCreationDTO, String userId);
 

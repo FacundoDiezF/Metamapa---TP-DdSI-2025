@@ -57,14 +57,14 @@ public class DeletionRequestService implements IDeletionRequestService {
   }
 
   @Override
-  public DeletionRequestOutputDTO evaluate(DeletionRequestEvaluationDTO evaluation) {
+  public DeletionRequestOutputDTO evaluate(DeletionRequestEvaluationDTO evaluation, String evaluatorId) {
 
     //TODO: validate that user can do this petition.
 
     DeletionRequest deletionRequest = deletionRequestRepository.findById(evaluation.getDeletionRequestId())
         .orElseThrow(() -> new NotFoundException("Deletion request not found - ID: " + evaluation.getDeletionRequestId()));
 
-    deletionRequest.evaluate(evaluation.isAccepted(), "Aca va el admin que lo valido"); //TODO: poner el usuario que lo valida
+    deletionRequest.evaluate(evaluation.isAccepted(), evaluatorId);
 
     deletionRequestRepository.save(deletionRequest);
     return DeletionRequestOutputDTO.from(deletionRequest);

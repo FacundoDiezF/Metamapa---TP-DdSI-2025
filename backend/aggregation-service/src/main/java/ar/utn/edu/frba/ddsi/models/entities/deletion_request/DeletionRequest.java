@@ -53,8 +53,8 @@ public class DeletionRequest {
   @Column(name = "evaluation_date")
   private LocalDateTime evaluationDate;
 
-  @Column(name = "evaluator_name")
-  private String evaluatorName; //TODO: Esto deberia ser un usuario
+  @Column(name = "evaluator_id")
+  private String evaluatorId;
 
   public static DeletionRequest from(DeletionRequestCreationDTO dto, Event event) {
     return new DeletionRequest(event, dto.getArgument(), dto.getUserId());
@@ -76,9 +76,9 @@ public class DeletionRequest {
     return argument.length() >= 500;
   }
 
-  public void evaluate(boolean accepted, String evaluatorName) {
+  public void evaluate(boolean accepted, String evaluatorId) {
 
-    this.registerEvaluation(evaluatorName);
+    this.registerEvaluation(evaluatorId);
 
     if (accepted) {
       event.markAsDeleted();
@@ -89,8 +89,8 @@ public class DeletionRequest {
   }
 
 
-  private void registerEvaluation(String evaluatorName) {
+  private void registerEvaluation(String evaluatorId) {
     this.evaluationDate = LocalDateTime.now();
-    this.evaluatorName = evaluatorName;
+    this.evaluatorId = evaluatorId;
   }
 }

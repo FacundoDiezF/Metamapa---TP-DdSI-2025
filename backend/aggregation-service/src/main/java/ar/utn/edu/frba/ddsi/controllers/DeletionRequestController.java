@@ -34,9 +34,9 @@ public class DeletionRequestController {
   }
 
   @PutMapping("/{id}")
-  public DeletionRequestOutputDTO evaluate(@PathVariable Long id, @RequestBody DeletionRequestEvaluationDTO dto) {
+  public DeletionRequestOutputDTO evaluate(@RequestHeader(value = "X-User-Id", required = false) String evaluatorId, @PathVariable Long id, @RequestBody DeletionRequestEvaluationDTO dto) {
     dto.setDeletionRequestId(id);
-    return deletionRequestService.evaluate(dto);
+    return deletionRequestService.evaluate(dto, evaluatorId);
   }
 
   @GetMapping
