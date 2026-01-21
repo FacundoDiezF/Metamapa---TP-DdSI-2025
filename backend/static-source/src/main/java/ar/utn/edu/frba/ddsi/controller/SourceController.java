@@ -23,11 +23,8 @@ public class SourceController {
 
   @PostMapping
   public SourceOutputDTO createSource(@RequestParam("csvfile") MultipartFile csvfile) throws IOException {
-    System.out.println("[BACK] Llego CSV: nombre=" + csvfile.getOriginalFilename() + ", size=" + csvfile.getSize());
 
     SourceOutputDTO dto = sourceService.createFromCsvFile(csvfile);
-
-    System.out.println("[BACK] Source creada");
 
     return dto;
   }
