@@ -23,12 +23,6 @@ public class SubmissionRequestService {
   }
 
   public void evaluate(Long submissionId, SubmissionRequestEvaluationDTO dto) {
-    try {
-      server.evaluateSubmissionRequest(submissionId, dto);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    server.evaluateSubmissionRequest(submissionId, dto); 
   }
 }

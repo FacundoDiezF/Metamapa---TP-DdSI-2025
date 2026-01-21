@@ -19,13 +19,7 @@ public class SourcesService {
   }
 
   public List<SourceDTO> getAll() {
-    try {
-      return server.getAllSources();
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    return server.getAllSources(); 
   }
 
 }
