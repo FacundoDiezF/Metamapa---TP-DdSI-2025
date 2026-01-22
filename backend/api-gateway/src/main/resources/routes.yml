@@ -2,9 +2,9 @@ spring:
   cloud:
     gateway:
       routes:
-      # ==========================================
-      # 🏭 RUTAS DE SERVICIOS
-      # ==========================================
+        # ==========================================
+        # 🏭 RUTAS DE SERVICIOS
+        # ==========================================
         # --- USER SERVICE (Login, Register, Refresh) ---
         - id: auth-service
           uri: lb://USER-SERVICE
@@ -185,6 +185,17 @@ spring:
           filters:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
+
+        # --- LEER todos los eventos de un usuario (GET) ---
+        - id: get-user-events
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+            - Path=/api/v1/users/me/events
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=CONTRIBUTOR
+
         # --- PROXY SOURCE ---
         # --- STATISTICS SERVICE ---
         - id: get-top-categories
@@ -213,9 +224,9 @@ spring:
           filters:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
-      # ==========================================
-      # 🧪 RUTAS DE TESTING (Self-Routing)
-      # ==========================================
+        # ==========================================
+        # 🧪 RUTAS DE TESTING (Self-Routing)
+        # ==========================================
         # CASO 1: PÚBLICA (Sin autenticación)
         # Prueba: GET http://localhost:8086/test/case1
         # Esperado: 200 OK (JSON sin headers X-User-Id)

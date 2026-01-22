@@ -40,33 +40,12 @@ import org.springframework.web.util.UriBuilder;
 @Component
 public class ServerAdapter {
 
-  private final WebClient webClient;
-
-  private final WebClient statsClient; //TODO: Borrar y remplazar su uso cuando tengamos el gateway
-
-  private final WebClient dynamicClient; //TODO: Borrar y remplazar su uso cuando tengamos el gateway
-
   private final WebClient apiGatewayClient;
 
   private final WebApiCallerService webApiCallerService;
 
 
   public ServerAdapter(@Value("${aggregator.url}") String url, @Value("${api.gateway.url}") String apiGatewayUrl, WebApiCallerService webApiCallerService) {
-    //TODO: Borrar y remplazar su uso cuando tengamos el gateway
-    this.webClient = WebClient.builder()
-        .baseUrl(url)
-        .build();
-
-    //TODO: Borrar y remplazar su uso cuando tengamos el gateway
-    this.statsClient = WebClient.builder()
-        .baseUrl("http://localhost:8084")
-        .build();
-
-    //TODO: Borrar y remplazar su uso cuando tengamos el gateway
-    this.dynamicClient = WebClient.builder()
-        .baseUrl("http://localhost:8081")
-        .build();
-
     this.apiGatewayClient = WebClient.builder()
         .baseUrl(apiGatewayUrl)
         .build();
@@ -98,6 +77,14 @@ public class ServerAdapter {
         new ParameterizedTypeReference<List<EventDTO>>() {
         });
   } //* Funciona
+
+  public List<EventDTO> getAllEventsByUser() {
+    return webApiCallerService.get(uriBuilder -> uriBuilder
+            .path("/api/v1/users/me/events")
+            .build(),
+        new ParameterizedTypeReference<List<EventDTO>>() {
+        });
+  }
 
   private URI getEventsUri(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size, UriBuilder uriBuilder) {
     if (category_in != null && !category_in.isEmpty()) {

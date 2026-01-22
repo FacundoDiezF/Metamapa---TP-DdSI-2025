@@ -27,8 +27,14 @@ public class EventService {
   }
 
   public List<EventDTO> getAllByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
-    //!No está paginado TODO
+    // TODO No está paginado
     return server.getAllEventsByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size); 
+
+  }
+
+  public List<EventDTO> getAllByUser() {
+    // TODO No está paginado
+    return server.getAllEventsByUser();
 
   }
 

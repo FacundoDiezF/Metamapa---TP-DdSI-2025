@@ -165,9 +165,9 @@ public class PagesController {
   @GetMapping("/my-events")
   public String userEvents(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-    PageDTO<EventDTO> eventsPage = eventService.getAll(null, null, null, null, null, page, 15);
+    List<EventDTO> userEvents = eventService.getAllByUser();
 
-    model.addAttribute("userEvents", eventsPage.getContent());
+    model.addAttribute("userEvents", userEvents);
 
     model.addAttribute("pageTitle", "MetaMapa · Mis Hechos");
     model.addAttribute("active", "my-events");
