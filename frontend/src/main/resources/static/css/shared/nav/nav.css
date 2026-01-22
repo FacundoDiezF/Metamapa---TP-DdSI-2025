@@ -199,6 +199,12 @@
     background: color-mix(in srgb, var(--Accent) 90%, black);
 }
 
+.in-myEvents{
+    background: var(--Accent, #3B82F6);
+    color: #fff;
+    border: 1px solid var(--Accent, #3B82F6);
+}
+
 /* --- USER PROFILE (CÁPSULA) --- */
 .user-profile-wrapper {
     display: flex;

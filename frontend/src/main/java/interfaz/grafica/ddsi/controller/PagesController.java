@@ -134,6 +134,7 @@ public class PagesController {
 
     model.addAttribute("pageTitle", "MetaMapa · Colecciones");
     model.addAttribute("active", "collections");
+    model.addAttribute("active", "collections");
 
     return "collections";
   }
@@ -158,6 +159,20 @@ public class PagesController {
     model.addAttribute("pageTitle", "MetaMapa · Mapa");
     model.addAttribute("active", "map");
     return "map";
+  }
+
+  @PreAuthorize("hasRole('CONTRIBUTOR')")
+  @GetMapping("/my-events")
+  public String userEvents(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+
+    PageDTO<EventDTO> eventsPage = eventService.getAll(null, null, null, null, null, page, 15);
+
+    model.addAttribute("userEvents", eventsPage.getContent());
+
+    model.addAttribute("pageTitle", "MetaMapa · Mis Hechos");
+    model.addAttribute("active", "my-events");
+
+    return "myEvents";
   }
 
   @GetMapping("/404")

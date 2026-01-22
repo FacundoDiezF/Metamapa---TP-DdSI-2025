@@ -33,7 +33,7 @@
 
             <div class="user-profile-wrapper" sec:authorize="isAuthenticated()">
 
-                <a th:href="@{/events/my-events}" class="nav-btn btn-ghost">
+                <a th:href="@{/my-events}" class="nav-btn" th:classappend="${active}=='my-events' ? ' in-myEvents' : 'btn-ghost'">
                     Mis Hechos
                 </a>
 

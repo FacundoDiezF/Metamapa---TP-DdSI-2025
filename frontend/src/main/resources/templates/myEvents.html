@@ -1,0 +1,30 @@
+<html layout:decorate="~{layout/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <th:block layout:fragment="extraStyles">
+        <link rel="stylesheet" th:href="@{/css/pages/collections.css}"/>
+        <link rel="stylesheet" th:href="@{/css/shared/cards/card-event.css}"/>
+    </th:block>
+</head>
+
+<div th:fragment="contenido" class="collections-page container-scroller">
+
+    <header class="page-head" aria-label="Opciones de Colecciones">
+        <h1 class="page-title">Mis Hechos</h1>
+    </header>
+
+    <section class="collections-list" role="region" aria-label="Listado">
+
+        <th:block th:if="${#lists.isEmpty(userEvents)}">
+            <p class="empty-msg">No tienes eventos o estan a la espera de ser aceptados.</p>
+        </th:block>
+
+        <th:block th:if="${!#lists.isEmpty(userEvents)}" th:each="event : ${userEvents}">
+            <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
+        </th:block>
+
+    </section>
+
+</div>
+</html>
