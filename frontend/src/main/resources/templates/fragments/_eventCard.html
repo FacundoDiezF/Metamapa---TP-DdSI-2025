@@ -6,6 +6,7 @@
         </span>
 
         <a class="btn-report" aria-label="Reportar este hecho"
+           th:if="${active}!='admin'"
            th:hx-get="@{/modals/report-event/{id}(id=${item.id})}"
            hx-target="#modals-here" hx-swap="innerHTML">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
