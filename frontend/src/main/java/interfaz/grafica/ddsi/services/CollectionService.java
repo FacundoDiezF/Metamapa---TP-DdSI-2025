@@ -19,55 +19,23 @@ public class CollectionService {
   }
 
   public PageDTO<CollectionDTO> getAll(int page , int size) {
-    try {
-      return server.getAllCollections(page , size);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    return server.getAllCollections(page , size); 
   }
 
   public CollectionDTO getByHandler(String handler) {
-    try {
-      return server.getCollection(handler);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    return server.getCollection(handler); 
   }
 
   public void postNew(CollectionOutputDTO newCollection) {
-    try {
-      server.postNewCollection(newCollection);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    server.postNewCollection(newCollection); 
   }
 
   public void updateByHandler(String handler, CollectionOutputDTO updatedCollection) {
-    try {
-      server.updateCollection(handler, updatedCollection);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    }
-    //* quiero sacar esta excepcion porque opaca el manejo de excepciones que hay por atras en el back y termina saliendo siempre el mismo mensaje
-//    catch (Exception e) {
-//      throw new ConnectionException("Could not connect to backend");
-//    }
+    server.updateCollection(handler, updatedCollection);
   }
 
   public void deleteByHandler(String handler) {
-    try {
-      server.deleteCollection(handler);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    server.deleteCollection(handler); 
   }
 
 }

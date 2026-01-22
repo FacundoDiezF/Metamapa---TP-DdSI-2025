@@ -19,32 +19,14 @@ public class CategoryService {
   }
 
   public PageDTO<CategoryDTO> getAll(int page, int size) {
-    try {
-      return server.getAllCategories(page, size);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    return server.getAllCategories(page, size); 
   }
 
   public List<CategoryDTO> getAllByIds(List<Long> categoriesIds) {
-    try {
-      return server.getAllCategoriesByIds(categoriesIds);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    return server.getAllCategoriesByIds(categoriesIds); 
   }
 
   public CategoryDTO getById(Long categoryIds) {
-    try {
-      return server.getCategoryById(categoryIds);
-    } catch (WebClientResponseException e) {
-      throw new BackendException(e);
-    } catch (Exception e) {
-      throw new ConnectionException("Could not connect to backend");
-    }
+    return server.getCategoryById(categoryIds); 
   }
 }

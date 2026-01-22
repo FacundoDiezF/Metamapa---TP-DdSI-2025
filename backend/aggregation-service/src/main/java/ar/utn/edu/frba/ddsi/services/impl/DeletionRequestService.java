@@ -36,12 +36,12 @@ public class DeletionRequestService implements IDeletionRequestService {
 
 
   @Override
-  public DeletionRequestOutputDTO create(DeletionRequestCreationDTO drDTO) {
+  public DeletionRequestOutputDTO create(DeletionRequestCreationDTO drDTO, String userId) {
 
     Event drEvent = eventRepository.findById(drDTO.getEventId())
         .orElseThrow(() -> new NotFoundException("Event not found - ID: " + drDTO.getEventId()));
 
-    DeletionRequest deletionRequest = DeletionRequest.from(drDTO, drEvent);
+    DeletionRequest deletionRequest = DeletionRequest.from(drDTO, drEvent, userId);
 
     // Get a List of the DRs for the same event.
     List<DeletionRequest> eventDeletionRequests = deletionRequestRepository.findByEvent_Id(drDTO.getEventId());
@@ -57,14 +57,14 @@ public class DeletionRequestService implements IDeletionRequestService {
   }
 
   @Override
-  public DeletionRequestOutputDTO evaluate(DeletionRequestEvaluationDTO evaluation) {
+  public DeletionRequestOutputDTO evaluate(DeletionRequestEvaluationDTO evaluation, String evaluatorId) {
 
     //TODO: validate that user can do this petition.
 
     DeletionRequest deletionRequest = deletionRequestRepository.findById(evaluation.getDeletionRequestId())
         .orElseThrow(() -> new NotFoundException("Deletion request not found - ID: " + evaluation.getDeletionRequestId()));
 
-    deletionRequest.evaluate(evaluation.isAccepted(), "Aca va el admin que lo valido"); //TODO: poner el usuario que lo valida
+    deletionRequest.evaluate(evaluation.isAccepted(), evaluatorId);
 
     deletionRequestRepository.save(deletionRequest);
     return DeletionRequestOutputDTO.from(deletionRequest);
