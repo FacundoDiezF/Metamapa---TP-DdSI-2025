@@ -3,6 +3,7 @@ package interfaz.grafica.ddsi.models.entitites.adapters;
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.DeletionRequestDTO;
+import interfaz.grafica.ddsi.dtos.EditionRequestDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
@@ -278,6 +279,18 @@ public class ServerAdapter {
     webApiCallerService.put("api/v1/submissions/" + subId, dto, Void.class);
   } //* Funciona
 
+  //--------------- EDITION REQUESTS ----------------//
+  public PageDTO<EditionRequestDTO> getAllEditionRequests(int page, int size) {
+    return webApiCallerService.get(
+        uriBuilder -> uriBuilder
+            .path("/api/v1/edition-requests")
+            .queryParam("page", page)
+            .queryParam("size", size)
+            .build(),
+        new ParameterizedTypeReference<PageDTO<EditionRequestDTO>>() {}
+    );
+  } //* Funciona
+
   //--------------- AUTHENTICATION ----------------//
   public AuthResponseDTO login(LoginRequestDTO request) {
 
@@ -327,6 +340,7 @@ public class ServerAdapter {
       throw new ConnectionException("Could not connect to the server.");
     }
   }
+
 
   //!--------------- MOCK ----------------// cuando esté el back, vuela
   private AuthResponseDTO crearMockUser(String type) {

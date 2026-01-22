@@ -129,6 +129,27 @@ spring:
                 required: false
                 roles:
                   - CONTRIBUTOR
+
+        # --- LEER todas las solicitudes de eliminación (GET) ---
+        - id: get-all-deletion-requests
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/deletion-request
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
+        # --- EVALUAR solicitud de eliminación (PUT) ---
+        - id: evaluate-deletion-request
+          uri: lb://AGGREGATION-SERVICE
+          predicates:
+            - Path=/api/v1/deletion-request/*
+            - Method=PUT
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
         # --- STATIC SOURCE ---
         # --- DYNAMIC SOURCE ---
         # Ruta específica para CREAR eventos (POST)
@@ -156,26 +177,6 @@ spring:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
 
-        # --- LEER todas las solicitudes de eliminación (GET) ---
-        - id: get-all-deletion-requests
-          uri: lb://AGGREGATION-SERVICE
-          predicates:
-            - Path=/api/v1/deletion-request
-            - Method=GET
-          filters:
-            - StripPrefix=2
-            - AuthenticationFilter=ADMIN
-
-        # --- EVALUAR solicitud de eliminación (PUT) ---
-        - id: evaluate-deletion-request
-          uri: lb://AGGREGATION-SERVICE
-          predicates:
-            - Path=/api/v1/deletion-request/*
-            - Method=PUT
-          filters:
-            - StripPrefix=2
-            - AuthenticationFilter=ADMIN
-
         # --- LEER todas las solicitudes de subida (GET) ---
         - id: get-all-submission-requests
           uri: lb://DYNAMIC-SOURCE
@@ -195,6 +196,16 @@ spring:
           filters:
             - StripPrefix=2
             - AuthenticationFilter=CONTRIBUTOR
+
+        # --- LEER todas las solicitudes de edicion (GET) ---
+        - id: get-all-edition-requests
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+            - Path=/api/v1/edition-requests
+            - Method=GET
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
 
         # --- PROXY SOURCE ---
         # --- STATISTICS SERVICE ---
