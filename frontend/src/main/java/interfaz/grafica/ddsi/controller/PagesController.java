@@ -278,7 +278,20 @@ public class PagesController {
     return "admin/pages/deletionRequestsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/admin/editionRequests")
+  public String adminEditionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
+    PageDTO<DeletionRequestDTO> deletionsRequestsPage = deletionRequestService.getAll(page, 5);
+
+    model.addAttribute("deletionsRequestsPage", deletionsRequestsPage);
+
+
+    model.addAttribute("active", "admin");
+    model.addAttribute("pageTitle", "MetaMapa · Gestionar Solicitudes de Edición");
+
+    return "admin/pages/editionRequestsSection";
+  }
 }
 
 
