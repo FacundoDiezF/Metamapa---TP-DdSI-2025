@@ -16,6 +16,7 @@ public class ExtrasController {
   @PostMapping("/category-input-fragment")
   public String getCategoryInputFragment(
       @RequestParam("itemSelected") String item,
+      @RequestParam(value = "renderMode", defaultValue = "chip") String renderMode,
       Model model) {
 
     String[] parts = item.split("::");
@@ -24,7 +25,12 @@ public class ExtrasController {
 
     model.addAttribute("catName", catName);
     model.addAttribute("catId", catId);
-    return "fragments/modals/_moreOptions :: categoryInputForOneCategoryModal(catId=${catId}, catName=${catName})";
+
+    // Dynamic fragment style based on renderMode
+    if ("badge".equals(renderMode)) {
+      return "fragments/modals/_moreOptions :: categoryBadgeForEdit(catId=${catId}, catName=${catName})";
+    }
+    return "fragments/modals/_moreOptions :: categoryBasicChip(catId=${catId}, catName=${catName})";
   }
 
   // Devuelve el fragmento HTML con la ubicación seleccionada en el mapa (new Event Form)

@@ -43,7 +43,7 @@
                             <div class="field">
                                 <label for="selected-category">Categoría</label>
                                 <div id="selected-category"
-                                     hx-get="/modals/one-category"
+                                     th:hx-get="@{/modals/one-category(targetContainer='#selected-category', renderMode='chip')}"
                                      hx-target="#modals-here" hx-swap="innerHTML"
                                      class="chip-toggle">
 

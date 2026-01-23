@@ -5,6 +5,8 @@
     <th:block layout:fragment="extraStyles">
         <link rel="stylesheet" th:href="@{/css/pages/collections.css}"/>
         <link rel="stylesheet" th:href="@{/css/shared/cards/card-event.css}"/>
+        <link rel="stylesheet" th:href="@{/css/shared/filters/filters.css}"/>
+        <link rel="stylesheet" th:href="@{/css/shared/cards/card-editEvent.css}"/>
     </th:block>
 </head>
 
@@ -21,7 +23,7 @@
         </th:block>
 
         <th:block th:if="${!#lists.isEmpty(userEvents)}" th:each="event : ${userEvents}">
-            <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
+            <div th:replace="~{fragments/_eventCardWithEdition :: editEventForm(event=${event})}"></div>
         </th:block>
 
     </section>

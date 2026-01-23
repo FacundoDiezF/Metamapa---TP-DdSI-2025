@@ -1,0 +1,81 @@
+/* Borde especial para indicar que se está editando */
+.event-card-edit-mode {
+    border: 1px solid var(--Accent, #3B82F6);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* Inputs transparentes que heredan la fuente */
+.edit-input {
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-family: inherit;
+    color: var(--Text);
+    transition: all 0.2s;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: var(--Accent);
+    background: #fff;
+}
+
+/* Estilo específico para el título */
+.title-input {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* Estilo específico para la descripción */
+.desc-input {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+/* Selector de Categoría y Ubicación */
+.category-selector-wrapper:hover .category-badge,
+.location-selector-wrapper:hover {
+    opacity: 0.8;
+    background-color: #f1f5f9; /* Feedback visual al hover */
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-trigger {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Footer de acciones */
+.card-footer-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.btn-save-changes {
+    background-color: var(--Accent, #3B82F6);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+
+.btn-save-changes:hover {
+    background-color: #2563EB;
+}
