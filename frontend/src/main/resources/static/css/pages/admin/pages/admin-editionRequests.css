@@ -15,14 +15,6 @@
     font-weight: 500;
 }
 
-/* Link pequeño al mapa en las coordenadas */
-.map-link-icon {
-    text-decoration: none;
-    color: var(--Accent, #3B82F6);
-    margin-left: 4px;
-    font-weight: bold;
-}
-
 /* --- CAMPO MODIFICADO --- */
 .modified-field {
     background-color: #fef3c7;
