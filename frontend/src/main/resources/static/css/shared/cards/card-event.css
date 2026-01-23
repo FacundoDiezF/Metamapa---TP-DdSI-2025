@@ -210,3 +210,20 @@
     white-space: nowrap;
     border-width: 0;
 }
+
+/* ===========================
+    MODAL: Seleccion location map
+=========================== */
+
+.modal-body.modal-map-size {
+    max-width: 600px;
+    width: 90%;
+}
+
+.map-modal-canvas {
+    height: 400px;
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    z-index: 1;
+}
