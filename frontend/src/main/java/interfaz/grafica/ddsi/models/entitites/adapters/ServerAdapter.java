@@ -17,6 +17,7 @@ import interfaz.grafica.ddsi.dtos.auth.RegisterRequestDTO;
 import interfaz.grafica.ddsi.dtos.auth.UserSummaryDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
+import interfaz.grafica.ddsi.dtos.output.EditionStatus;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
@@ -181,7 +182,8 @@ public class ServerAdapter {
         uriBuilder -> uriBuilder
             .path("/api/v1/categories/{idCategory}")
             .build(idCategory),
-        new ParameterizedTypeReference<CategoryDTO>() {}
+        new ParameterizedTypeReference<CategoryDTO>() {
+        }
     );
   } //TODO TEST
 
@@ -223,7 +225,8 @@ public class ServerAdapter {
             .path("/api/v1/statistics/categories/top")
             .queryParam("count", 4)
             .build(),
-        new ParameterizedTypeReference<List<StatisticsDTO>>() {}
+        new ParameterizedTypeReference<List<StatisticsDTO>>() {
+        }
     );
   } //TODO TEST
 
@@ -233,7 +236,8 @@ public class ServerAdapter {
             .path("/api/v1/statistics/category/{idCategory}/provinces/top")
             .queryParam("count", 4)
             .build(idCategory),
-        new ParameterizedTypeReference<List<StatisticsDTO>>() {}
+        new ParameterizedTypeReference<List<StatisticsDTO>>() {
+        }
     );
   } //TODO TEST
 
@@ -243,7 +247,8 @@ public class ServerAdapter {
             .path("/api/v1/statistics/category/{idCategory}/busiest-hours/top")
             .queryParam("count", 4)
             .build(idCategory),
-        new ParameterizedTypeReference<List<StatisticsDTO>>() {}
+        new ParameterizedTypeReference<List<StatisticsDTO>>() {
+        }
     );
   } //TODO TEST
 
@@ -255,7 +260,8 @@ public class ServerAdapter {
             .queryParam("page", page)
             .queryParam("size", size)
             .build(),
-        new ParameterizedTypeReference<PageDTO<DeletionRequestDTO>>() {}
+        new ParameterizedTypeReference<PageDTO<DeletionRequestDTO>>() {
+        }
     );
   } //* Funciona
 
@@ -263,7 +269,7 @@ public class ServerAdapter {
     webApiCallerService.put("/api/v1/deletion-request/" + eventId, dto, Void.class);
   } //* Funciona
 
-  //--------------- DELETION REQUESTS ----------------//
+  //--------------- SUBMISSION REQUESTS ----------------//
   public PageDTO<SubmissionRequestDTO> getAllSubmissionRequest(int page, int size) {
     return webApiCallerService.get(
         uriBuilder -> uriBuilder
@@ -271,7 +277,8 @@ public class ServerAdapter {
             .queryParam("page", page)
             .queryParam("size", size)
             .build(),
-        new ParameterizedTypeReference<PageDTO<SubmissionRequestDTO>>() {}
+        new ParameterizedTypeReference<PageDTO<SubmissionRequestDTO>>() {
+        }
     );
   } //* Funciona
 
@@ -287,8 +294,13 @@ public class ServerAdapter {
             .queryParam("page", page)
             .queryParam("size", size)
             .build(),
-        new ParameterizedTypeReference<PageDTO<EditionRequestDTO>>() {}
+        new ParameterizedTypeReference<PageDTO<EditionRequestDTO>>() {
+        }
     );
+  } //* Funciona
+
+  public void evaluateEditionRequest(Long id, EditionStatus newStatus) {
+    webApiCallerService.put("/api/v1/edition-requests/" + id, newStatus, Void.class);
   } //* Funciona
 
   //--------------- AUTHENTICATION ----------------//
@@ -314,21 +326,21 @@ public class ServerAdapter {
       throw new BackendException(e);
 
     } catch (WebClientRequestException e) {
-    throw new ConnectionException("Could not connect to the authentication server.");
+      throw new ConnectionException("Could not connect to the authentication server.");
 
-  }catch (ResourceAccessException | IllegalStateException e) {
+    } catch (ResourceAccessException | IllegalStateException e) {
       throw new ConnectionException("Could not connect to the server.");
     }
   }
 
   public AuthResponseDTO register(RegisterRequestDTO request) {
     try {
-    return apiGatewayClient.post()
-        .uri("/api/v1/auth/register")
-        .bodyValue(request)
-        .retrieve()
-        .bodyToMono(AuthResponseDTO.class)
-        .block();
+      return apiGatewayClient.post()
+          .uri("/api/v1/auth/register")
+          .bodyValue(request)
+          .retrieve()
+          .bodyToMono(AuthResponseDTO.class)
+          .block();
     } catch (WebClientResponseException e) {
 
       throw new BackendException(e);
@@ -336,7 +348,7 @@ public class ServerAdapter {
     } catch (WebClientRequestException e) {
       throw new ConnectionException("Could not connect to the registration server.");
 
-    }catch (ResourceAccessException | IllegalStateException e) {
+    } catch (ResourceAccessException | IllegalStateException e) {
       throw new ConnectionException("Could not connect to the server.");
     }
   }

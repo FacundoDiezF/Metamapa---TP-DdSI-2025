@@ -207,6 +207,16 @@ spring:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
 
+          # Ruta específica para EVALUAR solicitud de edicion (PUT)
+        - id: evaluate-edition-request
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+            - Path=/api/v1/edition-requests/*
+            - Method=PUT
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
+
         # --- PROXY SOURCE ---
         # --- STATISTICS SERVICE ---
         - id: get-top-categories

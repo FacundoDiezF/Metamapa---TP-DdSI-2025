@@ -2,12 +2,14 @@ package interfaz.grafica.ddsi.controller;
 
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
+import interfaz.grafica.ddsi.dtos.output.EditionStatus;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
+import interfaz.grafica.ddsi.services.EditionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
 import interfaz.grafica.ddsi.services.SubmissionRequestService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,12 +31,14 @@ public class ShareController {
   private final DeletionRequestService deletionRequestService;
   private final SubmissionRequestService submissionRequestService;
   private final CollectionService collectionService;
+  private final EditionRequestService editionRequestService;
 
-  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, CollectionService collectionService) {
+  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, CollectionService collectionService, EditionRequestService editionRequestService) {
     this.eventService = eventService;
     this.deletionRequestService = deletionRequestService;
     this.submissionRequestService = submissionRequestService;
     this.collectionService = collectionService;
+    this.editionRequestService = editionRequestService;
   }
 
   @PostMapping("/event")
@@ -147,6 +151,18 @@ public class ShareController {
     model.addAttribute("reloadOnClose", true);
 
     return "fragments/modals/_messageModals :: messageModal";
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/edition-request/evaluate/{dReqId}")
+  public String handleEvaluateEditionRequest(
+      @PathVariable Long dReqId,
+      @RequestParam("status") EditionStatus newStatus,
+      Model model
+  ) {
+
+    editionRequestService.evaluate(dReqId, newStatus);
+    return "redirect:/admin/editionRequests";
   }
 
 
