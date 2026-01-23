@@ -1,0 +1,107 @@
+/* =========================================
+   EDIT REQUEST CARD STYLES
+   ========================================= */
+
+.edit-request-card {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Badge pequeño de ID de solicitud en el header */
+.request-id-badge {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* Link pequeño al mapa en las coordenadas */
+.map-link-icon {
+    text-decoration: none;
+    color: var(--Accent, #3B82F6);
+    margin-left: 4px;
+    font-weight: bold;
+}
+
+/* --- CAMPO MODIFICADO --- */
+.modified-field {
+    background-color: #fef3c7;
+    border-radius: 4px;
+    padding: 0 4px;
+
+    cursor: help;
+    position: relative;
+
+    transition: background-color 0.2s;
+}
+
+.modified-field:hover {
+    background-color: #fae3bf;
+}
+
+/* Especifico para cat */
+.category-badge.modified-field {
+    background-color: #fae3bf;
+    padding: 4px 10px;
+    border-radius: 0 0 9px 9px;
+}
+
+.category-badge.modified-field:hover {
+    background-color: #f4cb8b;
+}
+
+/* --- TOOLTIP CON EL VALOR ANTERIOR --- */
+.modified-field::after {
+    content: attr(data-original-value);
+
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-5px); /* Centrado */
+
+    background-color: #1e293b;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    width: max-content;
+    max-width: 300px;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none; /* Para que no moleste al click */
+    z-index: 20;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Triangulito del tooltip */
+.modified-field::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(0px);
+    border: 5px solid transparent;
+    border-top-color: #1e293b;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+    z-index: 20;
+}
+
+/* MOSTRAR TOOLTIP AL HOVER */
+.modified-field:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-10px); /* Pequeña animación hacia arriba */
+}
+
+.modified-field:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
