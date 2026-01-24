@@ -1,4 +1,4 @@
-<article class="event-card" th:fragment="cardEventWithEdition(event)" th:attr="data-event-id=${event.id}">
+<article class="event-card" th:fragment="cardEventReadMode(event)" th:id="'view-' + ${event.id}">
 
     <header class="card-header">
         <span class="category-badge" th:text="${event.category}">
@@ -7,9 +7,8 @@
 
         <button class="icon-btn"
                 title="Editar"
-                th:hx-get="@{/admin/events/edit-form/{id}(id=${event.id})}"
-                th:hx-target="'#event-card-' + ${event.id}"
-                hx-swap="outerHTML">
+                type="button"
+                th:onclick="'toggleEditMode(' + ${event.id} + ')'">
             <img src="/shared/icons/edit.svg" alt="Editar">
         </button>
     </header>
@@ -67,10 +66,10 @@
 </article>
 
 <!---------------------------------------------------------------------------------------------------------------- CARD DE EDIT EVENT -->
-<form class="event-card event-card-edit-mode"
+<form class="event-card event-card-edit-mode d-none"
       th:fragment="editEventForm(event)"
       th:object="${event}"
-      th:id="'event-card-' + ${event.id}"
+      th:id="'form-' + ${event.id}"
       th:action="@{/share/events/update/{id}(id=${event.id})}"
       method="post">
     <header class="card-header">
@@ -93,9 +92,7 @@
 
         <button type="button"
                 class="icon-btn"
-                th:hx-get="@{/admin/events/card/{id}(id=${event.id})}"
-                th:hx-target="'#event-card-' + ${event.id}"
-                hx-swap="outerHTML">
+                th:onclick="'toggleEditMode(' + ${event.id} + ')'">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>

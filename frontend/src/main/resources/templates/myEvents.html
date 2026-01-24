@@ -23,10 +23,16 @@
         </th:block>
 
         <th:block th:if="${!#lists.isEmpty(userEvents)}" th:each="event : ${userEvents}">
+            <div th:replace="~{fragments/_eventCardWithEdition :: cardEventReadMode(event=${event})}"></div>
+
             <div th:replace="~{fragments/_eventCardWithEdition :: editEventForm(event=${event})}"></div>
         </th:block>
 
     </section>
+
+    <th:block layout:fragment="extraScripts">
+        <script th:src="@{/js/toggleEditMode.js}"></script>
+    </th:block>
 
 </div>
 </html>

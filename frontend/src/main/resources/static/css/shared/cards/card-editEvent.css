@@ -1,3 +1,7 @@
+.d-none {
+    display: none !important;
+}
+
 /* Borde especial para indicar que se está editando */
 .event-card-edit-mode {
     border: 1px solid var(--Accent, #3B82F6);
