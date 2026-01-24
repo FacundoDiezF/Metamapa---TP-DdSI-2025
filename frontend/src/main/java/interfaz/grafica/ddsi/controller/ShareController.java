@@ -153,6 +153,20 @@ public class ShareController {
     return "fragments/modals/_messageModals :: messageModal";
   }
 
+  @PreAuthorize("hasRole('CONTRIBUTOR')")
+  @PostMapping("/events/update/{id}")
+  public String createEditionRequest(
+      @ModelAttribute("event") EventOutputDTO newEventValues,
+      @PathVariable Long id,
+      Model model
+  ) {
+
+    editionRequestService.create(id, newEventValues);
+
+
+    return "redirect:/my-events";
+  }
+
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/edition-request/evaluate/{dReqId}")
   public String handleEvaluateEditionRequest(

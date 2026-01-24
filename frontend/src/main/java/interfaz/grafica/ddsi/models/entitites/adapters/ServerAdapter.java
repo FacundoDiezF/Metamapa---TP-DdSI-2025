@@ -62,6 +62,10 @@ public class ServerAdapter {
     webApiCallerService.post("/api/v1/events", newEvent, Void.class);
   } //* Funciona
 
+  public void editEvent(Long id, EventOutputDTO newEventValues) {
+    webApiCallerService.put("/api/v1/events/" + id, newEventValues, Void.class);
+  } //* Funciona
+
   public PageDTO<EventDTO> getAllEvents(List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
     return webApiCallerService.get(uriBuilder -> {
           uriBuilder.path("/api/v1/events");

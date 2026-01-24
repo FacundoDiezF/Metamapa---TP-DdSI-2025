@@ -69,8 +69,9 @@
 <!---------------------------------------------------------------------------------------------------------------- CARD DE EDIT EVENT -->
 <form class="event-card event-card-edit-mode"
       th:fragment="editEventForm(event)"
+      th:object="${event}"
       th:id="'event-card-' + ${event.id}"
-      th:action="@{/admin/events/update/{id}(id=${event.id})}"
+      th:action="@{/share/events/update/{id}(id=${event.id})}"
       method="post">
     <header class="card-header">
 

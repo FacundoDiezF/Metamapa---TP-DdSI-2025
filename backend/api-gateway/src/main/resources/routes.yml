@@ -207,6 +207,16 @@ spring:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
 
+        # Ruta específica para EDITAR colecciones (POST)
+        - id: post-edition-request
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+              - Path=/api/v1/events/*
+              - Method=PUT
+          filters:
+              - StripPrefix=2
+              - AuthenticationFilter=CONTRIBUTOR
+
           # Ruta específica para EVALUAR solicitud de edicion (PUT)
         - id: evaluate-edition-request
           uri: lb://DYNAMIC-SOURCE
