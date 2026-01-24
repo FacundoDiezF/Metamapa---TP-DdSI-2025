@@ -93,7 +93,7 @@
         <button type="button"
                 class="icon-btn"
                 th:onclick="'toggleEditMode(' + ${event.id} + ')'">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#050315" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -113,11 +113,6 @@
         <div class="event-meta">
 
             <span class="meta-date edit-mode">
-                <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2"
-                                                                                                          x2="16"
-                                                                                                          y2="6"></line><line
-                        x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 <input type="date"
                        name="eventDate"
                        th:value="${event.eventDate}"
@@ -132,25 +127,24 @@
                  hx-vals='js:{ currentLat: event.currentTarget.querySelector("input[name=latitude]").value, currentLng: event.currentTarget.querySelector("input[name=longitude]").value }'
                  hx-target="#modals-here"
                  hx-swap="innerHTML"
-                 class="meta-location location-selector-wrapper"
+                 class="meta-location location-selector-wrapper edit-input location-input-fake"
                  style="cursor: pointer;">
-
-                <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                </svg>
 
                 <input type="hidden" name="latitude" th:value="${event.latitude}"/>
                 <input type="hidden" name="longitude" th:value="${event.longitude}"/>
 
-                <span class="edit-trigger-text">
-                    <span th:text="${#numbers.formatDecimal(event.latitude, 1, 4)} + ', ' + ${#numbers.formatDecimal(event.longitude, 1, 4)}">Coords</span>
-                    <span style="font-size: 0.8em; color: var(--Accent);">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path
-                            d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path
-                            d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span>
-                </span>
+                <div class="location-content">
+                    <span class="edit-trigger-text"
+                          th:text="${#numbers.formatDecimal(event.latitude, 1, 4)} + ', ' + ${#numbers.formatDecimal(event.longitude, 1, 4)}">
+                            -34.1234, -58.1234
+                    </span>
+                </div>
+
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#050315" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+
             </div>
         </div>
 
@@ -166,13 +160,8 @@
     <div class="card-footer-actions">
         <p class="source-info" th:text="${event.Origin} + ' • ' + ${event.sourceId}">SOURCE</p>
 
-        <button type="submit" class="btn-save-changes">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                <polyline points="7 3 7 8 15 8"></polyline>
-            </svg>
-            Guardar
+        <button type="submit" class="btn-apply">
+            Solicitar Cambios
         </button>
     </div>
 
