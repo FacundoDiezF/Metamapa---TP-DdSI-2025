@@ -130,7 +130,8 @@
             <span class="meta-separator">|</span>
 
             <div th:id="'loc-wrapper-' + ${event.id}"
-                 hx-get="/modals/map-selection"
+                 th:hx-get="@{/modals/map-selection(targetContainer='#loc-wrapper-' + ${event.id}, renderMode='badge')}"
+                 hx-vals='js:{ currentLat: event.currentTarget.querySelector("input[name=latitude]").value, currentLng: event.currentTarget.querySelector("input[name=longitude]").value }'
                  hx-target="#modals-here"
                  hx-swap="innerHTML"
                  class="meta-location location-selector-wrapper"

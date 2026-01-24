@@ -68,7 +68,18 @@ public class ModalsController {
   }
 
   @GetMapping("/map-selection")
-  public String getMapModal() {
+  public String getMapModal(
+      @RequestParam(value = "currentLat", required = false) Double currentLat,
+      @RequestParam(value = "currentLng", required = false) Double currentLng,
+      @RequestParam(value = "targetContainer", defaultValue = "#selected-location") String targetContainer,
+      @RequestParam(value = "renderMode", defaultValue = "chip") String renderMode,
+      Model model
+  ) {
+    model.addAttribute("currentLat", currentLat);
+    model.addAttribute("currentLng", currentLng);
+    model.addAttribute("targetContainer", targetContainer);
+    model.addAttribute("renderMode", renderMode);
+
     return "fragments/modals/_mapModal :: mapModal";
   }
 

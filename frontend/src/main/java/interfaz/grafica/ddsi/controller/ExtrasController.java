@@ -36,14 +36,19 @@ public class ExtrasController {
   // Devuelve el fragmento HTML con la ubicación seleccionada en el mapa (new Event Form)
   @PostMapping("/location-input-fragment")
   public String getLocationInputFragment(
-      @RequestParam Double latitude,
-      @RequestParam Double longitude,
+      @RequestParam("latitude") Double latitude,
+      @RequestParam("longitude") Double longitude,
+      @RequestParam(value = "renderMode", defaultValue = "chip") String renderMode,
       Model model) {
 
     model.addAttribute("lat", latitude);
     model.addAttribute("lng", longitude);
 
-    return "fragments/modals/_mapModal :: locationSelectedFragment";
+    if ("badge".equals(renderMode)) {
+      return "fragments/modals/_mapModal :: locationBadgeForEdit";
+    }
+
+    return "fragments/modals/_mapModal :: locationBasicChip";
   }
 
   // Agrega una nueva fila de condición al formulario de creación de colección

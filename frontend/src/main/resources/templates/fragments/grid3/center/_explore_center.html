@@ -62,7 +62,9 @@
                                 <label>Ubicación</label>
 
                                 <div id="selected-location"
-                                     hx-get="/modals/map-selection"
+                                     th:hx-get="@{/modals/map-selection(targetContainer='#selected-location', renderMode='chip')}"
+
+                                     hx-vals='js:{currentLat: event.currentTarget.querySelector("input[name=latitude]").value, currentLng: event.currentTarget.querySelector("input[name=longitude]").value}'
                                      hx-target="#modals-here"
                                      hx-swap="innerHTML"
                                      class="chip-toggle">
@@ -71,8 +73,8 @@
                                         + Marcar Ubicación
                                     </a>
 
-                                    <input required th:field="*{latitude}" />
-                                    <input required th:field="*{longitude}" />
+                                    <input required th:field="*{latitude}"/>
+                                    <input required th:field="*{longitude}"/>
 
                                 </div>
 
