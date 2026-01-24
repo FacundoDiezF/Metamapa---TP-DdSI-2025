@@ -114,25 +114,6 @@
     border-top: 1px solid #f1f5f9;
 }
 
-.btn-save-changes {
-    background-color: var(--Accent, #3B82F6);
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: background 0.2s;
-}
-
-.btn-save-changes:hover {
-    background-color: #2563EB;
-}
-
 /* =========================================
    RESPONSIVE (Celulares)
    ========================================= */
