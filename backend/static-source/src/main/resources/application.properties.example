@@ -1,5 +1,13 @@
 server.port=8083
 
+# Import scheduler configuration
+import.csv.cron=0 * * * * *
+
+# Directory to store uploaded CSV files
+static-source.storage.dir=metamapa/static-sources/csv
+# Maximum file upload size (Must be corelated with frontend configuration)
+spring.servlet.multipart.max-file-size=50MB
+
 # Eureka Client Configuration
 spring.application.name=static-source
 eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
@@ -17,13 +25,3 @@ spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
-
-
-# Import scheduler configuration
-imports.fixed-delay-ms=60000
-
-# File upload configuration (max file size)
-spring.servlet.multipart.max-file-size=50MB
-
-# Directory to store uploaded CSV files (from home directory)
-static-source.storage.dir=metamapa/static-sources/csv
