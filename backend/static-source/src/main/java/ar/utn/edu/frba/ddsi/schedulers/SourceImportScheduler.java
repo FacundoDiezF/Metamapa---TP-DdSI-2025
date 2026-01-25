@@ -13,9 +13,12 @@ public class SourceImportScheduler {
     this.sourceService = sourceService;
   }
 
-  @Scheduled(fixedDelayString = "${imports.fixed-delay-ms:10000}")
+  @Scheduled(cron = "${import.csv.cron}")
   public void importPendingSources() {
-    System.out.println("[CRON] Ejecutando importPendingSources...");
+    System.out.println("[CRON] Importing Pending Sources...");
+
     sourceService.importPendingSources();
+
+    System.out.println("[CRON] END Importing Pending Sources");
   }
 }

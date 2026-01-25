@@ -17,6 +17,12 @@ public class ConsensusManagerScheduler {
 
   @Scheduled(cron = "${reevaluate.consensus.cron}")
   public void reevaluateEventsConsensus() {
+
+    System.out.println("[CRON] Reevaluating events consensus...");
+
     consensusManager.runEvaluation();
+
+    System.out.println("[CRON] END Reevaluating events consensus");
+
   }
 }
