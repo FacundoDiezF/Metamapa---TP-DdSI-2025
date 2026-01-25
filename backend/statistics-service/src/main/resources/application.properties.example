@@ -2,7 +2,7 @@
 server.port=8084
 
 #CronJob for statistics refresh
-statistics.refresh.cron=0 0 * * * *
+statistics.refresh.cron=0 */2 * * * *
 
 # Agregation service URL
 aggregation-service.url=http://localhost:8088
