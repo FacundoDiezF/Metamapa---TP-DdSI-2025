@@ -28,7 +28,7 @@ public class CategoryController {
                                             @RequestParam(defaultValue = "10") int size,
                                             @RequestParam(name = "category_in", required = false) List<Long> category_in) {
 
-    Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+    Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
 
     if(category_in != null && !category_in.isEmpty()) {
       return categoryService.getAllByIds(category_in, pageable);
