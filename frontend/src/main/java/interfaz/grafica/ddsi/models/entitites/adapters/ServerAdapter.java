@@ -15,7 +15,6 @@ import interfaz.grafica.ddsi.dtos.auth.AuthResponseDTO;
 import interfaz.grafica.ddsi.dtos.auth.LoginRequestDTO;
 import interfaz.grafica.ddsi.dtos.auth.RegisterRequestDTO;
 import interfaz.grafica.ddsi.dtos.auth.UserSummaryDTO;
-import java.io.IOException;//
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
 import interfaz.grafica.ddsi.dtos.output.EditionStatus;
@@ -32,13 +31,13 @@ import interfaz.grafica.ddsi.services.internal.WebApiCallerService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;//
-import org.springframework.http.client.MultipartBodyBuilder;//
+import org.springframework.http.MediaType;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.BodyInserters;//
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -312,6 +311,14 @@ public class ServerAdapter {
     webApiCallerService.put("/api/v1/edition-requests/" + id, newStatus, Void.class);
   } //* Funciona
 
+  //--------------- IMPORT FROM CSV ----------------//
+  public void postNewSource(MultipartFile csvfile) {
+    MultipartBodyBuilder builder = new MultipartBodyBuilder();
+    builder.part("csvfile", csvfile.getResource());
+
+    webApiCallerService.post("/api/v1/sources", BodyInserters.fromMultipartData(builder.build()), Void.class, MediaType.MULTIPART_FORM_DATA);
+  }
+
   //--------------- AUTHENTICATION ----------------//
   public AuthResponseDTO login(LoginRequestDTO request) {
 
@@ -381,25 +388,5 @@ public class ServerAdapter {
 
     response.setUser(user);
     return response;
-  }
-
-  //!--------------- Static Source ----------------//
-  public void postNewSource(MultipartFile csvfile) {
-//        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-//        builder.part("csvfile", csvfile.getResource())
-//                .filename(csvfile.getOriginalFilename());
-//
-//        log.info("VOY A HACER EL POST AL BACKEND");
-//        staticClient.post()
-//                .uri("/sources")
-//                .contentType(MediaType.MULTIPART_FORM_DATA)
-//                .body(BodyInserters.fromMultipartData(builder.build()))
-//                .retrieve()
-//                .bodyToMono(SourceClientOutputDTO.class)
-//                .block();
-//
-//        log.info("[FRONT] Source creada en back");
-//
-
   }
 }

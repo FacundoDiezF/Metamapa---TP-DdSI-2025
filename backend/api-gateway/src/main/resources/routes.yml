@@ -151,6 +151,15 @@ spring:
             - AuthenticationFilter=ADMIN
 
         # --- STATIC SOURCE ---
+        # Ruta específica para CREAR una FUENTE, IMPORT FROM CSV (POST)
+        - id: post-source-csv
+          uri: lb://STATIC-SOURCE
+          predicates:
+            - Path=/api/v1/sources
+            - Method=POST
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter=ADMIN
         # --- DYNAMIC SOURCE ---
         # Ruta específica para CREAR eventos (POST)
         - id: post-event

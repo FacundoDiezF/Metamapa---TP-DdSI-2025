@@ -3,14 +3,16 @@ package interfaz.grafica.ddsi.services.internal;
 import interfaz.grafica.ddsi.dtos.auth.AuthResponseDTO;
 import interfaz.grafica.ddsi.dtos.auth.RefreshTokenDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
-import interfaz.grafica.ddsi.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ClientHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.util.UriBuilder;
@@ -174,6 +176,23 @@ public class WebApiCallerService {
             .uri(url)
             .header("Authorization", authHeaderValue)
             .bodyValue(body)
+            .retrieve()
+            .bodyToMono(responseType)
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP POST sobrecarga con preparado para BodyInserter (uso para multipart/form-data)
+   */
+  public <T> T post(String url, BodyInserter<?, ? super ClientHttpRequest> bodyInserter, Class<T> responseType, MediaType contentType) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .post()
+            .uri(url)
+            .contentType(contentType)
+            .header("Authorization", authHeaderValue)
+            .body(bodyInserter)
             .retrieve()
             .bodyToMono(responseType)
             .block()
