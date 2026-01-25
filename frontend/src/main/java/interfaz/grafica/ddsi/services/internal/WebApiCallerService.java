@@ -183,7 +183,7 @@ public class WebApiCallerService {
   }
 
   /**
-   * Ejecuta una llamada HTTP POST sobrecarga con preparado para BodyInserter (uso para multipart/form-data)
+   * Ejecuta una llamada HTTP POST sobrecarga preparado para BodyInserter (uso para multipart/form-data)
    */
   public <T> T post(String url, BodyInserter<?, ? super ClientHttpRequest> bodyInserter, Class<T> responseType, MediaType contentType) {
     return executeWithTokenRetry(authHeaderValue ->
