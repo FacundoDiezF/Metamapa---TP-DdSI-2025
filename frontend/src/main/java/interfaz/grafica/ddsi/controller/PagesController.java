@@ -3,6 +3,7 @@ package interfaz.grafica.ddsi.controller;
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.DeletionRequestDTO;
+import interfaz.grafica.ddsi.dtos.EditionRequestDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
@@ -14,6 +15,7 @@ import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
+import interfaz.grafica.ddsi.services.EditionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
 import interfaz.grafica.ddsi.services.LocationService;
 import interfaz.grafica.ddsi.services.SourcesService;
@@ -22,21 +24,14 @@ import interfaz.grafica.ddsi.services.SubmissionRequestService;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-
-@Slf4j
 @Controller
 public class PagesController {
 
@@ -48,10 +43,11 @@ public class PagesController {
   private final SourcesService sourcesService;
   private final DeletionRequestService deletionRequestService;
   private final SubmissionRequestService submissionRequestService;
+  private final EditionRequestService editionRequestService;
 
 
   @Autowired
-  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService, SourcesService sourcesService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService) {
+  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService, SourcesService sourcesService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, EditionRequestService editionRequestService) {
     this.collectionService = collectionService;
     this.eventService = eventService;
     this.categoryService = categoryService;
@@ -60,6 +56,7 @@ public class PagesController {
     this.sourcesService = sourcesService;
     this.deletionRequestService = deletionRequestService;
     this.submissionRequestService = submissionRequestService;
+    this.editionRequestService = editionRequestService;
   }
 
   @GetMapping("/")
@@ -69,8 +66,8 @@ public class PagesController {
 
   @GetMapping("/landing")
   public String landing(Model model) {
-    List<CollectionDTO> topCollections = collectionService.getTop();
-    model.addAttribute("topCollections", topCollections);
+    PageDTO<CollectionDTO> collectionPage = collectionService.getAll(0, 4);
+    model.addAttribute("topCollections", collectionPage.getContent());
     model.addAttribute("pageTitle", "MetaMapa · Landing");
     return "landing";
   }
@@ -83,23 +80,7 @@ public class PagesController {
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
       @RequestParam(defaultValue = "0", name = "page") int pageEvent,
-      Model model,
-      HttpServletRequest request) {
-
-    // -----------------------------------------------------------------------------
-    // [FIX CRÍTICO PARA THYMELEAF + SPRING SECURITY]
-    // Problema: Thymeleaf empieza a escribir el HTML de la respuesta (streaming) antes
-    // de que Spring Security intente crear el token CSRF para los formularios.
-    // Como el CSRF requiere una sesión, Spring intenta crearla e inyectar la cookie
-    // JSESSIONID, pero falla porque los headers ya se enviaron ("Response committed").
-    //
-    // Solución: Forzamos la creación de la sesión acá, antes de que se procese
-    // cualquier vista, para asegurar que la cookie de sesión viaje en los headers.
-    //
-    // Repitan eso en otros endpoints si les llega a salir el error IllegalStateException: Cannot create a session bla bla bla.
-    // Si encuentran una mejor solución, reemplacen esta.
-    // -----------------------------------------------------------------------------
-    //request.getSession(true);
+      Model model) {
 
     PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
 
@@ -156,6 +137,7 @@ public class PagesController {
 
     model.addAttribute("pageTitle", "MetaMapa · Colecciones");
     model.addAttribute("active", "collections");
+    model.addAttribute("active", "collections");
 
     return "collections";
   }
@@ -180,6 +162,20 @@ public class PagesController {
     model.addAttribute("pageTitle", "MetaMapa · Mapa");
     model.addAttribute("active", "map");
     return "map";
+  }
+
+  @PreAuthorize("hasRole('CONTRIBUTOR')")
+  @GetMapping("/my-events")
+  public String userEvents(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+
+    List<EventDTO> userEvents = eventService.getAllByUser();
+
+    model.addAttribute("userEvents", userEvents);
+
+    model.addAttribute("pageTitle", "MetaMapa · Mis Hechos");
+    model.addAttribute("active", "my-events");
+
+    return "myEvents";
   }
 
   @GetMapping("/404")
@@ -213,6 +209,7 @@ public class PagesController {
     return "admin/pages/collectionsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/statistics")
   public String adminStatistic(Model model,
                                @RequestParam(defaultValue = "1", name = "catId") Long selectedCategoryId) {
@@ -238,6 +235,7 @@ public class PagesController {
     return "admin/pages/statisticsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/sources")
   public String adminSources(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
@@ -252,6 +250,7 @@ public class PagesController {
     return "admin/pages/sourcesSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/pendingEvents")
   public String adminPendingEvents(
       @RequestParam(defaultValue = "0", name = "page") int page,
@@ -267,6 +266,7 @@ public class PagesController {
     return "admin/pages/pendingEventsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/deletionRequests")
   public String adminDeletionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
@@ -281,21 +281,30 @@ public class PagesController {
     return "admin/pages/deletionRequestsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/admin/editionRequests")
+  public String adminEditionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
-   @GetMapping("/admin/import")
-   public String adminImportPage(Model model, @RequestParam(defaultValue = "0", name = "page") int page ) {
+    PageDTO<EditionRequestDTO> editionRequestsPage = editionRequestService.getAll(page, 5);
 
-
-      model.addAttribute("active", "admin");
-      model.addAttribute("pageTitle", "MetaMapa · Importar CSV");
-
-
-
-      return "admin/pages/importCSV";
-   }
+    model.addAttribute("editionRequestsPage", editionRequestsPage);
 
 
+    model.addAttribute("active", "admin");
+    model.addAttribute("pageTitle", "MetaMapa · Gestionar Solicitudes de Edición");
 
+    return "admin/pages/editionRequestsSection";
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/admin/import")
+  public String adminImportPage(Model model) {
+
+    model.addAttribute("active", "admin");
+    model.addAttribute("pageTitle", "MetaMapa · Importar CSV");
+
+    return "admin/pages/importCSV";
+  }
 }
 
 

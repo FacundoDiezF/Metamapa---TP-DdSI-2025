@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,14 +30,14 @@ public class DeletionRequestController {
   }
 
   @PostMapping
-  public DeletionRequestOutputDTO create(@RequestBody DeletionRequestCreationDTO dto) {
-    return deletionRequestService.create(dto);
+  public DeletionRequestOutputDTO create(@RequestHeader(value = "X-User-Id", required = false) String userId, @RequestBody DeletionRequestCreationDTO dto) {
+    return deletionRequestService.create(dto, userId);
   }
 
   @PutMapping("/{id}")
-  public DeletionRequestOutputDTO evaluate(@PathVariable Long id, @RequestBody DeletionRequestEvaluationDTO dto) {
+  public DeletionRequestOutputDTO evaluate(@RequestHeader(value = "X-User-Id", required = false) String evaluatorId, @PathVariable Long id, @RequestBody DeletionRequestEvaluationDTO dto) {
     dto.setDeletionRequestId(id);
-    return deletionRequestService.evaluate(dto);
+    return deletionRequestService.evaluate(dto, evaluatorId);
   }
 
   @GetMapping

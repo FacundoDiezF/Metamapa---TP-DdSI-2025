@@ -38,7 +38,7 @@ public class AuthController {
     try {
       authService.registerAndAutoLogin(registerRequest, request.getSession());
 
-      return "redirect:/";
+      return "redirect:/explore";
 
     } catch (BackendException e) {
       String errorMessage = "Error registering user.";

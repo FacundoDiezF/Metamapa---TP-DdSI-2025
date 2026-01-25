@@ -25,11 +25,11 @@
 
             <div class="admin-list-container" th:if="${!#lists.isEmpty(sources)}">
 
-                <th:block th:each="c : ${sources}">
+                <th:block th:each="src : ${sources}">
                     <article class="source-card">
 
                         <div class="card-head" >
-                            <h2 class="card-title" th:text="${c.clientId}"> Source Id</h2>
+                            <h2 class="card-title" th:text="${'C' + src.clientId + ' • S' + src.id}"> Source Id</h2>
 
                             <div class="card-actions">
                                 <button class="icon-btn" title="Editar">
@@ -44,7 +44,7 @@
                         <div class="card-body">
                             <p class="source-type">
                                 <span class="label">Tipo:</span>
-                                <span th:text="${c.type}">REST</span>
+                                <span th:text="${src.type}">TYPE</span>
                             </p>
                         </div>
 

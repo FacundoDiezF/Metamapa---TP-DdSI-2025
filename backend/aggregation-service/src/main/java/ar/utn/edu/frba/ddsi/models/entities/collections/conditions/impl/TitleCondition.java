@@ -1,6 +1,7 @@
 package ar.utn.edu.frba.ddsi.models.entities.collections.conditions.impl;
 
 import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.Condition;
+import ar.utn.edu.frba.ddsi.models.entities.collections.conditions.values.ConditionType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
@@ -12,15 +13,28 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("TITLE")
 public class TitleCondition extends Condition {
   @Column(name = "title")
-  final String title;
+  final String searchTitle;
 
-  public TitleCondition(String title) {
-    this.title = title;
+  public TitleCondition(String searchTitle) {
+    this.searchTitle = searchTitle.toLowerCase();
   }
 
   @Override
   public boolean isSatisfiedBy(Event event) {
-    return this.title.equals(event.getTitle());
+
+    String eventTitleLower = event.getTitle().toLowerCase();
+
+    return eventTitleLower.contains(searchTitle);
+  }
+
+  @Override
+  public String getConditionValue() {
+    return searchTitle;
+  }
+
+  @Override
+  public ConditionType getType() {
+    return ConditionType.TITLE;
   }
 
 }

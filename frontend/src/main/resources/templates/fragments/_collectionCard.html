@@ -6,11 +6,17 @@
                th:text="${collection.title}">Título</a>
         </h2>
 
-        <div class="top-actions">
-            <button class="icon-btn" title="Editar">
+        <div class="top-actions" sec:authorize="hasRole('ADMIN')">
+            <button class="icon-btn" title="Editar"
+                    th:hx-get="@{/modals/edit-collection/{handler}(handler=${collection.handler})}"
+                    hx-target="#modals-here" hx-swap="innerHTML">
+
                 <img src="/shared/icons/edit.svg" alt="Editar">
             </button>
-            <button class="icon-btn" title="Eliminar">
+            <button class="icon-btn" title="Eliminar"
+                    th:hx-get="@{/modals/confirm-delete/{h}(h=${collection.handler})}"
+                    hx-target="#modals-here"
+                    hx-swap="innerHTML">
                 <img src="/shared/icons/trash.svg" alt="Eliminar">
             </button>
         </div>

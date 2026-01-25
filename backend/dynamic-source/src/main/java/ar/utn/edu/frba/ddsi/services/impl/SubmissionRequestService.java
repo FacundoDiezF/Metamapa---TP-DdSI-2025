@@ -35,7 +35,7 @@ public class SubmissionRequestService implements ISubmissionRequestService {
 
 
   @Override
-  public SubmissionRequestOutputDTO evaluate(Long submissionId, SubmissionEvaluationDTO submissionEvaluation) {
+  public SubmissionRequestOutputDTO evaluate(String userId, Long submissionId, SubmissionEvaluationDTO submissionEvaluation) {
 
     //TODO: Validar si el usuario puede realizar esta peticion
 
@@ -47,7 +47,7 @@ public class SubmissionRequestService implements ISubmissionRequestService {
     }
 
     // Updates submission (and the event, if the submission is accepted)
-    submission.setEvaluation(submissionEvaluation);
+    submission.setEvaluation(submissionEvaluation, userId);
 
     SubmissionRequest submissionRequest = submissionRepository.save(submission);
     Event eventSaved = eventRepository.save(submission.getEvent());

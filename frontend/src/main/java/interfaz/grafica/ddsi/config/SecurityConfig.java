@@ -29,7 +29,7 @@ public class SecurityConfig {
             .requestMatchers("/css/**", "/js/**", "/shared/**", "/images/**").permitAll()
 
             // Páginas de Acceso (Landing, Explorar, Colecciones, Mapa) -> PÚBLICAS
-            .requestMatchers("/", "/landing", "/explore", "/collections", "/map").permitAll() //! no se por qué a veces aparece http://localhost:8085/static, asumo que es un error y no debería pasar, por eso no la voy a poner como pública
+            .requestMatchers("/", "/landing", "/explore", "/collections", "/collection/**", "/map").permitAll() //! no se por qué a veces aparece http://localhost:8085/static, asumo que es un error y no debería pasar, por eso no la voy a poner como pública
 
             // Páginas de Autenticación (Login, Registro) -> PÚBLICAS
             .requestMatchers("/login", "/register").permitAll()

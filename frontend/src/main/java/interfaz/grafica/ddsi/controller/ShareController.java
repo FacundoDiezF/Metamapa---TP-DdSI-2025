@@ -1,46 +1,49 @@
 package interfaz.grafica.ddsi.controller;
 
-import interfaz.grafica.ddsi.services.SourcesService;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestCreationDTO;
 import interfaz.grafica.ddsi.dtos.output.DeletionRequestEvaluateDTO;
+import interfaz.grafica.ddsi.dtos.output.EditionStatus;
 import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
+import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
+import interfaz.grafica.ddsi.services.SourcesService;
+import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
+import interfaz.grafica.ddsi.services.EditionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
 import interfaz.grafica.ddsi.services.SubmissionRequestService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
-
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 
 @Controller
 @RequestMapping("/share")
-
-@Slf4j
 public class ShareController {
 
   private final SourcesService sourcesService;
-
   private final EventService eventService;
   private final DeletionRequestService deletionRequestService;
   private final SubmissionRequestService submissionRequestService;
+  private final CollectionService collectionService;
+  private final EditionRequestService editionRequestService;
 
-  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, SourcesService sourcesService) {
-    this.sourcesService = sourcesService;
-
+  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, SourcesService sourcesService, CollectionService collectionService, EditionRequestService editionRequestService) {
     this.eventService = eventService;
     this.deletionRequestService = deletionRequestService;
     this.submissionRequestService = submissionRequestService;
+    this.sourcesService = sourcesService;
+    this.collectionService = collectionService;
+    this.editionRequestService = editionRequestService;
   }
 
   @PostMapping("/event")
@@ -88,12 +91,9 @@ public class ShareController {
     return "fragments/modals/_messageModals :: messageModal(type=${mType}, title=${mTitle}, desc=${mDesc})";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/deletion-request/evaluate/{dReqId}")
-  public String handleEvaluateDeletionRequest(
-      @PathVariable Long dReqId,
-      @RequestParam("approve") boolean approve,
-      Model model
-  ) {
+  public String handleEvaluateDeletionRequest(@PathVariable Long dReqId, @RequestParam("approve") boolean approve, Model model) {
 
     DeletionRequestEvaluateDTO evaluationDto = new DeletionRequestEvaluateDTO();
     evaluationDto.setAccepted(approve);
@@ -102,12 +102,9 @@ public class ShareController {
     return "redirect:/admin/deletionRequests";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/submission-request/evaluate/{sReqId}")
-  public String handleEvaluateSubmissionRequest(
-      @PathVariable Long sReqId,
-      @RequestParam("approve") boolean approve,
-      Model model
-  ) {
+  public String handleEvaluateSubmissionRequest(@PathVariable Long sReqId, @RequestParam("approve") boolean approve, Model model) {
 
     SubmissionRequestEvaluationDTO evaluationDto = new SubmissionRequestEvaluationDTO(approve, null);
     //TODO: suggestion, deberiamos recibir y pasar al constructor las sugerrencias en caso de que un admin deseeagregar
@@ -116,8 +113,61 @@ public class ShareController {
     return "redirect:/admin/pendingEvents";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/collections")
+  public String createCollection(@ModelAttribute CollectionOutputDTO collectionForm) {
+
+    collectionService.postNew(collectionForm);
+
+    return "redirect:/admin/collections";
+  }
+
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @PostMapping("/collections/{handler}")
+  public String updateCollection(@PathVariable("handler") String handler, @ModelAttribute CollectionOutputDTO collectionForm, HttpServletRequest request) {
+
+    collectionService.updateByHandler(handler, collectionForm);
+
+    String referer = request.getHeader("Referer");
+    return "redirect:" + (referer != null ? referer : "/admin/collections");
+  }
+
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @DeleteMapping("/collections/{handler}")
+  public String deleteCollection(@PathVariable String handler, Model model) {
+
+    collectionService.deleteByHandler(handler);
+
+    model.addAttribute("type", "success"); // O dejalo vacío si no tenés estilos para success
+    model.addAttribute("title", "Colección eliminada");
+    model.addAttribute("desc", "La colección '" + handler + "' ha sido eliminada correctamente.");
+
+    model.addAttribute("reloadOnClose", true);
+
+    return "fragments/modals/_messageModals :: messageModal";
+  }
+
+  @PreAuthorize("hasRole('CONTRIBUTOR')")
+  @PostMapping("/events/update/{id}")
+  public String createEditionRequest(@ModelAttribute("event") EventOutputDTO newEventValues, @PathVariable Long id, Model model) {
+
+    editionRequestService.create(id, newEventValues);
+
+
+    return "redirect:/my-events";
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/edition-request/evaluate/{dReqId}")
+  public String handleEvaluateEditionRequest(@PathVariable Long dReqId, @RequestParam("status") EditionStatus newStatus, Model model) {
+
+    editionRequestService.evaluate(dReqId, newStatus);
+    return "redirect:/admin/editionRequests";
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/source")
-  public String adminImport(@RequestParam("csvfile") MultipartFile csvfile, RedirectAttributes redirectAttributes, @RequestParam(defaultValue = "0", name = "page") int page) {
+  public String adminImport(@RequestParam("csvfile") MultipartFile csvfile, RedirectAttributes redirectAttributes) {
 
     try {
       sourcesService.postNewSource(csvfile);
@@ -128,5 +178,4 @@ public class ShareController {
 
     return "redirect:/admin/import";
   }
-
 }

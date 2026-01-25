@@ -4,13 +4,17 @@ import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.exceptions.UnauthorizedException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
+import ar.utn.edu.frba.ddsi.models.entities.edition.EditionStatus;
+import ar.utn.edu.frba.ddsi.models.entities.edition.EventEditionRequest;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
 import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionRequest;
+import ar.utn.edu.frba.ddsi.models.repositories.IEditionRequestRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
 import ar.utn.edu.frba.ddsi.services.ICategoryService;
+import ar.utn.edu.frba.ddsi.services.IEditionRequestService;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,14 +30,14 @@ public class EventService implements IEventService {
 
   private final ICategoryService categoryService;
 
-  private final Publisher publisher;
+  private final IEditionRequestRepository editionRequestRepository;
 
   @Autowired
-  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, Publisher publisher) {
+  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, IEditionRequestRepository editionRequestRepository) {
     this.eventRepository = eventRepository;
     this.submissionRepository = submissionRepository;
     this.categoryService = categoryService;
-    this.publisher = publisher;
+    this.editionRequestRepository = editionRequestRepository;
   }
 
   @Override
@@ -42,7 +46,12 @@ public class EventService implements IEventService {
   }
 
   @Override
-  public EventOutputDTO save(EventDTO dto) {
+  public List<EventOutputDTO> getEventsByUserId(String userId) {
+    return eventRepository.findByCreatorId(userId).stream().map(EventOutputDTO::from).toList();
+  }
+
+  @Override
+  public EventOutputDTO save(EventDTO dto, String userId) {
     //TODO: Validar si el usuario puede realizar esta peticion
 
     Category category = categoryService.findOrCreate(dto.getCategory());
@@ -55,7 +64,7 @@ public class EventService implements IEventService {
         .longitude(dto.getLongitude())
         .eventDate(dto.getEventDate().atStartOfDay())
         .uploadDate(LocalDateTime.now())
-        .contributor(dto.getContributor()) //TODO: Esto deberia ser un usuario
+        .creatorId(userId) //* Id del usuario que crea el evento
         .build();
 
     eventRepository.save(event);
@@ -65,34 +74,27 @@ public class EventService implements IEventService {
   }
 
   @Override
-  public EventOutputDTO update(Long eventId, EventDTO dto) {
+  public void update(String userId, Long eventId, EventDTO dto) {
 
     //TODO: Validar si el usuario puede realizar esta peticion
 
     Event event = eventRepository.findById(eventId)
         .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
 
-    if (!event.getContributor().equals(dto.getContributor()))
+    if (!event.getCreatorId().equals(userId))
       throw new UnauthorizedException("Unauthorized action: event ownership mismatch");
 
     if (event.getUploadDate().plusDays(7).isBefore(LocalDateTime.now()))
       throw new IllegalStateException("Event editing window has expired. Modifications are no longer allowed");
 
-    if (dto.getTitle() != null) event.setTitle(dto.getTitle());
-    if (dto.getDescription() != null) event.setDescription(dto.getDescription());
-    if (dto.getCategory() != null) event.setCategory(categoryService.findOrCreate(dto.getCategory()));
-    if (dto.getLatitude() != null) event.setLatitude(dto.getLatitude());
-    if (dto.getLongitude() != null) event.setLongitude(dto.getLongitude());
-    if (dto.getEventDate() != null) event.setEventDate(dto.getEventDate().atStartOfDay());
+    if (!event.isAccepted())
+      throw new IllegalStateException("Only accepted events can be edited");
 
-    event.setUpdateDate(LocalDateTime.now());
-    Event eventSaved = eventRepository.save(event);
+    Category category = categoryService.findOrCreate(dto.getCategory());
 
-    if (eventSaved.isAccepted()) {
-      publisher.notifyUpdatedEvent(eventSaved);
-    }
+    EventEditionRequest newEditionRequest = new EventEditionRequest(event, dto, category);
 
-    return EventOutputDTO.from(eventSaved);
+    editionRequestRepository.save(newEditionRequest);
   }
 
   @Override

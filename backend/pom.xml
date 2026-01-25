@@ -29,6 +29,7 @@
         <module>statistics-service</module>
         <module>api-gateway</module>
         <module>server-registry</module>
+        <module>user-service</module>
 
     </modules>
     <scm>

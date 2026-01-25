@@ -1,0 +1,28 @@
+<th:block th:fragment="editionRequestContent">
+
+    <section class="admin-section">
+
+        <header class="page-header">
+            <div class="header-text">
+                <h1 class="page-title">
+                    Solicitudes de edicón
+                    <span class="count" th:text="${editionRequestsPage.totalElements}">0</span>
+                </h1>
+                <p class="page-subtitle">Gestioná las solicitudes de edición de los contibuyentes.</p>
+            </div>
+        </header>
+
+        <div class="admin-scroll-area">
+
+            <div class="empty-state" th:if="${#lists.isEmpty(editionRequestsPage.content)}">
+                <p>No hay solicitudes pendientes.</p>
+            </div>
+
+            <div class="admin-list-container" th:if="${!#lists.isEmpty(editionRequestsPage.content)}"
+                 th:each="req : ${editionRequestsPage.content}">
+                <div th:replace="~{admin/cards/_editionRequestCard :: editRequestCard(req=${req})}"></div>
+            </div>
+
+        </div>
+    </section>
+</th:block>

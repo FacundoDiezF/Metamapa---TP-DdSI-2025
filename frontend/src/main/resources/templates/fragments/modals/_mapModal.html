@@ -1,4 +1,4 @@
-<div th:fragment="mapModal"
+<div th:fragment="mapModal(currentLat, currentLng, targetContainer, renderMode)"
      class="modal-overlay"
      role="dialog"
      aria-modal="true"
@@ -12,20 +12,28 @@
 
         <h2>Seleccionar Ubicación</h2>
 
-        <div id="map-container" class="map-modal-canvas"></div>
+        <div id="map-container"
+             class="map-modal-canvas"
+             th:attr="data-lat=${currentLat}, data-lng=${currentLng}">
+        </div>
 
         <p class="help info">Hacé click en el mapa para marcar el punto exacto.</p>
 
-        <form hx-post="/location-input-fragment"
-              hx-target="#selected-location"
+        <form th:action="@{/location-input-fragment(renderMode=${renderMode})}"
+              method="post"
+              th:hx-post="@{/location-input-fragment(renderMode=${renderMode})}"
+              th:hx-target="${targetContainer}"
               hx-swap="innerHTML"
               hx-on:htmx:after-request="if(event.detail.successful) { document.getElementById('modals-here').innerHTML = '' }">
 
-            <input type="hidden" id="modal-lat" name="latitude" required>
-            <input type="hidden" id="modal-lng" name="longitude" required>
+            <input type="hidden" id="modal-lat" name="latitude" th:value="${currentLat}" required>
+            <input type="hidden" id="modal-lng" name="longitude" th:value="${currentLng}" required>
 
             <div class="actions-buttons">
-                <button type="submit" class="btn-apply" id="btn-confirm-loc" disabled>
+                <button type="submit"
+                        class="btn-apply"
+                        id="btn-confirm-loc"
+                        th:disabled="${currentLat == null}">
                     Confirmar Ubicación
                 </button>
             </div>
@@ -36,7 +44,7 @@
 
 </div>
 
-<div th:fragment="locationSelectedFragment" class="chip-toggle">
+<div th:fragment="locationBasicChip(lat, lng)" class="chip-toggle">
     <div hx-get="/modals/map-selection"
          hx-target="#modals-here"
          hx-swap="innerHTML"
@@ -51,6 +59,25 @@
 
     </div>
 
-    <input type="hidden" name="latitude" th:value="${lat}" />
-    <input type="hidden" name="longitude" th:value="${lng}" />
+    <input type="hidden" name="latitude" th:value="${lat}"/>
+    <input type="hidden" name="longitude" th:value="${lng}"/>
 </div>
+
+<th:block th:fragment="locationBadgeForEdit(lat, lng)">
+
+    <input type="hidden" name="latitude" th:value="${lat}"/>
+    <input type="hidden" name="longitude" th:value="${lng}"/>
+
+    <div class="location-content">
+                    <span class="edit-trigger-text"
+                          th:text="${#numbers.formatDecimal(lat, 1, 4)} + ', ' + ${#numbers.formatDecimal(lng, 1, 4)}">
+                            -34.1234, -58.1234
+                    </span>
+    </div>
+
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#050315" stroke-width="2">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+    </svg>
+
+</th:block>

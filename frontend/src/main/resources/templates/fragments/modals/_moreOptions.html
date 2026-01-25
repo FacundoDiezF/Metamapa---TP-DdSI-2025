@@ -68,75 +68,69 @@
 </div>
 
 <!-- Modal Seleccionar 1 categoria (Para newEvent) -->
-<div th:fragment="oneChipElementModal(itemsPage, elementName,modalPagePath)"
+<div th:fragment="oneChipElementModal(itemsPage, elementName, modalPagePath, targetContainer, renderMode)"
      class="modal-overlay"
      role="dialog"
      aria-modal="true"
      hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
 
     <div class="modal-body">
-        <button
-                class="modal-close"
+        <button class="modal-close"
                 aria-label="Cerrar"
-                hx-on:click="this.closest('#modals-here').innerHTML = ''"
-        >
+                hx-on:click="this.closest('#modals-here').innerHTML = ''">
             ✕
         </button>
 
-        <h2 th:text="'Seleccionar una ' + ${elementName}"> Seleccionar un elementName </h2>
+        <h2 th:text="'Seleccionar una ' + ${elementName}">Seleccionar</h2>
 
-        <form hx-post="/category-input-fragment"
-              hx-target="#selected-category"
-              hx-swap="innerHTML" hx-on:htmx:after-request="if(event.detail.successful) { document.getElementById('modals-here').innerHTML = '' }">
+        <form th:action="@{/category-input-fragment(renderMode=${renderMode})}"
+              method="post"
+              th:hx-post="@{/category-input-fragment(renderMode=${renderMode})}"
+              th:hx-target="${targetContainer}"
+              hx-swap="innerHTML"
+              hx-on:htmx:after-request="if(event.detail.successful) { document.getElementById('modals-here').innerHTML = '' }">
 
             <div class="chips-box">
                 <div class="chips">
-                        <span th:each="item : ${itemsPage.content}" class="chip-toggle">
-                            <div>
-                                <input type="radio" name="itemSelected"
-                                       th:id="'item-modal:' + ${item.id}"
-                                       th:value="|${item.id}::${item.name}|"
-                                />
-                                <label th:for="'item-modal:' + ${item.id}" class="chip"
-                                       th:text="${item.name}">
-                                    Nombre Tag Element
-                                </label>
-                            </div>
-                        </span>
+                    <span th:each="item : ${itemsPage.content}" class="chip-toggle">
+                        <div>
+                            <input type="radio" name="itemSelected"
+                                   th:id="'item-modal:' + ${item.id}"
+                                   th:value="|${item.id}::${item.name}|"/>
+                            <label th:for="'item-modal:' + ${item.id}" class="chip"
+                                   th:text="${item.name}">
+                                Nombre
+                            </label>
+                        </div>
+                    </span>
                 </div>
             </div>
-            <p class="help info">Seleccioná solo una categoria para aplicarla a tu evento.</p>
+
+            <p class="help info">Seleccioná una opción.</p>
 
             <div class="actions-buttons">
-
-                <div class="pagination"
-                     hx-target="#modals-here"
-                     hx-swap="innerHTML">
+                <div class="pagination" hx-target="#modals-here" hx-swap="innerHTML">
                     <button th:if="${!itemsPage.first}"
-                            th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber - 1})}"
-                    >
+                            th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber - 1}, targetContainer=${targetContainer}, renderMode=${renderMode})}">
                         Anterior
                     </button>
 
                     <span th:text="'Página ' + ${itemsPage.pageNumber + 1} + ' de ' + ${itemsPage.totalPages}"></span>
 
                     <button th:if="${!itemsPage.last}"
-                            th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber + 1})}"
-                    >
+                            th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber + 1}, targetContainer=${targetContainer}, renderMode=${renderMode})}">
                         Siguiente
                     </button>
                 </div>
 
-                <button type="submit" class="btn-apply">
-                    Seleccionar
-                </button>
+                <button type="submit" class="btn-apply">Seleccionar</button>
             </div>
 
         </form>
     </div>
 </div>
 
-<th:block th:fragment="categoryInputForOneCategoryModal(catId, catName)">
+<th:block th:fragment="categoryBasicChip(catId, catName)">
     <input type="checkbox"
            name="category"
            th:id="'cat-modal:' + ${catId}"
@@ -148,4 +142,16 @@
            th:text="${catName}">
         Categoría
     </label>
+</th:block>
+
+<th:block th:fragment="categoryBadgeForEdit(catId, catName)">
+    <input type="hidden" name="category" th:value="${catName}"/>
+
+    <span class="category-badge edit-trigger">
+        <span th:text="${catName}">Nombre Categoria</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+    </span>
 </th:block>

@@ -1,7 +1,5 @@
-.card-actions {
-    margin-top: 1.3rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 0.8rem;
+.request-id-badge {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-weight: 500;
 }

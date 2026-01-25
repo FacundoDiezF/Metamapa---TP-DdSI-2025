@@ -22,7 +22,7 @@
                  th:if="${!#lists.isEmpty(submissionPage.content)}">
 
                 <th:block th:each="submission : ${submissionPage.content}">
-                    <div th:replace="~{fragments/_pendingEventCard :: cardFragment(sub=${submission})}"></div>
+                    <div th:replace="~{admin/cards/_pendingEventCard :: cardFragment(sub=${submission})}"></div>
                 </th:block>
             </div>
         </div>

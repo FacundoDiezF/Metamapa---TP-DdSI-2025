@@ -6,7 +6,7 @@
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
     padding: 18px;
     transition: box-shadow .18s ease, border-color .18s ease;
     display: flex;
@@ -35,7 +35,10 @@
     color: inherit;
     text-decoration: none;
 }
-.card-title a:hover { text-decoration: underline; }
+
+.card-title a:hover {
+    text-decoration: underline;
+}
 
 .top-actions {
     display: flex;
@@ -93,4 +96,323 @@
     border-color: var(--Accent);
     background-color: var(--Accent);
     color: #fff;
+}
+
+/* =========================================
+   MODAL: Crear Nueva Colección
+   ========================================= */
+
+/* ========================================= SECCIÓN 0: Estructura modal con scroll header y footer */
+
+.modal-body.modal-collection-size {
+    width: 95%;
+    max-width: 850px;
+
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+}
+
+/* Header interno */
+.modal-body.modal-collection-size h2 {
+    padding: 1.5rem 1.5rem 1rem;
+    margin: 0;
+    flex-shrink: 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Cuerpo con scroll */
+.modal-body.modal-collection-size .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+}
+
+.modal-form-flex {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.form-scrollable-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* footer fijo (Botones) */
+.modal-footer-fixed {
+    flex-shrink: 0;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #f1f5f9;
+    background: #fff;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    z-index: 5;
+}
+
+/* ========================================= SECCIÓN 1: FUENTES (Checkbox Chips) */
+
+.sources-chips-container {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-12, 12px);
+    padding: 12px;
+
+    max-height: 160px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+.source-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.source-option {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.source-option-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+}
+
+.source-option-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    transition: all 0.2s ease;
+}
+
+.source-option:hover .source-option-label {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.source-option-input:checked ~ .source-option-label {
+    background: var(--Accent, #0f172a);
+    border-color: var(--Accent, #0f172a);
+    color: #ffffff;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+/* ========================================= SECCIÓN 2: CONSENSO*/
+
+.consensus-section {
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.consensus-chips-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.consensus-radio {
+    display: none;
+}
+
+.consensus-chip-label {
+    padding: 6px 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background-color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: capitalize;
+}
+
+.consensus-chip:hover .consensus-chip-label {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    color: #334155;
+}
+
+.consensus-radio:checked + .consensus-chip-label {
+    background-color: #e0f2fe;
+    border-color: #3b82f6;
+    color: #0369a1;
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(59, 130, 246, 0.1);
+}
+
+/* ========================================= SECCIÓN 3: CONDICIONES (Lista Dinámica)*/
+
+.conditions-section {
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.conditions-options {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.criteria-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.criteria-actions small {
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+}
+
+.btn-xs-outline {
+    background: transparent;
+    border: 1px dashed #cbd5e1;
+    color: #64748b;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-xs-outline:hover {
+    border-color: var(--Accent, #0f172a);
+    color: var(--Accent, #0f172a);
+    background: #f8fafc;
+}
+
+.criteria-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.condition-item {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.2s;
+}
+
+.condition-item:hover {
+    background: #fcfcfc;
+}
+
+.condition-row-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.criteria-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: #f1f5f9;
+    color: #475569;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: auto;
+    min-width: 0;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.input-sm {
+    padding: 6px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    flex-grow: 1;
+    outline: none;
+    color: #334155;
+    background: #fff;
+    min-width: 0;
+}
+
+.input-sm:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.btn-icon-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.btn-icon-remove:hover {
+    background: #fef2f2;
+}
+
+/* Animación de entrada (Fade In Up) */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.25s ease-out forwards;
 }

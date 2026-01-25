@@ -69,7 +69,7 @@ public class Event {
   private Location location;
 
   @Column(name = "event_date", nullable = false)
-  private LocalDateTime eventDate;
+  private LocalDateTime eventDate; //TODO: Debe ser LocalDate
 
   //-- Funcionales
   @Column(name = "upload_date", nullable = false)
@@ -83,9 +83,6 @@ public class Event {
   @Column(name = "deleted", nullable = false)
   private boolean deleted = false;
 
-  //@ManyToMany
-  //@Builder.Default public Set<Tag> tags = new HashSet<>();
-
   @ElementCollection
   @Enumerated(EnumType.STRING)
   @CollectionTable(name = "event_passed_consensus", joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
@@ -95,17 +92,28 @@ public class Event {
 
 
   public void update(EventInputDTO dto, Category category) {
-    if (dto.getTitle() != null) this.title = dto.getTitle();
-    if (dto.getDescription() != null) this.description = dto.getDescription();
-    if (category != null) this.category = category;
-    if (dto.getLatitude() != null) this.location.getCoordinate().setLatitude(dto.getLatitude());
-    if (dto.getLongitude() != null) this.location.getCoordinate().setLongitude(dto.getLongitude());
-    if (dto.getEventDate() != null) this.eventDate = dto.getEventDate();
+
     this.updatedDate = LocalDateTime.now();
+
+    if (dto.getTitle() != null && !Objects.equals(dto.getTitle(), this.title)) {
+      this.title = dto.getTitle();
+    }
+
+    if (dto.getDescription() != null && !Objects.equals(dto.getDescription(), this.description)) {
+      this.description = dto.getDescription();
+    }
+
+    if (category != null && !Objects.equals(category, this.category)) {
+      this.category = category;
+    }
+
+    if (dto.getEventDate() != null && !Objects.equals(dto.getEventDate(), this.eventDate)) {
+      this.eventDate = dto.getEventDate();
+    }
   }
 
   public boolean meetsAlgorithmConsensus(ConsensusType consensusType) {
-    if (consensusType == null) return true;
+    if (consensusType == ConsensusType.ALL_PASS) return true;
 
     return passedConsensus.contains(consensusType);
   }

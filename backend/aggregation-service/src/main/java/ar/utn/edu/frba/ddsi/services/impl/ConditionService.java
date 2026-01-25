@@ -12,6 +12,7 @@ import ar.utn.edu.frba.ddsi.models.repositories.ICategoryRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IConditionRepository;
 import ar.utn.edu.frba.ddsi.services.ICategoryService;
 import ar.utn.edu.frba.ddsi.services.IConditionService;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -50,8 +51,8 @@ public class ConditionService implements IConditionService {
         yield new CategoryCondition(category);
       }
       case TITLE -> new TitleCondition(conditionDTO.getConditionValue());
-      case FROM_DATE -> new FromDateCondition(LocalDateTime.parse(conditionDTO.getConditionValue()));
-      case TO_DATE -> new UntilDateCondition(LocalDateTime.parse(conditionDTO.getConditionValue()));
+      case FROM_DATE -> new FromDateCondition(LocalDate.parse(conditionDTO.getConditionValue()).atStartOfDay());
+      case TO_DATE -> new UntilDateCondition(LocalDate.parse(conditionDTO.getConditionValue()).atStartOfDay());
 
       //TODO: Manejar errores de LocalDateTime.parse y Long.parseLong
     };

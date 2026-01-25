@@ -1,0 +1,25 @@
+<article class="deletion-card"
+         th:fragment="deletionRequestCard(req)"
+         th:attr="data-request-id=${req.id}">
+
+    <div class="motive-box">
+        <span class="label">Motivo del reporte</span>
+        <p class="text" th:text="${req.argument ?: 'Sin motivo especificado'}"></p>
+    </div>
+
+    <div class="deletion-target">
+        <span class="label">Hecho reportado</span>
+        <div class="event-embed">
+            <div th:replace="~{fragments/_eventCard.html :: cardFragment(${req.event})}"></div>
+        </div>
+    </div>
+
+    <div class="deletion-actions">
+        <form th:action="@{/share/deletion-request/evaluate/{id}(id=${req.id}, approve=true)}" method="post">
+            <button class="btn btn-danger">Eliminar Hecho</button>
+        </form>
+        <form th:action="@{/share/deletion-request/evaluate/{id}(id=${req.id}, approve=false)}" method="post">
+            <button class="btn btn-secondary">Desestimar</button>
+        </form>
+    </div>
+</article>
