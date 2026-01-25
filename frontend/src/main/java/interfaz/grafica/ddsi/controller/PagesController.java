@@ -3,6 +3,7 @@ package interfaz.grafica.ddsi.controller;
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
 import interfaz.grafica.ddsi.dtos.CollectionDTO;
 import interfaz.grafica.ddsi.dtos.DeletionRequestDTO;
+import interfaz.grafica.ddsi.dtos.EditionRequestDTO;
 import interfaz.grafica.ddsi.dtos.EventDTO;
 import interfaz.grafica.ddsi.dtos.Origin;
 import interfaz.grafica.ddsi.dtos.PageDTO;
@@ -14,6 +15,7 @@ import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.services.CategoryService;
 import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
+import interfaz.grafica.ddsi.services.EditionRequestService;
 import interfaz.grafica.ddsi.services.EventService;
 import interfaz.grafica.ddsi.services.LocationService;
 import interfaz.grafica.ddsi.services.SourcesService;
@@ -42,10 +44,11 @@ public class PagesController {
   private final SourcesService sourcesService;
   private final DeletionRequestService deletionRequestService;
   private final SubmissionRequestService submissionRequestService;
+  private final EditionRequestService editionRequestService;
 
 
   @Autowired
-  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService, SourcesService sourcesService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService) {
+  public PagesController(CollectionService collectionService, EventService eventService, CategoryService categoryService, LocationService locationService, StatisticsService statisticsService, SourcesService sourcesService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, EditionRequestService editionRequestService) {
     this.collectionService = collectionService;
     this.eventService = eventService;
     this.categoryService = categoryService;
@@ -54,6 +57,7 @@ public class PagesController {
     this.sourcesService = sourcesService;
     this.deletionRequestService = deletionRequestService;
     this.submissionRequestService = submissionRequestService;
+    this.editionRequestService = editionRequestService;
   }
 
   @GetMapping("/")
@@ -134,6 +138,7 @@ public class PagesController {
 
     model.addAttribute("pageTitle", "MetaMapa · Colecciones");
     model.addAttribute("active", "collections");
+    model.addAttribute("active", "collections");
 
     return "collections";
   }
@@ -158,6 +163,20 @@ public class PagesController {
     model.addAttribute("pageTitle", "MetaMapa · Mapa");
     model.addAttribute("active", "map");
     return "map";
+  }
+
+  @PreAuthorize("hasRole('CONTRIBUTOR')")
+  @GetMapping("/my-events")
+  public String userEvents(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
+
+    List<EventDTO> userEvents = eventService.getAllByUser();
+
+    model.addAttribute("userEvents", userEvents);
+
+    model.addAttribute("pageTitle", "MetaMapa · Mis Hechos");
+    model.addAttribute("active", "my-events");
+
+    return "myEvents";
   }
 
   @GetMapping("/404")
@@ -263,7 +282,20 @@ public class PagesController {
     return "admin/pages/deletionRequestsSection";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/admin/editionRequests")
+  public String adminEditionRequests(Model model, @RequestParam(defaultValue = "0", name = "page") int page) {
 
+    PageDTO<EditionRequestDTO> editionRequestsPage = editionRequestService.getAll(page, 5);
+
+    model.addAttribute("editionRequestsPage", editionRequestsPage);
+
+
+    model.addAttribute("active", "admin");
+    model.addAttribute("pageTitle", "MetaMapa · Gestionar Solicitudes de Edición");
+
+    return "admin/pages/editionRequestsSection";
+  }
 }
 
 

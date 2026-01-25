@@ -40,40 +40,17 @@ public class EditionRequestService implements IEditionRequestService {
 
   @Override
   @Transactional
-  public EditionRequestOutputDTO evaluate(Long editionRequestId, EditionStatus newEvaluationStatus) {
+  public EditionRequestOutputDTO evaluate(String userId, Long editionRequestId, EditionStatus newEvaluationStatus) {
 
     EventEditionRequest editionRequest = editionRequestRepository.findById(editionRequestId)
         .orElseThrow(() -> new NotFoundException("Edition-Request not found for ID: " + editionRequestId));
 
-    editionRequest.setStatus(newEvaluationStatus);
-    editionRequest.setEvaluationDate(LocalDateTime.now());
-    editionRequest.setEvaluatorId("REMPLAZAR_CON_ID-USUARIO"); // TODO: Reemplazar con el id del usuario admin actual (lo toma del header de la peticion)
-    editionRequestRepository.save(editionRequest);
+    editionRequest.evaluate(newEvaluationStatus, userId);
 
-    // Si fue aprobada se actualizan los datos del evento y se notifica a los observadores
     if (editionRequest.getStatus() == EditionStatus.APPROVED) {
       Event editedEvent = editionRequest.getEvent();
 
-      editedEvent.setUpdateDate(LocalDateTime.now());
-
-      if (!Objects.equals(editionRequest.getNewTitle(), editedEvent.getTitle())) {
-        editedEvent.setTitle(editionRequest.getNewTitle());
-      }
-      if (!Objects.equals(editionRequest.getNewDescription(), editedEvent.getDescription())) {
-        editedEvent.setDescription(editionRequest.getNewDescription());
-      }
-      if (editionRequest.getNewCategory() != null && !Objects.equals(editionRequest.getNewCategory(), editedEvent.getCategory())) {
-        editedEvent.setCategory(editionRequest.getNewCategory());
-      }
-      if (editionRequest.getNewLatitude() != null && !Objects.equals(editionRequest.getNewLatitude(), editedEvent.getLatitude())) {
-        editedEvent.setLatitude(editionRequest.getNewLatitude());
-      }
-      if (editionRequest.getNewLongitude() != null && !Objects.equals(editionRequest.getNewLongitude(), editedEvent.getLongitude())) {
-        editedEvent.setLongitude(editionRequest.getNewLongitude());
-      }
-      if (editionRequest.getNewEventDate() != null && !Objects.equals(editionRequest.getNewEventDate(), editedEvent.getEventDate())) {
-        editedEvent.setEventDate(editionRequest.getNewEventDate());
-      }
+      editionRequest.applyChangesToEvent();
 
       eventRepository.save(editedEvent);
 
@@ -81,6 +58,8 @@ public class EditionRequestService implements IEditionRequestService {
         publisher.notifyUpdatedEvent(editedEvent);
       }
     }
+
+    editionRequestRepository.save(editionRequest);
 
     return EditionRequestOutputDTO.from(editionRequest);
   }

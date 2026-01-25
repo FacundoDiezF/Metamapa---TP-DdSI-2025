@@ -1,0 +1,168 @@
+<article class="event-card" th:fragment="cardEventReadMode(event)" th:id="'view-' + ${event.id}">
+
+    <header class="card-header">
+        <span class="category-badge" th:text="${event.category}">
+            Categoria
+        </span>
+
+        <button class="icon-btn"
+                title="Editar"
+                type="button"
+                th:onclick="'toggleEditMode(' + ${event.id} + ')'">
+            <img src="/shared/icons/edit.svg" alt="Editar">
+        </button>
+    </header>
+
+    <div class="card-body">
+        <h3 class="event-title" th:text="${event.title}">
+            Titulo del evento
+        </h3>
+
+        <div class="event-meta">
+            <span class="meta-date">
+                <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2"
+                                                                                                          x2="16"
+                                                                                                          y2="6"></line><line
+                        x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span th:text="${#temporals.format(event.eventDate, 'dd MMMM yyyy')}">
+                    DD MMMM AAAA
+                </span>
+            </span>
+
+            <span class="meta-location"
+                  th:if="${event.latitude != null and event.longitude != null}">
+
+                <span class="meta-separator">|</span>
+
+                <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12"
+                                                                                                              cy="10"
+                                                                                                              r="3"></circle></svg>
+
+                <span th:text="${#numbers.formatDecimal(event.latitude, 1, 4)} + ', ' + ${#numbers.formatDecimal(event.longitude, 1, 4)}">
+                    -34.1234, -58.1234
+                </span>
+
+                <a th:href="@{'https://www.google.com/maps/search/?api=1&query=' + ${event.latitude} + ',' + ${event.longitude}}"
+                   target="_blank"
+                   title="Ver en Mapa"
+                   class="arrow-icon-map"
+                >↗</a>
+            </span>
+        </div>
+
+        <p class="event-description" th:text="${event.description}">
+            Descripción del hecho...
+        </p>
+    </div>
+
+    <div class="card-footer-info">
+        <p class="source-info" th:text="${event.Origin} + ' • ' + ${event.sourceId}">
+            SOURCE • ID
+        </p>
+    </div>
+
+</article>
+
+<!---------------------------------------------------------------------------------------------------------------- CARD DE EDIT EVENT -->
+<form class="event-card event-card-edit-mode d-none"
+      th:fragment="editEventForm(event)"
+      th:object="${event}"
+      th:id="'form-' + ${event.id}"
+      th:action="@{/share/events/update/{id}(id=${event.id})}"
+      method="post">
+    <header class="card-header">
+
+        <div th:id="'cat-wrapper-' + ${event.id}"
+             th:hx-get="@{/modals/one-category(targetContainer='#cat-wrapper-' + ${event.id}, renderMode='badge')}"
+             hx-target="#modals-here"
+             hx-swap="innerHTML"
+             class="category-selector-wrapper">
+
+            <input type="hidden" name="category" th:value="${event.category}"/>
+
+            <span class="category-badge edit-trigger">
+                <span th:text="${event.category}">Categoria</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path
+                        d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path
+                        d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            </span>
+        </div>
+
+        <button type="button"
+                class="icon-btn"
+                th:onclick="'toggleEditMode(' + ${event.id} + ')'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#050315" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </header>
+
+    <div class="card-body">
+
+        <div class="field-edit">
+            <input type="text"
+                   name="title"
+                   th:value="${event.title}"
+                   class="edit-input title-input"
+                   required/>
+        </div>
+
+        <div class="event-meta">
+
+            <span class="meta-date edit-mode">
+                <input type="date"
+                       name="eventDate"
+                       th:value="${event.eventDate}"
+                       class="edit-input date-input"
+                       required/>
+            </span>
+
+            <span class="meta-separator">|</span>
+
+            <div th:id="'loc-wrapper-' + ${event.id}"
+                 th:hx-get="@{/modals/map-selection(targetContainer='#loc-wrapper-' + ${event.id}, renderMode='badge')}"
+                 hx-vals='js:{ currentLat: event.currentTarget.querySelector("input[name=latitude]").value, currentLng: event.currentTarget.querySelector("input[name=longitude]").value }'
+                 hx-target="#modals-here"
+                 hx-swap="innerHTML"
+                 class="meta-location location-selector-wrapper edit-input location-input-fake"
+                 style="cursor: pointer;">
+
+                <input type="hidden" name="latitude" th:value="${event.latitude}"/>
+                <input type="hidden" name="longitude" th:value="${event.longitude}"/>
+
+                <div class="location-content">
+                    <span class="edit-trigger-text"
+                          th:text="${#numbers.formatDecimal(event.latitude, 1, 4)} + ', ' + ${#numbers.formatDecimal(event.longitude, 1, 4)}">
+                            -34.1234, -58.1234
+                    </span>
+                </div>
+
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#050315" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+
+            </div>
+        </div>
+
+        <div class="field-edit">
+            <textarea class="edit-input desc-input"
+                      name="description"
+                      rows="4"
+                      th:text="${event.description}"
+                      required></textarea>
+        </div>
+    </div>
+
+    <div class="card-footer-actions">
+        <p class="source-info" th:text="${event.Origin} + ' • ' + ${event.sourceId}">SOURCE</p>
+
+        <button type="submit" class="btn-apply">
+            Solicitar Cambios
+        </button>
+    </div>
+
+</form>

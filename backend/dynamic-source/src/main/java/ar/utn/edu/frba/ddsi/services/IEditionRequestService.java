@@ -9,5 +9,5 @@ public interface IEditionRequestService {
 
   Page<EditionRequestOutputDTO> getEditionRequests(EditionStatus status, Pageable pageable);
 
-  EditionRequestOutputDTO evaluate(Long editionRequestId, EditionStatus newEvaluationStatus);
+  EditionRequestOutputDTO evaluate(String userId, Long editionRequestId, EditionStatus newEvaluationStatus);
 }

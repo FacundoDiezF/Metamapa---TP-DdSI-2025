@@ -46,6 +46,11 @@ public class EventService implements IEventService {
   }
 
   @Override
+  public List<EventOutputDTO> getEventsByUserId(String userId) {
+    return eventRepository.findByCreatorId(userId).stream().map(EventOutputDTO::from).toList();
+  }
+
+  @Override
   public EventOutputDTO save(EventDTO dto, String userId) {
     //TODO: Validar si el usuario puede realizar esta peticion
 
@@ -76,7 +81,7 @@ public class EventService implements IEventService {
     Event event = eventRepository.findById(eventId)
         .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
 
-    if (!event.getCreatorId().equals(userId)) //! Verificar que esto ande bien
+    if (!event.getCreatorId().equals(userId))
       throw new UnauthorizedException("Unauthorized action: event ownership mismatch");
 
     if (event.getUploadDate().plusDays(7).isBefore(LocalDateTime.now()))
@@ -87,17 +92,7 @@ public class EventService implements IEventService {
 
     Category category = categoryService.findOrCreate(dto.getCategory());
 
-    EventEditionRequest newEditionRequest = EventEditionRequest.builder()
-        .event(event)
-        .status(EditionStatus.PENDING)
-        .requestDate(LocalDateTime.now())
-        .newTitle(dto.getTitle())
-        .newDescription(dto.getDescription())
-        .newCategory(category)
-        .newLatitude(dto.getLatitude())
-        .newLongitude(dto.getLongitude())
-        .newEventDate(dto.getEventDate().atStartOfDay())
-        .build();
+    EventEditionRequest newEditionRequest = new EventEditionRequest(event, dto, category);
 
     editionRequestRepository.save(newEditionRequest);
   }

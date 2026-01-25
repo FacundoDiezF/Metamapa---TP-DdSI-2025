@@ -53,17 +53,33 @@ public class ModalsController {
   @GetMapping("/one-category")
   public String getOneCategoryModal(
       @RequestParam(defaultValue = "0", name = "page-cat") int page,
+      @RequestParam(value = "renderMode", defaultValue = "chip") String renderMode,
+      @RequestParam(value = "targetContainer", defaultValue = "#selected-category") String targetContainer,
+
       Model model) {
 
     PageDTO<CategoryDTO> categoriesPage = categoryService.getAll(page, 20);
     model.addAttribute("categoriesPage", categoriesPage);
     model.addAttribute("elementName", "categorias");
+    model.addAttribute("renderMode", renderMode);
+    model.addAttribute("targetContainer", targetContainer);
     model.addAttribute("modalPagePath", "/modals/one-category");
     return "fragments/modals/_moreOptions :: oneChipElementModal(itemsPage=${categoriesPage}, elementName=${elementName}, modalPagePath=${modalPagePath})";
   }
 
   @GetMapping("/map-selection")
-  public String getMapModal() {
+  public String getMapModal(
+      @RequestParam(value = "currentLat", required = false) Double currentLat,
+      @RequestParam(value = "currentLng", required = false) Double currentLng,
+      @RequestParam(value = "targetContainer", defaultValue = "#selected-location") String targetContainer,
+      @RequestParam(value = "renderMode", defaultValue = "chip") String renderMode,
+      Model model
+  ) {
+    model.addAttribute("currentLat", currentLat);
+    model.addAttribute("currentLng", currentLng);
+    model.addAttribute("targetContainer", targetContainer);
+    model.addAttribute("renderMode", renderMode);
+
     return "fragments/modals/_mapModal :: mapModal";
   }
 
@@ -108,7 +124,7 @@ public class ModalsController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/edit-collection/{handler}")
-  public String editNewCollectionModal(@PathVariable String handler , Model model) {
+  public String editNewCollectionModal(@PathVariable String handler, Model model) {
 
     //Obtengo la coleccion y la cargo en el formulario (cambio el formato del DTO)
     CollectionDTO collectionToEdit = collectionService.getByHandler(handler);

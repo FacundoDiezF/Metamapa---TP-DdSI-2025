@@ -4,39 +4,40 @@
 
         <nav class="admin-nav">
             <ul>
-                <li th:classappend="${active}=='resumen' ? ' is-active'">
-                    <a th:href="@{/admin}">
-                        <img class="icon" th:src="@{/shared/icons/stats1-svgrepo-com.svg}" alt="resumen">
-                        Resumen
-                    </a>
-
-                </li>
 
                 <li th:classappend="${active}=='estadisticas' ? ' is-active'">
                     <a th:href="@{/admin/statistics}">
-                        <img class="icon" th:src="@{/shared/icons/insight-svgrepo-com.svg}" alt="estadisticas">
+                        <img class="icon" th:src="@{/shared/icons/stats1-svgrepo-com.svg}" alt="estadisticas">
                         Estadísticas
                     </a>
                 </li>
 
                 <li th:classappend="${active}=='colecciones' ? ' is-active'">
                     <a th:href="@{/admin/collections}">
-                        <img class="icon" th:src="@{/shared/icons/Group.svg}" alt="colecciones">
+                        <img class="icon" th:src="@{/shared/icons/groupFolder.svg}" alt="colecciones">
                         Colecciones
-                    </a>
-                </li>
-
-                <li th:classappend="${active}=='eliminaciones' ? ' is-active'">
-                    <a th:href="@{/admin/deletionRequests}">
-                        <img class="icon" th:src="@{/shared/icons/Group.svg}" alt="eliminaciones">
-                        Solicitudes de Eliminación
                     </a>
                 </li>
 
                 <li th:classappend="${active}=='pendientes' ? ' is-active'">
                     <a th:href="@{/admin/pendingEvents}">
                         <img class="icon" th:src="@{/shared/icons/sand-clock-svgrepo-com.svg}" alt="pendientes">
-                        Hechos pendientes
+                        Hechos Pendientes
+                    </a>
+                </li>
+
+                <li th:classappend="${active}=='ediciones' ? ' is-active'">
+                    <a th:href="@{/admin/editionRequests}">
+                        <img class="icon" th:src="@{/shared/icons/edit.svg}" alt="ediciones">
+                        Solicitudes de Edición
+                    </a>
+
+                </li>
+
+                <li th:classappend="${active}=='eliminaciones' ? ' is-active'">
+                    <a th:href="@{/admin/deletionRequests}">
+                        <img class="icon" th:src="@{/shared/icons/trash.svg}" alt="eliminaciones">
+                        Solicitudes de Eliminación
                     </a>
                 </li>
 
