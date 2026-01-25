@@ -7,6 +7,7 @@ import interfaz.grafica.ddsi.dtos.output.EventOutputDTO;
 import interfaz.grafica.ddsi.dtos.output.SubmissionRequestEvaluationDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.CollectionOutputDTO;
 import interfaz.grafica.ddsi.exceptions.BackendException;
+import interfaz.grafica.ddsi.services.SourcesService;
 import interfaz.grafica.ddsi.services.CollectionService;
 import interfaz.grafica.ddsi.services.DeletionRequestService;
 import interfaz.grafica.ddsi.services.EditionRequestService;
@@ -22,21 +23,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/share")
 public class ShareController {
 
+  private final SourcesService sourcesService;
   private final EventService eventService;
   private final DeletionRequestService deletionRequestService;
   private final SubmissionRequestService submissionRequestService;
   private final CollectionService collectionService;
   private final EditionRequestService editionRequestService;
 
-  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, CollectionService collectionService, EditionRequestService editionRequestService) {
+  public ShareController(EventService eventService, DeletionRequestService deletionRequestService, SubmissionRequestService submissionRequestService, SourcesService sourcesService, CollectionService collectionService, EditionRequestService editionRequestService) {
     this.eventService = eventService;
     this.deletionRequestService = deletionRequestService;
     this.submissionRequestService = submissionRequestService;
+    this.sourcesService = sourcesService;
     this.collectionService = collectionService;
     this.editionRequestService = editionRequestService;
   }
@@ -88,11 +93,7 @@ public class ShareController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/deletion-request/evaluate/{dReqId}")
-  public String handleEvaluateDeletionRequest(
-      @PathVariable Long dReqId,
-      @RequestParam("approve") boolean approve,
-      Model model
-  ) {
+  public String handleEvaluateDeletionRequest(@PathVariable Long dReqId, @RequestParam("approve") boolean approve, Model model) {
 
     DeletionRequestEvaluateDTO evaluationDto = new DeletionRequestEvaluateDTO();
     evaluationDto.setAccepted(approve);
@@ -103,11 +104,7 @@ public class ShareController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/submission-request/evaluate/{sReqId}")
-  public String handleEvaluateSubmissionRequest(
-      @PathVariable Long sReqId,
-      @RequestParam("approve") boolean approve,
-      Model model
-  ) {
+  public String handleEvaluateSubmissionRequest(@PathVariable Long sReqId, @RequestParam("approve") boolean approve, Model model) {
 
     SubmissionRequestEvaluationDTO evaluationDto = new SubmissionRequestEvaluationDTO(approve, null);
     //TODO: suggestion, deberiamos recibir y pasar al constructor las sugerrencias en caso de que un admin deseeagregar
@@ -127,10 +124,7 @@ public class ShareController {
 
   @PreAuthorize("hasAnyRole('ADMIN')")
   @PostMapping("/collections/{handler}")
-  public String updateCollection(
-      @PathVariable("handler") String handler,
-      @ModelAttribute CollectionOutputDTO collectionForm,
-      HttpServletRequest request) {
+  public String updateCollection(@PathVariable("handler") String handler, @ModelAttribute CollectionOutputDTO collectionForm, HttpServletRequest request) {
 
     collectionService.updateByHandler(handler, collectionForm);
 
@@ -155,11 +149,7 @@ public class ShareController {
 
   @PreAuthorize("hasRole('CONTRIBUTOR')")
   @PostMapping("/events/update/{id}")
-  public String createEditionRequest(
-      @ModelAttribute("event") EventOutputDTO newEventValues,
-      @PathVariable Long id,
-      Model model
-  ) {
+  public String createEditionRequest(@ModelAttribute("event") EventOutputDTO newEventValues, @PathVariable Long id, Model model) {
 
     editionRequestService.create(id, newEventValues);
 
@@ -169,15 +159,23 @@ public class ShareController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/edition-request/evaluate/{dReqId}")
-  public String handleEvaluateEditionRequest(
-      @PathVariable Long dReqId,
-      @RequestParam("status") EditionStatus newStatus,
-      Model model
-  ) {
+  public String handleEvaluateEditionRequest(@PathVariable Long dReqId, @RequestParam("status") EditionStatus newStatus, Model model) {
 
     editionRequestService.evaluate(dReqId, newStatus);
     return "redirect:/admin/editionRequests";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/source")
+  public String adminImport(@RequestParam("csvfile") MultipartFile csvfile, RedirectAttributes redirectAttributes) {
 
+    try {
+      sourcesService.postNewSource(csvfile);
+      redirectAttributes.addFlashAttribute("importSuccess", true);
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("importError", "Ocurrió un error al importar el CSV.");
+    }
+
+    return "redirect:/admin/import";
+  }
 }

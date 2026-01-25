@@ -3,6 +3,7 @@ package ar.utn.edu.frba.ddsi.services;
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventImportDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import java.util.List;
+import java.util.Set;
 
 public interface IEventService {
 
@@ -11,4 +12,6 @@ public interface IEventService {
   EventOutputDTO createEvent(EventImportDTO eventImportDTO);
 
   EventOutputDTO deleteEvent(Long eventId);
+
+
 }

@@ -31,9 +31,13 @@ import interfaz.grafica.ddsi.services.internal.WebApiCallerService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -306,6 +310,14 @@ public class ServerAdapter {
   public void evaluateEditionRequest(Long id, EditionStatus newStatus) {
     webApiCallerService.put("/api/v1/edition-requests/" + id, newStatus, Void.class);
   } //* Funciona
+
+  //--------------- IMPORT FROM CSV ----------------//
+  public void postNewSource(MultipartFile csvfile) {
+    MultipartBodyBuilder builder = new MultipartBodyBuilder();
+    builder.part("csvfile", csvfile.getResource());
+
+    webApiCallerService.post("/api/v1/sources", BodyInserters.fromMultipartData(builder.build()), Void.class, MediaType.MULTIPART_FORM_DATA);
+  }
 
   //--------------- AUTHENTICATION ----------------//
   public AuthResponseDTO login(LoginRequestDTO request) {

@@ -5,9 +5,9 @@ import interfaz.grafica.ddsi.exceptions.BackendException;
 import interfaz.grafica.ddsi.exceptions.ConnectionException;
 import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
 public class SourcesService {
@@ -19,7 +19,11 @@ public class SourcesService {
   }
 
   public List<SourceDTO> getAll() {
-    return server.getAllSources(); 
+    return server.getAllSources();
+  }
+
+  public void postNewSource(MultipartFile csvfile) {
+    server.postNewSource(csvfile);
   }
 
 }

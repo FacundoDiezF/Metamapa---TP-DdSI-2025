@@ -24,7 +24,6 @@ import interfaz.grafica.ddsi.services.SubmissionRequestService;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -295,6 +294,16 @@ public class PagesController {
     model.addAttribute("pageTitle", "MetaMapa · Gestionar Solicitudes de Edición");
 
     return "admin/pages/editionRequestsSection";
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/admin/import")
+  public String adminImportPage(Model model) {
+
+    model.addAttribute("active", "admin");
+    model.addAttribute("pageTitle", "MetaMapa · Importar CSV");
+
+    return "admin/pages/importCSV";
   }
 }
 

@@ -22,8 +22,11 @@ public class StatisticsRefreshScheduler {
   @Scheduled(cron = "${statistics.refresh.cron}")
   @PostConstruct
   public void refreshStatistics() {
+    System.out.println("[CRON] Refreshing Stats...");
+
     statisticsService.refreshStatistics(lastUpdate);
     lastUpdate = LocalDateTime.now();
-    System.out.println("FIN"); //?
+
+    System.out.println("[CRON] END Refreshing Stats");
   }
 }
