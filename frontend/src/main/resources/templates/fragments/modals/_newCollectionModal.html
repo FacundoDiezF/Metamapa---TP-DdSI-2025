@@ -1,10 +1,10 @@
 <div th:fragment="newCollectionModal" class="modal-overlay"
-     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
+     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#main-form-modal').innerHTML = '' }">
 
     <div class="modal-body modal-collection-size">
 
         <button type="button" class="modal-close"
-                hx-on:click="this.closest('#modals-here').innerHTML = ''">✕
+                hx-on:click="this.closest('#main-form-modal').innerHTML = ''">✕
         </button>
 
         <h2 th:text="${isEditMode == true} ? 'Editar colección' : 'Crear nueva colección'">
@@ -138,11 +138,32 @@
         </th:block>
 
         <th:block th:if="${condition.conditionType.name() == 'CATEGORY'}">
-            <input type="text"
-                   th:name="|conditions[${idx}].conditionValue|"
-                   th:value="${condition.conditionValue}"
-                   placeholder="ID de Categoría seleccionada"
-                   required class="input-sm"/>
+
+            <div th:id="'wrapper-' + 'conditions-' + ${idx} + '-conditionValue'" class="condition-value-container">
+
+                <th:block th:if="${condition.conditionValue != null}">
+                    <div th:hx-get="@{/category-input-fragment/render-badge(id=${condition.conditionValue}, inputName='conditions[' + ${idx} + '].conditionValue')}"
+                         hx-trigger="load"
+                         hx-swap="outerHTML">
+                        <span class="loading-badge">Cargando...</span>
+                    </div>
+                </th:block>
+
+                <th:block th:if="${condition.conditionValue == null}">
+                    <button type="button"
+                            class="btn-xs-outline btn-select-dashed"
+
+                            th:hx-get="@{/modals/one-category(targetContainer='#wrapper-' + 'conditions-' + ${idx} + '-conditionValue',renderMode='collectionBadge',inputName='conditions[' + ${idx} + '].conditionValue',modalParentId='#main-form-modal')}"
+
+                            hx-target="#modals-here"
+                            hx-swap="innerHTML">
+                        + Seleccionar
+                    </button>
+
+                    <input type="hidden" th:name="|conditions[${idx}].conditionValue|" disabled/>
+                </th:block>
+
+            </div>
         </th:block>
 
         <button type="button"
