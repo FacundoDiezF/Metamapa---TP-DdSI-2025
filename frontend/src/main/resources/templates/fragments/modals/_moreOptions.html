@@ -68,7 +68,7 @@
 </div>
 
 <!-- Modal Seleccionar 1 categoria (Para newEvent) -->
-<div th:fragment="oneChipElementModal(itemsPage, elementName, modalPagePath, targetContainer, renderMode)"
+<div th:fragment="oneChipElementModal(itemsPage, elementName, modalPagePath, targetContainer, renderMode, redirectBase)"
      class="modal-overlay"
      role="dialog"
      aria-modal="true"
@@ -83,9 +83,7 @@
 
         <h2 th:text="'Seleccionar una ' + ${elementName}">Seleccionar</h2>
 
-        <form th:action="@{/category-input-fragment(renderMode=${renderMode})}"
-              method="post"
-              th:hx-post="@{/category-input-fragment(renderMode=${renderMode})}"
+        <form th:hx-post="@{/category-input-fragment(renderMode=${renderMode}, redirectBase=${redirectBase})}"
               th:hx-target="${targetContainer}"
               hx-swap="innerHTML"
               hx-on:htmx:after-request="if(event.detail.successful) { document.getElementById('modals-here').innerHTML = '' }">
@@ -96,7 +94,9 @@
                         <div>
                             <input type="radio" name="itemSelected"
                                    th:id="'item-modal:' + ${item.id}"
-                                   th:value="|${item.id}::${item.name}|"/>
+                                   th:value="|${item.id}::${item.name}|"
+                                   required
+                            />
                             <label th:for="'item-modal:' + ${item.id}" class="chip"
                                    th:text="${item.name}">
                                 Nombre
@@ -111,14 +111,14 @@
             <div class="actions-buttons">
                 <div class="pagination" hx-target="#modals-here" hx-swap="innerHTML">
                     <button th:if="${!itemsPage.first}"
-                            th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber - 1}, targetContainer=${targetContainer}, renderMode=${renderMode})}">
+                            th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber - 1}, targetContainer=${targetContainer}, renderMode=${renderMode}, redirectBase=${redirectBase})}">
                         Anterior
                     </button>
 
                     <span th:text="'Página ' + ${itemsPage.pageNumber + 1} + ' de ' + ${itemsPage.totalPages}"></span>
 
                     <button th:if="${!itemsPage.last}"
-                            th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber + 1}, targetContainer=${targetContainer}, renderMode=${renderMode})}">
+                            th:hx-get="@{${modalPagePath}(page-cat=${itemsPage.pageNumber + 1}, targetContainer=${targetContainer}, renderMode=${renderMode}, redirectBase=${redirectBase})}">
                         Siguiente
                     </button>
                 </div>

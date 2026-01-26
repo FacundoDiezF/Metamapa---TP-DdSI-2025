@@ -2,6 +2,7 @@ package interfaz.grafica.ddsi.controller;
 
 import interfaz.grafica.ddsi.dtos.output.collection.ConditionDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.ConditionType;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,8 @@ public class ExtrasController {
   public String getCategoryInputFragment(
       @RequestParam("itemSelected") String item,
       @RequestParam(value = "renderMode", defaultValue = "chip") String renderMode,
+      @RequestParam(value = "redirectBase", required = false) String redirectBase,
+      HttpServletResponse response,
       Model model) {
 
     String[] parts = item.split("::");
@@ -29,6 +32,12 @@ public class ExtrasController {
     // Dynamic fragment style based on renderMode
     if ("badge".equals(renderMode)) {
       return "fragments/modals/_moreOptions :: categoryBadgeForEdit(catId=${catId}, catName=${catName})";
+    }
+
+    if ("redirect".equals(renderMode) && redirectBase != null) {
+      String finalUrl = redirectBase + catId;
+      response.setHeader("HX-Redirect", finalUrl);
+      return ""; // No fragment to render, just a redirect
     }
     return "fragments/modals/_moreOptions :: categoryBasicChip(catId=${catId}, catName=${catName})";
   }

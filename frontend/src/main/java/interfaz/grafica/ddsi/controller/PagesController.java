@@ -211,26 +211,25 @@ public class PagesController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/admin/statistics")
-  public String adminStatistic(Model model,
-                               @RequestParam(defaultValue = "1", name = "catId") Long selectedCategoryId) {
+  public String adminStatistic(
+      Model model,
+      @RequestParam(defaultValue = "1") Long provCatId,
+      @RequestParam(defaultValue = "1") Long hourCatId
+  ) {
 
-    List<StatisticsDTO> topCategories = statisticsService.findTopCategories();
-    List<StatisticsDTO> TopProvincesOnCollection = statisticsService.findTopProvincesOnCollection();
+    model.addAttribute("topCategories", statisticsService.findTopCategories());
+    model.addAttribute("TopProvincesOnCollection", statisticsService.findTopProvincesOnCollection());
 
-    CategoryDTO selectedCategory = categoryService.getById(selectedCategoryId);
-    List<StatisticsDTO> TopProvincesByCategory = statisticsService.findTopProvincesByCategory(selectedCategoryId);
-    List<StatisticsDTO> topHours = statisticsService.findBusiestHoursByCategory(selectedCategoryId);
+    CategoryDTO provCategory = categoryService.getById(provCatId);
+    model.addAttribute("provCategory", provCategory);
+    model.addAttribute("TopProvincesByCategory", statisticsService.findTopProvincesByCategory(provCatId));
 
-    model.addAttribute("topCategories", topCategories);
-    model.addAttribute("TopProvincesOnCollection", TopProvincesOnCollection);
-
-    model.addAttribute("selectedCategory", selectedCategory);
-    model.addAttribute("TopProvincesByCategory", TopProvincesByCategory);
-    model.addAttribute("topHours", topHours);
+    CategoryDTO hourCategory = categoryService.getById(hourCatId);
+    model.addAttribute("hourCategory", hourCategory);
+    model.addAttribute("topHours", statisticsService.findBusiestHoursByCategory(hourCatId));
 
     model.addAttribute("active", "admin");
     model.addAttribute("pageTitle", "MetaMapa · Estadisticas");
-
 
     return "admin/pages/statisticsSection";
   }
