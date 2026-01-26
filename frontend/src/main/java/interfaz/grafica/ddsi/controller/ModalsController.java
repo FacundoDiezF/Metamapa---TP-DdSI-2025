@@ -56,6 +56,7 @@ public class ModalsController {
       @RequestParam(value = "renderMode", defaultValue = "chip") String renderMode,
       @RequestParam(value = "targetContainer", defaultValue = "#selected-category") String targetContainer,
       @RequestParam(value = "redirectBase", required = false) String redirectBase,
+      @RequestParam(value = "inputName", required = false) String inputName,
       Model model) {
 
     PageDTO<CategoryDTO> categoriesPage = categoryService.getAll(page, 20);
@@ -65,6 +66,7 @@ public class ModalsController {
     model.addAttribute("targetContainer", targetContainer);
     model.addAttribute("modalPagePath", "/modals/one-category");
     model.addAttribute("redirectBase", redirectBase);
+    model.addAttribute("inputName", inputName);
 
     return "fragments/modals/_moreOptions :: oneChipElementModal(itemsPage=${categoriesPage}, elementName=${elementName}, modalPagePath=${modalPagePath})";
   }
