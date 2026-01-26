@@ -418,11 +418,11 @@
 }
 
 /* =========================================
-   NUEVOS ESTILOS: Badge de Categoría (Modal Colección)
+    Badge de Categoría
    ========================================= */
 
-/* 1. Contenedor flexible (Reemplaza al input directo) */
-/* Este div ocupa el espacio que ocuparía el .input-sm */
+/* Contenedor flexible (Reemplaza al input directo) */
+
 .condition-value-container {
     flex-grow: 1;
     display: flex;
@@ -431,20 +431,19 @@
     height: 100%; /* Asegura consistencia vertical */
 }
 
-/* 2. ESTADO LLENO: Badge de Categoría */
-/* Hereda métricas de .input-sm para que se vea igual a los otros campos */
+/*  ESTADO LLENO: Badge de Categoría */
 .badge-value-filled {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Texto a la izq, icono a la der */
+    justify-content: space-between;
     width: 100%;
-    padding: 6px 10px; /* Idéntico a .input-sm */
+    padding: 6px 10px;
 
-    background: #f8fafc; /* Fondo suave (Slate-50) */
-    border: 1px solid #cbd5e1; /* Borde igual a input */
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
     border-radius: 6px;
 
-    color: #334155; /* Mismo color de texto */
+    color: #334155;
     font-size: 0.9rem;
     font-weight: 500;
 
@@ -452,14 +451,12 @@
     transition: all 0.2s ease;
 }
 
-/* Hover: Imita el foco del input */
 .badge-value-filled:hover {
     background: #ffffff;
     border-color: #3b82f6; /* Azul Focus */
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
-/* Icono de lápiz dentro del badge */
 .badge-value-filled .edit-icon {
     color: #94a3b8;
     flex-shrink: 0;
@@ -471,14 +468,12 @@
     color: #3b82f6;
 }
 
-/* 3. ESTADO VACÍO: Botón Seleccionar (+ Seleccionar) */
-/* Variante específica del btn-xs-outline para cuando está dentro de la fila */
+/* ESTADO VACÍO: Botón Seleccionar (+ Seleccionar) */
 .btn-select-dashed {
-    /* Heredamos base, pero ajustamos para parecer un input vacío */
     background: transparent;
     border: 1px dashed #cbd5e1;
     color: #64748b;
-    padding: 6px 10px; /* Mismo padding que input para alinear altura */
+    padding: 6px 10px;
     border-radius: 6px;
     font-size: 0.85rem;
     cursor: pointer;
@@ -486,16 +481,15 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    width: auto; /* O width: 100% si prefieres que ocupe todo */
+    width: auto;
 }
 
 .btn-select-dashed:hover {
     border-color: #3b82f6;
     color: #3b82f6;
-    background: #f0f9ff; /* Azul muy muy claro */
+    background: #f0f9ff;
 }
 
-/* 4. ESTADO CARGANDO (HTMX) */
 .loading-badge {
     font-size: 0.85rem;
     color: #94a3b8;
