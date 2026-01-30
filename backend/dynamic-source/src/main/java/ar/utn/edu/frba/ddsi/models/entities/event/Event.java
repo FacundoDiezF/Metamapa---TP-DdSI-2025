@@ -1,7 +1,9 @@
 package ar.utn.edu.frba.ddsi.models.entities.event;
 
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.multimedia.Multimedia;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Origin;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,8 +14,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +46,10 @@ public class Event {
   @Enumerated(EnumType.STRING)
   @Builder.Default
   private final Origin origin = Origin.DYNAMIC;
+
+  @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Builder.Default
+  private List<Multimedia> resources = new ArrayList<>();
 
   //-- Description
   @Setter
@@ -99,5 +109,10 @@ public class Event {
 
   public void markAsDeleted() {
     this.deleted = true;
+  }
+
+  public void addResource(Multimedia resource) {
+    resources.add(resource);
+    resource.setEvent(this);
   }
 }
