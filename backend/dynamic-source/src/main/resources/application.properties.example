@@ -23,3 +23,13 @@ spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+# Object Storage Configuration (S3 API)
+aws.s3.endpoint=http://localhost:9000
+#! Posiblemente haya que cambiar de regiónal hacer el despliegue, pero para minIO no importa
+aws.s3.region=us-east-1
+aws.s3.access-key=admin
+aws.s3.secret-key=12345678
+aws.s3.bucket-name=metamapa-media
+#! IMPORTANTE: MinIO necesita 'path-style' (http://host/bucket), AWS usa virtual-host, asi que al desplegar puede ser necesario cambiarla a flase, dependiendo de la plataforma
+aws.s3.path-style-access=true
