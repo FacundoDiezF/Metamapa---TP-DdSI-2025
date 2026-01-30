@@ -3,6 +3,7 @@ package ar.utn.edu.frba.ddsi.models.dtos.output;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Origin;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Data;
 
 
@@ -19,6 +20,7 @@ public class EventOutputDTO {
   LocalDateTime eventDate;
   LocalDateTime uploadDate;
   LocalDateTime updateDate;
+  private List<MultimediaOutputDTO> resources;
 
   public static EventOutputDTO from(Event event) {
     EventOutputDTO dto = new EventOutputDTO();
@@ -33,7 +35,7 @@ public class EventOutputDTO {
     dto.setUploadDate(event.getUploadDate());
     dto.setUpdateDate(event.getUpdateDate());
     dto.setOrigin(event.getOrigin()); //TODO: Verificar si esta bien pasar el ENUM
+    dto.setResources(MultimediaOutputDTO.from(event.getResources())); // TODO TEST
     return dto;
   }
-
 }
