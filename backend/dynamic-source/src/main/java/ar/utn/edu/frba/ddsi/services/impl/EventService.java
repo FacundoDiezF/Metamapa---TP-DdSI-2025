@@ -4,22 +4,29 @@ import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.exceptions.UnauthorizedException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
-import ar.utn.edu.frba.ddsi.models.entities.edition.EditionStatus;
 import ar.utn.edu.frba.ddsi.models.entities.edition.EventEditionRequest;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
-import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.multimedia.Multimedia;
 import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionRequest;
 import ar.utn.edu.frba.ddsi.models.repositories.IEditionRequestRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
 import ar.utn.edu.frba.ddsi.services.ICategoryService;
-import ar.utn.edu.frba.ddsi.services.IEditionRequestService;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import ar.utn.edu.frba.ddsi.services.storage.IStorageService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.InvalidMimeTypeException;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class EventService implements IEventService {
@@ -34,6 +41,9 @@ public class EventService implements IEventService {
 
   private final IStorageService storageService;
 
+  @Value("${app.event.allowed-mime-types}")
+  private List<String> allowedMimeTypes;
+
   @Autowired
   public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, IEditionRequestRepository editionRequestRepository, IStorageService storageService) {
     this.eventRepository = eventRepository;
@@ -41,6 +51,18 @@ public class EventService implements IEventService {
     this.categoryService = categoryService;
     this.editionRequestRepository = editionRequestRepository;
     this.storageService = storageService;
+  }
+
+  @PostConstruct
+  private void validateConfiguration() {
+    for (String type : allowedMimeTypes) {
+      try {
+        // Esto chequea que el string tenga formato "tipo/subtipo"
+        MimeTypeUtils.parseMimeType(type);
+      } catch (InvalidMimeTypeException e) {
+        throw new IllegalStateException("CONFIG ERROR: '" + type + "' is NOT a valid MIME type.");
+      }
+    }
   }
 
   @Override
@@ -55,8 +77,9 @@ public class EventService implements IEventService {
 
   @Transactional
   @Override
-  public EventOutputDTO save(EventDTO dto, String userId) {
-    //TODO: Validar si el usuario puede realizar esta peticion
+  public EventOutputDTO save(EventDTO dto, String userId, List<MultipartFile> multimedia) {
+
+    validateFiles(multimedia);
 
     Category category = categoryService.findOrCreate(dto.getCategory());
 
@@ -108,6 +131,20 @@ public class EventService implements IEventService {
       // En caso de error, eliminar los archivos subidos
       storageService.deleteFiles(uploadedFilesPaths);
       throw new RuntimeException("Unable to upload event and multimedia", e);
+    }
+  }
+
+  private void validateFiles(List<MultipartFile> files) {
+    if (files == null || files.isEmpty()) return;
+
+    for (MultipartFile file : files) {
+      // Comparamos contra la lista inyectada
+      if (!allowedMimeTypes.contains(file.getContentType())) {
+        throw new IllegalArgumentException(
+            "Non allowed type: " + file.getContentType() +
+                ". Refer to the allowed types: " + allowedMimeTypes
+        );
+      }
     }
   }
 
