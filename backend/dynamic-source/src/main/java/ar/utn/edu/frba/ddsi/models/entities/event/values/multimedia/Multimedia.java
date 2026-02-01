@@ -27,8 +27,8 @@ public class Multimedia {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, unique = true)
-  private String objectStorageUUID;
+  @Column(name = "object_storage_path", nullable = false, unique = true)
+  private String objectStoragePath;
 
   @Column(nullable = false)
   private String name;

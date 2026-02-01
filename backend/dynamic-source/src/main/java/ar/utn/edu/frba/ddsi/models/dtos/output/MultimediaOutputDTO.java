@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class MultimediaOutputDTO {
-  private String uuid;
+  private String path;
   private String name;
   private String mimeType;
 
@@ -20,9 +20,9 @@ public class MultimediaOutputDTO {
   }
 
   private static MultimediaOutputDTO from(Multimedia resource) {
-    String resourceUUID = resource.getObjectStorageUUID();
+    String resourcePath = resource.getObjectStoragePath();
     return MultimediaOutputDTO.builder()
-        .uuid(resourceUUID)
+        .path(resourcePath)
         .name(resource.getName())
         .mimeType(resource.getMimeType())
         .build();
