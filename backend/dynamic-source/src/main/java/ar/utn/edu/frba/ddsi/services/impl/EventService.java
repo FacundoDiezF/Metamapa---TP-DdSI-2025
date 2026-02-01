@@ -44,6 +44,9 @@ public class EventService implements IEventService {
   @Value("${app.event.allowed-mime-types}")
   private List<String> allowedMimeTypes;
 
+  @Value("${app.event.max-files}")
+  private int maxAmountOfFiles;
+
   @Autowired
   public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, IEditionRequestRepository editionRequestRepository, IStorageService storageService) {
     this.eventRepository = eventRepository;
@@ -78,6 +81,10 @@ public class EventService implements IEventService {
   @Transactional
   @Override
   public EventOutputDTO save(EventDTO dto, String userId, List<MultipartFile> multimedia) {
+
+    if (multimedia != null && multimedia.size() > maxAmountOfFiles) {
+      throw new IllegalArgumentException("Maximum number of files exceeded. Max allowed: " + maxAmountOfFiles);
+    }
 
     validateFiles(multimedia);
 

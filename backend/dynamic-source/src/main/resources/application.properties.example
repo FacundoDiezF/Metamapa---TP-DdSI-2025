@@ -3,7 +3,7 @@ server.port=8081
 #File Upload Configuration
 spring.servlet.multipart.max-file-size=10MB
 spring.servlet.multipart.max-request-size=50MB
-app.event.max-images=5
+app.event.max-files=5
 
 # Eureka Client Configuration
 spring.application.name=dynamic-source
