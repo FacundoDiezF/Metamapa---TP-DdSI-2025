@@ -32,12 +32,15 @@ public class EventService implements IEventService {
 
   private final IEditionRequestRepository editionRequestRepository;
 
+  private final IStorageService storageService;
+
   @Autowired
-  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, IEditionRequestRepository editionRequestRepository) {
+  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, IEditionRequestRepository editionRequestRepository, IStorageService storageService) {
     this.eventRepository = eventRepository;
     this.submissionRepository = submissionRepository;
     this.categoryService = categoryService;
     this.editionRequestRepository = editionRequestRepository;
+    this.storageService = storageService;
   }
 
   @Override
@@ -50,11 +53,14 @@ public class EventService implements IEventService {
     return eventRepository.findByCreatorId(userId).stream().map(EventOutputDTO::from).toList();
   }
 
+  @Transactional
   @Override
   public EventOutputDTO save(EventDTO dto, String userId) {
     //TODO: Validar si el usuario puede realizar esta peticion
 
     Category category = categoryService.findOrCreate(dto.getCategory());
+
+    List<String> uploadedFilesPaths = new ArrayList<>();
 
     Event event = Event.builder()
         .title(dto.getTitle())
@@ -67,10 +73,42 @@ public class EventService implements IEventService {
         .creatorId(userId) //* Id del usuario que crea el evento
         .build();
 
-    eventRepository.save(event);
-    submissionRepository.save(new SubmissionRequest(event));
+    // 2. Procesar multimedia (Si vienen)
+    if (multimedia != null && !multimedia.isEmpty()) {
+      try {
+        for (MultipartFile file : multimedia) {
+          // a. Subir al Object Storage
+          String path = storageService.uploadFile(file, "events");
 
-    return EventOutputDTO.from(event);
+          // b. Agregar UUID a la lista de subidos
+          uploadedFilesPaths.add(path);
+
+          // c. Crear entidad Multimedia
+          Multimedia media = Multimedia.builder()
+              .objectStoragePath(path)
+              .name(file.getOriginalFilename())
+              .mimeType(file.getContentType())
+              .build();
+
+          // d. Asociar al evento
+          event.addResource(media);
+        }
+      } catch (Exception e) {
+        storageService.deleteFiles(uploadedFilesPaths);
+        throw new RuntimeException("Unable to upload multimedia files", e);
+      }
+    }
+
+    // 3. Guardar tod0 en Cascada
+    try {
+      Event savedEvent = eventRepository.save(event);
+      submissionRepository.save(new SubmissionRequest(savedEvent));
+      return EventOutputDTO.from(savedEvent);
+    } catch(Exception e) {
+      // En caso de error, eliminar los archivos subidos
+      storageService.deleteFiles(uploadedFilesPaths);
+      throw new RuntimeException("Unable to upload event and multimedia", e);
+    }
   }
 
   @Override

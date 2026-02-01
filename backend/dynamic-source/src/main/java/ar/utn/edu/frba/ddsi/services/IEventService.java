@@ -2,6 +2,8 @@ package ar.utn.edu.frba.ddsi.services;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public interface IEventService {
@@ -9,7 +11,7 @@ public interface IEventService {
 
   List<EventOutputDTO> getEventsByUserId(String userId);
 
-  EventOutputDTO save(EventDTO dto, String userId);
+  EventOutputDTO save(EventDTO dto, String userId, List<MultipartFile> multimedia);
 
   void update(String userId, Long eventId, EventDTO dto);
 
