@@ -3,9 +3,12 @@ package ar.utn.edu.frba.ddsi.services.storage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
@@ -70,6 +73,32 @@ public class S3StorageService implements IStorageService {
         // Log error and continue
         System.err.println("Error deleting file with UUID: " + uuid + ". " + e.getMessage()); // tiene que haber una mejor solución que println para logs
       }
+    }
+  }
+
+  @Override
+  public S3Resource getFile(String path) {
+    try {
+      // Preparamos el pedido
+      GetObjectRequest request = GetObjectRequest.builder()
+          .bucket(bucketName)
+          .key(path) // ej: "events/uuid-123..."
+          .build();
+
+      // Obtenemos el Stream (No descarga todo, solo abre conexión)
+      ResponseInputStream<GetObjectResponse> s3Stream = s3Client.getObject(request);
+      GetObjectResponse response = s3Stream.response();
+
+      return S3Resource.builder()
+          .inputStream(s3Stream)
+          .contentType(response.contentType())
+          .contentLength(response.contentLength())
+          .filename(path)
+          .build();
+
+    } catch (Exception e) {
+      // Si no existe, tiramos error (puedes personalizar la excepción)
+      throw new RuntimeException("Error al recuperar archivo de S3: " + path, e);
     }
   }
 }

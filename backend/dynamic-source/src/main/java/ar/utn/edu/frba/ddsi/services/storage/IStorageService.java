@@ -8,4 +8,6 @@ public interface IStorageService {
   void deleteFile(String uuid);
 
   void deleteFiles(Iterable<String> uuids);
+
+  S3Resource getFile(String path);
 }
