@@ -15,6 +15,10 @@ thread.count=4
 batch.size=1000
 response.byte.size=1048576
 
+# Multimedia url generation configuration
+api.gateway.url = http://localhost:808x
+multimedia.path = /api/v1/multimedia
+
 # Eureka Client configuration
 spring.application.name=aggregation-service
 eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
