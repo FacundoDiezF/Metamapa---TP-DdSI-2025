@@ -158,7 +158,7 @@ public class EventService implements IEventService {
   @Override
   public void update(String userId, Long eventId, EventDTO dto) {
 
-    //TODO: Validar si el usuario puede realizar esta peticion
+    //TODO: Validar si el usuario puede realizar esta petición
 
     Event event = eventRepository.findById(eventId)
         .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
@@ -174,7 +174,7 @@ public class EventService implements IEventService {
 
     Category category = categoryService.findOrCreate(dto.getCategory());
 
-    EventEditionRequest newEditionRequest = new EventEditionRequest(event, dto, category);
+    EventEditionRequest newEditionRequest = new EventEditionRequest(event, dto, category); // TODO Permitir editar multimedias en la solicitud de edición
 
     editionRequestRepository.save(newEditionRequest);
   }

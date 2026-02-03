@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class MultimediaOutputDTO {
-  private String path;
+  private String resourcePath;
   private String name;
   private String mimeType;
 
@@ -22,7 +22,7 @@ public class MultimediaOutputDTO {
   private static MultimediaOutputDTO from(Multimedia resource) {
     String resourcePath = resource.getObjectStoragePath();
     return MultimediaOutputDTO.builder()
-        .path(resourcePath)
+        .resourcePath(resourcePath)
         .name(resource.getName())
         .mimeType(resource.getMimeType())
         .build();
