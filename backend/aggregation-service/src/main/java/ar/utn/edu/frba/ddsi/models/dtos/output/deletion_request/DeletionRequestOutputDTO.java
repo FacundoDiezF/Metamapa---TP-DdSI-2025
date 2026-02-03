@@ -22,7 +22,7 @@ public class DeletionRequestOutputDTO {
   public static DeletionRequestOutputDTO from(DeletionRequest dr) {
     return new DeletionRequestOutputDTO(
         dr.getId(),
-        EventOutputDTO.from(dr.getEvent()),
+        EventOutputDTO.from(dr.getEvent()), //TODO usar el otro método from para obtener el eventDTO con multimedia
         dr.getArgument(),
         dr.getState());
   }
