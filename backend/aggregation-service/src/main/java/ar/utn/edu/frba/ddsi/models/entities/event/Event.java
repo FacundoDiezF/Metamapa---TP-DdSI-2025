@@ -4,6 +4,7 @@ import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.multimedia.Multimedia;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -18,6 +19,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -90,8 +92,11 @@ public class Event {
   @Builder.Default
   private List<ConsensusType> passedConsensus = new ArrayList<>();
 
+  @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Builder.Default
+  private List<Multimedia> resources = new ArrayList<>();
 
-  public void update(EventInputDTO dto, Category category) {
+  public void update(EventInputDTO dto, Category category) { //TODO: Hacer que actualice las multimedia. Ahora mismo solo se actualizan cuando se crea el evento
 
     this.updatedDate = LocalDateTime.now();
 
@@ -137,5 +142,14 @@ public class Event {
     //For jpa tracking
     this.passedConsensus.clear();
     this.passedConsensus.addAll(passedConsensus);
+  }
+
+  public void addResources(Iterable<Multimedia> resources) {
+    resources.forEach(this::addResource);
+  }
+
+  private void addResource(Multimedia resource) {
+    resources.add(resource);
+    resource.setEvent(this);
   }
 }
