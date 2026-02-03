@@ -2,13 +2,16 @@ package ar.utn.edu.frba.ddsi.services.impl;
 
 import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
+import ar.utn.edu.frba.ddsi.models.dtos.input.event.MultimediaInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Coordinate;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.multimedia.Multimedia;
 import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
+import ar.utn.edu.frba.ddsi.models.entities.strategies.UrlGenerationStrategy;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ICategoryService;
@@ -36,18 +39,22 @@ public class EventService implements IEventService {
 
   private final INormalizationService normalizationService;
 
+  private final UrlGenerationStrategy urlGenerationStrategy;
+
   @Autowired
   public EventService(
       IEventRepository eventRepository,
       ISourceRepository sourceRepository,
       ICategoryService categoryService,
       ILocationService locationService,
-      INormalizationService normalizationService) {
+      INormalizationService normalizationService,
+      UrlGenerationStrategy urlGenerationStrategy){
     this.eventRepository = eventRepository;
     this.sourceRepository = sourceRepository;
     this.categoryService = categoryService;
     this.locationService = locationService;
     this.normalizationService = normalizationService;
+    this.urlGenerationStrategy = urlGenerationStrategy;
   }
 
   @Override
@@ -63,7 +70,7 @@ public class EventService implements IEventService {
       Pageable pageable
   ) {
     Page<Event> eventsPage = eventRepository.findFiltered(category_in, province_in, source_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt, fromUpdatedDate, pageable);
-    return eventsPage.map(EventOutputDTO::from);
+    return eventsPage.map(event -> EventOutputDTO.from(event, urlGenerationStrategy));
   }
 
   @Override
@@ -138,9 +145,25 @@ public class EventService implements IEventService {
         .source(source)
         .build();
 
+    List<Multimedia> resources = buildMultimediaFromDTOs(dto.getResources());
+
+    event.addResources(resources);
+
     //Update source
     source.addEvent(event);
 
     return event;
+  }
+
+  private List<Multimedia> buildMultimediaFromDTOs(List<MultimediaInputDTO> multimediaDTOs) {
+    return multimediaDTOs
+        .stream().
+        map(dto ->
+            Multimedia.builder()
+            .objectStoragePath(dto.getResourcePath())
+            .name(dto.getName())
+            .mimeType(dto.getMimeType())
+            .build())
+        .toList();
   }
 }
