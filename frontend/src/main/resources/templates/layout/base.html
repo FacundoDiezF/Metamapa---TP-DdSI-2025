@@ -23,6 +23,7 @@
     <link rel="stylesheet" th:href="@{/css/global/globalStyles.css}">
     <link rel="stylesheet" th:href="@{/css/shared/nav/nav.css}">
     <link rel="stylesheet" th:href="@{/css/shared/cards/media-grid.css}">
+    <link rel="stylesheet" th:href="@{/css/modals/media-gallery.css}">
 
 
     <!-- Estílos específicos -->
@@ -56,6 +57,7 @@
 <script th:src="@{/js/navbar/curated-mode.js}"></script>
 
 <script th:src="@{/js/video-lazy-load.js}"></script>
+<script th:src="@{/js/media-gallery.js}"></script>
 
 <!-- Scripts específicos de página -->
 <th:block layout:fragment="extraScripts"></th:block>
@@ -87,6 +89,9 @@
 </script>
 
 <th:block layout:fragment="extraScripts"></th:block>
+
+<!--* Esta modal se inyecta directamente porque no necesita lógica del server, ya tiene todo lo que necesita en la pagina del front (urls de las multimedia)-->
+<div th:replace="~{fragments/modals/_mediaGalleryModal :: modal}"></div>
 
 </body>
 </html>

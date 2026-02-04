@@ -25,7 +25,8 @@
                    class="media-grid-item lazy-video"
                    preload="none"
                    muted
-                   playsinline>
+                   playsinline
+                   th:data-index="${iter.index}">
             </video>
 
             <img th:if="${#strings.startsWith(media.mimeType, 'image')}"
@@ -33,10 +34,13 @@
                  class="media-grid-item"
                  loading="lazy"
                  decoding="async"
-                 alt="Evidencia">
+                 alt="Evidencia"
+                 th:data-index="${iter.index}">
           </th:block>
 
-          <div th:if="${iter.index == 2 and mediaCount > 3}" class="media-grid-overlay-container media-grid-item">
+          <div th:if="${iter.index == 2 and mediaCount > 3}"
+               class="media-grid-overlay-container media-grid-item"
+               th:data-index="${iter.index}">
 
             <img th:if="${#strings.startsWith(media.mimeType, 'image')}"
                  th:src="${media.url}"
@@ -58,6 +62,14 @@
           </div>
 
         </th:block>
+
+        <div class="gallery-playlist" style="display: none;">
+            <span th:each="media : ${visualMedia}"
+                  th:attr="data-url=${media.url},
+                           data-type=${#strings.startsWith(media.mimeType, 'video') ? 'video' : 'image'}">
+            </span>
+        </div>
+
       </div>
     </th:block>
   </th:block>
