@@ -37,22 +37,55 @@ const UploadManager = (function() {
         updateInputAndRender();
     }
 
-    function removeFile(index) {
-        // Truco: Para borrar, creamos un nuevo DataTransfer y copiamos todos MENOS el borrado
-        const newDt = new DataTransfer();
-        const files = dt.files;
+    function removeFile(indexToRemove) {
+        const container = document.getElementById('media-preview-container');
+        const items = container.children; // Obtenemos los elementos HTML actuales
 
-        for (let i = 0; i < files.length; i++) {
-            if (i !== index) { // Copiamos todos menos el que coincide con el índice
-                newDt.items.add(files[i]);
+        // Seguridad: si el elemento no existe, salimos
+        if (!items[indexToRemove]) return;
+
+        const itemToRemove = items[indexToRemove];
+
+        // 1. ANIMACIÓN: Le ponemos la clase CSS que lo encoge
+        itemToRemove.classList.add('removing');
+
+        // 2. LÓGICA: Esperamos 300ms (lo que dura la transición CSS)
+        setTimeout(() => {
+            // A. Actualizamos la memoria interna (DataTransfer)
+            const newDt = new DataTransfer();
+            const files = dt.files;
+            for (let i = 0; i < files.length; i++) {
+                if (i !== indexToRemove) {
+                    newDt.items.add(files[i]);
+                }
             }
+            dt = newDt;
+
+            // B. Actualizamos el input oculto
+            document.getElementById('mediaInput').files = dt.files;
+
+            // C. AQUÍ ESTÁ LA CLAVE: Borramos solo este nodo del HTML
+            itemToRemove.remove();
+
+            // D. Re-calculamos los índices de los botones restantes
+            reindexButtons();
+
+            // Ocultar mensaje de error si ya no superamos el límite
+            document.getElementById('media-error-msg').style.display = 'none';
+
+        }, 300); // Tiene que coincidir con los 0.3s del CSS
+    }
+
+    // Función nueva para corregir los botones después de borrar uno
+    function reindexButtons() {
+        const container = document.getElementById('media-preview-container');
+        const items = container.children;
+
+        for (let i = 0; i < items.length; i++) {
+            const btn = items[i].querySelector('.preview-remove-btn');
+            // Actualizamos el índice para que apunte a la nueva posición 'i'
+            btn.onclick = () => removeFile(i);
         }
-
-        dt = newDt; // Actualizamos el almacén principal
-        updateInputAndRender();
-
-        // Ocultar error si bajamos del límite (por si había quedado alguno pegado)
-        document.getElementById('media-error-msg').style.display = 'none';
     }
 
     function updateInputAndRender() {
