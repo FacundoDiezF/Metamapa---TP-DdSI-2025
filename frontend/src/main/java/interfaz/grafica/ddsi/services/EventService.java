@@ -10,6 +10,7 @@ import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
@@ -38,7 +39,7 @@ public class EventService {
 
   }
 
-  public void postNew(EventOutputDTO newEvent) {
-    server.postNewEvent(newEvent); 
+  public void postNew(EventOutputDTO newEvent, List<MultipartFile> files) {
+    server.postNewEvent(newEvent, files);
   }
 }
