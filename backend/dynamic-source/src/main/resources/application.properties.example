@@ -5,6 +5,10 @@ spring.servlet.multipart.max-file-size=10MB
 spring.servlet.multipart.max-request-size=50MB
 app.event.max-files=5
 
+# Multimedia url generation configuration
+api.gateway.url = http://localhost:8086
+multimedia.path = /api/v1/multimedia
+
 # Eureka Client Configuration
 spring.application.name=dynamic-source
 eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
