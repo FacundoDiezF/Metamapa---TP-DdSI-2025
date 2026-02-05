@@ -72,7 +72,10 @@ const UploadManager = (function() {
         item.style.animation = 'popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
 
         let media;
-        if (file.type.startsWith('video/')) {
+
+        const type = file.type.startsWith('video/') ? 'video' : 'image';
+
+        if (type === 'video') {
             media = document.createElement('video');
             media.src = url;
             media.muted = true;
@@ -82,6 +85,15 @@ const UploadManager = (function() {
             media = document.createElement('img');
             media.src = url;
         }
+
+        // Le damos estilo pointer para que sepa que es clickeable
+        media.style.cursor = 'pointer';
+
+        media.onclick = (e) => {
+            // Evitamos que el click se propague (buena práctica)
+            e.stopPropagation();
+            openGalleryWithPreview(index);
+        };
 
         const btn = document.createElement('button');
         btn.className = 'preview-remove-btn';
@@ -93,6 +105,27 @@ const UploadManager = (function() {
         item.appendChild(btn);
 
         return item;
+    }
+
+    function openGalleryWithPreview(clickedIndex) {
+        // 1. Convertimos 'dt.files' a un Array de objetos simple
+        const playlist = [];
+        const files = dt.files;
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            playlist.push({
+                url: URL.createObjectURL(file), // Usamos la URL temporal del navegador
+                type: file.type.startsWith('video/') ? 'video' : 'image'
+            });
+        }
+
+        // 2. Llamamos a la Galería Global pasándole la lista directa
+        if (typeof MediaGallery !== 'undefined') {
+            MediaGallery.open(playlist, clickedIndex);
+        } else {
+            console.error("MediaGallery no está cargada.");
+        }
     }
 
     function removeFile(indexToRemove) {

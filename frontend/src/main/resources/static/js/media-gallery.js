@@ -11,17 +11,24 @@ const MediaGallery = (function() {
 
     // === FUNCIONES PÚBLICAS ===
 
-    function open(playlistElement, startIndex = 0) {
+    function open(source, startIndex = 0) {
         if (!contentContainer) initElements();
+        if (!contentContainer) return;
 
         currentPlaylist = [];
-        const items = playlistElement.querySelectorAll('span');
-        items.forEach(item => {
-            currentPlaylist.push({
-                url: item.getAttribute('data-url'),
-                type: item.getAttribute('data-type')
+        if (Array.isArray(source)) {
+            // OPCIÓN A: Nos pasaron una Lista directa (Desde el UploadManager)
+            currentPlaylist = source;
+        } else {
+            // OPCIÓN B: Nos pasaron un Elemento HTML (Desde el Feed/Explore)
+            const items = source.querySelectorAll('span');
+            items.forEach(item => {
+                currentPlaylist.push({
+                    url: item.getAttribute('data-url'),
+                    type: item.getAttribute('data-type')
+                });
             });
-        });
+        }
 
         currentIndex = parseInt(startIndex, 10);
 
@@ -196,6 +203,6 @@ const MediaGallery = (function() {
         });
     });
 
-    return { close, next, prev };
+    return { open, close, next, prev };
 
 })();
