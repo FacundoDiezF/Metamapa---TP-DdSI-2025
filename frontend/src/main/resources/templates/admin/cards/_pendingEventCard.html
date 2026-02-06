@@ -1,4 +1,4 @@
-<article class="event-card" th:fragment="cardFragment(sub)" th:attr="data-sumission-id=${sub.id}">
+<article class="event-card pending-card" th:fragment="cardFragment(sub)" th:attr="data-sumission-id=${sub.id}">
 
     <header class="card-header">
         <span class="category-badge" th:text="${sub.event.category}">
@@ -49,7 +49,10 @@
         <p class="event-description" th:text="${sub.event.description}">
             Descripción del hecho...
         </p>
+
+        <div th:replace="~{fragments/_mediaGrid :: render(${sub.event.resources})}"></div>
     </div>
+
 
     <div class="card-footer-info">
         <p class="source-info" th:text="${sub.event.Origin} + ' • ' + ${sub.event.sourceId}">

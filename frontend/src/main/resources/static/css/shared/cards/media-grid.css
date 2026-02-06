@@ -77,3 +77,20 @@
     cursor: pointer;
     pointer-events: none;
 }
+
+/* CASO 3+: Tres o más */
+/* Layout: 1 Grande a la izquierda (66%) y 2 pequeños a la derecha */
+.media-grid[data-count="3-plus"] {
+    /* Usamos minmax(0, ...) para evitar que el contenido empuje el ancho */
+    grid-template-columns: 2fr minmax(0, 1fr);
+    /* Forzamos a que sean exactamente la mitad de la altura disponible */
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+/* El primer hijo ocupa toda la altura de la izquierda */
+.media-grid[data-count="3-plus"] > :first-child {
+    grid-row: span 2;
+    height: 100%; /* Asegura que llene su celda */
+    width: 100%;
+}
+
