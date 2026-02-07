@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="modal" id="mediaGalleryModal" class="media-modal-overlay">
+
+    <button class="media-modal-btn modal-close-btn" onclick="MediaGallery.close()">
+        &times; </button>
+
+    <button class="media-modal-btn modal-prev-btn" onclick="MediaGallery.prev()">
+        &#10094; </button>
+
+    <button class="media-modal-btn modal-next-btn" onclick="MediaGallery.next()">
+        &#10095; </button>
+
+    <div class="media-modal-content" id="mediaModalContent">
+    </div>
+
+    <div class="media-modal-counter" id="mediaModalCounter">1 / 1</div>
+
+</div>
+
+</body>
+</html>

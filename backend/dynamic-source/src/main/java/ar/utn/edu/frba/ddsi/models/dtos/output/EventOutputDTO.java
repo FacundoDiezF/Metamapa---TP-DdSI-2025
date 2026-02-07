@@ -37,7 +37,7 @@ public class EventOutputDTO {
     dto.setUploadDate(event.getUploadDate());
     dto.setUpdateDate(event.getUpdateDate());
     dto.setOrigin(event.getOrigin()); //TODO: Verificar si esta bien pasar el ENUM
-//    dto.setResources(MultimediaOutputDTO.from(event.getResources())); // TODO TEST
+    dto.setResources(MultimediaOutputDTO.from(event.getResources())); // TODO TEST
     return dto;
   }
 
