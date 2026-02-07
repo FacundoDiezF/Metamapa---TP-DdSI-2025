@@ -8,6 +8,7 @@ import ar.utn.edu.frba.ddsi.models.entities.edition.EventEditionRequest;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.multimedia.Multimedia;
+import ar.utn.edu.frba.ddsi.models.entities.strategies.UrlGenerationStrategy;
 import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionRequest;
 import ar.utn.edu.frba.ddsi.models.repositories.IEditionRequestRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
@@ -41,6 +42,8 @@ public class EventService implements IEventService {
 
   private final IStorageService storageService;
 
+  private final UrlGenerationStrategy urlGenerationStrategy;
+
   @Value("${app.event.allowed-mime-types}")
   private List<String> allowedMimeTypes;
 
@@ -48,12 +51,13 @@ public class EventService implements IEventService {
   private int maxAmountOfFiles;
 
   @Autowired
-  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, IEditionRequestRepository editionRequestRepository, IStorageService storageService) {
+  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, IEditionRequestRepository editionRequestRepository, IStorageService storageService, UrlGenerationStrategy urlGenerationStrategy) {
     this.eventRepository = eventRepository;
     this.submissionRepository = submissionRepository;
     this.categoryService = categoryService;
     this.editionRequestRepository = editionRequestRepository;
     this.storageService = storageService;
+    this.urlGenerationStrategy = urlGenerationStrategy;
   }
 
   @PostConstruct
@@ -75,7 +79,7 @@ public class EventService implements IEventService {
 
   @Override
   public List<EventOutputDTO> getEventsByUserId(String userId) {
-    return eventRepository.findByCreatorId(userId).stream().map(EventOutputDTO::from).toList();
+    return eventRepository.findByCreatorId(userId).stream().map(event -> EventOutputDTO.from(event, urlGenerationStrategy)).toList();
   }
 
   @Transactional

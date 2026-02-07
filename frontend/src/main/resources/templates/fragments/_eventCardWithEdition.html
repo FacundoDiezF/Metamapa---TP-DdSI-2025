@@ -55,6 +55,8 @@
         <p class="event-description" th:text="${event.description}">
             Descripción del hecho...
         </p>
+
+        <div th:replace="~{fragments/_mediaGrid :: render(${event.resources})}"></div>
     </div>
 
     <div class="card-footer-info">
