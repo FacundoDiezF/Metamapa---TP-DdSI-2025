@@ -9,6 +9,7 @@ import ar.utn.edu.frba.ddsi.models.entities.deletion_request.DeletionRequest;
 import ar.utn.edu.frba.ddsi.models.entities.deletion_request.DeletionRequestState;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.spamDetector.ISpamDetector;
+import ar.utn.edu.frba.ddsi.models.entities.strategies.UrlGenerationStrategy;
 import ar.utn.edu.frba.ddsi.models.repositories.IDeletionRequestRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.services.IDeletionRequestService;
@@ -27,13 +28,15 @@ public class DeletionRequestService implements IDeletionRequestService {
 
   private final ISpamDetector spamDetector;
 
+  private final UrlGenerationStrategy urlGenerationStrategy;
+
   @Autowired
-  public DeletionRequestService(IDeletionRequestRepository deletionRequestRepository, IEventRepository eventRepository, ISpamDetector spamDetector) {
+  public DeletionRequestService(IDeletionRequestRepository deletionRequestRepository, IEventRepository eventRepository, ISpamDetector spamDetector, UrlGenerationStrategy urlGenerationStrategy) {
     this.deletionRequestRepository = deletionRequestRepository;
     this.eventRepository = eventRepository;
     this.spamDetector = spamDetector;
+    this.urlGenerationStrategy = urlGenerationStrategy;
   }
-
 
   @Override
   public DeletionRequestOutputDTO create(DeletionRequestCreationDTO drDTO, String userId) {
@@ -53,7 +56,7 @@ public class DeletionRequestService implements IDeletionRequestService {
 
     deletionRequestRepository.save(deletionRequest);
 
-    return DeletionRequestOutputDTO.from(deletionRequest);
+    return DeletionRequestOutputDTO.from(deletionRequest, urlGenerationStrategy);
   }
 
   @Override
@@ -67,7 +70,7 @@ public class DeletionRequestService implements IDeletionRequestService {
     deletionRequest.evaluate(evaluation.isAccepted(), evaluatorId);
 
     deletionRequestRepository.save(deletionRequest);
-    return DeletionRequestOutputDTO.from(deletionRequest);
+    return DeletionRequestOutputDTO.from(deletionRequest, urlGenerationStrategy);
   }
 
   @Override
@@ -75,6 +78,6 @@ public class DeletionRequestService implements IDeletionRequestService {
 
     Page<DeletionRequest> allDeletionRequests = deletionRequestRepository.findAllByStateAndEvent_DeletedFalse(state, pageable);
 
-    return allDeletionRequests.map(DeletionRequestOutputDTO::from);
+    return allDeletionRequests.map(dr -> DeletionRequestOutputDTO.from(dr, urlGenerationStrategy));
   }
 }
