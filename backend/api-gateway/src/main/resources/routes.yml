@@ -236,6 +236,13 @@ spring:
             - StripPrefix=2
             - AuthenticationFilter=ADMIN
 
+        - id: get-multimedia
+          uri: lb://DYNAMIC-SOURCE
+          predicates:
+              - Path=/api/v1/multimedia/**
+              - Method=GET
+          filters:
+              - StripPrefix=2
         # --- PROXY SOURCE ---
         # --- STATISTICS SERVICE ---
         - id: get-top-categories

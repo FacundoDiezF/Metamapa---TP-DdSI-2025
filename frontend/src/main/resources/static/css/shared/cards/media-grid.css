@@ -1,0 +1,96 @@
+/* Contenedor principal de la grilla */
+.media-grid {
+    display: grid;
+    width: 100%;
+    height: 300px;
+    gap: 2px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    background-color: #f0f2f5;
+    content-visibility: auto;
+    contain-intrinsic-size: 300px;
+}
+
+/* Estilo base para todos los items */
+.media-grid-item {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+.media-grid-item:hover {
+    filter: brightness(0.9);
+}
+
+/* === LÓGICA DE LAYOUTS === */
+
+/* CASO 1: Una sola imagen */
+.media-grid[data-count="1"] {
+    grid-template-columns: 1fr;
+}
+
+/* CASO 2: Dos imágenes (mitad y mitad) */
+.media-grid[data-count="2"] {
+    grid-template-columns: 1fr 1fr;
+}
+
+/* CASO 3+: Tres o más (El tope visual es 3 huecos) */
+/* Layout: 1 Grande a la izquierda (66%) y 2 pequeños a la derecha */
+.media-grid[data-count="3-plus"] {
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+/* El primer hijo (el grande) ocupa toda la altura de la izquierda */
+.media-grid[data-count="3-plus"] > :first-child {
+    grid-row: span 2;
+    height: 100%;
+}
+
+/* === EL OVERLAY (+N) === */
+.media-grid-overlay-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.media-grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    pointer-events: none;
+}
+
+/* CASO 3+: Tres o más */
+/* Layout: 1 Grande a la izquierda (66%) y 2 pequeños a la derecha */
+.media-grid[data-count="3-plus"] {
+    /* Usamos minmax(0, ...) para evitar que el contenido empuje el ancho */
+    grid-template-columns: 2fr minmax(0, 1fr);
+    /* Forzamos a que sean exactamente la mitad de la altura disponible */
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+/* El primer hijo ocupa toda la altura de la izquierda */
+.media-grid[data-count="3-plus"] > :first-child {
+    grid-row: span 2;
+    height: 100%; /* Asegura que llene su celda */
+    width: 100%;
+}
+

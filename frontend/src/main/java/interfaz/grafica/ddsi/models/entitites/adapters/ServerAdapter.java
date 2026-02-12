@@ -62,8 +62,21 @@ public class ServerAdapter {
 
   //--------------- EVENTS ----------------//
 
-  public void postNewEvent(EventOutputDTO newEvent) {
-    webApiCallerService.post("/api/v1/events", newEvent, Void.class);
+  public void postNewEvent(EventOutputDTO newEvent, List<MultipartFile> files) {
+    MultipartBodyBuilder builder = new MultipartBodyBuilder();
+
+    builder.part("event", newEvent);
+
+    for (MultipartFile file : files) {
+      builder.part("multimedia", file.getResource());
+    }
+
+    webApiCallerService.post(
+        "/api/v1/events",
+        BodyInserters.fromMultipartData(builder.build()),
+        Void.class,
+        MediaType.MULTIPART_FORM_DATA
+    );
   } //* Funciona
 
   public void editEvent(Long id, EventOutputDTO newEventValues) {

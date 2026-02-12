@@ -4,22 +4,30 @@ import ar.utn.edu.frba.ddsi.exceptions.NotFoundException;
 import ar.utn.edu.frba.ddsi.exceptions.UnauthorizedException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.EventDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
-import ar.utn.edu.frba.ddsi.models.entities.edition.EditionStatus;
 import ar.utn.edu.frba.ddsi.models.entities.edition.EventEditionRequest;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
-import ar.utn.edu.frba.ddsi.models.entities.observer.Publisher;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.multimedia.Multimedia;
+import ar.utn.edu.frba.ddsi.models.entities.strategies.UrlGenerationStrategy;
 import ar.utn.edu.frba.ddsi.models.entities.submission.SubmissionRequest;
 import ar.utn.edu.frba.ddsi.models.repositories.IEditionRequestRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISubmissionRepository;
 import ar.utn.edu.frba.ddsi.services.ICategoryService;
-import ar.utn.edu.frba.ddsi.services.IEditionRequestService;
 import ar.utn.edu.frba.ddsi.services.IEventService;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import ar.utn.edu.frba.ddsi.services.storage.IStorageService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.InvalidMimeTypeException;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class EventService implements IEventService {
@@ -32,12 +40,36 @@ public class EventService implements IEventService {
 
   private final IEditionRequestRepository editionRequestRepository;
 
+  private final IStorageService storageService;
+
+  private final UrlGenerationStrategy urlGenerationStrategy;
+
+  @Value("${app.event.allowed-mime-types}")
+  private List<String> allowedMimeTypes;
+
+  @Value("${app.event.max-files}")
+  private int maxAmountOfFiles;
+
   @Autowired
-  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, IEditionRequestRepository editionRequestRepository) {
+  public EventService(IEventRepository eventRepository, ISubmissionRepository submissionRepository, ICategoryService categoryService, IEditionRequestRepository editionRequestRepository, IStorageService storageService, UrlGenerationStrategy urlGenerationStrategy) {
     this.eventRepository = eventRepository;
     this.submissionRepository = submissionRepository;
     this.categoryService = categoryService;
     this.editionRequestRepository = editionRequestRepository;
+    this.storageService = storageService;
+    this.urlGenerationStrategy = urlGenerationStrategy;
+  }
+
+  @PostConstruct
+  private void validateConfiguration() {
+    for (String type : allowedMimeTypes) {
+      try {
+        // Esto chequea que el string tenga formato "tipo/subtipo"
+        MimeTypeUtils.parseMimeType(type);
+      } catch (InvalidMimeTypeException e) {
+        throw new IllegalStateException("CONFIG ERROR: '" + type + "' is NOT a valid MIME type.");
+      }
+    }
   }
 
   @Override
@@ -47,14 +79,22 @@ public class EventService implements IEventService {
 
   @Override
   public List<EventOutputDTO> getEventsByUserId(String userId) {
-    return eventRepository.findByCreatorId(userId).stream().map(EventOutputDTO::from).toList();
+    return eventRepository.findByCreatorId(userId).stream().map(event -> EventOutputDTO.from(event, urlGenerationStrategy)).toList();
   }
 
+  @Transactional
   @Override
-  public EventOutputDTO save(EventDTO dto, String userId) {
-    //TODO: Validar si el usuario puede realizar esta peticion
+  public EventOutputDTO save(EventDTO dto, String userId, List<MultipartFile> multimedia) {
+
+    if (multimedia != null && multimedia.size() > maxAmountOfFiles) {
+      throw new IllegalArgumentException("Maximum number of files exceeded. Max allowed: " + maxAmountOfFiles);
+    }
+
+    validateFiles(multimedia);
 
     Category category = categoryService.findOrCreate(dto.getCategory());
+
+    List<String> uploadedFilesPaths = new ArrayList<>();
 
     Event event = Event.builder()
         .title(dto.getTitle())
@@ -67,16 +107,62 @@ public class EventService implements IEventService {
         .creatorId(userId) //* Id del usuario que crea el evento
         .build();
 
-    eventRepository.save(event);
-    submissionRepository.save(new SubmissionRequest(event));
+    // 2. Procesar multimedia (Si vienen)
+    if (multimedia != null && !multimedia.isEmpty()) {
+      try {
+        for (MultipartFile file : multimedia) {
+          // a. Subir al Object Storage
+          String path = storageService.uploadFile(file, "events");
 
-    return EventOutputDTO.from(event);
+          // b. Agregar UUID a la lista de subidos
+          uploadedFilesPaths.add(path);
+
+          // c. Crear entidad Multimedia
+          Multimedia media = Multimedia.builder()
+              .objectStoragePath(path)
+              .name(file.getOriginalFilename())
+              .mimeType(file.getContentType())
+              .build();
+
+          // d. Asociar al evento
+          event.addResource(media);
+        }
+      } catch (Exception e) {
+        storageService.deleteFiles(uploadedFilesPaths);
+        throw new RuntimeException("Unable to upload multimedia files", e);
+      }
+    }
+
+    // 3. Guardar tod0 en Cascada
+    try {
+      Event savedEvent = eventRepository.save(event);
+      submissionRepository.save(new SubmissionRequest(savedEvent));
+      return EventOutputDTO.from(savedEvent);
+    } catch(Exception e) {
+      // En caso de error, eliminar los archivos subidos
+      storageService.deleteFiles(uploadedFilesPaths);
+      throw new RuntimeException("Unable to upload event and multimedia", e);
+    }
+  }
+
+  private void validateFiles(List<MultipartFile> files) {
+    if (files == null || files.isEmpty()) return;
+
+    for (MultipartFile file : files) {
+      // Comparamos contra la lista inyectada
+      if (!allowedMimeTypes.contains(file.getContentType())) {
+        throw new IllegalArgumentException(
+            "Non allowed type: " + file.getContentType() +
+                ". Refer to the allowed types: " + allowedMimeTypes
+        );
+      }
+    }
   }
 
   @Override
   public void update(String userId, Long eventId, EventDTO dto) {
 
-    //TODO: Validar si el usuario puede realizar esta peticion
+    //TODO: Validar si el usuario puede realizar esta petición
 
     Event event = eventRepository.findById(eventId)
         .orElseThrow(() -> new NotFoundException("Event not found - Id: " + eventId));
@@ -92,7 +178,7 @@ public class EventService implements IEventService {
 
     Category category = categoryService.findOrCreate(dto.getCategory());
 
-    EventEditionRequest newEditionRequest = new EventEditionRequest(event, dto, category);
+    EventEditionRequest newEditionRequest = new EventEditionRequest(event, dto, category); // TODO Permitir editar multimedias en la solicitud de edición
 
     editionRequestRepository.save(newEditionRequest);
   }

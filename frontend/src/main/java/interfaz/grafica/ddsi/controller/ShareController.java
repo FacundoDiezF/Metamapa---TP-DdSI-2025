@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/share")
 public class ShareController {
@@ -47,9 +49,11 @@ public class ShareController {
   }
 
   @PostMapping("/event")
-  public String handleShareEvent(@ModelAttribute("newEvent") EventOutputDTO newEvent, Model model) {
+  public String handleShareEvent(@ModelAttribute("newEvent") EventOutputDTO newEvent,
+                                 @RequestParam("files") List<MultipartFile> files,
+                                 Model model) {
 
-    eventService.postNew(newEvent);
+    eventService.postNew(newEvent, files);
 
     return "redirect:/explore";
   }

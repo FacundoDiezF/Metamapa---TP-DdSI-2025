@@ -11,6 +11,7 @@ import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
+import ar.utn.edu.frba.ddsi.models.entities.strategies.UrlGenerationStrategy;
 import ar.utn.edu.frba.ddsi.models.repositories.ICollectionRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import ar.utn.edu.frba.ddsi.services.ICollectionCriteriaService;
@@ -34,11 +35,17 @@ public class CollectionService implements ICollectionService {
 
   private final ICollectionCriteriaService collectionCriteriaService;
 
+  private final UrlGenerationStrategy urlGenerationStrategy;
+
   @Autowired
-  public CollectionService(ICollectionRepository collectionRepository, ISourceRepository sourceRepository, ICollectionCriteriaService collectionCriteriaService) {
+  public CollectionService(ICollectionRepository collectionRepository,
+                           ISourceRepository sourceRepository,
+                           ICollectionCriteriaService collectionCriteriaService,
+                           UrlGenerationStrategy urlGenerationStrategy) {
     this.collectionRepository = collectionRepository;
     this.sourceRepository = sourceRepository;
     this.collectionCriteriaService = collectionCriteriaService;
+    this.urlGenerationStrategy = urlGenerationStrategy;
   }
 
   @Override
@@ -77,7 +84,7 @@ public class CollectionService implements ICollectionService {
 
     List<Event> finalEvents = collection.getEvents().stream().filter(e -> (!curedNavigation || e.meetsAlgorithmConsensus(collection.getConsensusType()))).filter(e -> category_in == null || category_in.isEmpty() || category_in.contains(e.getCategory().getId())).filter(e -> province_in == null || province_in.isEmpty() || province_in.contains(e.getLocation().getProvince() != null ? e.getLocation().getProvince().getId() : null)).filter(e -> source_in == null || source_in.isEmpty() || source_in.contains(e.getSource().getType())).filter(e -> uploadDate_lt == null || e.getUploadDate().isBefore(uploadDate_lt)).filter(e -> uploadDate_gt == null || e.getUploadDate().isAfter(uploadDate_gt)).filter(e -> eventDate_lt == null || e.getEventDate().isBefore(eventDate_lt)).filter(e -> eventDate_gt == null || e.getEventDate().isAfter(eventDate_gt)).toList();
 
-    return finalEvents.stream().map(EventOutputDTO::from).toList();
+    return finalEvents.stream().map(event -> EventOutputDTO.from(event, urlGenerationStrategy)).toList();
   }
 
   @Override

@@ -3,6 +3,7 @@ package ar.utn.edu.frba.ddsi.models.dtos.output.deletion_request;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.deletion_request.DeletionRequest;
 import ar.utn.edu.frba.ddsi.models.entities.deletion_request.DeletionRequestState;
+import ar.utn.edu.frba.ddsi.models.entities.strategies.UrlGenerationStrategy;
 import lombok.Data;
 
 @Data
@@ -19,10 +20,10 @@ public class DeletionRequestOutputDTO {
     this.state = state;
   }
 
-  public static DeletionRequestOutputDTO from(DeletionRequest dr) {
+  public static DeletionRequestOutputDTO from(DeletionRequest dr, UrlGenerationStrategy urlGenerationStrategy) {
     return new DeletionRequestOutputDTO(
         dr.getId(),
-        EventOutputDTO.from(dr.getEvent()),
+        EventOutputDTO.from(dr.getEvent(), urlGenerationStrategy),
         dr.getArgument(),
         dr.getState());
   }

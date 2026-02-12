@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="render(resources)">
+
+  <th:block th:if="${resources != null and !resources.isEmpty()}">
+
+    <th:block th:with="images=${resources.?[#strings.startsWith(mimeType, 'image')]},
+                       videos=${resources.?[#strings.startsWith(mimeType, 'video')]},
+                       visualMedia=${new java.util.ArrayList(images)},
+                       void=${visualMedia.addAll(videos)},
+                       mediaCount=${visualMedia.size()}">
+
+      <div th:if="${mediaCount > 0}"
+           class="media-grid"
+           th:attr="data-count=${mediaCount == 1 ? '1' : (mediaCount == 2 ? '2' : '3-plus')}">
+
+        <th:block th:each="media, iter : ${visualMedia}" th:if="${iter.index < 3}">
+
+          <th:block th:if="${iter.index < 2 or mediaCount == 3}">
+
+            <video th:if="${#strings.startsWith(media.mimeType, 'video')}"
+                   th:src="${media.url}"
+                   class="media-grid-item lazy-video"
+                   preload="none"
+                   muted
+                   playsinline
+                   th:data-index="${iter.index}">
+            </video>
+
+            <img th:if="${#strings.startsWith(media.mimeType, 'image')}"
+                 th:src="${media.url}"
+                 class="media-grid-item"
+                 loading="lazy"
+                 decoding="async"
+                 alt="Evidencia"
+                 th:data-index="${iter.index}">
+          </th:block>
+
+          <div th:if="${iter.index == 2 and mediaCount > 3}"
+               class="media-grid-overlay-container media-grid-item"
+               th:data-index="${iter.index}">
+
+            <img th:if="${#strings.startsWith(media.mimeType, 'image')}"
+                 th:src="${media.url}"
+                 loading="lazy"
+                 decoding="async"
+                 style="width:100%; height:100%; object-fit:cover;">
+
+            <video th:if="${#strings.startsWith(media.mimeType, 'video')}"
+                   th:src="${media.url}"
+                   class="lazy-video"
+                   preload="none"
+                   muted
+                   style="width:100%; height:100%; object-fit:cover;">
+            </video>
+
+            <div class="media-grid-overlay">
+              <span th:text="'+' + ${mediaCount - 2}"></span>
+            </div>
+          </div>
+
+        </th:block>
+
+        <div class="gallery-playlist" style="display: none;">
+            <span th:each="media : ${visualMedia}"
+                  th:attr="data-url=${media.url},
+                           data-type=${#strings.startsWith(media.mimeType, 'video') ? 'video' : 'image'}">
+            </span>
+        </div>
+
+      </div>
+    </th:block>
+  </th:block>
+
+</th:block>
+
+</body>
+</html>
