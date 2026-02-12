@@ -1,43 +1,75 @@
-<article class="hecho card" th:fragment="cardFragment(item)">
-    <a class="flag-float" th:href="'#report-hecho-' + ${item.id}" aria-label="Reportar este hecho">
-        <img th:src="@{/shared/icons/ci_flag.svg}" alt="" class="icon-img">
-    </a>
-    <span class="tag" th:text="${item.category}">
-        Categoria
-    </span>
-    <h2 th:text="${item.title}">
-        Titulo del Hecho
-    </h2>
-    <p class="ubicacion">
-        <span th:text="${item.location.municipality}"></span><span
-            th:if="${item.location.municipality != null and item.location.department != null}">, </span><span
-            th:text="${item.location.department}"></span><span
-            th:if="${(item.location.municipality != null or item.location.department != null) and item.location.province != null}"> - </span><span
-            th:text="${item.location.province}"></span><span
-            th:if="${item.location.municipality != null or item.location.department != or and item.location.province != null}"> | </span><span
-            th:text="${#temporals.format(item.eventDate, 'dd MMMM yyyy')}"></span>
-    </p>
-    <p th:text="${item.description}">
-        Descripción del hecho muy buena descripcion la verdad que me gusta mucho este hecho
-        que paso y que es muy interesante y que deberian saber todos los usuarios de
-    </p>
+<article class="event-card" th:fragment="cardFragment(item)" th:attr="data-event-id=${item.id}">
 
-<!--    <img th:if="${item.image}" th:src="${item.image}" alt="Imagen del hecho"/>-->
+    <header class="card-header">
+        <span class="category-badge" th:text="${item.category}">
+            Categoria
+        </span>
 
-<!--    <img-->
-<!--            src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1400&auto=format&fit=crop"-->
-<!--            alt="Incidente"-->
-<!--    />-->
-    <p class="fuente" th:text="${item.Origin} + ' • ' + ${item.sourceId}">
-        Static • Nombre de la fuente
-    </p>
+        <a class="btn-report" aria-label="Reportar este hecho"
+           th:if="${active}!='admin'"
+           th:hx-get="@{/modals/report-event/{id}(id=${item.id})}"
+           hx-target="#modals-here" hx-swap="innerHTML">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                <line x1="4" x2="4" y1="22" y2="15"/>
+            </svg>
+        </a>
+    </header>
+
+    <div class="card-body">
+        <h3 class="event-title" th:text="${item.title}">
+            Titulo del evento
+        </h3>
+
+        <div class="event-meta">
+
+            <span class="meta-date">
+                <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2"
+                                                                                                          x2="16"
+                                                                                                          y2="6"></line><line
+                        x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span th:text="${#temporals.format(item.eventDate, 'dd MMMM yyyy')}">
+                    (Fecha del hecho) DD MMMM AAAA
+                </span>
+            </span>
+
+            <span class="meta-location"
+                  th:if="${item.location != null and (item.location.municipality != null or item.location.department != null or item.location.province != null)}">
+
+                <span class="meta-separator">|</span>
+
+                <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+
+                <span th:text="${item.location.municipality}">Municipalidad</span>
+
+                <span th:if="${item.location.municipality != null and item.location.department != null}">, </span>
+
+                <span th:text="${item.location.department}">Departamento</span>
+
+                <span th:if="${(item.location.municipality != null or item.location.department != null) and item.location.province != null}"> - </span>
+
+                <span th:text="${item.location.province}">Provincia</span>
+            </span>
+
+        </div>
+
+        <p class="event-description" th:text="${item.description}">
+            Descripción del hecho...
+        </p>
+
+        <div th:replace="~{fragments/_mediaGrid :: render(${item.resources})}"></div>
+    </div>
+
+    <footer class="card-footer">
+        <p class="source-info" th:text="${item.Origin} + ' • ' + ${item.sourceId}">
+            SOURCE • ID
+        </p>
+    </footer>
+
 </article>
-
-<!--
-TODO:
-- Nombres de fuentes?
-- Remplazar Localidad
-- Imagen del hecho
-- Modal del reporte especifico del hecho
- -->
-

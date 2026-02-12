@@ -1,24 +1,30 @@
 package ar.utn.edu.frba.ddsi.models.dtos.output.deletion_request;
 
+import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.deletion_request.DeletionRequest;
 import ar.utn.edu.frba.ddsi.models.entities.deletion_request.DeletionRequestState;
+import ar.utn.edu.frba.ddsi.models.entities.strategies.UrlGenerationStrategy;
 import lombok.Data;
 
 @Data
 public class DeletionRequestOutputDTO {
   Long id;
-  Long eventId;
+  EventOutputDTO event;
   String argument;
   DeletionRequestState state;
 
-  public DeletionRequestOutputDTO(Long id, Long eventId, String argument, DeletionRequestState state) {
+  public DeletionRequestOutputDTO(Long id, EventOutputDTO event, String argument, DeletionRequestState state) {
     this.id = id;
-    this.eventId = eventId;
+    this.event = event;
     this.argument = argument;
     this.state = state;
   }
 
-  public static DeletionRequestOutputDTO from(DeletionRequest dr) {
-    return new DeletionRequestOutputDTO(dr.getId(), dr.getEvent().getId(), dr.getArgument(), dr.getState());
+  public static DeletionRequestOutputDTO from(DeletionRequest dr, UrlGenerationStrategy urlGenerationStrategy) {
+    return new DeletionRequestOutputDTO(
+        dr.getId(),
+        EventOutputDTO.from(dr.getEvent(), urlGenerationStrategy),
+        dr.getArgument(),
+        dr.getState());
   }
 }

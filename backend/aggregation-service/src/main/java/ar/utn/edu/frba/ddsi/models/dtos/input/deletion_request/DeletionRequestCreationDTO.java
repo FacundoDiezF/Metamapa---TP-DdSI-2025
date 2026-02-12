@@ -6,5 +6,4 @@ import lombok.Data;
 public class DeletionRequestCreationDTO {
   Long eventId;
   String argument;
-  String applicantName; //TODO: Esto deberia ser un usuario
 }

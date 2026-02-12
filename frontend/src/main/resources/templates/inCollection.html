@@ -2,8 +2,20 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <th:block layout:fragment="extraStyles">
-    <link rel="stylesheet" th:href="@{/css/pages/explore.css}"/>
-    <link rel="stylesheet" th:href="@{/css/filters.css}"/>
+    <link rel="stylesheet" th:href="@{/css/shared/grid-3col.css}"/>
+
+    <!-- Página inCollection -->
+    <link rel="stylesheet" th:href="@{/css/pages/inCollection.css}"/>
+
+    <!-- SideBar izquierdo: filtros -->
+    <link rel="stylesheet" th:href="@{/css/shared/filters/filters.css}"/>
+
+    <!-- SideBar derecho: miniMapa + colecciones destacadas -->
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar-right/miniMap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar-right/featured-collections.css}"/>
+
+    <!-- Cards  -->
+    <link rel="stylesheet" th:href="@{/css/shared/cards/card-event.css}"/>
 </th:block>
 
 
@@ -15,4 +27,29 @@
       )}"></section>
 </th:block>
 
+<th:block layout:fragment="extraScripts">
+    <script th:inline="javascript">
+        window.events = [[${events}]];
+        console.log('Explore -> window.events length:', Array.isArray(window.events) ? window.events.length : 'NO ARRAY');
+    </script>
+
+    <script th:src="@{/js/map/metamapa-map.js}"></script>
+
+    <script>
+        initMetaMapa({
+            containerId: 'explore-map',
+            center: [-34.6037, -58.3816],
+            zoom: 10,
+            mini: true
+        });
+    </script>
+</th:block>
+
 </html>
+
+
+
+
+
+
+

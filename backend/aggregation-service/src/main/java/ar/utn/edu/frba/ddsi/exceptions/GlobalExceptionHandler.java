@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(SpamException.class)
   public ResponseEntity<ErrorResponse> handleSpamDetectedException(SpamException ex) {
     ErrorResponse errorResponse = new ErrorResponse("SPAM_DETECTED", ex.getMessage());
-    return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(SubscriptionException.class)

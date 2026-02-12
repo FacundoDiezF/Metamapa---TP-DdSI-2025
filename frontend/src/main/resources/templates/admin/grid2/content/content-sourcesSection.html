@@ -1,0 +1,59 @@
+<th:block th:fragment="adminSourcesContent">
+
+    <section class="admin-section">
+
+        <header class="page-header">
+            <div class="header-text">
+                <h1 class="page-title">Fuentes</h1>
+                <p class="page-subtitle">Gestioná las fuentes de datos para cada colección.</p>
+            </div>
+
+            <div class="header-actions">
+                <button hx-get="/modals/new-source"
+                        hx-target="#modals-here" hx-swap="innerHTML"
+                        class="btn-primary">
+                    + Asociar nueva fuente
+                </button>
+            </div>
+        </header>
+
+        <div class="admin-scroll-area">
+
+            <div class="empty-state" th:if="${#lists.isEmpty(sources)}">
+                <p>No hay fuentes cargadas.</p>
+            </div>
+
+            <div class="admin-list-container" th:if="${!#lists.isEmpty(sources)}">
+
+                <th:block th:each="src : ${sources}">
+                    <article class="source-card">
+
+                        <div class="card-head" >
+                            <h2 class="card-title" th:text="${'C' + src.clientId + ' • S' + src.id}"> Source Id</h2>
+
+                            <div class="card-actions">
+                                <button class="icon-btn" title="Editar">
+                                    <img src="/shared/icons/edit.svg" alt="Editar">
+                                </button>
+                                <button class="icon-btn" title="Eliminar">
+                                    <img src="/shared/icons/trash.svg" alt="Eliminar">
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <p class="source-type">
+                                <span class="label">Tipo:</span>
+                                <span th:text="${src.type}">TYPE</span>
+                            </p>
+                        </div>
+
+                    </article>
+                </th:block>
+
+            </div>
+
+        </div>
+    </section>
+
+</th:block>

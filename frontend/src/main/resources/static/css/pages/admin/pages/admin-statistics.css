@@ -1,0 +1,102 @@
+/* ===== GRID DE TARJETAS ===== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    padding-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== TARJETA DE ESTADÍSTICA ===== */
+.stat-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Header de la tarjeta */
+.stat-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 12px;
+    min-height: 28px;
+}
+
+.stat-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* ===== GRÁFICO DE BARRAS ===== */
+.stat-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-grow: 1;
+}
+
+/* Item individual */
+.stat-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 8px;
+    gap: 6px 12px;
+}
+
+.stat-item .label {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #475569;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stat-item .value {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #0f172a;
+}
+
+.stat-item .bar {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    height: 8px;
+    border-radius: 999px;
+    background: #F1F5F9;
+    overflow: hidden;
+    position: relative;
+}
+
+.stat-item .bar-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    display: block;
+    background: #3B82F6;
+    border-radius: 999px;
+}

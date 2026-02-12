@@ -21,7 +21,7 @@ public interface IEventService {
       Pageable pageable
   );
 
-  void createAll(List<EventInputDTO> dtos);
+  void createAll(List<EventInputDTO> dtos, Long sourceClientId);
 
-  void updateAll(List<EventInputDTO> dtos);
+  void updateAll(List<EventInputDTO> dtos, Long sourceClientId);
 }

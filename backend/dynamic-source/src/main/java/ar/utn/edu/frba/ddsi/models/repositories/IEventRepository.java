@@ -13,5 +13,10 @@ public interface IEventRepository extends JpaRepository<Event, Long> {
   @Query("SELECT e FROM Event e WHERE e.deleted = false AND e.accepted = true")
   List<Event> findByAccepted();
 
+  //Not eliminated & by creatorId
+  @Query("SELECT e FROM Event e WHERE e.creatorId = :userId AND e.deleted = false AND e.accepted = true")
+  List<Event> findByCreatorId(String userId);
+
   List<Event> findBySourceId(Long sourceId);
 }
+

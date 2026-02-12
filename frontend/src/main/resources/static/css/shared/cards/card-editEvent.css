@@ -1,0 +1,136 @@
+/* =========================================
+   UTILIDADES & ESTADOS
+   ========================================= */
+.d-none {
+    display: none !important;
+}
+
+.event-card-edit-mode {
+    border: 1px solid var(--Accent, #3B82F6);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* =========================================
+   INPUTS BASE
+   ========================================= */
+.edit-input {
+    width: 100%; /* Por defecto ocupa todo (para Título y Descripción) */
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-family: inherit;
+    color: var(--Text);
+    transition: all 0.2s ease;
+}
+
+.edit-input:focus,
+.location-input-fake:hover {
+    outline: none;
+    border-color: var(--Accent, #3B82F6);
+    background: #fff;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.title-input {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.desc-input {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+/* =========================================
+   LAYOUT DE LA META DATA (Fecha + Ubicación)
+   ========================================= */
+
+.event-card-edit-mode .event-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.meta-date.edit-mode input {
+    width: auto;
+    max-width: 160px;
+}
+
+.location-input-fake {
+    width: auto;
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    gap: 12px;
+
+    min-width: 140px;
+}
+
+.location-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.location-content .meta-icon {
+    color: #64748b;
+    flex-shrink: 0;
+}
+
+/* =========================================
+   OTROS ELEMENTOS
+   ========================================= */
+
+.category-selector-wrapper:hover .category-badge {
+    opacity: 0.8;
+    background-color: #f1f5f9;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-trigger {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.card-footer-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* =========================================
+   RESPONSIVE (Celulares)
+   ========================================= */
+@media (max-width: 500px) {
+    .event-card-edit-mode .event-meta {
+        flex-direction: column;
+        align-items: stretch; /* Estirar inputs al ancho total */
+        gap: 8px;
+    }
+
+    .meta-separator {
+        display: none; /* Ocultar barra separadora | */
+    }
+
+    .meta-date.edit-mode input,
+    .location-input-fake {
+        width: 100% !important; /* En móvil ocupan todo el ancho */
+        max-width: none;
+    }
+}

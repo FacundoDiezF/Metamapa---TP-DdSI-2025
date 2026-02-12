@@ -1,0 +1,59 @@
+<html layout:decorate="~{layout/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title>Registro - MetaMapa</title>
+    <th:block layout:fragment="extraStyles">
+        <link rel="stylesheet" th:href="@{/css/pages/auth.css}"/>
+    </th:block>
+</head>
+
+<div layout:fragment="navbar"></div>
+
+<div th:fragment="contenido">
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+
+            <header class="auth-header">
+
+                <a class="brand auth-brand">
+                    <div class="brand-mark"><span class="dot"></span></div>
+                    <span class="brand-name">MetaMapa</span>
+                </a>
+
+                <h2 class="auth-title">Crear Cuenta</h2>
+                <p class="auth-subtitle">Únete a la comunidad de MetaMapa</p>
+            </header>
+
+            <div th:if="${error}" class="auth-alert error">
+                <span th:text="${error}">Mensaje de error</span>
+            </div>
+
+            <form th:action="@{/register}" th:object="${registerRequest}" method="post" class="auth-form">
+
+                <div class="form-group">
+                    <label for="reg-username" class="form-label">Usuario</label>
+                    <input type="text" id="reg-username" th:field="*{username}" class="form-input"
+                           placeholder="Elige un nombre de usuario" required/>
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-password" class="form-label">Contraseña</label>
+                    <input type="password" id="reg-password" th:field="*{password}" class="form-input"
+                           placeholder="Mínimo 8 caracteres" required/>
+                </div>
+
+                <button type="submit" class="btn-auth">Registrarse</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>¿Ya tienes cuenta? <a th:href="@{/login}" class="auth-link">Inicia Sesión</a></p>
+                <a th:href="@{/explore}" class="back-home">← Volver al inicio</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</html>

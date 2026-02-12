@@ -1,46 +1,41 @@
 package ar.utn.edu.frba.ddsi.models.entities.observer;
 
-import ar.utn.edu.frba.ddsi.models.dtos.input.SubscriberInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.SourceOutputDTO;
 import java.util.List;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 public class Aggregator implements ISubscriber {
 
   private final WebClient clientCallBack;
-  private final Long sourceClientId;
 
-  public Aggregator(String callbackUrl, Long sourceClientId) {
+  public Aggregator(String callbackUrl) {
     this.clientCallBack = WebClient
         .builder()
         .baseUrl(callbackUrl)
         .build();
-    this.sourceClientId = sourceClientId;
   }
 
-  public static ISubscriber from(SubscriberInputDTO dto) {
-    return new Aggregator(dto.getCallbackUrl(), dto.getSourceClientId());
+  public static ISubscriber from(String callbackUrl) {
+    return new Aggregator(callbackUrl);
   }
 
-  public void notifyNewEvents(List<EventOutputDTO> events) {
-    events.forEach(event -> event.setSourceClientId(sourceClientId));
-
-    clientCallBack.post()
+  @Override
+  public Mono<Void> notifyNewEvents(List<EventOutputDTO> events) {
+    return clientCallBack.post()
         .uri("/events")
         .bodyValue(events)
         .retrieve()
-        .bodyToMono(Void.class)//? Hay respuesta
-        .block();
+        .bodyToMono(Void.class);
   }
 
-  public void notifySource(SourceOutputDTO source) {
-    source.setSourceClientId(sourceClientId);
-    clientCallBack.post()
+  @Override
+  public Mono<Void> notifySource(SourceOutputDTO source) {
+    return clientCallBack.post()
         .uri("/sources")
         .bodyValue(source)
         .retrieve()
-        .bodyToMono(Void.class)
-        .block();
+        .bodyToMono(Void.class);
   }
 }

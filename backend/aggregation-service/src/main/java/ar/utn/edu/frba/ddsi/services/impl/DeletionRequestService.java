@@ -5,14 +5,18 @@ import ar.utn.edu.frba.ddsi.exceptions.SpamException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.deletion_request.DeletionRequestCreationDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.input.deletion_request.DeletionRequestEvaluationDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.deletion_request.DeletionRequestOutputDTO;
-import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.deletion_request.DeletionRequest;
+import ar.utn.edu.frba.ddsi.models.entities.deletion_request.DeletionRequestState;
+import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.spamDetector.ISpamDetector;
+import ar.utn.edu.frba.ddsi.models.entities.strategies.UrlGenerationStrategy;
 import ar.utn.edu.frba.ddsi.models.repositories.IDeletionRequestRepository;
 import ar.utn.edu.frba.ddsi.models.repositories.IEventRepository;
 import ar.utn.edu.frba.ddsi.services.IDeletionRequestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,21 +28,23 @@ public class DeletionRequestService implements IDeletionRequestService {
 
   private final ISpamDetector spamDetector;
 
+  private final UrlGenerationStrategy urlGenerationStrategy;
+
   @Autowired
-  public DeletionRequestService(IDeletionRequestRepository deletionRequestRepository, IEventRepository eventRepository, ISpamDetector spamDetector) {
+  public DeletionRequestService(IDeletionRequestRepository deletionRequestRepository, IEventRepository eventRepository, ISpamDetector spamDetector, UrlGenerationStrategy urlGenerationStrategy) {
     this.deletionRequestRepository = deletionRequestRepository;
     this.eventRepository = eventRepository;
     this.spamDetector = spamDetector;
+    this.urlGenerationStrategy = urlGenerationStrategy;
   }
 
-
   @Override
-  public DeletionRequestOutputDTO create(DeletionRequestCreationDTO drDTO) {
+  public DeletionRequestOutputDTO create(DeletionRequestCreationDTO drDTO, String userId) {
 
     Event drEvent = eventRepository.findById(drDTO.getEventId())
         .orElseThrow(() -> new NotFoundException("Event not found - ID: " + drDTO.getEventId()));
 
-    DeletionRequest deletionRequest = DeletionRequest.from(drDTO, drEvent);
+    DeletionRequest deletionRequest = DeletionRequest.from(drDTO, drEvent, userId);
 
     // Get a List of the DRs for the same event.
     List<DeletionRequest> eventDeletionRequests = deletionRequestRepository.findByEvent_Id(drDTO.getEventId());
@@ -50,27 +56,28 @@ public class DeletionRequestService implements IDeletionRequestService {
 
     deletionRequestRepository.save(deletionRequest);
 
-    return DeletionRequestOutputDTO.from(deletionRequest);
+    return DeletionRequestOutputDTO.from(deletionRequest, urlGenerationStrategy);
   }
 
   @Override
-  public DeletionRequestOutputDTO evaluate(DeletionRequestEvaluationDTO evaluation) {
+  public DeletionRequestOutputDTO evaluate(DeletionRequestEvaluationDTO evaluation, String evaluatorId) {
 
     //TODO: validate that user can do this petition.
 
     DeletionRequest deletionRequest = deletionRequestRepository.findById(evaluation.getDeletionRequestId())
         .orElseThrow(() -> new NotFoundException("Deletion request not found - ID: " + evaluation.getDeletionRequestId()));
 
-    deletionRequest.evaluate(evaluation.isAccepted(), evaluation.getEvaluatorName());
+    deletionRequest.evaluate(evaluation.isAccepted(), evaluatorId);
 
     deletionRequestRepository.save(deletionRequest);
-    return DeletionRequestOutputDTO.from(deletionRequest);
+    return DeletionRequestOutputDTO.from(deletionRequest, urlGenerationStrategy);
   }
 
   @Override
-  public List<DeletionRequestOutputDTO> getAll() {
-    return deletionRequestRepository.findAll().stream()
-        .map(DeletionRequestOutputDTO::from)
-        .toList();
+  public Page<DeletionRequestOutputDTO> getAll(DeletionRequestState state, Pageable pageable) {
+
+    Page<DeletionRequest> allDeletionRequests = deletionRequestRepository.findAllByStateAndEvent_DeletedFalse(state, pageable);
+
+    return allDeletionRequests.map(dr -> DeletionRequestOutputDTO.from(dr, urlGenerationStrategy));
   }
 }

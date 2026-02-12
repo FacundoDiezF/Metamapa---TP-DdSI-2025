@@ -1,6 +1,5 @@
 package ar.utn.edu.frba.ddsi.controller;
 
-import ar.utn.edu.frba.ddsi.models.dtos.input.SubscriberInputDTO;
 import ar.utn.edu.frba.ddsi.services.ISubscriberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +15,7 @@ public class SubscriberController {
   ISubscriberService subscriberService;
 
   @PostMapping()
-  public void subscribe(@RequestBody SubscriberInputDTO dto) {
-    subscriberService.subscribe(dto);
+  public void subscribe(@RequestBody String callbackUrl) {
+    subscriberService.subscribe(callbackUrl);
   }
 }

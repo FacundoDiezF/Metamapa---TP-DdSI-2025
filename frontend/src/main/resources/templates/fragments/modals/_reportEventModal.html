@@ -1,0 +1,51 @@
+<!-- Fragment: Modal de Solicitud de Eliminación -->
+<div th:fragment="deletionRequestModal" class="modal-overlay"
+     hx-on:click="if(event.target.classList.contains('modal-overlay')) { this.closest('#modals-here').innerHTML = '' }">
+
+    <div class="modal-body" role="dialog" aria-modal="true">
+
+        <button type="button"
+                class="modal-close"
+                aria-label="Cerrar"
+                hx-on:click="this.closest('#modals-here').innerHTML = ''">
+            ✕
+        </button>
+
+        <h2>Reportar Evento</h2>
+        <p class="muted">
+            Explicá por qué este contenido debería eliminarse.
+            <strong>Mínimo 500 caracteres.</strong>
+            Evitá datos sensibles.
+        </p>
+
+        <form class="report-form"
+              th:object="${newDeletionRequest}"
+              th:hx-post="@{/share/deletion-request}"
+              hx-target="#modals-here"
+              hx-swap="innerHTML">
+
+            <input type="hidden" th:field="*{eventId}"/>
+
+            <label class="field">
+
+                    <span class="sr-only">
+                        Justificación
+                    </span>
+
+                <textarea th:field="*{argument}"
+                          placeholder="Justificación (mín. 500 caracteres)"
+                          minlength="500"
+                          required
+                          rows="8"></textarea>
+                <p class="help error-msg">
+                    La justificación debe tener al menos 500 caracteres.
+                </p>
+            </label>
+
+            <button type="submit"
+                    class="btn-primary">
+                Enviar solicitud
+            </button>
+        </form>
+    </div>
+</div>

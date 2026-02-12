@@ -22,12 +22,19 @@
 <th:block layout:fragment="extraScripts">
     <!-- 1) Inyecta los datos del modelo en JS -->
     <script th:inline="javascript">
-        window.events = [[${events}]];
+        window.events = [[${eventsPage.getContent()}]];
     </script>
 
-    <!-- 2) Librerías y tu JS que usa window.eventos -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script th:src="@{/js/map/page-map.js}"></script>
+    <script th:src="@{/js/map/metamapa-map.js}"></script>
+
+    <script>
+        // Mapa grande
+        initMetaMapa({
+            containerId: 'map',
+            center: [-34.6037, -58.3816],
+            zoom: 5,
+            mini: false
+        });
+    </script>
 </th:block>
 </html>

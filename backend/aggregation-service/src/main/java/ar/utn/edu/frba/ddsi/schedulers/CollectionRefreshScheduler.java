@@ -21,8 +21,11 @@ public class CollectionRefreshScheduler {
   @Scheduled(cron = "${collection.refresh.cron}")
   public void refreshCollections() {
 
-    collectionService.refreshCollections(lastUpdate);
+    System.out.println("[CRON] Refreshing collections...");
 
+    collectionService.refreshCollections(lastUpdate);
     lastUpdate = LocalDateTime.now();
+
+    System.out.println("[CRON] END Refreshing collections");
   }
 }

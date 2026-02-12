@@ -1,0 +1,29 @@
+<th:block th:fragment="deletionRequestContent">
+
+    <section class="admin-section">
+
+        <header class="page-header">
+            <div class="header-text">
+                <h1 class="page-title">
+                    Solicitudes de eliminación
+                    <span class="count" th:text="${deletionsRequestsPage.totalElements}">0</span>
+                </h1>
+                <p class="page-subtitle">Gestioná los reportes de contenido inapropiado.</p>
+            </div>
+        </header>
+
+        <div class="admin-scroll-area">
+
+            <div class="empty-state" th:if="${#lists.isEmpty(deletionsRequestsPage.content)}">
+                <p>No hay solicitudes pendientes.</p>
+            </div>
+
+            <ul class="deletion-list admin-list-container" th:if="${!#lists.isEmpty(deletionsRequestsPage.content)}">
+                <li th:each="req : ${deletionsRequestsPage.content}">
+                    <div th:replace="~{admin/cards/_deletionRequestCard :: deletionRequestCard(${req})}"></div>
+                </li>
+            </ul>
+
+        </div>
+    </section>
+</th:block>

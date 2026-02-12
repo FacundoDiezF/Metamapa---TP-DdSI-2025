@@ -85,7 +85,7 @@ public class EventService implements IEventService {
         .id(dto.getId())
         .category(category)
         .province(province)
-        .eventDate(dto.getEventDate())
+        .updatedDate(dto.getUpdatedDate())
         .build();
   }
 

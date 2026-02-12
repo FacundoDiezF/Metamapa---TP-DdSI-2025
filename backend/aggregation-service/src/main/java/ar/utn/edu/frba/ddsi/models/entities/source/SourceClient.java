@@ -3,7 +3,6 @@ package ar.utn.edu.frba.ddsi.models.entities.source;
 import ar.utn.edu.frba.ddsi.exceptions.SubscriptionException;
 import ar.utn.edu.frba.ddsi.models.dtos.input.event.EventInputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.input.source.SourceClientInputDTO;
-import ar.utn.edu.frba.ddsi.models.dtos.output.source.SubscribeOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -67,7 +66,7 @@ public class SourceClient {
     try {
       webClient.post()
           .uri("/subscribers")
-          .bodyValue(new SubscribeOutputDTO(this.id, callbackUrl))
+          .bodyValue(callbackUrl)
           .retrieve()
           .bodyToMono(Void.class)
           .block();

@@ -1,21 +1,25 @@
-<aside th:fragment="right" class="sidebar-right">
+<aside th:fragment="right">
     <div id="mm-mapa" class="collapse d-lg-block show">
         <div class="card map-box">
             <h3>Mapa</h3>
             <div class="map-frame">
-                <div id="map" data-mm-map class="map-canvas"></div>
+                <div id="explore-map" data-mm-map class="map-canvas"></div>
             </div>
         </div>
     </div>
 
-    <div class="card colecciones">
+    <div th:if="${!#lists.isEmpty(collectionPage.content)}" class="card colecciones">
         <h3>Colecciones</h3>
         <ul>
-            <li><a href="#">Desastres naturales <span>CURADO</span></a></li>
-            <li><a href="#">Caridad <span>NO CURADO</span></a></li>
-            <li><a href="#">San Juan <span>CURADO</span></a></li>
+            <li th:each="col : ${collectionPage.content}">
+                <a class="refColeccion"
+                   th:href="@{/collection/{handler}(handler=${col.handler})}"
+                   th:text="${col.title}">
+                    Titulo Coleccion
+                </a>
+            </li>
         </ul>
-        <button class="explorar">Explorar Mas</button>
+        <a th:href="@{/collections}" class="btn-primary">Explorar Mas</a>
     </div>
 </aside>
 

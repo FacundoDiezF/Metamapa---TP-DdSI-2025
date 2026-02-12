@@ -2,10 +2,15 @@
 server.port=8084
 
 #CronJob for statistics refresh
-statistics.refresh.cron=0 0 * * * *
+statistics.refresh.cron=0 */2 * * * *
 
 # Agregation service URL
-aggregation-service.url=http://localhost:8080
+aggregation-service.url=http://localhost:8088
+
+# Eureka Client Configuration
+spring.application.name=statistics-service
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+eureka.client.enabled=true
 
 # Database configuration
 spring.datasource.url=jdbc:mysql://localhost:3306/metamapa_statistics?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true

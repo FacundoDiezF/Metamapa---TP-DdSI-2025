@@ -1,0 +1,181 @@
+/* ===== GRID PRINCIPAL (Fondo del Dashboard) ===== */
+.grid-2col {
+    display: grid;
+    grid-template-columns: var(--sidebar-w, 260px) minmax(0, 1fr);
+    height: calc(100svh - var(--header-h, 64px) - var(--subnav-h, 0px));
+    width: 100%;
+    gap: 16px;
+    padding: 16px;
+    background-color: var(--bg-app, #f1f5f9);
+    box-sizing: border-box;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+/* ===== ESTILO COMÚN PARA AMBAS TARJETAS ===== */
+.left-slot,
+.center-slot {
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    overflow: hidden;
+}
+
+/* ===== SLOT IZQUIERDO (SIDEBAR) ===== */
+.left-slot {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* ===== SLOT CENTRAL (CONTENIDO) ===== */
+.center-slot {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+}
+
+
+/* =========================================
+   ADMIN SHARED: Layout y Estructura Base
+   ========================================= */
+
+/* SECCIÓN ADMIN PRINCIPAL */
+.admin-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* HEADER ESTÁNDAR */
+.page-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
+    z-index: 10;
+}
+
+/* Títulos y Subtítulos */
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: #0f172a;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.page-subtitle {
+    margin: 4px 0 0;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* Badge / Contador */
+.page-title .count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+
+    background-color: #0f172a;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1;
+
+    border-radius: 99px;
+    padding: 4px 10px;
+    min-width: 24px;
+}
+
+/* ÁREA DE SCROLL */
+.admin-scroll-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
+}
+
+/*UTILIDAD: Contenedor de Lista Centrada */
+.admin-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    max-width: 1300px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ESTADO VACÍO GENÉRICO */
+.empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+    color: #64748b;
+    font-style: italic;
+    font-size: 1rem;
+}
+
+/* --- BOTONES DE ACCIÓN --- */
+.admin-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 12px;
+    margin-top: 8px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.action-form {
+    flex: 1;
+    display: flex;
+}
+
+.btn-action {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.btn-action.accept {
+    background: #ecfdf5;
+    color: #059669;
+    border-color: #d1fae5;
+}
+
+.btn-action.accept:hover {
+    background: #d1fae5;
+}
+
+.btn-action.reject {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fee2e2;
+}
+
+.btn-action.reject:hover {
+    background: #fee2e2;
+}

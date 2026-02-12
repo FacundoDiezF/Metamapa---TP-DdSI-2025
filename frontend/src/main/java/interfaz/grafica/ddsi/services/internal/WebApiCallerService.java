@@ -1,0 +1,307 @@
+package interfaz.grafica.ddsi.services.internal;
+
+import interfaz.grafica.ddsi.dtos.auth.AuthResponseDTO;
+import interfaz.grafica.ddsi.dtos.auth.RefreshTokenDTO;
+import interfaz.grafica.ddsi.exceptions.BackendException;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ClientHttpRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.util.UriBuilder;
+import java.net.URI;
+import java.util.function.Function;
+
+/**
+ * Servicio genérico para hacer llamadas HTTP con manejo automático de tokens
+ */
+@Service
+public class WebApiCallerService {
+
+  private final WebClient apiGatewayClient;
+  private final String authServiceUrl;
+
+  public WebApiCallerService(@Value("${api.gateway.url}") String apiGatewayUrl) {
+    this.apiGatewayClient = WebClient.builder()
+        .baseUrl(apiGatewayUrl)
+        .build();
+    this.authServiceUrl = apiGatewayUrl;
+  }
+
+  /**
+   * Ejecuta una llamada al API con manejo automático de refresh token
+   *
+   * @param apiCall función que ejecuta la llamada al API
+   * @return resultado de la llamada al API
+   */
+  public <T> T executeWithTokenRetry(ApiCall<T> apiCall) {
+    String accessToken = getAccessTokenFromSession();
+    String refreshToken = getRefreshTokenFromSession();
+
+    try {
+      // Primer intento con el token actual
+      return apiCall.execute(this.authHeaderValue(accessToken));
+    } catch (WebClientResponseException e) {
+      if ((e.getStatusCode() == HttpStatus.UNAUTHORIZED || e.getStatusCode() == HttpStatus.FORBIDDEN) && refreshToken != null) {
+        try {
+          // Token expirado, intentar refresh
+          AuthResponseDTO newTokens = refreshToken(refreshToken);
+
+          // Segundo intento con el nuevo token
+          return apiCall.execute(this.authHeaderValue(newTokens.getAccessToken()));
+
+        } catch (WebClientResponseException wCe) {
+          throw new BackendException(wCe);
+
+        } catch (Exception refreshError) {
+          throw new RuntimeException("Error al refrescar token y reintentar: " + refreshError.getMessage(), refreshError); //TODO Estos errores nunca se ven porque siempre termina catcheando mas arriba y saliendo el de Could not connect to backend, hay que arreglar eso porque si no se complica saber donde salen los problemas
+
+        }
+      }
+
+      throw new BackendException(e);
+
+    } catch (Exception e) {
+      throw new RuntimeException("Error de conexión con el servicio: " + e.getMessage(), e);
+    }
+  }
+
+  /**
+   * Ejecuta una llamada HTTP GET con una URL simple
+   */
+  public <T> T get(String url, Class<T> responseType) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .get()
+            .uri(url)
+            .header("Authorization", authHeaderValue)
+            .retrieve()
+            .bodyToMono(responseType)
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP GET con una URL construida dinámicamente, y retorna un objeto simple (Class)
+   */
+  public <T> T get(Function<UriBuilder, URI> uriFunction, Class<T> responseType) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .get()
+            .uri(uriFunction)
+            .header("Authorization", authHeaderValue)
+            .retrieve()
+            .bodyToMono(responseType)
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP GET con una URL simple, y retorna un objeto genérico (ParameterizedTypeReference) que evita la limitación type erasure de Java
+   */
+  public <T> T get(String url, ParameterizedTypeReference<T> typeReference) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .get()
+            .uri(url)
+            .header("Authorization", authHeaderValue)
+            .retrieve()
+            .bodyToMono(typeReference)
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP GET con una URL construida dinámicamente, y retorna un objeto genérico (ParameterizedTypeReference) que evita la limitación type erasure de Java
+   */
+  public <T> T get(Function<UriBuilder, URI> uriFunction, ParameterizedTypeReference<T> typeReference) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .get()
+            .uri(uriFunction)
+            .header("Authorization", authHeaderValue)
+            .retrieve()
+            .bodyToMono(typeReference)
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP GET que retorna una lista
+   */
+  public <T> java.util.List<T> getList(String url, Class<T> responseType) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .get()
+            .uri(url)
+            .header("Authorization", authHeaderValue)
+            .retrieve()
+            .bodyToFlux(responseType)
+            .collectList()
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP GET con un token específico (sin usar sesión)
+   */
+  public <T> T getWithAuth(String url, String accessToken, Class<T> responseType) {
+    try {
+      return apiGatewayClient
+          .get()
+          .uri(url)
+          .header("Authorization", this.authHeaderValue(accessToken))
+          .retrieve()
+          .bodyToMono(responseType)
+          .block();
+    } catch (Exception e) {
+      throw new RuntimeException("Error en llamada al API: " + e.getMessage(), e);
+    }
+  }
+
+  /**
+   * Ejecuta una llamada HTTP POST
+   */
+  public <T> T post(String url, Object body, Class<T> responseType) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .post()
+            .uri(url)
+            .header("Authorization", authHeaderValue)
+            .bodyValue(body)
+            .retrieve()
+            .bodyToMono(responseType)
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP POST sobrecarga preparado para BodyInserter (uso para multipart/form-data)
+   */
+  public <T> T post(String url, BodyInserter<?, ? super ClientHttpRequest> bodyInserter, Class<T> responseType, MediaType contentType) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .post()
+            .uri(url)
+            .contentType(contentType)
+            .header("Authorization", authHeaderValue)
+            .body(bodyInserter)
+            .retrieve()
+            .bodyToMono(responseType)
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP PUT
+   */
+  public <T> T put(String url, Object body, Class<T> responseType) {
+    return executeWithTokenRetry(authHeaderValue ->
+        apiGatewayClient
+            .put()
+            .uri(url)
+            .header("Authorization", authHeaderValue)
+            .bodyValue(body)
+            .retrieve()
+            .bodyToMono(responseType)
+            .block()
+    );
+  }
+
+  /**
+   * Ejecuta una llamada HTTP DELETE
+   */
+  public void delete(String url) {
+    executeWithTokenRetry(authHeaderValue -> {
+      apiGatewayClient
+          .delete()
+          .uri(url)
+          .header("Authorization", authHeaderValue)
+          .retrieve()
+          .bodyToMono(Void.class)
+          .block();
+      return null;
+    });
+  }
+
+  /**
+   * Refresca el access token usando el refresh token
+   */
+  private AuthResponseDTO refreshToken(String refreshToken) {
+    try {
+      RefreshTokenDTO refreshRequest = RefreshTokenDTO.builder()
+          .refreshToken(refreshToken)
+          .build();
+
+      AuthResponseDTO response = apiGatewayClient
+          .post()
+          .uri("/api/v1/auth/token/refresh")
+          .bodyValue(refreshRequest)
+          .retrieve()
+          .bodyToMono(AuthResponseDTO.class)
+          .block();
+
+      // Actualizar tokens en sesión
+      updateTokensInSession(response.getAccessToken(), response.getRefreshToken());
+      return response;
+    } catch (Exception e) {
+      throw new RuntimeException("Error al refrescar token: " + e.getMessage(), e);
+    }
+  }
+
+  /**
+   * Obtiene el access token de la sesión
+   */
+  private String getAccessTokenFromSession() {
+    ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+    HttpServletRequest request = attributes.getRequest();
+    return (String) request.getSession().getAttribute("accessToken");
+  }
+
+  /**
+   * Obtiene el refresh token de la sesión
+   */
+  private String getRefreshTokenFromSession() {
+    ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+    HttpServletRequest request = attributes.getRequest();
+    return (String) request.getSession().getAttribute("refreshToken");
+  }
+
+  /**
+   * Actualiza los tokens en la sesión
+   */
+  private void updateTokensInSession(String accessToken, String refreshToken) {
+    ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+    HttpServletRequest request = attributes.getRequest();
+
+    request.getSession().setAttribute("accessToken", accessToken);
+    request.getSession().setAttribute("refreshToken", refreshToken);
+  }
+
+  /**
+   * Interfaz funcional para ejecutar llamadas al API con token
+   */
+  @FunctionalInterface
+  public interface ApiCall<T> {
+    T execute(String accessToken) throws Exception;
+  }
+
+  /**
+   * Agrega el header Authorization teniendo en cuenta si es un usuario logueado o no
+   */
+  private String authHeaderValue(String accessToken) {
+    if (accessToken != null) {
+      return "Bearer " + accessToken;
+    } else {
+      return null;
+    }
+  }
+}
+

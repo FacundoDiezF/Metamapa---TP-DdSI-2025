@@ -5,6 +5,7 @@ import ar.utn.edu.frba.ddsi.models.entities.consensus.IConsensusAlgorithm;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.source.Source;
 import java.util.List;
+import java.util.Map;
 
 public class SimpleMajorityConsensus implements IConsensusAlgorithm {
   @Override
@@ -14,15 +15,24 @@ public class SimpleMajorityConsensus implements IConsensusAlgorithm {
 
 
   @Override
-  public boolean check(Event event, List<Source> sources){
+  public boolean check(Event event, List<Source> allSources, Map<Long, List<Event>> eventsBySourceId) {
 
-    long halfOfTheSources = (long) Math.ceil(sources.size() / 2.0);
+    long halfOfTheSources = (long) Math.ceil(allSources.size() / 2.0);
 
-    long SourcesWithTheEvent = sources
+    long sourcesWithTheEvent = allSources
         .parallelStream()
-        .filter(s -> s.getEvents().parallelStream().anyMatch(e -> e.isEquivalent(event)))
+        .filter(source -> {
+
+          List<Event> sourceEvents = eventsBySourceId.get(source.getId());
+
+          if (sourceEvents == null || sourceEvents.isEmpty()) {
+            return false;
+          }
+
+          return sourceEvents.stream().anyMatch(e -> e.isEquivalent(event));
+        })
         .count();
 
-    return SourcesWithTheEvent >= halfOfTheSources;
+    return sourcesWithTheEvent >= halfOfTheSources;
   }
 }

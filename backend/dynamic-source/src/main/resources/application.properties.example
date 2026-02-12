@@ -1,5 +1,23 @@
 server.port=8081
 
+#File Upload Configuration
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=50MB
+app.event.max-files=5
+
+# Multimedia url generation configuration
+api.gateway.url = http://localhost:8086
+multimedia.path = /api/v1/multimedia
+
+# Eureka Client Configuration
+spring.application.name=dynamic-source
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+eureka.client.enabled=true
+
+# MIMEType Whitelist for File Uploads
+#! Si escribís mal uno de estos (ej: image/jprg en vez de image/jpeg) no te va a dejar subir archivos de ese tipo, pero no te va a saber tirar un error para explicarte la situación porque podría ser un tipo custom (habría que implementar una nueva whitelist de formatos conocidos y ya es medio redundante), asi que si en algún momento no te deja subir archivos de cierto tipo, primero revisá esta lista.
+app.event.allowed-mime-types=image/png,image/jpg,image/gif,image/jpeg,image/webp
+
 # Database configuration
 spring.datasource.url=jdbc:mysql://localhost:3306/metamapa_dynamic?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
 spring.datasource.username=
@@ -8,7 +26,18 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 # Hibernate configuration
 spring.jpa.hibernate.ddl-auto=create-drop
+
 # Possible values: validate | update | create | create-drop | none
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+# Object Storage Configuration (S3 API)
+aws.s3.endpoint=http://localhost:9000
+#! Posiblemente haya que cambiar de regiónal hacer el despliegue, pero para minIO no importa
+aws.s3.region=us-east-1
+aws.s3.access-key=admin
+aws.s3.secret-key=12345678
+aws.s3.bucket-name=metamapa-media
+#! IMPORTANTE: MinIO necesita 'path-style' (http://host/bucket), AWS usa virtual-host, asi que al desplegar puede ser necesario cambiarla a flase, dependiendo de la plataforma
+aws.s3.path-style-access=true

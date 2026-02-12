@@ -10,6 +10,9 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(force = true)
@@ -21,6 +24,7 @@ public class CollectionCriteria {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Getter
   @ManyToMany
   @JoinTable(
       name = "criterias_conditions",
@@ -36,6 +40,20 @@ public class CollectionCriteria {
   }
 
   public boolean isSatisfiedBy(Event event) {
-    return conditions.stream().allMatch(condition -> condition.isSatisfiedBy(event));
+    if (conditions == null || conditions.isEmpty()) {
+      return true;
+    }
+
+    // Group conditions by their type
+    Map<ConditionType, List<Condition>> conditionsByType = conditions.stream()
+        .collect(Collectors.groupingBy(Condition::getType));
+
+    // Evaluate the grouped conditions (AND between groups, OR within a group)
+    return conditionsByType.values().stream()
+        .allMatch(group ->
+            group.stream().anyMatch(condition ->
+                condition.isSatisfiedBy(event)
+            )
+        );
   }
 }

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class EventOutputDTO {
+public class EventOutputDTO { //TODO Agregar multimedia
   String title;
   String description;
   String category;

@@ -27,6 +27,9 @@
         <module>proxy-source</module>
         <module>dynamic-source</module>
         <module>statistics-service</module>
+        <module>api-gateway</module>
+        <module>server-registry</module>
+        <module>user-service</module>
 
     </modules>
     <scm>
@@ -39,10 +42,6 @@
         <java.version>17</java.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>

@@ -10,6 +10,8 @@ import ar.utn.edu.frba.ddsi.models.repositories.ISourceRepository;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,24 +38,30 @@ public class ConsensusManager {
   @Transactional
   public void runEvaluation() {
 
-    List<Event> allEvents = eventRepository.findByDeleted(false);
-
+    // 1. CARGA DE DATOS
+    List<Event> allEvents = eventRepository.findByDeletedWithRelations(false);
     List<Source> allSources = sourceRepository.findAll();
 
-    //TODO: Con jpa no es posible usar parallelStream, no permite la edicion de events en threaads paralelos.
-    // Es posible ralizarlo devolviendo un DTO con el evnt y su nueva lista de consensos y luego actualizar los eventos en otro forEach fuera del parallel
-    allEvents.forEach(event -> {
-      List<ConsensusType> newConsensusList = new ArrayList<>();
+    // 2. PRE-PROCESAMIENTO (Agrupamos los eventos por SourceId)
+    Map<Long, List<Event>> eventsBySourceId = allEvents.stream()
+        .collect(Collectors.groupingBy(e -> e.getSource().getId()));
 
-      for (IConsensusAlgorithm consensus : consensusAlgorithms) {
-        if (consensus.check(event, allSources)) {
-          newConsensusList.add(consensus.getType());
+    // 3. PROCESAMIENTO PARALELO
+    Map<Event, List<ConsensusType>> updatesToApply = allEvents.parallelStream().collect(Collectors.toMap(
+        event -> event,
+        event -> {
+          List<ConsensusType> newConsensusList = new ArrayList<>();
+          for (IConsensusAlgorithm consensus : consensusAlgorithms) {
+            if (consensus.check(event, allSources, eventsBySourceId)) {
+              newConsensusList.add(consensus.getType());
+            }
+          }
+          return newConsensusList;
         }
-      }
+    ));
 
-      event.setPassedConsensus(newConsensusList);
-    });
-
+    // 4. ACTUALIZAMOS EL BATCH Y GUARDAMOS
+    updatesToApply.forEach(Event::setPassedConsensus);
     eventRepository.saveAll(allEvents);
   }
 

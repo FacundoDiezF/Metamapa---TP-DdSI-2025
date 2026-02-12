@@ -1,0 +1,34 @@
+<th:block th:fragment="adminCollectionsContent">
+
+    <section class="admin-section">
+
+        <header class="page-header">
+            <div class="header-text">
+                <h1 class="page-title">Colecciones</h1>
+                <p class="page-subtitle">Gestioná todas las colecciones existentes o creá una nueva.</p>
+            </div>
+
+            <div class="header-actions">
+                <button hx-get="/modals/new-collection"
+                        hx-target="#main-form-modal" hx-swap="innerHTML"
+                        class="btn-primary">
+                    + Nueva Colección
+                </button>
+            </div>
+        </header>
+
+        <div class="admin-scroll-area">
+
+            <div class="admin-list-container" th:if="${!#lists.isEmpty(collections)}">
+                <th:block th:each="col : ${collections}">
+                    <article th:replace="~{fragments/_collectionCard :: collectionCard(collection=${col})}"></article>
+                </th:block>
+            </div>
+
+            <div class="empty-state" th:if="${#lists.isEmpty(collections)}">
+                <p>No hay colecciones cargadas.</p>
+            </div>
+
+        </div>
+    </section>
+</th:block>

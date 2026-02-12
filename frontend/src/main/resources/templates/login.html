@@ -1,0 +1,62 @@
+<html layout:decorate="~{layout/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title>Iniciar Sesión - MetaMapa</title>
+    <th:block layout:fragment="extraStyles">
+        <link rel="stylesheet" th:href="@{/css/pages/auth.css}"/>
+    </th:block>
+</head>
+
+<div layout:fragment="navbar"></div>
+
+<div th:fragment="contenido">
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+
+            <header class="auth-header">
+
+                <a class="brand auth-brand">
+                    <div class="brand-mark"><span class="dot"></span></div>
+                    <span class="brand-name">MetaMapa</span>
+                </a>
+
+                <h2 class="auth-title">Bienvenido de nuevo</h2>
+                <p class="auth-subtitle">Ingresa a tu cuenta para continuar</p>
+            </header>
+
+            <div th:if="${param.error}" class="auth-alert error">
+                Usuario o contraseña incorrectos.
+            </div>
+
+            <div th:if="${param.logout}" class="auth-alert success">
+                Has cerrado sesión correctamente.
+            </div>
+
+            <form th:action="@{/login}" method="post" class="auth-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">Usuario</label>
+                    <input type="text" id="username" name="username" class="form-input" placeholder="ej. juanperez"
+                           required autofocus/>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="••••••••"
+                           required/>
+                </div>
+
+                <button type="submit" class="btn-auth">Iniciar Sesión</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>¿No tienes cuenta? <a th:href="@{/register}" class="auth-link">Regístrate</a></p>
+                <a th:href="@{/explore}" class="back-home">← Volver al inicio</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</html>

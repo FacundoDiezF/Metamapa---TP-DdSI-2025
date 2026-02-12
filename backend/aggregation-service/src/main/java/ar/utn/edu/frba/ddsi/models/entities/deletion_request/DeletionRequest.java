@@ -46,21 +46,21 @@ public class DeletionRequest {
   @Column(name = "upload_date", nullable = false)
   private final LocalDateTime uploadDate;
 
-  @Column(name = "applicant_name", nullable = false)
-  private final String applicantName; //TODO: Esto deberia ser un usuario
+  @Column(name = "user_id")
+  private final String userId;
 
   //-- Post Evaluation info
   @Column(name = "evaluation_date")
   private LocalDateTime evaluationDate;
 
-  @Column(name = "evaluator_name")
-  private String evaluatorName; //TODO: Esto deberia ser un usuario
+  @Column(name = "evaluator_id")
+  private String evaluatorId;
 
-  public static DeletionRequest from(DeletionRequestCreationDTO dto, Event event) {
-    return new DeletionRequest(event, dto.getArgument(), dto.getApplicantName());
+  public static DeletionRequest from(DeletionRequestCreationDTO dto, Event event, String userId) {
+    return new DeletionRequest(event, dto.getArgument(), userId);
   }
 
-  public DeletionRequest(Event event, String argument, String applicantName) {
+  public DeletionRequest(Event event, String argument, String userId) {
 
     if (!this.isArgumentValid(argument))
       throw new IllegalArgumentException("Argument must contain a minimum of 500 characters. Now it has: " + argument.length());
@@ -69,16 +69,16 @@ public class DeletionRequest {
     this.argument = argument;
     this.state = DeletionRequestState.PENDING;
     this.uploadDate = LocalDateTime.now();
-    this.applicantName = applicantName;
+    this.userId = userId;
   }
 
   private boolean isArgumentValid(String argument) {
     return argument.length() >= 500;
   }
 
-  public void evaluate(boolean accepted, String evaluatorName) {
+  public void evaluate(boolean accepted, String evaluatorId) {
 
-    this.registerEvaluation(evaluatorName);
+    this.registerEvaluation(evaluatorId);
 
     if (accepted) {
       event.markAsDeleted();
@@ -89,8 +89,8 @@ public class DeletionRequest {
   }
 
 
-  private void registerEvaluation(String evaluatorName) {
+  private void registerEvaluation(String evaluatorId) {
     this.evaluationDate = LocalDateTime.now();
-    this.evaluatorName = evaluatorName;
+    this.evaluatorId = evaluatorId;
   }
 }

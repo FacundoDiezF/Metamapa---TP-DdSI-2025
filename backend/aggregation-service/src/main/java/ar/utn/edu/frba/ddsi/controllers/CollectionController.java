@@ -1,10 +1,10 @@
 package ar.utn.edu.frba.ddsi.controllers;
 
 import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionCreationDTO;
-import ar.utn.edu.frba.ddsi.models.dtos.input.collection.CollectionUpdateDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.collection.CollectionOutputDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.EventOutputDTO;
 import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
+import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import ar.utn.edu.frba.ddsi.services.ICollectionService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,19 +53,20 @@ public class CollectionController {
   @GetMapping("/{handler}/events")
   public List<EventOutputDTO> getEventsFromCollection(
       @PathVariable String handler,
-      @RequestParam(required = false) boolean curedNavigation,
-      @RequestParam(required = false) String category,
-      @RequestParam(required = false) LocalDateTime untilUploadDate,
-      @RequestParam(required = false) LocalDateTime fromUploadDate,
-      @RequestParam(required = false) LocalDateTime untilEventDate,
-      @RequestParam(required = false) LocalDateTime fromEventDate
+      @RequestParam(required = false) boolean curatedNavigation,
+      @RequestParam(required = false) List<Long> category_in,
+      @RequestParam(required = false) List<Long> province_in,
+      @RequestParam(required = false) List<Origin> source_in,
+      @RequestParam(required = false) LocalDateTime uploadDate_lt,
+      @RequestParam(required = false) LocalDateTime uploadDate_gt,
+      @RequestParam(required = false) LocalDateTime eventDate_lt,
+      @RequestParam(required = false) LocalDateTime eventDate_gt
   ) {
-    return collectionService.getEventsFromCollection(curedNavigation, handler, category,
-        untilUploadDate, fromUploadDate, untilEventDate, fromEventDate);
+    return collectionService.getEventsFromCollection(handler, curatedNavigation, category_in, province_in, source_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt);
   }
 
   @PutMapping("/{handler}")
-  public void updateCollection(@PathVariable String handler, @RequestBody CollectionUpdateDTO dto) {
+  public void updateCollection(@PathVariable String handler, @RequestBody CollectionCreationDTO dto) {
     collectionService.updateCollection(handler, dto);
   }
 
@@ -78,6 +79,8 @@ public class CollectionController {
   public CollectionOutputDTO getCollectionByHandler(@PathVariable String handler) {
     return collectionService.getCollectionByHandler(handler);
   }
+
+  //! ------------------------ Metodos que actualmente estan al pedo ------------------------ \\
 
   @PatchMapping("/{handler}/consensus")
   public void updateConsensus(@PathVariable String handler, @RequestBody ConsensusType consensusType) {

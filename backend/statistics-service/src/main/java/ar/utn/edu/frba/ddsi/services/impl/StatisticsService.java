@@ -74,7 +74,7 @@ public class StatisticsService implements IStatisticsService {
   }
 
   @Override
-  public List<String> findBusiestHoursByCategory(Long categoryId, Integer count) {
+  public List<TopOutputDTO> findBusiestHoursByCategory(Long categoryId, Integer count) {
 
     if (!categoryRepository.existsById(categoryId)) {
       throw new NotFoundException("Category not found - Id: " + categoryId);

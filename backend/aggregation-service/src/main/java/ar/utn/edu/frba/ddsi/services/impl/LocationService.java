@@ -1,7 +1,9 @@
 package ar.utn.edu.frba.ddsi.services.impl;
 
+import ar.utn.edu.frba.ddsi.models.dtos.output.category.CategoryDTO;
 import ar.utn.edu.frba.ddsi.models.dtos.output.event.ProvinceDTO;
 import ar.utn.edu.frba.ddsi.models.entities.adapters.LocationAPI;
+import ar.utn.edu.frba.ddsi.models.entities.event.values.Category;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Coordinate;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Department;
 import ar.utn.edu.frba.ddsi.models.entities.event.values.location.Location;
@@ -172,5 +174,13 @@ public class LocationService implements ILocationService {
   public Page<ProvinceDTO> getAllProvinces(Pageable pageable) {
     Page<Province> page = provinceRepository.findAll(pageable);
     return page.map(ProvinceDTO::from);
+  }
+
+  @Override
+  public Page<ProvinceDTO> getAllProvincesByIds(List<Long> ids, Pageable pageable) {
+
+    Page<Province> provincePage = provinceRepository.findAllByIdIn(ids,pageable);
+
+    return provincePage.map(ProvinceDTO::from);
   }
 }
