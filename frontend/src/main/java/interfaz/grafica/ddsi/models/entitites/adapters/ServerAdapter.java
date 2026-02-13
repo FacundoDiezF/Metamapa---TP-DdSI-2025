@@ -51,7 +51,7 @@ public class ServerAdapter {
   private final WebApiCallerService webApiCallerService;
 
 
-  public ServerAdapter(@Value("${aggregator.url}") String url, @Value("${api.gateway.url}") String apiGatewayUrl, WebApiCallerService webApiCallerService) {
+  public ServerAdapter(@Value("${api.gateway.url}") String apiGatewayUrl, WebApiCallerService webApiCallerService) {
     this.apiGatewayClient = WebClient.builder()
         .baseUrl(apiGatewayUrl)
         .build();
