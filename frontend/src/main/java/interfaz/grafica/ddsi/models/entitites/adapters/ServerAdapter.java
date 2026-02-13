@@ -335,10 +335,6 @@ public class ServerAdapter {
   //--------------- AUTHENTICATION ----------------//
   public AuthResponseDTO login(LoginRequestDTO request) {
 
-    if ("admin".equals(request.getUsername()) || "cont".equals(request.getUsername())) {
-      return crearMockUser(request.getUsername());
-    } //! Esto está mockeado full croto para que ustedes puedan probar el front sin que funcione el back, cuando esté el back, vuela
-
     try {
       return apiGatewayClient.post()
           .uri("/api/v1/auth/login")
