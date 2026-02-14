@@ -26,7 +26,7 @@ public class SecurityConfig {
     http
         .authorizeHttpRequests(auth -> auth
             // Recursos estáticos (CSS, JS, Imágenes) -> PÚBLICOS
-            .requestMatchers("/css/**", "/js/**", "/shared/**", "/images/**").permitAll()
+            .requestMatchers("/css/**", "/js/**", "/shared/**", "/images/**", "/favicon.ico").permitAll()
 
             // Páginas de Acceso (Landing, Explorar, Colecciones, Mapa) -> PÚBLICAS
             .requestMatchers("/", "/landing", "/explore", "/collections", "/collection/**", "/map").permitAll() //! no se por qué a veces aparece http://localhost:8085/static, asumo que es un error y no debería pasar, por eso no la voy a poner como pública
