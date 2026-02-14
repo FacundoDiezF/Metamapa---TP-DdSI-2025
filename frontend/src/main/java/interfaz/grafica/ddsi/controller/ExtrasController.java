@@ -1,10 +1,16 @@
 package interfaz.grafica.ddsi.controller;
 
 import interfaz.grafica.ddsi.dtos.CategoryDTO;
+import interfaz.grafica.ddsi.dtos.EventDTO;
+import interfaz.grafica.ddsi.dtos.Origin;
+import interfaz.grafica.ddsi.dtos.PageDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.ConditionDTO;
 import interfaz.grafica.ddsi.dtos.output.collection.ConditionType;
 import interfaz.grafica.ddsi.services.CategoryService;
+import interfaz.grafica.ddsi.services.EventService;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +23,11 @@ public class ExtrasController {
 
   private final CategoryService categoryService;
 
-  public ExtrasController(CategoryService categoryService) {
+  private final EventService eventService;
+
+  public ExtrasController(CategoryService categoryService, EventService eventService) {
     this.categoryService = categoryService;
+    this.eventService = eventService;
   }
 
   // Devuelve el fragmento HTML con la categoria seleccionada (new Event Form)
@@ -107,5 +116,22 @@ public class ExtrasController {
     model.addAttribute("idx", index); //Para th:field (conditions[0], conditions[1]...)
 
     return "fragments/modals/_newCollectionModal :: conditionRow";
+  }
+
+  @GetMapping("/explore/events")
+  public String exploreEventsPaginated(
+      @RequestParam(required = false, name = "category_in") List<Long> category_in,
+      @RequestParam(required = false, name = "province_in") List<Long> province_in,
+      @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
+      @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
+      @RequestParam(required = false, name = "source_in") List<Origin> source_in,
+      @RequestParam(defaultValue = "0", name = "page") int pageEvent,
+      Model model) {
+
+    PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
+
+    model.addAttribute("eventsPage", eventsPage);
+
+    return "fragments/grid3/center/_explore_center :: eventListFragment";
   }
 }
