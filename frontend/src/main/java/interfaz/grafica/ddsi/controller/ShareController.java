@@ -155,10 +155,30 @@ public class ShareController {
   @PostMapping("/events/update/{id}")
   public String createEditionRequest(@ModelAttribute("event") EventOutputDTO newEventValues, @PathVariable Long id, Model model) {
 
-    editionRequestService.create(id, newEventValues);
+    String modalType;
+    String title;
+    String description;
 
+    try {
+      editionRequestService.create(id, newEventValues);
 
-    return "redirect:/my-events";
+      modalType = "success";
+      title = "Solicitud de edición enviada";
+      description = "¡Gracias por tu aporte! Tu propuesta de edición ha sido enviada y será revisada pronto para mantener la calidad de la información.";
+
+    } catch (BackendException e) {
+      modalType = "error";
+      title = e.getErrorInfo().getErrorCode();
+      description = e.getErrorInfo().getMessage();
+    }
+
+    model.addAttribute("mType", modalType);
+    model.addAttribute("mTitle", title);
+    model.addAttribute("mDesc", description);
+    model.addAttribute("reloadOnClose", true);
+
+    // Retornamos el fragmento genérico de mensajes
+    return "fragments/modals/_messageModals :: messageModal(type=${mType}, title=${mTitle}, desc=${mDesc})";
   }
 
   @PreAuthorize("hasRole('ADMIN')")

@@ -72,8 +72,11 @@
       th:fragment="editEventForm(event)"
       th:object="${event}"
       th:id="'form-' + ${event.id}"
-      th:action="@{/share/events/update/{id}(id=${event.id})}"
+      th:hx-post="@{/share/events/update/{id}(id=${event.id})}"
+      hx-target="#modals-here"
+      hx-swap="innerHTML"
       method="post">
+
     <header class="card-header">
 
         <div th:id="'cat-wrapper-' + ${event.id}"
