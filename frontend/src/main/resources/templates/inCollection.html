@@ -30,7 +30,6 @@
 <th:block layout:fragment="extraScripts">
     <script th:inline="javascript">
         window.events = [[${events}]];
-        console.log('Explore -> window.events length:', Array.isArray(window.events) ? window.events.length : 'NO ARRAY');
     </script>
 
     <script th:src="@{/js/map/metamapa-map.js}"></script>

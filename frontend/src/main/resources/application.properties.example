@@ -9,6 +9,4 @@ logging.level.org.thymeleaf.TemplateEngine.CONFIG=DEBUG
 spring.servlet.multipart.max-file-size=50MB
 
 # Backend services URLs
-aggregator.url=http://localhost:8080
 api.gateway.url=http://localhost:8086
-static-source.url=http://localhost:8083
