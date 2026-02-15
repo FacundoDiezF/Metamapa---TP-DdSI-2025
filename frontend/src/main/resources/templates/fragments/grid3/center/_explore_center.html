@@ -143,17 +143,32 @@
 
         <div th:if="${!eventsPage.last}"
              id="infinite-scroll-trigger"
-             th:hx-get="@{/explore/events(page=${eventsPage.pageNumber + 1},
-                                          category_in=${param.category_in},
-                                          province_in=${param.province_in},
-                                          eventDate_lt=${param.eventDate_lt},
-                                          eventDate_gt=${param.eventDate_gt},
-                                          source_in=${param.source_in})}"
+             th:hx-get="@{/explore/events(page=${eventsPage.pageNumber + 1}, ... )}"
              hx-trigger="intersect threshold:0.5"
              hx-swap="outerHTML"
              hx-indicator="#loading-indicator"
              class="htmx-scroll-trigger">
         </div>
+
+        <script th:inline="javascript">
+            (function() {
+                // Obtenemos los eventos de ESTA página específica
+                var newEvents = /*[[${eventsPage.content}]]*/ [];
+
+                // Verificamos que el mapa de Explore exista en la página
+                if (newEvents && newEvents.length > 0 && window.MetaMapa && window.MetaMapa['explore-map']) {
+
+                    // Aseguramos que el arreglo global exista
+                    window.events = window.events || [];
+
+                    // Concatenamos los eventos viejos con los nuevos
+                    window.events = window.events.concat(newEvents);
+
+                    // Le decimos al minimapa que se actualice con la lista completa
+                    window.MetaMapa['explore-map'].update(window.events);
+                }
+            })();
+        </script>
 
     </th:block>
 

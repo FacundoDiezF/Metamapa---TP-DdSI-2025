@@ -2,17 +2,7 @@
 (function () {
     if (typeof L === 'undefined') return;
 
-    const ICON_PALETTE = [
-        "#2563eb", "#16a34a", "#ea580c", "#7c3aed", "#db2777", "#0891b2", "#ca8a04", "#ef4444", "#0ea5e9", "#10b981",
-        "#f97316", "#ec4899", "#14b8a6", "#a855f7", "#84cc16", "#f59e0b", "#3b82f6", "#e11d48", "#8b5cf6", "#06b6d4",
-        "#1e40af", "#15803d", "#b45309", "#5b21b6", "#9d174d", "#0e7490", "#854d0e", "#b91c1c", "#0369a1", "#047857",
-        "#c2410c", "#6d28d9", "#be185d", "#0f766e", "#7e22ce", "#9a3412", "#1d4ed8", "#15803d", "#c026d3", "#ea580c",
-        "#60a5fa", "#34d399", "#facc15", "#a78bfa", "#fb7185", "#67e8f9", "#bef264", "#fde047", "#93c5fd", "#fca5a5",
-        "#99f6e4", "#86efac", "#fcd34d", "#c4b5fd", "#f9a8d4", "#22d3ee", "#bbf7d0", "#fef08a", "#ddd6fe", "#f5d0fe",
-        "#bae6fd", "#a7f3d0", "#fde68a", "#e9d5ff", "#fecdd3", "#7dd3fc", "#6ee7b7", "#fef9c3", "#d8b4fe", "#fda4af",
-        "#38bdf8", "#4ade80", "#fde68a", "#c084fc", "#fb7185", "#0ea5e9", "#22c55e", "#eab308", "#8b5cf6", "#f43f5e",
-        "#0284c7", "#16a34a", "#ca8a04", "#7c3aed", "#e11d48"
-    ];
+    const ICON_PALETTE = ["#2563eb", "#16a34a", "#ea580c", "#7c3aed", "#db2777", "#0891b2", "#ca8a04", "#ef4444", "#0ea5e9", "#10b981", "#f97316", "#ec4899", "#14b8a6", "#a855f7", "#84cc16", "#f59e0b", "#3b82f6", "#e11d48", "#8b5cf6", "#06b6d4", "#1e40af", "#15803d", "#b45309", "#5b21b6", "#9d174d", "#0e7490", "#854d0e", "#b91c1c", "#0369a1", "#047857", "#c2410c", "#6d28d9", "#be185d", "#0f766e", "#7e22ce", "#9a3412", "#1d4ed8", "#15803d", "#c026d3", "#ea580c", "#60a5fa", "#34d399", "#facc15", "#a78bfa", "#fb7185", "#67e8f9", "#bef264", "#fde047", "#93c5fd", "#fca5a5", "#99f6e4", "#86efac", "#fcd34d", "#c4b5fd", "#f9a8d4", "#22d3ee", "#bbf7d0", "#fef08a", "#ddd6fe", "#f5d0fe", "#bae6fd", "#a7f3d0", "#fde68a", "#e9d5ff", "#fecdd3", "#7dd3fc", "#6ee7b7", "#fef9c3", "#d8b4fe", "#fda4af", "#38bdf8", "#4ade80", "#fde68a", "#c084fc", "#fb7185", "#0ea5e9", "#22c55e", "#eab308", "#8b5cf6", "#f43f5e", "#0284c7", "#16a34a", "#ca8a04", "#7c3aed", "#e11d48"];
 
     function hashIdx(str) {
         let h = 5381;
@@ -90,14 +80,21 @@
         const el = document.getElementById(containerId);
         if (!el) return;
 
+        // Limpieza de instancias previas
+        if (window.MetaMapa && window.MetaMapa[containerId] && window.MetaMapa[containerId].map) {
+            window.MetaMapa[containerId].map.remove();
+        }
+        if (el._leaflet_id) {
+            el._leaflet_id = null;
+        }
+
         // Si está en una tarjeta/columna sin alto, dale un mínimo
         const frame = el.closest('.map-frame') || el.parentElement;
         if (frame && frame.getBoundingClientRect().height < 10) frame.style.height = '300px';
 
         const map = L.map(el, {zoomControl: true, attributionControl: true, scrollWheelZoom: true});
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap'
+            maxZoom: 19, attribution: '&copy; OpenStreetMap'
         }).addTo(map);
         map.setView(center, zoom);
 
@@ -134,16 +131,22 @@
             });
         }
 
+        function update(rawList) {
+            const evs = Array.isArray(rawList) ? rawList.map(normalizeFromModel) : [];
+            render(evs);
+        }
+
         // Toma los eventos del modelo si existen
         try {
             const evs = Array.isArray(window.events) ? window.events.map(normalizeFromModel) : [];
             render(evs);
+
         } catch (e) {
             console.error('No se pudieron renderizar los hechos', e);
         }
 
         // Exponer para debug puntual
         window.MetaMapa = window.MetaMapa || {};
-        window.MetaMapa[containerId] = {map, markersLayer, render};
+        window.MetaMapa[containerId] = {map, markersLayer, render, update};
     };
 })();

@@ -30,7 +30,6 @@
 <th:block layout:fragment="extraScripts">
     <script th:inline="javascript">
         window.events = [[${eventsPage.getContent()}]];
-        console.log('Explore -> window.events length:', Array.isArray(window.events) ? window.events.length : 'NO ARRAY');
     </script>
 
     <script th:src="@{/js/map/metamapa-map.js}"></script>
@@ -42,6 +41,18 @@
             zoom: 10,
             mini: true
         });
+
+        window.focusMapOn = function(lat, lng) {
+            const mapInstance = window.MetaMapa && window.MetaMapa['explore-map'];
+
+            if (mapInstance && mapInstance.map) {
+                // flyTo hace una animación suave. El '15' es el nivel de zoom (muy cerca)
+                mapInstance.map.flyTo([lat, lng], 11, {
+                    animate: true,
+                    duration: 1.5 // Segundos que dura el "vuelo"
+                });
+            }
+        };
     </script>
 </th:block>
 

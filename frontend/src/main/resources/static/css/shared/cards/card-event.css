@@ -110,6 +110,15 @@
     gap: 4px;
 }
 
+.clickable-location{
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.clickable-location:hover {
+    text-decoration: underline;
+}
+
 .meta-date {
     white-space: nowrap;
 }

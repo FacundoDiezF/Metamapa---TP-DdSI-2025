@@ -36,6 +36,8 @@
             </span>
 
             <span class="meta-location"
+                  th:classappend="${active != 'admin'} ? 'clickable-location'"
+                  th:onclick="${active != 'admin'} ? |window.focusMapOn(${item.location.latitude}, ${item.location.longitude})|: null"
                   th:if="${item.location != null and (item.location.municipality != null or item.location.department != null or item.location.province != null)}">
 
                 <span class="meta-separator">|</span>
