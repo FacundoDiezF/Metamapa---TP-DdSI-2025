@@ -28,5 +28,7 @@ public class ClientAuthService {
     UsernamePasswordAuthenticationToken auth = customAuthProvider.createAuthenticationToken(session, response);
 
     SecurityContextHolder.getContext().setAuthentication(auth);
+
+    session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
   }
 }
