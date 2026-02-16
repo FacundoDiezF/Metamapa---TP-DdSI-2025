@@ -3,23 +3,21 @@ package interfaz.grafica.ddsi.services;
 import interfaz.grafica.ddsi.dtos.auth.AuthResponseDTO;
 import interfaz.grafica.ddsi.dtos.auth.RegisterRequestDTO;
 import interfaz.grafica.ddsi.models.entitites.adapters.ServerAdapter;
+import interfaz.grafica.ddsi.providers.CustomAuthProvider;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ClientAuthService {
 
   private final ServerAdapter serverAdapter;
+  private final CustomAuthProvider customAuthProvider;
 
-  public ClientAuthService(ServerAdapter serverAdapter) {
+  public ClientAuthService(ServerAdapter serverAdapter, CustomAuthProvider customAuthProvider) {
     this.serverAdapter = serverAdapter;
+    this.customAuthProvider = customAuthProvider;
   }
 
   public void registerAndAutoLogin(RegisterRequestDTO request, HttpSession session) {
@@ -27,23 +25,7 @@ public class ClientAuthService {
     AuthResponseDTO response = serverAdapter.register(request);
 
     // 2. Guardar en Sesión
-    session.setAttribute("accessToken", response.getAccessToken());
-    session.setAttribute("refreshToken", response.getRefreshToken());
-    session.setAttribute("user", response.getUser());
-
-    // 3. Auto-Login en Spring Security
-    List<SimpleGrantedAuthority> authorities = Collections.emptyList();
-    if (response.getUser().getRoles() != null) {
-      authorities = response.getUser().getRoles().stream()
-          .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-          .collect(Collectors.toList());
-    }
-
-    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-        response.getUser().getUsername(),
-        null,
-        authorities
-    );
+    UsernamePasswordAuthenticationToken auth = customAuthProvider.createAuthenticationToken(session, response);
 
     SecurityContextHolder.getContext().setAuthentication(auth);
   }
