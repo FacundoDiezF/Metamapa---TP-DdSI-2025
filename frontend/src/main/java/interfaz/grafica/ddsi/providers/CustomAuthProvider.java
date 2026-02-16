@@ -47,13 +47,11 @@ public class CustomAuthProvider implements AuthenticationProvider {
       HttpServletRequest request = attributes.getRequest();
       HttpSession session = request.getSession();
 
-      session.setAttribute("accessToken", response.getAccessToken());
-      session.setAttribute("refreshToken", response.getRefreshToken());
+      // 2. Guardar tokens e información relevante del usuario en sesión
+      this.setAttributes(session, response);
 
-      // 3. Guardar información relevante del usuario en sesión
-      //? No estoy seguro si esta info es relevante pero por ahora la guardo, de ultima despues se saca
-      session.setAttribute("id", response.getUser().getId());
-      session.setAttribute("username", response.getUser().getUsername());
+      // 3. Guardar los permisos en sesión
+      List<GrantedAuthority> authorities = grantAuthorities(response);
 
       // 4. Guardar los permisos en sesión
       List<GrantedAuthority> authorities = new ArrayList<>();
@@ -65,7 +63,7 @@ public class CustomAuthProvider implements AuthenticationProvider {
 
       // 5. Retornar el token de éxito (Importante: password null para seguridad)
       return new UsernamePasswordAuthenticationToken(
-          username,
+          response.getUser().getUsername(),
           null,
           authorities
       );
@@ -82,5 +80,22 @@ public class CustomAuthProvider implements AuthenticationProvider {
   @Override
   public boolean supports(Class<?> authentication) {
     return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+  }
+
+  private void setAttributes(HttpSession session, AuthResponseDTO response) {
+    session.setAttribute("accessToken", response.getAccessToken());
+    session.setAttribute("refreshToken", response.getRefreshToken());
+    session.setAttribute("id", response.getUser().getId());
+    session.setAttribute("username", response.getUser().getUsername());
+  }
+
+  private List<GrantedAuthority> grantAuthorities(AuthResponseDTO response) {
+    List<GrantedAuthority> authorities =  new ArrayList<>();
+    if (response.getUser().getRoles() != null) {
+      authorities = response.getUser().getRoles().stream()
+          .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Ej: "ROLE_ADMIN"
+          .collect(Collectors.toList());
+    }
+    return authorities;
   }
 }
