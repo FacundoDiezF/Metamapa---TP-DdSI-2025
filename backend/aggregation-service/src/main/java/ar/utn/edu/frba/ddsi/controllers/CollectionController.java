@@ -51,7 +51,7 @@ public class CollectionController {
   }
 
   @GetMapping("/{handler}/events")
-  public List<EventOutputDTO> getEventsFromCollection(
+  public Page<EventOutputDTO> getEventsFromCollection(
       @PathVariable String handler,
       @RequestParam(required = false) boolean curatedNavigation,
       @RequestParam(required = false) List<Long> category_in,
@@ -60,9 +60,13 @@ public class CollectionController {
       @RequestParam(required = false) LocalDateTime uploadDate_lt,
       @RequestParam(required = false) LocalDateTime uploadDate_gt,
       @RequestParam(required = false) LocalDateTime eventDate_lt,
-      @RequestParam(required = false) LocalDateTime eventDate_gt
+      @RequestParam(required = false) LocalDateTime eventDate_gt,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size
   ) {
-    return collectionService.getEventsFromCollection(handler, curatedNavigation, category_in, province_in, source_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt);
+    Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+
+    return collectionService.getEventsFromCollection(handler, curatedNavigation, category_in, province_in, source_in, uploadDate_lt, uploadDate_gt, eventDate_lt, eventDate_gt, pageable);
   }
 
   @PutMapping("/{handler}")

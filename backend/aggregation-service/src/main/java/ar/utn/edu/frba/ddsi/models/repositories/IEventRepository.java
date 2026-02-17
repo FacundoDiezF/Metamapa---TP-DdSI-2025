@@ -1,5 +1,6 @@
 package ar.utn.edu.frba.ddsi.models.repositories;
 
+import ar.utn.edu.frba.ddsi.models.entities.consensus.ConsensusType;
 import ar.utn.edu.frba.ddsi.models.entities.event.Event;
 import ar.utn.edu.frba.ddsi.models.entities.source.Origin;
 import java.time.LocalDateTime;
@@ -57,4 +58,30 @@ public interface IEventRepository extends JpaRepository<Event, Long> {
       WHERE e.deleted = :deleted
       """)
   List<Event> findByDeletedWithRelations(@Param("deleted") boolean deleted);
+
+  @Query("""
+            SELECT e FROM Collection c JOIN c.events e
+            WHERE c.handler = :collectionHandler
+              AND e.deleted = false
+              AND (:consensusType IS NULL OR :consensusType MEMBER OF e.passedConsensus)
+              AND (:category_in IS NULL OR e.category.id IN :category_in)
+              AND (:source_in IS NULL OR e.source.type IN :source_in)
+              AND (:province_in IS NULL OR e.location.province.id IN :province_in)
+              AND (:uploadDate_lt IS NULL OR e.uploadDate < :uploadDate_lt)
+              AND (:uploadDate_gt IS NULL OR e.uploadDate > :uploadDate_gt)
+              AND (:eventDate_lt IS NULL OR e.eventDate < :eventDate_lt)
+              AND (:eventDate_gt IS NULL OR e.eventDate > :eventDate_gt)
+      """)
+  Page<Event> findByCollectionHandlerFiltered(
+      String collectionHandler,
+      ConsensusType consensusType,
+      List<Long> category_in,
+      List<Long> province_in,
+      List<Origin> source_in,
+      LocalDateTime uploadDate_lt,
+      LocalDateTime uploadDate_gt,
+      LocalDateTime eventDate_lt,
+      LocalDateTime eventDate_gt,
+      Pageable pageable
+  );
 }
