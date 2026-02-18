@@ -47,7 +47,7 @@ public class WebApiCallerService {
 
     try {
       // Primer intento con el token actual
-      return apiCall.execute(this.authHeaderValue(accessToken));
+      return apiCall.execute(this.buildAuthHeaderValue(accessToken));
     } catch (WebClientResponseException e) {
       if ((e.getStatusCode() == HttpStatus.UNAUTHORIZED || e.getStatusCode() == HttpStatus.FORBIDDEN) && refreshToken != null) {
         try {
@@ -55,7 +55,7 @@ public class WebApiCallerService {
           AuthResponseDTO newTokens = refreshToken(refreshToken);
 
           // Segundo intento con el nuevo token
-          return apiCall.execute(this.authHeaderValue(newTokens.getAccessToken()));
+          return apiCall.execute(this.buildAuthHeaderValue(newTokens.getAccessToken()));
 
         } catch (WebClientResponseException wCe) {
           throw new BackendException(wCe);
@@ -157,7 +157,7 @@ public class WebApiCallerService {
       return apiGatewayClient
           .get()
           .uri(url)
-          .header("Authorization", this.authHeaderValue(accessToken))
+          .header("Authorization", this.buildAuthHeaderValue(accessToken))
           .retrieve()
           .bodyToMono(responseType)
           .block();
@@ -296,7 +296,7 @@ public class WebApiCallerService {
   /**
    * Agrega el header Authorization teniendo en cuenta si es un usuario logueado o no
    */
-  private String authHeaderValue(String accessToken) {
+  private String buildAuthHeaderValue(String accessToken) {
     if (accessToken != null) {
       return "Bearer " + accessToken;
     } else {
