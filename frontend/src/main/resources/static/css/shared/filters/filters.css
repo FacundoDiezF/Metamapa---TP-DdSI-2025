@@ -122,7 +122,8 @@
     outline: 0;
 }
 
-.chip-toggle input:checked + .chip {
+.chip-toggle input:checked + .chip,
+.chip.chip-success{
     background: var(--Accent);
     border-color: var(--Accent);
     color: #fff;

@@ -223,12 +223,6 @@ details.share[open] .share-panel {
     cursor: pointer;
 }
 
-.chip.chip-success {
-    background-color: #e0f2f1;
-    color: #00695c;
-    border: 1px solid #b2dfdb;
-}
-
 .coords-text {
     font-size: 0.8em;
     color: #666;
