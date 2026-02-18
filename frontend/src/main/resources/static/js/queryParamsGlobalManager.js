@@ -232,7 +232,7 @@ document.querySelectorAll('details.flt').forEach(det => {
 
 // =================================================================
 // Modal coleccion: Condiciones dinámicas, añadir/quitar filas y reindexar
-// =================================================================function removeAndReindex(button) {
+// =================================================================
 
 function removeAndReindex(button) {
     // Eliminar la fila

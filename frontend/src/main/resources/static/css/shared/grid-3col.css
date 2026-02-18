@@ -1,16 +1,6 @@
 /* ===========================
-   GRID DE 3 COLUMNAS — Estándar reutilizable
-   - Usa tokens de main.css (no redefine :root)
-   - Estructura: .grid-3col con slots .left-slot / .center-slot / .right-slot
-   - Las páginas pueden ajustar --header-h / --subnav-h en su propio scope
+   1. GRID LAYOUT DESKTOP (>992px)
 =========================== */
-
-/* ===========================
-   GRID LAYOUTS COMPARTIDOS
-   Consolidado para grid3 / explore
-=========================== */
-
-
 .grid-3col {
     display: grid;
     grid-template-columns: minmax(240px, 280px) minmax(320px, 1fr) minmax(260px, 360px);
@@ -18,54 +8,27 @@
     padding: var(--sp-4) var(--sp-6);
     /* altura calculada para que la columna central utilice el alto disponible */
     height: calc(100svh - var(--header-h) - var(--subnav-h));
-    overflow: visible; /* permitir que el scroll vaya en las columnas internas */
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible; /* Permitimos que el scroll viva en las columnas internas */
 }
 
-
+/* Evita que anidamientos rompan el grid */
 .grid-3col .grid-3col {
     display: contents;
 }
 
-
-.left-slot, .center-slot, .right-slot, .left-slot *, .center-slot *, .right-slot * {
+/* Reset de tamaños mínimos para evitar desbordes */
+.left-slot, .center-slot, .right-slot,
+.left-slot *, .center-slot *, .right-slot *,
+.grid-3col > * {
     min-height: 0;
     min-width: 0;
 }
 
+/* --- ESTILOS DE LOS COMPONENTES --- */
 
-.left-slot { /* alias visual para sidebar izquierdo */
-}
-
-.center-slot {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    min-width: 0;
-    min-height: 0;
-}
-
-.feed {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-right: 1rem;
-    -webkit-overflow-scrolling: touch;
-    min-height: 0;
-    align-items: stretch;
-    padding-top: 0;
-}
-
-.center-slot > .feed {
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-
-.right-slot { /* alias para sidebar derecho; estilos de aspecto en .sidebar-right */
-}
-
-
-/* Aspecto base de sidebars (reutilizado desde explore) */
+/* Aspecto base de los sidebars (izquierdo y derecho) */
 .sidebar {
     background: var(--ModuleBG);
     border: 1px solid var(--border-subtle);
@@ -75,89 +38,249 @@
     box-shadow: var(--shadow-elevated);
 }
 
-
-/* Responsive base (mobile) */
-@media (max-width: 991.98px) {
-    .grid-3col {
-        grid-template-columns: 1fr;
-    }
-
-
-    .left-slot, .right-slot {
-        margin-bottom: var(--sp-3);
-    }
-}
-
-.grid-3col > .center-slot {
+/* Columna Central */
+.center-slot {
     display: flex;
     flex-direction: column;
+    gap: 0.75rem;
     min-width: 320px; /* evita colapso a una línea */
-    min-height: 0;
 }
 
-
-.grid-3col > .center-slot > .feed {
-    flex: 1 1 auto;
-    min-height: 0;
+/* El listado de eventos (Scroll interno en desktop) */
+.feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-right: 1rem;
+    -webkit-overflow-scrolling: touch;
+    align-items: stretch;
+    padding-top: 0;
+    flex: 1 1 auto; /* Ocupa el espacio restante */
     overflow-y: auto;
     overflow-x: hidden;
-    padding-right: .25rem;
 }
 
-
-.grid-3col > aside.grid-3col, .grid-3col > .sidebar > .sidebar {
-    display: block;
-}
-
-
+/* --- POSICIONAMIENTO EXPLÍCITO EN EL GRID --- */
 .grid-3col > .sidebar,
-.grid-3col > aside.sidebar {
+.grid-3col > aside.sidebar,
+.grid-3col > .left-slot {
     grid-column: 1 / 2;
 }
-
 
 .grid-3col > .center-slot,
 .grid-3col > main.center-slot {
     grid-column: 2 / 3;
 }
 
-
 .grid-3col > .sidebar-right,
-.grid-3col > aside.sidebar-right {
+.grid-3col > aside.sidebar-right,
+.grid-3col > aside:last-of-type,
+.grid-3col > .right-slot {
     grid-column: 3 / 4;
 }
 
 
-.grid-3col > * {
-    min-width: 0;
-    min-height: 0;
-    display: block;
+/* ===========================
+   2. RESPONSIVE (Tablet & Mobile) < 992px
+=========================== */
+@media (max-width: 991.98px) {
+
+    /* Pasamos a una sola columna dinámica con Flexbox */
+    .grid-3col {
+        display: flex;
+        flex-direction: column;
+        grid-template-columns: 1fr; /* Fallback */
+        height: auto; /* El contenido dicta el alto total, el body hace el scroll */
+        padding: var(--sp-3) 16px; /* Márgenes amigables para pulgares */
+        gap: var(--sp-4);
+    }
+
+    /* REORDENAMIENTO VISUAL */
+
+    /* A. Contenido Principal (Centro)*/
+    .grid-3col > .center-slot,
+    .grid-3col > main.center-slot {
+        order: 1;
+        width: 100%;
+        min-width: 0;
+        overflow: visible;
+    }
+
+    /* B. Filtros (Izquierda) -> EN EL MEDIO */
+    .grid-3col > .sidebar,
+    .grid-3col > aside.sidebar,
+    .grid-3col > .left-slot {
+        order: 2;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    /* C. Mapa y Colecciones (Derecha) -> ABAJO DE TODO */
+    .grid-3col > aside:last-of-type,
+    .grid-3col > .sidebar-right,
+    .grid-3col > .right-slot {
+        order: 3;
+        width: 100%;
+    }
+
+    /* En mobile, matamos el scroll interno de la columna central para usar el del teléfono */
+    .grid-3col > .center-slot > .feed {
+        overflow-y: visible;
+        padding-right: 0; /* Quitamos el padding del scrollbar que ya no existe */
+    }
 }
 
 
-.grid-3col {
-    width: 100%;
-    box-sizing: border-box;
+/* ===========================
+   3. COMPORTAMIENTO DEL FILTRO RESPONSIVE (Para la etiqueta <details class="mobile-filter-collapse">)
+=========================== */
+
+/* En MOBILE (<992px), el <details> se convierte en un botón colapsable */
+@media (max-width: 991.98px) {
+
+    .mobile-filter-btn {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        list-style: none;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .mobile-filter-btn::-webkit-details-marker {
+        display: none;
+    }
+
+    .mobile-filter-btn h3 {
+        margin: 0;
+        font-size: 1.1rem;
+    }
+
+    .filter-content {
+        margin-top: 16px;
+        border-top: 1px solid var(--border-subtle);
+        padding-top: 16px;
+    }
 }
 
+/* ===========================
+   CAJÓN LATERAL (OFF-CANVAS) PARA MOBILE
+=========================== */
 
-.center-slot {
-    display: flex;
-    flex-direction: column;
-    min-width: 320px;
-    min-height: 0;
+/* Ocultamos los elementos de mobile en Desktop */
+.sidebar-header-mobile,
+.btn-open-sidebar {
+    display: none;
 }
 
+@media (max-width: 991.98px) {
 
-.center-slot > .feed {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+    /* 1. Mostramos los botones de mobile y ocultamos el título de desktop */
+    .sidebar-header-desktop { display: none; }
+    .sidebar-header-mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+    .sidebar-header-mobile h3 { margin: 0; }
 
+    .btn-close-sidebar {
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: var(--Muted);
+    }
 
-/* Override final: evitar que otras hojas pongan overflow-x: hidden y recorten las columnas */
-.grid-3col {
-    overflow-x: visible;
-    overflow-y: visible;
+    .btn-open-sidebar {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        border: 1px solid var(--border-subtle);
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    /* 2. Convertimos el Sidebar en un CAJÓN LATERAL */
+    .grid-3col > .sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%; /* Oculto fuera de la pantalla por defecto */
+        width: 85vw; /* Ocupa el 85% de la pantalla */
+        max-width: 320px;
+        height: 100dvh; /* Alto completo */
+        z-index: 4000;
+        margin: 0;
+        border-radius: 0;
+        overflow-y: auto; /* Scroll interno si hay muchos filtros */
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Animación suave */
+        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    }
+
+    /* Clase que se activa con JS para deslizarlo hacia adentro */
+    .grid-3col > .sidebar.is-open {
+        left: 0;
+    }
+
+    /* --- BARRA DE BOTONES MOBILE --- */
+    .mobile-actions-bar {
+        display: flex;
+        gap: 8px;
+    }
+
+    .mobile-actions-bar .btn-open-sidebar {
+        flex: 1; /* Para que los dos botones midan 50% y 50% */
+        justify-content: center;
+        margin-bottom: 0;
+    }
+
+    /* --- CAJÓN DERECHO (Mapa y Colecciones) --- */
+    .grid-3col > #mobile-sidebar-right {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Oculto fuera de la pantalla por la DERECHA */
+        left: auto;   /* Anulamos la izquierda */
+        width: 85vw;
+        max-width: 420px;
+        height: 100dvh;
+        z-index: 4000;
+        margin: 0;
+        background: var(--ModuleBG, #fff); /* Necesita fondo para no ser transparente */
+        border-radius: 0;
+        overflow-y: auto;
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -4px 0 24px rgba(0,0,0,0.15); /* Sombra hacia la izquierda */
+        padding: var(--sp-3);
+    }
+
+    /* Clase que se activa con JS para deslizarlo hacia adentro */
+    .grid-3col > #mobile-sidebar-right.is-open {
+        right: 0;
+    }
+
+    /* Fondo oscuro transparente detrás del cajón */
+    .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100dvh;
+        background: rgba(0,0,0,0.5);
+        z-index: 3999;
+        opacity: 0;
+        pointer-events: none; /* No intercepta clics si está invisible */
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar-backdrop.is-open {
+        opacity: 1;
+        pointer-events: auto; /* Activa el clic para cerrar */
+    }
 }
