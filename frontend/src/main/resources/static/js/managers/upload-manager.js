@@ -39,6 +39,8 @@ const UploadManager = (function() {
 
         // Llamamos a la nueva función que anima
         appendNewFiles(validNewFiles, startIndex);
+
+        updateButtonVisuals();
     }
 
     function appendNewFiles(files, startIndex) {
@@ -135,6 +137,13 @@ const UploadManager = (function() {
         // Seguridad: si el elemento no existe, salimos
         if (!items[indexToRemove]) return;
 
+        // Le sacamos el azul al instante para que se sienta súper rápido
+        const btnContainer = document.getElementById('selected-multimedia');
+        if (btnContainer) {
+            const btn = btnContainer.querySelector('.chip');
+            if (btn) btn.classList.remove('chip-success');
+        }
+
         const itemToRemove = items[indexToRemove];
 
         // 1. ANIMACIÓN: Le ponemos la clase CSS que lo encoge
@@ -183,5 +192,22 @@ const UploadManager = (function() {
     return {
         handleFiles
     };
+
+    function updateButtonVisuals() {
+        // 1. Buscamos el contenedor con el ID selected-multimedia
+        const container = document.getElementById('selected-multimedia');
+        if (!container) return;
+
+        // 2. Buscamos el botón real (el <a>) que está adentro de ese contenedor
+        const btn = container.querySelector('.chip');
+        if (!btn) return;
+
+        // 3. Aplicamos la lógica
+        if (dt.items.length >= MAX_FILES) {
+            btn.classList.add('chip-success'); // Se pone azul y negrita
+        } else {
+            btn.classList.remove('chip-success'); // Vuelve a ser gris
+        }
+    }
 
 })();
