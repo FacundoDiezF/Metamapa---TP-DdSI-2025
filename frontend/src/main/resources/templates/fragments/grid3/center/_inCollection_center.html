@@ -8,15 +8,56 @@
         </p>
     </header>
 
-    <!-- EVENTOS -->
+    <div id="events-container">
 
-    <th:block th:if="${!#lists.isEmpty(events)}" th:each="event : ${events}">
-        <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
-    </th:block>
+        <th:block th:if="${#lists.isEmpty(eventsPage.content)}">
+            <p class="no-events-msg">No hay Eventos disponibles.</p>
+        </th:block>
 
-    <!-- Mensaje de fin de resultados -->
-    <div id="end-message" class="end-message">
-        <p>✓ Has visto todos los eventos disponibles</p>
+        <th:block th:fragment="eventListFragment" th:if="${!#lists.isEmpty(eventsPage.content)}">
+
+            <th:block th:each="event : ${eventsPage.content}">
+                <div th:replace="~{fragments/_eventCard :: cardFragment(item=${event})}"></div>
+            </th:block>
+
+            <div th:if="${!eventsPage.last}"
+                 id="infinite-scroll-trigger"
+                 th:hx-get="@{/in-collection/events/{handler}(handler=${handlerString},
+                                                             page=${eventsPage.pageNumber + 1},
+                                                             category_in=${param.category_in},
+                                                             province_in=${param.province_in},
+                                                             eventDate_lt=${param.eventDate_lt},
+                                                             eventDate_gt=${param.eventDate_gt},
+                                                             curatedNavigation=${param.curatedNavigation},
+                                                             source_in=${param.source_in})}"
+                 hx-trigger="intersect threshold:0.5"
+                 hx-swap="outerHTML"
+                 hx-indicator="#loading-indicator"
+                 class="htmx-scroll-trigger">
+            </div>
+
+            <div th:if="${eventsPage.last}" id="end-message" class="end-message" style="margin-top: 24px;">
+                <p>✓ Has visto todos los eventos disponibles</p>
+            </div>
+
+            <script th:inline="javascript">
+                (function () {
+                    var newEvents = /*[[${eventsPage.content}]]*/ [];
+                    if (newEvents && newEvents.length > 0 && window.MetaMapa && window.MetaMapa['explore-map']) {
+                        window.events = window.events || [];
+                        window.events = window.events.concat(newEvents);
+                        window.MetaMapa['explore-map'].update(window.events);
+                    }
+                })();
+            </script>
+
+        </th:block>
+
+    </div>
+
+    <div id="loading-indicator" class="loading-indicator htmx-indicator">
+        <div class="mm-logo-spinner"></div>
+        <p>Cargando más eventos...</p>
     </div>
 
 </section>

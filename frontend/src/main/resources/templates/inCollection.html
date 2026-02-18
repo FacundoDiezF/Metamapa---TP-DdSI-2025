@@ -6,6 +6,7 @@
 
     <!-- Página inCollection -->
     <link rel="stylesheet" th:href="@{/css/pages/inCollection.css}"/>
+    <link rel="stylesheet" th:href="@{/css/pages/explore.css}"/>
 
     <!-- SideBar izquierdo: filtros -->
     <link rel="stylesheet" th:href="@{/css/shared/filters/filters.css}"/>
@@ -29,7 +30,7 @@
 
 <th:block layout:fragment="extraScripts">
     <script th:inline="javascript">
-        window.events = [[${events}]];
+        window.events = [[${eventsPage.getContent()}]];
     </script>
 
     <script th:src="@{/js/map/metamapa-map.js}"></script>

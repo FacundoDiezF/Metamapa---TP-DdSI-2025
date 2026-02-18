@@ -38,7 +38,7 @@ public class SecurityConfig {
             .requestMatchers("/modals/**").permitAll() //! Hay que permitir solo las modales que sean públicas (y securizar las otras)
 
             // Endpoints para fragments usados en AJAX -> PÚBLICOS
-            .requestMatchers("/category-input-fragment", "/location-input-fragment", "/explore/events").permitAll() //!
+            .requestMatchers("/category-input-fragment", "/location-input-fragment", "/explore/events", "/in-collection/events/**").permitAll() //!
 
             // POSTS
             .requestMatchers("/share/**").permitAll() //! Hay que permitir solo los POSTS que sean públicos (y securizar los otros)

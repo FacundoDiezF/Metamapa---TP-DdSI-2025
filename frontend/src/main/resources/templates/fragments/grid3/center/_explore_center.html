@@ -40,7 +40,8 @@
 
                     <div id="media-preview-container" class="media-preview-container"></div>
 
-                    <p id="media-error-msg" class="help error-msg" style="display: none; color: #ff4d4d; margin-bottom: 10px;"></p>
+                    <p id="media-error-msg" class="help error-msg"
+                       style="display: none; color: #ff4d4d; margin-bottom: 10px;"></p>
 
                     <div class="share-actions">
 
@@ -131,7 +132,8 @@
             <p class="no-events-msg">No hay Eventos disponibles.</p>
         </th:block>
 
-        <th:block th:if="${!#lists.isEmpty(eventsPage.content)}" th:replace="~{fragments/grid3/center/_explore_center :: eventListFragment}"></th:block>
+        <th:block th:if="${!#lists.isEmpty(eventsPage.content)}"
+                  th:replace="~{fragments/grid3/center/_explore_center :: eventListFragment}"></th:block>
 
     </div>
 
@@ -143,15 +145,24 @@
 
         <div th:if="${!eventsPage.last}"
              id="infinite-scroll-trigger"
-             th:hx-get="@{/explore/events(page=${eventsPage.pageNumber + 1}, ... )}"
+             th:hx-get="@{/explore/events(page=${eventsPage.pageNumber + 1},
+                                          category_in=${param.category_in},
+                                          province_in=${param.province_in},
+                                          eventDate_lt=${param.eventDate_lt},
+                                          eventDate_gt=${param.eventDate_gt},
+                                          source_in=${param.source_in})}"
              hx-trigger="intersect threshold:0.5"
              hx-swap="outerHTML"
              hx-indicator="#loading-indicator"
              class="htmx-scroll-trigger">
         </div>
 
+        <div th:if="${#lists.isEmpty(eventsPage.content) || eventsPage.last}" id="end-message" class="end-message">
+            <p>✓ Has visto todos los eventos disponibles</p>
+        </div>
+
         <script th:inline="javascript">
-            (function() {
+            (function () {
                 // Obtenemos los eventos de ESTA página específica
                 var newEvents = /*[[${eventsPage.content}]]*/ [];
 
@@ -175,10 +186,6 @@
     <div id="loading-indicator" class="loading-indicator htmx-indicator">
         <div class="mm-logo-spinner"></div>
         <p>Cargando más eventos...</p>
-    </div>
-
-    <div th:if="${#lists.isEmpty(eventsPage.content) || eventsPage.last}" id="end-message" class="end-message">
-        <p>✓ Has visto todos los eventos disponibles</p>
     </div>
 
 </section>

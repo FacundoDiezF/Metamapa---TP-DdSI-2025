@@ -27,10 +27,8 @@ public class EventService {
     return server.getAllEvents(category_in, province_in, eventDate_lt, eventDate_gt, source_in, false, page, size); // La navegacion curada siempre es false 
   }
 
-  public List<EventDTO> getAllByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
-    // TODO No está paginado
-    return server.getAllEventsByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size); 
-
+  public PageDTO<EventDTO> getAllByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) {
+    return server.getAllEventsByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size);
   }
 
   public List<EventDTO> getAllByUser() {
