@@ -127,6 +127,7 @@
     background: var(--Accent);
     border-color: var(--Accent);
     color: #fff;
+    font-weight: 600;
 }
 
 /* ===========================
