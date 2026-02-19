@@ -1,7 +1,13 @@
-<aside th:fragment="right">
-    <div id="mm-mapa" class="collapse d-lg-block show">
+<aside th:fragment="right" id="mobile-sidebar-right" class="sidebar-right">
+
+    <div class="sidebar-header-mobile">
+        <h3>Mapa y Colecciones</h3>
+        <button type="button" class="btn-close-sidebar" onclick="closeAllSidebars()">✕</button>
+    </div>
+
+    <div id="mm-mapa">
         <div class="card map-box">
-            <h3>Mapa</h3>
+            <h3 class="sidebar-header-desktop">Mapa</h3>
             <div class="map-frame">
                 <div id="explore-map" data-mm-map class="map-canvas"></div>
             </div>
@@ -9,7 +15,7 @@
     </div>
 
     <div th:if="${!#lists.isEmpty(collectionPage.content)}" class="card colecciones">
-        <h3>Colecciones</h3>
+        <h3 class="sidebar-header-desktop">Colecciones</h3>
         <ul>
             <li th:each="col : ${collectionPage.content}">
                 <a class="refColeccion"
@@ -22,4 +28,3 @@
         <a th:href="@{/collections}" class="btn-primary">Explorar Mas</a>
     </div>
 </aside>
-

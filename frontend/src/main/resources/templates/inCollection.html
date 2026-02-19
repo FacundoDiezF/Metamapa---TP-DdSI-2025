@@ -44,6 +44,16 @@
         });
 
         window.focusMapOn = function(lat, lng) {
+
+            //On mobile open drawer
+            if (window.innerWidth < 992) {
+                const sidebarRight = document.getElementById('mobile-sidebar-right');
+
+                if (sidebarRight && !sidebarRight.classList.contains('is-open')) {
+                    toggleSidebarRight();
+                }
+            }
+
             const mapInstance = window.MetaMapa && window.MetaMapa['explore-map'];
 
             if (mapInstance && mapInstance.map) {

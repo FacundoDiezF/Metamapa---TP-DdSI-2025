@@ -222,15 +222,127 @@
 
 
 /* ===========================
-   Responsive
+   CAJONES LATERALES (OFF-CANVAS) PARA MOBILE
+   Independientes del layout (Grid/Flex)
 =========================== */
 
-@media (max-height: 760px), (max-width: 920px) {
-    .flt-head {
-        padding: .5rem .65rem;
+/* Ocultamos los botones y headers de mobile en Desktop (>992px) */
+.sidebar-header-mobile,
+.btn-open-sidebar,
+.mobile-actions-bar {
+    display: none;
+}
+
+/* El fondo oscuro siempre existe pero no se ve por defecto */
+.sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: rgba(0,0,0,0.5);
+    z-index: 3999;
+    opacity: 0;
+    pointer-events: none; /* No intercepta clics si está invisible */
+    transition: opacity 0.3s ease;
+}
+
+@media (max-width: 991.98px) {
+
+    /* --- BARRA DE BOTONES (Triggers) --- */
+    .mobile-actions-bar {
+        display: flex;
+        gap: 8px;
+        margin-bottom: var(--sp-3, 16px);
     }
 
-    .flt-body {
-        padding: .5rem .65rem .7rem;
+    .btn-open-sidebar {
+        display: inline-flex;
+        flex: 1; /* Ocupan espacio equitativo */
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        background: var(--ModuleBG, #fff);
+        border: 1px solid var(--border-subtle, #e2e8f0);
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    /* --- HEADERS DEL CAJÓN --- */
+    .sidebar-header-desktop {
+        display: none;
+    }
+
+    .sidebar-header-mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-subtle, #e2e8f0);
+    }
+
+    .sidebar-header-mobile h3 {
+        margin: 0;
+    }
+
+    .btn-close-sidebar {
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: var(--Muted, #64748b);
+        padding: 4px; /* Área táctil más grande */
+    }
+
+    /* --- COMPORTAMIENTO OFF-CANVAS: CAJÓN IZQUIERDO (.sidebar) --- */
+    .sidebar {
+        position: fixed !important; /* Fuerza a salir de cualquier layout grid/flex */
+        top: 0;
+        left: -100%; /* Escondido a la izquierda */
+        width: 85vw !important; /* Override al width 100% que le pueda dar un grid */
+        max-width: 320px;
+        height: 100dvh !important;
+        z-index: 4000;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        overflow-y: auto;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    }
+
+    .sidebar.is-open {
+        left: 0; /* Aparece */
+    }
+
+    /* --- COMPORTAMIENTO OFF-CANVAS: CAJÓN DERECHO (.sidebar-right) --- */
+    .sidebar-right {
+        position: fixed !important;
+        top: 0;
+        right: -100%; /* Escondido a la derecha */
+        left: auto !important;
+        width: 85vw !important;
+        max-width: 420px;
+        height: 100dvh !important;
+        z-index: 4000;
+        margin: 0 !important;
+        background: var(--ModuleBG, #fff);
+        border-radius: 0 !important;
+        overflow-y: auto;
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+        padding: var(--sp-3, 16px);
+    }
+
+    .sidebar-right.is-open {
+        right: 0; /* Aparece */
+    }
+
+    /* --- FONDO OSCURO ACTIVO --- */
+    .sidebar-backdrop.is-open {
+        opacity: 1;
+        pointer-events: auto;
     }
 }
