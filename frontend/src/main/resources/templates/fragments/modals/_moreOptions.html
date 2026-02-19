@@ -91,14 +91,13 @@
             <div class="chips-box">
                 <div class="chips">
 
-                    <span class="chip-toggle">
+                    <span th:if="${itemsPage.totalElements == 0}" class="chip-toggle">
                         <div>
                             <input type="radio" name="itemSelected"
                                    id="item-modal:sin-categoria"
                                    value="0::Sin categoría"
                                    required
                             />
-<!--Esto funciona solamente porque en el back si no recibe una categoría válida, la procesa con el nombre 'Sin categoría' a modo de prevencion de errores (justamente este caso particular).-->
                             <label for="item-modal:sin-categoria" class="chip">
                                 Sin categoría
                             </label>
