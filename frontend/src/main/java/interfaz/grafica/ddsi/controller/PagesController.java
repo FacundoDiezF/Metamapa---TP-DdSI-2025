@@ -22,6 +22,7 @@ import interfaz.grafica.ddsi.services.SourcesService;
 import interfaz.grafica.ddsi.services.StatisticsService;
 import interfaz.grafica.ddsi.services.SubmissionRequestService;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,14 +115,15 @@ public class PagesController {
       Model model) {
 
     CollectionDTO collection = collectionService.getByHandler(handler);
-    List<EventDTO> eventsFromCol = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, pageEvent, 15);
+    PageDTO<EventDTO> eventsPage = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, pageEvent, 15);
     PageDTO<CollectionDTO> collectionPage = collectionService.getAll(0, 3);
 
 
     model.addAttribute("collection", collection);
     model.addAttribute("collectionPage", collectionPage);
+    model.addAttribute("handlerString", handler);
 
-    model.addAttribute("events", eventsFromCol);
+    model.addAttribute("eventsPage", eventsPage);
 
     this.addFilterModels(model, category_in, province_in);
 

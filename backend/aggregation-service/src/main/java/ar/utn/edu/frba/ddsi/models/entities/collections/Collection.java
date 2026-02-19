@@ -110,24 +110,19 @@ public class Collection {
     this.events.removeIf(Event::isDeleted);
   }
 
-  public Set<Event> getEvents() {
-    Set<Event> allEvents = new HashSet<>(events);
-    allEvents.addAll(getMetamapaEvents());
-    return allEvents.stream().filter(e -> !e.isDeleted()).collect(Collectors.toSet());
-  }
-
   public List<Long> getEventsIds() {
     return events.stream().map(Event::getId).toList();
   }
 
-  private Set<Event> getMetamapaEvents() {
-    //Pull and filter events from Metamapa sources (in parallel to improve performance).
-    return this.sources.parallelStream()
-        .filter(Source::isMetamapa)
-        .flatMap(s -> s.fetchEvents().stream())
-        .filter(this.collectionCriteria::isSatisfiedBy)
-        .collect(Collectors.toSet());
-  }
+  //TODO: Que traiga las pags de las metamapa
+//  private Set<Event> getMetamapaEvents() {
+//    //Pull and filter events from Metamapa sources (in parallel to improve performance).
+//    return this.sources.parallelStream()
+//        .filter(Source::isMetamapa)
+//        .flatMap(s -> s.fetchEvents().stream())
+//        .filter(this.collectionCriteria::isSatisfiedBy)
+//        .collect(Collectors.toSet());
+//  }
 
   public void update(CollectionCreationDTO dto, Set<Source> newSources, CollectionCriteria newCriteria) {
 

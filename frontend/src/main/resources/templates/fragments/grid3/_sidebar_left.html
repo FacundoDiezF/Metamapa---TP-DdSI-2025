@@ -1,8 +1,13 @@
-<aside th:fragment="filter-form(actionUrl)" class="sidebar">
-    <!-- Collapse visible en mobile; en desktop queda siempre abierto -->
-    <div id="mm-filtros">
-        <h3>Filtros</h3>
+<aside th:fragment="filter-form(actionUrl)" class="sidebar" id="mobile-sidebar">
 
+    <div class="sidebar-header-mobile">
+        <h3>Filtros</h3>
+        <button type="button" class="btn-close-sidebar" onclick="closeAllSidebars()">✕</button>
+    </div>
+
+    <h3 class="sidebar-header-desktop">Filtros</h3>
+
+    <div id="mm-filtros">
         <!-- Form GET para que el backend aplique filtros -->
         <form class="filters"
               method="get"

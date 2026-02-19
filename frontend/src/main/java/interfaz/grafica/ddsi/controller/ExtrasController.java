@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -125,7 +126,7 @@ public class ExtrasController {
       @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
       @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
       @RequestParam(required = false, name = "source_in") List<Origin> source_in,
-      @RequestParam(defaultValue = "0", name = "page") int pageEvent,
+      @RequestParam(name = "page") int pageEvent,
       Model model) {
 
     PageDTO<EventDTO> eventsPage = eventService.getAll(category_in, province_in, eventDate_lt, eventDate_gt, source_in, pageEvent, 15);
@@ -133,5 +134,25 @@ public class ExtrasController {
     model.addAttribute("eventsPage", eventsPage);
 
     return "fragments/grid3/center/_explore_center :: eventListFragment";
+  }
+
+  @GetMapping("/in-collection/events/{handler}")
+  public String inCollectionEventsPaginated(
+      @PathVariable("handler") String handler,
+      @RequestParam(required = false, name = "category_in") List<Long> category_in,
+      @RequestParam(required = false, name = "province_in") List<Long> province_in,
+      @RequestParam(required = false, name = "eventDate_lt") LocalDate eventDate_lt,
+      @RequestParam(required = false, name = "eventDate_gt") LocalDate eventDate_gt,
+      @RequestParam(required = false, name = "source_in") List<Origin> source_in,
+      @RequestParam(name = "curatedNavigation", defaultValue = "false") boolean curatedNavigation,
+      @RequestParam(name = "page") int pageEvent,
+      Model model) {
+
+    PageDTO<EventDTO> eventsPage = eventService.getAllByCollection(handler, category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, pageEvent, 15);
+
+    model.addAttribute("eventsPage", eventsPage);
+    model.addAttribute("handlerString", handler);
+
+    return "fragments/grid3/center/_inCollection_center :: eventListFragment";
   }
 }

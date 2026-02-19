@@ -92,12 +92,12 @@ public class ServerAdapter {
         });
   } //* Funciona
 
-  public List<EventDTO> getAllEventsByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) { //? Me llama la atencion que esto reciba una lista de EventDTO y no una PageDTO<EventDTO>
+  public PageDTO<EventDTO> getAllEventsByCollection(String handler, List<Long> category_in, List<Long> province_in, LocalDate eventDate_lt, LocalDate eventDate_gt, List<Origin> source_in, boolean curatedNavigation, int page, int size) { //? Me llama la atencion que esto reciba una lista de EventDTO y no una PageDTO<EventDTO>
     return webApiCallerService.get(uriBuilder -> {
           uriBuilder.path("/api/v1/collections/" + handler + "/events");
           return getEventsUri(category_in, province_in, eventDate_lt, eventDate_gt, source_in, curatedNavigation, page, size, uriBuilder);
         },
-        new ParameterizedTypeReference<List<EventDTO>>() {
+        new ParameterizedTypeReference<PageDTO<EventDTO>>() {
         });
   } //* Funciona
 

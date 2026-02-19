@@ -15,7 +15,7 @@ public interface ICollectionService {
 
   Page<CollectionOutputDTO> getCollections(LocalDateTime fromUpdateDate, Pageable pageable);
 
-  List<EventOutputDTO> getEventsFromCollection(
+  Page<EventOutputDTO> getEventsFromCollection(
       String handler,
       boolean curedNavigation,
       List<Long> category_in,
@@ -24,7 +24,8 @@ public interface ICollectionService {
       LocalDateTime uploadDate_lt,
       LocalDateTime uploadDate_gt,
       LocalDateTime eventDate_lt,
-      LocalDateTime eventDate_gt
+      LocalDateTime eventDate_gt,
+      Pageable pageable
   );
 
   void refreshCollections(LocalDateTime lastUpdate);

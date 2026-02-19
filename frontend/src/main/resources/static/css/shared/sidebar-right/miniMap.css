@@ -27,15 +27,6 @@
 
 /* Lienzo Leaflet */
 .map-canvas {
-
     position: absolute;
     inset: 0;
-}
-
-/* (Opcional) fijar la columna en desktop */
-@media (min-width: 992px) {
-    .sidebar-right {
-        position: sticky;
-        top: 1rem;
-    }
 }

@@ -117,12 +117,6 @@ public class Event {
     }
   }
 
-  public boolean meetsAlgorithmConsensus(ConsensusType consensusType) {
-    if (consensusType == ConsensusType.ALL_PASS) return true;
-
-    return passedConsensus.contains(consensusType);
-  }
-
   public boolean isEquivalent(Event that) {
     if (that == null) return false;
     return Objects.equals(this.title, that.title)
